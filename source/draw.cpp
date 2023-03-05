@@ -11,6 +11,7 @@ extern "C"
 
 void flat::Drawmeta::createVBO()
 {
+	// TODO: 矩阵取值错误
 	auto pos = getPositionMat();
 	std::array<float, 12> vertexes;
 	for (int i = 0; i < 4; i++)
@@ -21,7 +22,7 @@ void flat::Drawmeta::createVBO()
 		}
 	}
 
-	glGenBuffers(1, &vaoId);
+	glGenBuffers(1, &vboId);
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(float), vertexes.data(), GL_STATIC_DRAW);
 }
@@ -99,6 +100,8 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 			stbi_image_free(data);
 		}
 	}
+
+	animations[std::string(name)] = std::pair<uint32_t, std::shared_ptr<std::vector<Texture>>>(ms,container);
 }
 
 void flat::Drawmeta::removeAnimation(std::string_view name)
@@ -147,7 +150,7 @@ void flat::Drawmeta::makeDrawMeta()
 
 void flat::Drawmeta::makeDrawMeta(std::array<float, 8> &texCoords, std::array<float, 12> &colors)
 {
-	
+
 }
 
 void flat::Drawmeta::drawMeta()

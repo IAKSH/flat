@@ -93,8 +93,10 @@ flat::Camera::~Camera()
 
 }
 
+// NMD，不会分解变换矩阵，暂时不写了
+// 现在Camera是不会动的
 void flat::Camera::draw(GameObject& go)
 {
-    
+    go.draw();
 }
 

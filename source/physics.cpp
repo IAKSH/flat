@@ -58,7 +58,10 @@ void flat::Physical::addVelocity(glm::vec3 vel)
 
 flat::Physical::Physical()
 {
-
+    position[0] = glm::vec4(-0.5f,0.5f,0.0f,0.0f);
+    position[1] = glm::vec4(0.5f,0.5f,0.0f,0.0f);
+    position[2] = glm::vec4(0.5f,-0.5f,0.0f,0.0f);
+    position[3] = glm::vec4(-0.5f,-0.5f,0.0f,0.0f);
 }
 
 flat::Physical::~Physical()
