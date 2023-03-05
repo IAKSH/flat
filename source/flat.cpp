@@ -34,11 +34,9 @@ void flat::GameObject::onDestory()
 
 void flat::GamePlay::updateFrame()
 {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-	// camera.draw(each gameobj)
-
 	glfwSwapBuffers(camera.getWindow());
+	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void flat::GamePlay::customUpdateTick()
@@ -93,10 +91,12 @@ flat::Camera::~Camera()
 
 }
 
-// NMD，不会分解变换矩阵，暂时不写了
-// 现在Camera是不会动的
 void flat::Camera::draw(GameObject& go)
 {
+	// set vertex shader transform matrix
+	// ...
+
+	// then draw
     go.draw();
 }
 

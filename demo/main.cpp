@@ -39,7 +39,9 @@ Demo::Demo()
 {
     bird.loadNewAnimation("fly",250,{"../demo/images/bird0_0.png","../demo/images/bird0_1.png","../demo/images/bird0_2.png"});
     bird.loadAnimation("fly");
-    bird.transform(glm::scale(bird.getPositionMat(),glm::vec3(0.5f,0.5f,0.5f)));
+    bird.setSizeH(0.25f);
+    bird.setSizeW(0.25f);
+    //bird.transform(glm::scale(bird.getPositionMat(),glm::vec3(0.5f,0.5f,0.5f)));
     bird.makeDrawMeta();
 }
 

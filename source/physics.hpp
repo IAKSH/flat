@@ -9,20 +9,27 @@ namespace flat
     class Physical
 	{
 	private:
-		glm::mat4 position;
+		glm::vec3 position;
 		glm::vec3 velocity;
+		float w,h;
 
 	protected:
 		bool checkHit(Physical& obj);
 
 	public:
-		const glm::mat4& getPositionMat();
+		const glm::vec3& getPositionVec();
 		const glm::vec3& getVelocityVec();
-		float getCentralPosX();
-		float getCentralPosY();
-		void transform(glm::mat4 trans);
+		float getPosX();
+		float getPosY();
+		const float& getSizeW();
+		const float& getSizeH();
+		void setSizeW(float f);
+		void setSizeH(float f);
+		void setPosition(glm::vec3& pos);
+		void addPosition(glm::vec3& vec);
 		void updatePosition(float ms);
-		void addVelocity(glm::vec3 vel);
+		void setVelocity(glm::vec3& vel);
+		void addVelocity(glm::vec3& vec);
 		Physical();
 		~Physical();
 	};

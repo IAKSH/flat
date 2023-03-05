@@ -35,8 +35,8 @@ void flat::SoundSource::initializeSoundSource()
 
 void flat::SoundSource::updateSoundSource()
 {
-    alBuffer3f(sourceId, AL_POSITION, getCentralPosX(), getCentralPosY(), 0.0f);
-    alBuffer3f(sourceId, AL_VELOCITY, getCentralPosX(), getCentralPosY(), 0.0f);
+    alBuffer3f(sourceId, AL_POSITION, getPosX(), getPosY(), 0.0f);
+    alBuffer3f(sourceId, AL_VELOCITY, getPosX(), getPosY(), 0.0f);
 }
 
 void flat::SoundSource::setSoundVolume(float volume)
@@ -100,7 +100,7 @@ flat::Listener::~Listener()
 
 void flat::Listener::updateListener()
 {
-    alListener3f(AL_POSITION, getCentralPosX(), getCentralPosY(), 0.0f);
+    alListener3f(AL_POSITION, getPosX(), getPosY(), 0.0f);
     alListener3f(AL_VELOCITY, getVelocityVec()[0], getVelocityVec()[1], 0.0f);
 }
 

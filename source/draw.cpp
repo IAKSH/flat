@@ -11,28 +11,34 @@ extern "C"
 
 void flat::Drawmeta::createVBO()
 {
-	// TODO: 矩阵取值错误
-	auto pos = getPositionMat();
-	std::array<float, 12> vertexes;
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			vertexes[i * 3 + j] = pos[i][j];
-		}
-	}
+	auto x = getPosX();
+	auto y = getPosY();
+	auto hh = getSizeH() / 2.0f;
+	auto hw = getSizeW() / 2.0f;
+
+	//float vertexes[]{x - hw,y + hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f,x + hw,y + hh,0.0f,x + hw,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f ,y - hh,0.0f,x - hw,y - hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f};
+	
+	// for test
+	float vertices[] = {
+	//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
+     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
+     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
+    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+	};
 
 	glGenBuffers(1, &vboId);
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBufferData(GL_ARRAY_BUFFER, vertexes.size() * sizeof(float), vertexes.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 }
 
 void flat::Drawmeta::createEBO()
 {
 	const uint32_t indices[] =
-		{
-			0, 1, 3,
-			1, 3, 2};
+	{
+		0, 1, 3,
+		1, 3, 2
+	};
 
 	glGenBuffers(1, &eboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);
