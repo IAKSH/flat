@@ -23,6 +23,7 @@ public:
         camera.loadVShaderFromFile("../demo/shader/vshader.glsl");
         camera.loadFShaderFromFile("../demo/shader/fshader.glsl");
         camera.initializePainter();
+        camera.updateListener();
 
         bird.loadNewAnimation("fly", 250, {"../demo/images/bird0_0.png", "../demo/images/bird0_1.png", "../demo/images/bird0_2.png"});
         bird.loadAnimation("fly");
@@ -30,6 +31,12 @@ public:
         bird.setSizeW(0.25f);
         bird.setPosition(glm::vec3(0.5f,0.5f,0.5f));
         bird.makeDrawMeta();
+
+        bird.initializeSoundSource();
+        bird.setSoundLoopable(true);
+        flat::Audio testBgm;
+        testBgm.load("../demo/sounds/relaxed-vlog-night-street-131746.mp3");
+        bird.playSound(testBgm);
     }
     void customUpdateTick();
 };

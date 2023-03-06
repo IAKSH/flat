@@ -4,6 +4,9 @@
 #include <vector>
 #include <string_view>
 
+#include <AL/al.h>
+#include <AL/alc.h>
+
 #include "physics.hpp"
 
 namespace flat
@@ -43,10 +46,14 @@ namespace flat
 
     class Listener : public Physical
 	{
+	private:
+		ALCdevice* device;
+		ALCcontext* context;
 	protected:
 		Listener();
 		~Listener();
 	public:
+		void initializeListener();
 		void updateListener();
 	};
 }

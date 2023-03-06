@@ -15,12 +15,10 @@ extern "C"
 
 flat::SoundSource::SoundSource()
 {
-
 }
 
 flat::SoundSource::~SoundSource()
 {
-
 }
 
 void flat::SoundSource::initializeSoundSource()
@@ -49,10 +47,10 @@ void flat::SoundSource::setSoundLoopable(bool loopable)
     alSourcei(sourceId, AL_LOOPING, loopable);
 }
 
-void flat::SoundSource::playSound(Audio& audio)
+void flat::SoundSource::playSound(Audio &audio)
 {
-    //alSourcei(sourceId, AL_BUFFER, id);
-    for(auto& item : audio.getBufferIds())
+    // alSourcei(sourceId, AL_BUFFER, id);
+    for (auto &item : audio.getBufferIds())
         alSourceQueueBuffers(sourceId, 1, &item);
     alSourcePlay(sourceId);
 }
@@ -90,12 +88,30 @@ bool flat::SoundSource::getSoundLoopable()
 
 flat::Listener::Listener()
 {
-
 }
 
 flat::Listener::~Listener()
 {
+}
 
+void flat::Listener::initializeListener()
+{
+    device = alcOpenDevice(NULL);
+    if (!device)
+    {
+        std::cout << "[ERROR] Can't open OpenAL device" << std::endl;
+        abort();
+    }
+
+    context = alcCreateContext(device, NULL);
+    if (!context)
+    {
+        std::cout << "[ERROR] Can't create OpenAL context" << std::endl;
+        // alcCloseDevice(device);
+        abort();
+    }
+
+    alcMakeContextCurrent(context);
 }
 
 void flat::Listener::updateListener()
@@ -106,7 +122,6 @@ void flat::Listener::updateListener()
 
 flat::Audio::Audio()
 {
-
 }
 
 flat::Audio::~Audio()
@@ -116,48 +131,65 @@ flat::Audio::~Audio()
 
 void flat::Audio::load(std::string_view path)
 {
-    std::ifstream file(path.data(), std::ios::binary);
-    if (!file)
+    // bad code
+    // C file pointer for test
+    FILE* fp = fopen(path.data(),"r");
+    if (!fp)
     {
         std::cerr << "[ERROR] Failed to open " << path << std::endl;
         abort();
     }
 
-    mp3dec_t mp3dec;
-    mp3dec_init(&mp3dec);
-    mp3dec_frame_info_t info;
+    mp3dec_t mp3d;
+    mp3dec_frame_info_t frame_info;
+    ALenum format;
+    int channels, rate, bps, size;
+    unsigned char buffer[4096];
+    short pcm[4096];
 
-    std::vector<uint8_t> buffer(4096);
+    mp3dec_init(&mp3d);
 
-    while (true) {
-        file.read(reinterpret_cast<char*>(buffer.data()), buffer.size());
-        auto bytesRead = static_cast<size_t>(file.gcount());
-        if (bytesRead == 0) {
-            break;
-        }
-
-        // decode frame
-        auto samplesDecoded = mp3dec_decode_frame(&mp3dec, buffer.data(), bytesRead, nullptr, &info);
-        if (samplesDecoded > 0) {
-            // get pcm (single frame)
-            for (size_t i = 0; i < samplesDecoded; ++i) {
-                auto pcmFrame = static_cast<int16_t>(buffer[i]);
+    while ((size = fread(buffer, 1, 4096, fp)) > 0)
+    {
+        int offset = 0;
+        while (offset < size)
+        {
+            int samples = mp3dec_decode_frame(&mp3d, buffer + offset, size - offset, pcm, &frame_info);
+            if (samples)
+            {
+                offset += frame_info.frame_bytes;
+                if (!channels)
+                {
+                    channels = frame_info.channels;
+                    rate = frame_info.hz;
+                    bps = sizeof(short) * channels;
+                    if (channels == 1)
+                    {
+                        format = AL_FORMAT_MONO16;
+                    }
+                    else
+                    {
+                        format = AL_FORMAT_STEREO16;
+                    }
+                }
                 uint32_t bufferId;
                 alGenBuffers(1,&bufferId);
-                alBufferData(bufferId, AL_FORMAT_MONO16, &pcmFrame, samplesDecoded * sizeof(short), info.hz);
+                alBufferData(bufferId, format, pcm, samples * bps, rate);
                 bufferIds.push_back(bufferId);
             }
+            else
+                break;
         }
     }
 }
 
-const std::vector<uint32_t>& flat::Audio::getBufferIds()
+const std::vector<uint32_t> &flat::Audio::getBufferIds()
 {
     return bufferIds;
 }
 
 void flat::Audio::releaseBuffer()
 {
-    for(auto& item : bufferIds)
-        alDeleteBuffers(1,&item);
+    for (auto &item : bufferIds)
+        alDeleteBuffers(1, &item);
 }
