@@ -47,9 +47,7 @@ void flat::SoundSource::setSoundLoopable(bool loopable)
 
 void flat::SoundSource::playSound(Audio &audio)
 {
-    // alSourcei(sourceId, AL_BUFFER, id);
-    for (auto &item : audio.getBufferIds())
-        alSourceQueueBuffers(sourceId, 1, &item);
+    alSourcei(sourceId, AL_BUFFER, audio.getBufferId());
     alSourcePlay(sourceId);
 }
 
@@ -154,7 +152,6 @@ void flat::Audio::load(std::string_view path)
     while(samples)
     {
         // collect pcm
-        // ...
         for(auto item : pcm)
             allPCM.push_back(item);
         readLength += info.frame_bytes;
@@ -162,22 +159,17 @@ void flat::Audio::load(std::string_view path)
     }
 
     // prepare OpenAL buffer
-    uint32_t bufferId;
     alGenBuffers(1,&bufferId);
     ALenum format = (info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16);
     alBufferData(bufferId,format,allPCM.data(),allPCM.size() * sizeof(short),info.hz);
-
-    // add bufferId to bufferIds
-    bufferIds.push_back(bufferId);
 }
 
-const std::vector<uint32_t> &flat::Audio::getBufferIds()
+const uint32_t &flat::Audio::getBufferId()
 {
-    return bufferIds;
+    return bufferId;
 }
 
 void flat::Audio::releaseBuffer()
 {
-    for (auto &item : bufferIds)
-        alDeleteBuffers(1, &item);
+    alDeleteBuffers(1, &bufferId);
 }

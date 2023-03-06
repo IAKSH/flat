@@ -14,13 +14,13 @@ namespace flat
     class Audio
     {
     private:
-        std::vector<uint32_t> bufferIds;
+        uint32_t bufferId;
         void releaseBuffer();
     public:
         Audio();
         ~Audio();
         void load(std::string_view path);
-        const std::vector<uint32_t>& getBufferIds();
+        const uint32_t& getBufferId();
     };
 
     class SoundSource : virtual public Physical
