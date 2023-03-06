@@ -28,6 +28,7 @@ namespace flat
 	protected:
 		SoundSource();
 		~SoundSource();
+	public:
 		void initializeSoundSource();
 		void updateSoundSource();
 		void setSoundVolume(float volume);
@@ -45,6 +46,7 @@ namespace flat
 	protected:
 		Listener();
 		~Listener();
+	public:
 		void updateListener();
 	};
 }
