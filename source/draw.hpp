@@ -62,6 +62,8 @@ namespace flat
 		void initializeShader();
 	protected:
 		uint32_t getShaderId();
+		void setTransfrom(glm::mat4& trans);
+		void setTransfrom(glm::mat4&& trans);
 		template <typename T>
 		void setUniform(std::string_view uniform, std::initializer_list<T> vals)
 		{

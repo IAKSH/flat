@@ -27,7 +27,7 @@ public:
         bird.loadAnimation("fly");
         bird.setSizeH(0.25f);
         bird.setSizeW(0.25f);
-        // bird.transform(glm::scale(bird.getPositionMat(),glm::vec3(0.5f,0.5f,0.5f)));
+        bird.setPosition(glm::vec3(0.5f,0.5f,0.5f));
         bird.makeDrawMeta();
     }
     void customUpdateTick();

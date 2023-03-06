@@ -26,10 +26,14 @@ namespace flat
 		void setSizeW(float f);
 		void setSizeH(float f);
 		void setPosition(glm::vec3& pos);
+		void setPosition(glm::vec3&& pos);
 		void addPosition(glm::vec3& vec);
+		void addPosition(glm::vec3&& vec);
 		void updatePosition(float ms);
 		void setVelocity(glm::vec3& vel);
+		void setVelocity(glm::vec3&& vel);
 		void addVelocity(glm::vec3& vec);
+		void addVelocity(glm::vec3&& vec);
 		Physical();
 		~Physical();
 	};

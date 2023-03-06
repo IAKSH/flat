@@ -328,3 +328,15 @@ void flat::Painter::loadVShaderFromFile(std::string_view path)
 	
 	ifs.close();
 }
+
+void flat::Painter::setTransfrom(glm::mat4& trans)
+{
+	auto location = glGetUniformLocation(shaderId, "transform");
+	glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(trans));
+}
+
+void flat::Painter::setTransfrom(glm::mat4&& trans)
+{
+	auto location = glGetUniformLocation(shaderId, "transform");
+	glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(trans));
+}
