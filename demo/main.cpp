@@ -29,7 +29,7 @@ public:
         bird.loadAnimation("fly");
         bird.setSizeH(0.25f);
         bird.setSizeW(0.25f);
-        bird.setPosition(glm::vec3(0.5f,0.5f,0.5f));
+        bird.setPosition(glm::vec3(0.5f, 0.5f, 0.5f));
         bird.makeDrawMeta();
 
         bird.initializeSoundSource();
@@ -62,7 +62,7 @@ Demo::Demo()
 void Demo::customUpdateTick()
 {
     camera.draw(bird);
-    // a float (rotate) too big will cause bug 
+    // a float (rotate) too big will cause bug
     bird.addRotate(0.01f);
 }
 

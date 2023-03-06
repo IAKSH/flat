@@ -15,15 +15,12 @@ void flat::Drawmeta::createVBO()
 	auto hh = getSizeH() / 2.0f;
 	auto hw = getSizeW() / 2.0f;
 
-	// float vertexes[]{x - hw,y + hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f,x + hw,y + hh,0.0f,x + hw,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f ,y - hh,0.0f,x - hw,y - hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f};
-
-	// for test
-	float vertices[] = {
-		//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,	  // 右上
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // 右下
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // 左下
-		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f	  // 左上
+	float vertices[]
+	{
+		hw,hh,0.0f,	1.0f,1.0f,1.0f,1.0f,1.0f,
+		hw,-1.0f * hh,0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,
+		-1.0f * hw,-1.0f * hh,0.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
+		-1.0f * hw,hh,0.0f,1.0f,1.0f,1.0f,0.0f,1.0f
 	};
 
 	glGenBuffers(1, &vboId);
@@ -181,6 +178,7 @@ void flat::Painter::initializeGLFW()
 	glfwMakeContextCurrent(window);
 
 	glfwSwapInterval(3);
+	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {glViewport(0, 0, width, height); });
 }
 
 void flat::Painter::initializeGLAD()
