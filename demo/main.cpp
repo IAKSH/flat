@@ -23,7 +23,7 @@ public:
         camera.loadVShaderFromFile("../demo/shader/vshader.glsl");
         camera.loadFShaderFromFile("../demo/shader/fshader.glsl");
         camera.initializePainter();
-        camera.updateListener();
+        camera.initializeListener();
 
         bird.loadNewAnimation("fly", 250, {"../demo/images/bird0_0.png", "../demo/images/bird0_1.png", "../demo/images/bird0_2.png"});
         bird.loadAnimation("fly");

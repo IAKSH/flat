@@ -4,12 +4,10 @@
 
 #include <AL/al.h>
 #include <AL/alc.h>
-extern "C"
-{
+
 #define MINIMP3_IMPLEMENTATION
 #include <minimp3.h>
 #include <minimp3_ex.h>
-}
 
 #include "sound.hpp"
 
@@ -131,56 +129,46 @@ flat::Audio::~Audio()
 
 void flat::Audio::load(std::string_view path)
 {
-    // bad code
-    // C file pointer for test
-    FILE* fp = fopen(path.data(),"r");
-    if (!fp)
+    // read in the whole mp3 file
+    std::ifstream ifs(path.data(),std::ios::binary);
+    if(!ifs)
     {
-        std::cerr << "[ERROR] Failed to open " << path << std::endl;
+        std::cerr << "[ERROR] Can't open " << path << std::endl;
         abort();
     }
+    ifs.seekg(0,std::ios::end);
+    std::streampos fileSize = ifs.tellg();
+    ifs.seekg(0,std::ios::beg);
+    std::vector<uint8_t> mp3Binary(fileSize);
+    ifs.read((char*)(mp3Binary.data()),fileSize);
+    ifs.close();
 
+    // decode with minimp3
     mp3dec_t mp3d;
-    mp3dec_frame_info_t frame_info;
-    ALenum format;
-    int channels, rate, bps, size;
-    unsigned char buffer[4096];
-    short pcm[4096];
-
-    mp3dec_init(&mp3d);
-
-    while ((size = fread(buffer, 1, 4096, fp)) > 0)
+    mp3dec_frame_info_t info;
+    std::vector<short> allPCM;
+    short pcm[MINIMP3_MAX_SAMPLES_PER_FRAME];
+    int readLength = 0;
+    // decode frame by frame
+    int samples = mp3dec_decode_frame(&mp3d,mp3Binary.data(),static_cast<int>(fileSize),pcm,&info);
+    while(samples)
     {
-        int offset = 0;
-        while (offset < size)
-        {
-            int samples = mp3dec_decode_frame(&mp3d, buffer + offset, size - offset, pcm, &frame_info);
-            if (samples)
-            {
-                offset += frame_info.frame_bytes;
-                if (!channels)
-                {
-                    channels = frame_info.channels;
-                    rate = frame_info.hz;
-                    bps = sizeof(short) * channels;
-                    if (channels == 1)
-                    {
-                        format = AL_FORMAT_MONO16;
-                    }
-                    else
-                    {
-                        format = AL_FORMAT_STEREO16;
-                    }
-                }
-                uint32_t bufferId;
-                alGenBuffers(1,&bufferId);
-                alBufferData(bufferId, format, pcm, samples * bps, rate);
-                bufferIds.push_back(bufferId);
-            }
-            else
-                break;
-        }
+        // collect pcm
+        // ...
+        for(auto item : pcm)
+            allPCM.push_back(item);
+        readLength += info.frame_bytes;
+        samples = mp3dec_decode_frame(&mp3d,mp3Binary.data() + readLength,static_cast<int>(fileSize) - readLength,pcm,&info);
     }
+
+    // prepare OpenAL buffer
+    uint32_t bufferId;
+    alGenBuffers(1,&bufferId);
+    ALenum format = (info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16);
+    alBufferData(bufferId,format,allPCM.data(),allPCM.size() * sizeof(short),info.hz);
+
+    // add bufferId to bufferIds
+    bufferIds.push_back(bufferId);
 }
 
 const std::vector<uint32_t> &flat::Audio::getBufferIds()
