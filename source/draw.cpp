@@ -15,13 +15,11 @@ void flat::Drawmeta::createVBO()
 	auto hh = getSizeH() / 2.0f;
 	auto hw = getSizeW() / 2.0f;
 
-	float vertices[]
-	{
-		hw,hh,0.0f,	1.0f,1.0f,1.0f,1.0f,1.0f,
-		hw,-1.0f * hh,0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,
-		-1.0f * hw,-1.0f * hh,0.0f,1.0f,1.0f,1.0f,0.0f,0.0f,
-		-1.0f * hw,hh,0.0f,1.0f,1.0f,1.0f,0.0f,1.0f
-	};
+	float vertices[]{
+		hw, hh, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+		hw, -1.0f * hh, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+		-1.0f * hw, -1.0f * hh, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+		-1.0f * hw, hh, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f};
 
 	glGenBuffers(1, &vboId);
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
@@ -71,7 +69,7 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 {
 	auto count = pathes.size();
 	std::vector<std::shared_ptr<Texture>> container;
-	//container->resize(count);
+	// container->resize(count);
 	uint32_t tempBufferId;
 
 	for (int i = 0; i < count; i++)
@@ -98,7 +96,7 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 
 		stbi_image_free(data);
 
-		container.push_back(std::make_shared<Texture>(tempBufferId,data,static_cast<size_t>(w * h * channels * sizeof(char))));
+		container.push_back(std::make_shared<Texture>(tempBufferId, data, static_cast<size_t>(w * h * channels * sizeof(char))));
 	}
 
 	animations[std::string(name)] = std::pair<uint32_t, decltype(container)>(ms, container);
@@ -181,7 +179,8 @@ void flat::Painter::initializeGLFW()
 	glfwMakeContextCurrent(window);
 
 	glfwSwapInterval(3);
-	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {glViewport(0, 0, width, height); });
+	glfwSetFramebufferSizeCallback(window, [](GLFWwindow *window, int width, int height)
+								   { glViewport(0, 0, width, height); });
 }
 
 void flat::Painter::initializeGLAD()
@@ -265,9 +264,12 @@ flat::Painter::~Painter()
 
 void flat::Painter::initializePainter()
 {
-	initializeGLFW();
-	initializeGLAD();
-	initializeShader();
+	if (!window)
+	{
+		initializeGLFW();
+		initializeGLAD();
+		initializeShader();
+	}
 }
 
 void flat::Painter::setFShaderSource(std::string source)
@@ -290,11 +292,11 @@ uint32_t flat::Painter::getShaderId()
 	return shaderId;
 }
 
-flat::Texture::Texture(uint32_t id,unsigned char* data,size_t length)
+flat::Texture::Texture(uint32_t id, unsigned char *data, size_t length)
 {
-	auto pair = std::pair(data,length);
+	auto pair = std::pair(data, length);
 	auto it = globalTextureHashtable.find(pair);
-	if(it != globalTextureHashtable.end())
+	if (it != globalTextureHashtable.end())
 		bufferId = globalTextureHashtable[pair];
 	else
 		bufferId = id;
@@ -307,7 +309,7 @@ flat::Texture::~Texture()
 
 void flat::Texture::releaseBuffer()
 {
-	glDeleteTextures(1,&bufferId);
+	glDeleteTextures(1, &bufferId);
 }
 
 const uint32_t &flat::Texture::getBufferId()

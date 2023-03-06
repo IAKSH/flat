@@ -59,8 +59,8 @@ namespace flat
 	class Painter
 	{
 	private:
-		uint32_t shaderId;
-		GLFWwindow *window;
+		inline static uint32_t shaderId;
+		inline static GLFWwindow *window;
 		std::string vertexSource, fragmentSource;
 		void initializeGLFW();
 		void initializeGLAD();
