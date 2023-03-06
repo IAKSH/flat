@@ -2,18 +2,19 @@
 
 #include <vector>
 
-bool flat::Physical::checkHit(Physical& obj)
+bool flat::Physical::checkHit(Physical &obj)
 {
 	// TODO
+
 	return false;
 }
 
-const glm::vec3& flat::Physical::getPositionVec()
+const glm::vec3 &flat::Physical::getPositionVec()
 {
 	return position;
 }
 
-const glm::vec3& flat::Physical::getVelocityVec()
+const glm::vec3 &flat::Physical::getVelocityVec()
 {
 	return velocity;
 }
@@ -33,62 +34,60 @@ void flat::Physical::updatePosition(float ms)
 	position += velocity * ms;
 }
 
-void flat::Physical::setPosition(glm::vec3& pos)
+void flat::Physical::setPosition(glm::vec3 &pos)
 {
 	position = pos;
 }
 
-void flat::Physical::setPosition(glm::vec3&& pos)
+void flat::Physical::setPosition(glm::vec3 &&pos)
 {
 	position = pos;
 }
 
-void flat::Physical::addPosition(glm::vec3& vec)
+void flat::Physical::addPosition(glm::vec3 &vec)
 {
 	position += vec;
 }
 
-void flat::Physical::addPosition(glm::vec3&& vec)
+void flat::Physical::addPosition(glm::vec3 &&vec)
 {
 	position += vec;
 }
 
-void flat::Physical::addVelocity(glm::vec3& vec)
+void flat::Physical::addVelocity(glm::vec3 &vec)
 {
 	velocity += vec;
 }
 
-void flat::Physical::addVelocity(glm::vec3&& vec)
+void flat::Physical::addVelocity(glm::vec3 &&vec)
 {
 	velocity += vec;
 }
 
-void flat::Physical::setVelocity(glm::vec3& vel)
+void flat::Physical::setVelocity(glm::vec3 &vel)
 {
 	velocity = vel;
 }
 
-void flat::Physical::setVelocity(glm::vec3&& vel)
+void flat::Physical::setVelocity(glm::vec3 &&vel)
 {
 	velocity = vel;
 }
 
 flat::Physical::Physical()
 {
-
 }
 
 flat::Physical::~Physical()
 {
-
 }
 
-const float& flat::Physical::getSizeH()
+const float &flat::Physical::getSizeH()
 {
 	return h;
 }
 
-const float& flat::Physical::getSizeW()
+const float &flat::Physical::getSizeW()
 {
 	return w;
 }

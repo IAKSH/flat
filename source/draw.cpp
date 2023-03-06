@@ -206,8 +206,8 @@ void flat::Painter::initializeShader()
 	glDeleteShader(fragmentShaderId);
 
 	glUseProgram(shaderId);
-	glUniform1i(glGetUniformLocation(shaderId, "texture0"), 0);// "texture0" -> GL_TEXTURE0
-	//glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 1);// "texture1" -> GL_TEXTURE1
+	glUniform1i(glGetUniformLocation(shaderId, "texture0"), 0); // "texture0" -> GL_TEXTURE0
+																// glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 1);// "texture1" -> GL_TEXTURE1
 }
 
 void flat::Painter::checkVShader(uint32_t vshader)
@@ -298,7 +298,7 @@ void flat::Painter::loadFShaderFromFile(std::string_view path)
 {
 	std::string readinBuffer;
 	std::ifstream ifs(path.data(), std::ios::in);
-	if(!ifs.is_open())
+	if (!ifs.is_open())
 	{
 		std::cerr << "[ERROR] can't open " << path << std::endl;
 		abort();
@@ -313,25 +313,25 @@ void flat::Painter::loadVShaderFromFile(std::string_view path)
 {
 	std::string readinBuffer;
 	std::ifstream ifs(path.data(), std::ios::in);
-	if(!ifs.is_open())
+	if (!ifs.is_open())
 	{
 		std::cerr << "[ERROR] can't open " << path << std::endl;
 		abort();
 	}
 
 	vertexSource = std::string((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
-	
+
 	ifs.close();
 }
 
-void flat::Painter::setTransfrom(glm::mat4& trans)
+void flat::Painter::setTransfrom(glm::mat4 &trans)
 {
 	auto location = glGetUniformLocation(shaderId, "trans");
-	glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(trans));
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
 }
 
-void flat::Painter::setTransfrom(glm::mat4&& trans)
+void flat::Painter::setTransfrom(glm::mat4 &&trans)
 {
 	auto location = glGetUniformLocation(shaderId, "trans");
-	glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(trans));
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
 }

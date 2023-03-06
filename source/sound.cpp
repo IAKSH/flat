@@ -128,17 +128,17 @@ flat::Audio::~Audio()
 void flat::Audio::load(std::string_view path)
 {
     // read in the whole mp3 file
-    std::ifstream ifs(path.data(),std::ios::binary);
-    if(!ifs)
+    std::ifstream ifs(path.data(), std::ios::binary);
+    if (!ifs)
     {
         std::cerr << "[ERROR] Can't open " << path << std::endl;
         abort();
     }
-    ifs.seekg(0,std::ios::end);
+    ifs.seekg(0, std::ios::end);
     std::streampos fileSize = ifs.tellg();
-    ifs.seekg(0,std::ios::beg);
+    ifs.seekg(0, std::ios::beg);
     std::vector<uint8_t> mp3Binary(fileSize);
-    ifs.read((char*)(mp3Binary.data()),fileSize);
+    ifs.read((char *)(mp3Binary.data()), fileSize);
     ifs.close();
 
     // decode with minimp3
@@ -148,20 +148,20 @@ void flat::Audio::load(std::string_view path)
     short pcm[MINIMP3_MAX_SAMPLES_PER_FRAME];
     int readLength = 0;
     // decode frame by frame
-    int samples = mp3dec_decode_frame(&mp3d,mp3Binary.data(),static_cast<int>(fileSize),pcm,&info);
-    while(samples)
+    int samples = mp3dec_decode_frame(&mp3d, mp3Binary.data(), static_cast<int>(fileSize), pcm, &info);
+    while (samples)
     {
         // collect pcm
-        for(auto item : pcm)
+        for (auto item : pcm)
             allPCM.push_back(item);
         readLength += info.frame_bytes;
-        samples = mp3dec_decode_frame(&mp3d,mp3Binary.data() + readLength,static_cast<int>(fileSize) - readLength,pcm,&info);
+        samples = mp3dec_decode_frame(&mp3d, mp3Binary.data() + readLength, static_cast<int>(fileSize) - readLength, pcm, &info);
     }
 
     // prepare OpenAL buffer
-    alGenBuffers(1,&bufferId);
+    alGenBuffers(1, &bufferId);
     ALenum format = (info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16);
-    alBufferData(bufferId,format,allPCM.data(),allPCM.size() * sizeof(short),info.hz);
+    alBufferData(bufferId, format, allPCM.data(), allPCM.size() * sizeof(short), info.hz);
 }
 
 const uint32_t &flat::Audio::getBufferId()
