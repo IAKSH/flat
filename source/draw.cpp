@@ -43,7 +43,7 @@ void flat::Drawmeta::createEBO()
 void flat::Drawmeta::useTexture()
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, curretnAnimation->getBufferId());
+	glBindTexture(GL_TEXTURE_2D, curretnAnimation->get()->getBufferId());
 	tryUpdateAnimation();
 }
 
@@ -70,7 +70,7 @@ flat::Drawmeta::~Drawmeta()
 void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::initializer_list<std::string_view> &&pathes)
 {
 	auto count = pathes.size();
-	std::shared_ptr<std::vector<Texture>> container = std::make_shared<std::vector<Texture>>();
+	std::vector<std::shared_ptr<Texture>> container;
 	//container->resize(count);
 	uint32_t tempBufferId;
 
@@ -98,10 +98,10 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 
 		stbi_image_free(data);
 
-		container->push_back(flat::Texture(tempBufferId,data,static_cast<size_t>(w * h * channels * sizeof(char))));
+		container.push_back(std::make_shared<Texture>(tempBufferId,data,static_cast<size_t>(w * h * channels * sizeof(char))));
 	}
 
-	animations[std::string(name)] = std::pair<uint32_t, std::shared_ptr<std::vector<Texture>>>(ms, container);
+	animations[std::string(name)] = std::pair<uint32_t, decltype(container)>(ms, container);
 }
 
 void flat::Drawmeta::removeAnimation(std::string_view name)
@@ -118,9 +118,9 @@ void flat::Drawmeta::loadAnimation(std::string_view name)
 		abort();
 	}
 
-	currentAnimations = it->second.second;
+	currentAnimations = &it->second.second;
 	currentAnimationInterval = it->second.first;
-	curretnAnimation = it->second.second->begin();
+	curretnAnimation = currentAnimations->begin();
 	lastAnimationUpdate = std::chrono::steady_clock::now();
 }
 
@@ -302,7 +302,7 @@ flat::Texture::Texture(uint32_t id,unsigned char* data,size_t length)
 
 flat::Texture::~Texture()
 {
-	//glDeleteTextures(1, &bufferId);
+	releaseBuffer();
 }
 
 void flat::Texture::releaseBuffer()

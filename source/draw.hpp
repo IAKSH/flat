@@ -19,21 +19,22 @@ namespace flat
 	{
 	private:
 		// map<pair<data begin,length>,bufferId>
-		inline static std::map<std::pair<unsigned char*,size_t>,uint32_t> globalTextureHashtable;
 		uint32_t bufferId;
-	public:
-		Texture(uint32_t id,unsigned char* data,size_t length);
-		~Texture();
+		inline static std::map<std::pair<unsigned char *, size_t>, uint32_t> globalTextureHashtable;
 		void releaseBuffer();
+
+	public:
+		Texture(uint32_t id, unsigned char *data, size_t length);
+		~Texture();
 		const uint32_t &getBufferId();
 	};
 
 	class Drawmeta : virtual public Physical
 	{
 	private:
-		std::map<std::string, std::pair<uint32_t, std::shared_ptr<std::vector<Texture>>>> animations;
-		std::shared_ptr<std::vector<Texture>> currentAnimations;
-		std::vector<Texture>::iterator curretnAnimation;
+		std::map<std::string, std::pair<uint32_t, std::vector<std::shared_ptr<Texture>>>> animations;
+		std::vector<std::shared_ptr<Texture>>* currentAnimations;
+		std::vector<std::shared_ptr<Texture>>::iterator curretnAnimation;
 		std::chrono::steady_clock::time_point lastAnimationUpdate;
 		uint32_t vboId, eboId, vaoId;
 		uint32_t currentAnimationInterval;
