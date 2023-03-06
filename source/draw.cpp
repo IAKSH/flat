@@ -43,7 +43,7 @@ void flat::Drawmeta::createEBO()
 void flat::Drawmeta::useTexture()
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, curretnAnimation->id);
+	glBindTexture(GL_TEXTURE_2D, curretnAnimation->getBufferId());
 	tryUpdateAnimation();
 }
 
@@ -71,11 +71,12 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 {
 	auto count = pathes.size();
 	std::shared_ptr<std::vector<Texture>> container = std::make_shared<std::vector<Texture>>();
-	container->resize(count);
+	//container->resize(count);
+	uint32_t tempBufferId;
 
 	for (int i = 0; i < count; i++)
 	{
-		glGenTextures(1, &(container->at(i).id));
+		glGenTextures(1, &tempBufferId);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -91,11 +92,13 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 			abort();
 		}
 
-		glBindTexture(GL_TEXTURE_2D, container->at(i).id);
+		glBindTexture(GL_TEXTURE_2D, tempBufferId);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		stbi_image_free(data);
+
+		container->push_back(flat::Texture(tempBufferId,data,static_cast<size_t>(w * h * channels * sizeof(char))));
 	}
 
 	animations[std::string(name)] = std::pair<uint32_t, std::shared_ptr<std::vector<Texture>>>(ms, container);
@@ -287,9 +290,29 @@ uint32_t flat::Painter::getShaderId()
 	return shaderId;
 }
 
+flat::Texture::Texture(uint32_t id,unsigned char* data,size_t length)
+{
+	auto pair = std::pair(data,length);
+	auto it = globalTextureHashtable.find(pair);
+	if(it != globalTextureHashtable.end())
+		bufferId = globalTextureHashtable[pair];
+	else
+		bufferId = id;
+}
+
 flat::Texture::~Texture()
 {
-	glDeleteTextures(1, &id);
+	//glDeleteTextures(1, &bufferId);
+}
+
+void flat::Texture::releaseBuffer()
+{
+	glDeleteTextures(1,&bufferId);
+}
+
+const uint32_t &flat::Texture::getBufferId()
+{
+	return bufferId;
 }
 
 void flat::Painter::loadFShaderFromFile(std::string_view path)

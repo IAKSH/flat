@@ -6,6 +6,7 @@
 #include <chrono>
 #include <memory>
 #include <iostream>
+#include <unordered_map>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -16,8 +17,15 @@ namespace flat
 {
 	struct Texture
 	{
+	private:
+		// map<pair<data begin,length>,bufferId>
+		inline static std::map<std::pair<unsigned char*,size_t>,uint32_t> globalTextureHashtable;
+		uint32_t bufferId;
+	public:
+		Texture(uint32_t id,unsigned char* data,size_t length);
 		~Texture();
-		uint32_t id;
+		void releaseBuffer();
+		const uint32_t &getBufferId();
 	};
 
 	class Drawmeta : virtual public Physical
