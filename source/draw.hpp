@@ -55,11 +55,11 @@ namespace flat
 		std::string vertexSource, fragmentSource;
 		void initializeGLFW();
 		void initializeGLAD();
-		void initializeShader();
 		void checkVShader(uint32_t vshader);
 		void checkFShader(uint32_t fshader);
 		uint32_t createVShader();
 		uint32_t createFShader();
+		void initializeShader();
 	protected:
 		uint32_t getShaderId();
 		template <typename T>
@@ -127,6 +127,8 @@ namespace flat
 		void initializePainter();
 		void setFShaderSource(std::string source);
 		void setVShaderSource(std::string source);
+		void loadFShaderFromFile(std::string_view path);
+		void loadVShaderFromFile(std::string_view path);
 		GLFWwindow* getWindow();
 	};
 }

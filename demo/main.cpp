@@ -17,6 +17,19 @@ private:
 public:
     Demo();
     ~Demo() = default;
+    void initializeDemo()
+    {
+        camera.loadVShaderFromFile("../demo/shader/vshader.glsl");
+        camera.loadFShaderFromFile("../demo/shader/fshader.glsl");
+        camera.initializePainter();
+
+        bird.loadNewAnimation("fly", 250, {"../demo/images/bird0_0.png", "../demo/images/bird0_1.png", "../demo/images/bird0_2.png"});
+        bird.loadAnimation("fly");
+        bird.setSizeH(0.25f);
+        bird.setSizeW(0.25f);
+        // bird.transform(glm::scale(bird.getPositionMat(),glm::vec3(0.5f,0.5f,0.5f)));
+        bird.makeDrawMeta();
+    }
     void customUpdateTick();
 };
 
@@ -24,11 +37,10 @@ int main() noexcept
 {
     std::cout << "hello\n";
 
-
     Demo demo;
-
+    demo.initializeDemo();
     demo.runing = true;
-    while(demo.runing)
+    while (demo.runing)
     {
         demo.update();
     }
@@ -37,12 +49,6 @@ int main() noexcept
 
 Demo::Demo()
 {
-    bird.loadNewAnimation("fly",250,{"../demo/images/bird0_0.png","../demo/images/bird0_1.png","../demo/images/bird0_2.png"});
-    bird.loadAnimation("fly");
-    bird.setSizeH(0.25f);
-    bird.setSizeW(0.25f);
-    //bird.transform(glm::scale(bird.getPositionMat(),glm::vec3(0.5f,0.5f,0.5f)));
-    bird.makeDrawMeta();
 }
 
 void Demo::customUpdateTick()
@@ -52,5 +58,4 @@ void Demo::customUpdateTick()
 
 Bird::Bird()
 {
-
 }

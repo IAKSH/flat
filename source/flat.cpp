@@ -64,7 +64,7 @@ void flat::GamePlay::updateInput()
 
 flat::GamePlay::GamePlay()
 {
-	camera.initializePainter();
+	
 }
 
 flat::GamePlay::~GamePlay()

@@ -1,4 +1,6 @@
 #include <array>
+#include <string>
+#include <fstream>
 #include <iostream>
 
 extern "C"
@@ -16,15 +18,15 @@ void flat::Drawmeta::createVBO()
 	auto hh = getSizeH() / 2.0f;
 	auto hw = getSizeW() / 2.0f;
 
-	//float vertexes[]{x - hw,y + hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f,x + hw,y + hh,0.0f,x + hw,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f ,y - hh,0.0f,x - hw,y - hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f};
-	
+	// float vertexes[]{x - hw,y + hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f,x + hw,y + hh,0.0f,x + hw,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f ,y - hh,0.0f,x - hw,y - hh,0.0f,0.0f,0.0f,0.0f,1.0f,1.0f};
+
 	// for test
 	float vertices[] = {
-	//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
-     0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
-     0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
-    -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
+		//     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,	  // 右上
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,  // 右下
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // 左下
+		-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f	  // 左上
 	};
 
 	glGenBuffers(1, &vboId);
@@ -35,10 +37,9 @@ void flat::Drawmeta::createVBO()
 void flat::Drawmeta::createEBO()
 {
 	const uint32_t indices[] =
-	{
-		0, 1, 3,
-		1, 3, 2
-	};
+		{
+			0, 1, 3,
+			1, 3, 2};
 
 	glGenBuffers(1, &eboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);
@@ -57,7 +58,7 @@ void flat::Drawmeta::tryUpdateAnimation()
 	if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastAnimationUpdate).count() >= currentAnimationInterval)
 	{
 		lastAnimationUpdate = std::chrono::steady_clock::now();
-		if (curretnAnimation != currentAnimations->end())
+		if (curretnAnimation + 1 != currentAnimations->end())
 			curretnAnimation++;
 		else
 			curretnAnimation = currentAnimations->begin();
@@ -80,9 +81,9 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 
 	stbi_set_flip_vertically_on_load(true);
 
-	for (auto item : pathes)
+	for (int i = 0; i < count; i++)
 	{
-		glGenTextures(count, &(container->data()->id));
+		glGenTextures(1, &(container->at(i).id));
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -90,24 +91,22 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 
 		int w, h, channels;
 		unsigned char *data;
-		for (int i = 0; i < count; i++)
+
+		data = stbi_load((pathes.begin() + i)->data(), &w, &h, &channels, 0);
+		if (!data)
 		{
-			data = stbi_load((pathes.begin() + i)->data(), &w, &h, &channels, 0);
-			if (!data)
-			{
-				std::cerr << "[ERROR] Can't load " << (pathes.begin() + i)->data() << std::endl;
-				abort();
-			}
-
-			glBindTexture(GL_TEXTURE_2D, container->data()->id);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			stbi_image_free(data);
+			std::cerr << "[ERROR] Can't load " << (pathes.begin() + i)->data() << std::endl;
+			abort();
 		}
+
+		glBindTexture(GL_TEXTURE_2D, container->at(i).id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		stbi_image_free(data);
 	}
 
-	animations[std::string(name)] = std::pair<uint32_t, std::shared_ptr<std::vector<Texture>>>(ms,container);
+	animations[std::string(name)] = std::pair<uint32_t, std::shared_ptr<std::vector<Texture>>>(ms, container);
 }
 
 void flat::Drawmeta::removeAnimation(std::string_view name)
@@ -118,7 +117,7 @@ void flat::Drawmeta::removeAnimation(std::string_view name)
 void flat::Drawmeta::loadAnimation(std::string_view name)
 {
 	auto it = animations.find(std::string(name));
-	if(it == animations.end())
+	if (it == animations.end())
 	{
 		std::cerr << "[ERROR] can't find animation \"" << name << "\"" << std::endl;
 		abort();
@@ -156,7 +155,6 @@ void flat::Drawmeta::makeDrawMeta()
 
 void flat::Drawmeta::makeDrawMeta(std::array<float, 8> &texCoords, std::array<float, 12> &colors)
 {
-
 }
 
 void flat::Drawmeta::drawMeta()
@@ -211,6 +209,10 @@ void flat::Painter::initializeShader()
 
 	glDeleteShader(vertexShaderId);
 	glDeleteShader(fragmentShaderId);
+
+	glUseProgram(shaderId);
+	glUniform1i(glGetUniformLocation(shaderId, "texture0"), 0);// "texture0" -> GL_TEXTURE0
+	//glUniform1i(glGetUniformLocation(shaderProgram, "texture1"), 1);// "texture1" -> GL_TEXTURE1
 }
 
 void flat::Painter::checkVShader(uint32_t vshader)
@@ -295,4 +297,34 @@ uint32_t flat::Painter::getShaderId()
 flat::Texture::~Texture()
 {
 	glDeleteTextures(1, &id);
+}
+
+void flat::Painter::loadFShaderFromFile(std::string_view path)
+{
+	std::string readinBuffer;
+	std::ifstream ifs(path.data(), std::ios::in);
+	if(!ifs.is_open())
+	{
+		std::cerr << "[ERROR] can't open " << path << std::endl;
+		abort();
+	}
+
+	fragmentSource = std::string((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+
+	ifs.close();
+}
+
+void flat::Painter::loadVShaderFromFile(std::string_view path)
+{
+	std::string readinBuffer;
+	std::ifstream ifs(path.data(), std::ios::in);
+	if(!ifs.is_open())
+	{
+		std::cerr << "[ERROR] can't open " << path << std::endl;
+		abort();
+	}
+
+	vertexSource = std::string((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+	
+	ifs.close();
 }
