@@ -11,6 +11,7 @@ namespace flat
 	private:
 		glm::vec3 position;
 		glm::vec3 velocity;
+		float rotate;
 		float w,h;
 
 	protected:
@@ -21,10 +22,13 @@ namespace flat
 		const glm::vec3& getVelocityVec();
 		float getPosX();
 		float getPosY();
+		float getRotate();
 		const float& getSizeW();
 		const float& getSizeH();
 		void setSizeW(float f);
 		void setSizeH(float f);
+		void setRotate(float f);
+		void addRotate(float f);
 		void setPosition(glm::vec3& pos);
 		void setPosition(glm::vec3&& pos);
 		void addPosition(glm::vec3& vec);

@@ -102,3 +102,18 @@ void flat::Physical::setSizeW(float f)
 {
 	w = f;
 }
+
+float flat::Physical::getRotate()
+{
+	return rotate;
+}
+
+void flat::Physical::setRotate(float f)
+{
+	rotate = f;
+}
+
+void flat::Physical::addRotate(float f)
+{
+	rotate += f;
+}

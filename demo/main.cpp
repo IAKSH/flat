@@ -1,4 +1,5 @@
 #include <iostream>
+#include <climits>
 
 #include "../source/flat.hpp"
 
@@ -54,6 +55,8 @@ Demo::Demo()
 void Demo::customUpdateTick()
 {
     camera.draw(bird);
+    // a float (rotate) too big will cause bug 
+    bird.addRotate(0.01f);
 }
 
 Bird::Bird()
