@@ -79,8 +79,6 @@ void flat::Drawmeta::loadNewAnimation(std::string_view name, uint32_t ms, std::i
 	std::shared_ptr<std::vector<Texture>> container = std::make_shared<std::vector<Texture>>();
 	container->resize(count);
 
-	stbi_set_flip_vertically_on_load(true);
-
 	for (int i = 0; i < count; i++)
 	{
 		glGenTextures(1, &(container->at(i).id));
@@ -199,7 +197,7 @@ void flat::Painter::initializeGLAD()
 
 void flat::Painter::initializeShader()
 {
-	uint32_t shaderId = glCreateProgram();
+	shaderId = glCreateProgram();
 	uint32_t vertexShaderId = createVShader();
 	uint32_t fragmentShaderId = createFShader();
 
@@ -331,12 +329,12 @@ void flat::Painter::loadVShaderFromFile(std::string_view path)
 
 void flat::Painter::setTransfrom(glm::mat4& trans)
 {
-	auto location = glGetUniformLocation(shaderId, "transform");
+	auto location = glGetUniformLocation(shaderId, "trans");
 	glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(trans));
 }
 
 void flat::Painter::setTransfrom(glm::mat4&& trans)
 {
-	auto location = glGetUniformLocation(shaderId, "transform");
+	auto location = glGetUniformLocation(shaderId, "trans");
 	glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(trans));
 }

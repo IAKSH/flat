@@ -94,8 +94,7 @@ flat::Camera::~Camera()
 void flat::Camera::draw(GameObject& go)
 {
 	// set vertex shader transform matrix
-	//setTransfrom(glm::translate(glm::mat4(1.0f),go.getPositionVec()));
-	//setUniform("xyoffset",{0.5f,0.5f});
+	setTransfrom(glm::translate(glm::mat4(1.0f),go.getPositionVec()));
 
 	// then draw
     go.draw();
