@@ -17,10 +17,18 @@ public:
     ~Background() = default;
 };
 
+class Pipe : public flat::GameObject
+{
+public:
+    Pipe();
+    ~Pipe() = default;
+};
+
 class Demo : public flat::GamePlay
 {
 private:
     Bird bird;
+    Pipe pipe;
     Background background;
 
 public:
@@ -37,8 +45,15 @@ public:
         bird.loadAnimation("fly");
         bird.setSizeH(0.25f);
         bird.setSizeW(0.25f);
-        bird.setPosition(glm::vec3(0.5f, 0.5f, 0.5f));
+        bird.setPosition(glm::vec3(-0.5f, -0.5f, 0.5f));
         bird.makeDrawMeta();
+
+        pipe.loadNewAnimation("up",1000,{"../demo/images/pipe_up.png"});
+        pipe.loadAnimation("up");
+        pipe.setSizeH(1.0f);
+        pipe.setSizeW(0.5f);
+        pipe.setPosition(glm::vec3(0.5f, 0.0f, 0.0f));
+        pipe.makeDrawMeta();
 
         background.loadNewAnimation("day",1000,{"../demo/images/bg_day.png"});
         background.loadAnimation("day");
@@ -84,9 +99,15 @@ void Demo::customUpdateTick()
 {
     camera.draw(background);
     camera.draw(bird);
+    camera.draw(pipe);
     // a float (rotate) too big will cause bug
     bird.addRotate(0.01f);
-    background.addTexOffset(glm::vec2(0.01f,0.0f));
+    background.addTexOffset(glm::vec2(0.001f,0.0f));
+
+    if(bird.GJKCollisionCheck(pipe))
+    {
+        std::cout << "hit!" << std::endl;
+    }
 }
 
 void Demo::customUpdateInput()
@@ -113,6 +134,11 @@ Bird::Bird()
 }
 
 Background::Background()
+{
+
+}
+
+Pipe::Pipe()
 {
 
 }
