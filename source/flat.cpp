@@ -51,11 +51,11 @@ void flat::GamePlay::updateTick()
 
 void flat::GamePlay::updateInput()
 {
-
 	glfwPollEvents();
-	// test
-	if (glfwGetKey(camera.getWindow(), GLFW_KEY_ESCAPE))
-		keyboardInput = GLFW_KEY_ESCAPE;
+	for(int i = GLFW_KEY_SPACE;i < GLFW_KEY_LAST;i++)
+	{
+		keys[i] = glfwGetKey(camera.getWindow(), i);
+	}
 }
 
 flat::GamePlay::GamePlay()
@@ -73,6 +73,23 @@ void flat::GamePlay::update()
 	updateTick();
 	customUpdateTick();
 	updateFrame();
+}
+
+void flat::GamePlay::destroyGLFW()
+{
+	glfwDestroyWindow(camera.getWindow());
+	glfwTerminate();
+}
+
+bool flat::GamePlay::checkKey(int key)
+{
+	if(key < GLFW_KEY_SPACE || key > GLFW_KEY_LAST)
+	{
+		std::cerr << "[ERROR] key out of range (" << key << ')' << std::endl;
+		abort();
+	}
+
+	return keys[key];
 }
 
 flat::Camera::Camera()

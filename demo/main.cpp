@@ -57,6 +57,7 @@ public:
         //bird.setSoundLoopable(true);
     }
     void customUpdateTick();
+    void customUpdateInput();
 };
 
 int main() noexcept
@@ -70,6 +71,8 @@ int main() noexcept
     {
         demo.update();
     }
+
+    demo.destroyGLFW();
     return 0;
 }
 
@@ -83,6 +86,20 @@ void Demo::customUpdateTick()
     camera.draw(bird);
     // a float (rotate) too big will cause bug
     bird.addRotate(0.01f);
+}
+
+void Demo::customUpdateInput()
+{
+    runing = !checkKey(GLFW_KEY_ESCAPE);
+
+    if(checkKey(GLFW_KEY_A))
+        bird.addPosition(glm::vec3(-0.01f,0.0f,0.0f));
+    if(checkKey(GLFW_KEY_S))
+        bird.addPosition(glm::vec3(0.0f,-0.01f,0.0f));
+    if(checkKey(GLFW_KEY_D))
+        bird.addPosition(glm::vec3(0.01f,0.0f,0.0f));
+    if(checkKey(GLFW_KEY_W))
+        bird.addPosition(glm::vec3(0.0f,0.01f,0.0f));
 }
 
 Bird::Bird()

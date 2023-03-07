@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "sound.hpp"
 #include "draw.hpp"
 
@@ -32,7 +34,7 @@ namespace flat
 	class GamePlay
 	{
 	private:
-		int keyboardInput;
+		std::array<bool,GLFW_KEY_LAST> keys;
 		float mouseX, mouseY;
 		uint8_t clickState;
 		void updateTick();
@@ -48,6 +50,8 @@ namespace flat
 		GamePlay();
 		~GamePlay();
 		void update();
+		void destroyGLFW();
+		bool checkKey(int key);
 		bool runing;
 	};
 }
