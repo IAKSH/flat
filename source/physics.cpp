@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cfloat>
+#include <iostream>
 
 const glm::vec3 &flat::Physical::getPositionVec()
 {
@@ -93,6 +94,12 @@ std::array<glm::vec2, 4> flat::Physical::getHitboxVertexCoords(Physical &obj)
   	v2 = transMat * v2;
   	v3 = transMat * v3;
   	v4 = transMat * v4;
+
+	glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f),glm::vec3(obj.getHitboxScale(),obj.getHitboxScale(),obj.getHitboxScale()));
+	v1 = scaleMat * v1;
+  	v2 = scaleMat * v2;
+  	v3 = scaleMat * v3;
+  	v4 = scaleMat * v4;
 
 	std::array<glm::vec2,4> buffer
 	{
@@ -327,4 +334,32 @@ void flat::Physical::setRotate(float f)
 void flat::Physical::addRotate(float f)
 {
 	rotate += f;
+}
+
+void flat::Physical::setHitboxScale(float f)
+{
+	if(f <= 0.0f)
+	{
+		std::cerr << "[ERROR] hitbox scale can't be/below zero (trying to set as " << f << ")" << std::endl;
+		abort();
+	}
+
+	hitboxScale = f;
+}
+
+void flat::Physical::addHitboxScale(float f)
+{
+	float buffer = hitboxScale + f;
+	if(buffer <= 0.0f)
+	{
+		std::cerr << "[ERROR] hitbox scale can't be/below zero (trying to add " << f << ")" << std::endl;
+		abort();
+	}
+
+	hitboxScale = buffer;
+}
+
+const float &flat::Physical::getHitboxScale()
+{
+	return hitboxScale;
 }

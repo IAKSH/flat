@@ -13,6 +13,7 @@ namespace flat
 	private:
 		glm::vec3 position;
 		glm::vec3 velocity;
+		float hitboxScale = 1.0f;
 		float rotate;
 		float w, h;
 		glm::vec2 subtract (glm::vec2 a, glm::vec2 b) { a.x -= b.x; a.y -= b.y; return a; }
@@ -43,10 +44,13 @@ namespace flat
 		float getRotate();
 		const float &getSizeW();
 		const float &getSizeH();
+		const float &getHitboxScale();
 		void setSizeW(float f);
 		void setSizeH(float f);
 		void setRotate(float f);
 		void addRotate(float f);
+		void setHitboxScale(float f);
+		void addHitboxScale(float f);
 		void setPosition(glm::vec3 &pos);
 		void setPosition(glm::vec3 &&pos);
 		void addPosition(glm::vec3 &vec);
