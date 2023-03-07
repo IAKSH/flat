@@ -13,6 +13,7 @@ namespace flat
 	private:
 		glm::vec3 position;
 		glm::vec3 velocity;
+		glm::vec3 hitboxOffset;
 		float hitboxScale = 1.0f;
 		float rotate;
 		float w, h;
@@ -39,6 +40,7 @@ namespace flat
 		bool GJKCollisionCheck(Physical& obj);
 		const glm::vec3 &getPositionVec();
 		const glm::vec3 &getVelocityVec();
+		const glm::vec3 &getHitboxOffset();
 		float getPosX();
 		float getPosY();
 		float getRotate();
@@ -60,5 +62,9 @@ namespace flat
 		void setVelocity(glm::vec3 &&vel);
 		void addVelocity(glm::vec3 &vec);
 		void addVelocity(glm::vec3 &&vec);
+		void addHitboxOffset(glm::vec3 &vec);
+		void addHitboxOffset(glm::vec3 &&vec);
+		void setHitboxOffset(glm::vec3 &offset);
+		void setHitboxOffset(glm::vec3 &&offset);
 	};
 }

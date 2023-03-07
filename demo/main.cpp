@@ -47,6 +47,7 @@ public:
         bird.setSizeW(0.25f);
         bird.setPosition(glm::vec3(-0.5f, -0.5f, 0.5f));
         bird.setHitboxScale(0.8f);
+        bird.setHitboxOffset(glm::vec3(-0.25f,0.0f,0.0f));
         bird.makeDrawMeta();
 
         pipe.loadNewAnimation("up",1000,{"../demo/images/pipe_up.png"});
@@ -59,6 +60,7 @@ public:
 
         background.loadNewAnimation("day",1000,{"../demo/images/bg_day.png"});
         background.loadAnimation("day");
+        background.setPosition(glm::vec3(0.0f,0.0f,0.0f));
         background.setSizeH(2.0f);
         background.setSizeW(2.0f);
         background.makeDrawMeta();

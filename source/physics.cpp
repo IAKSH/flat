@@ -73,8 +73,8 @@ std::array<glm::vec2, 4> flat::Physical::getHitboxVertexCoords(Physical &obj)
 {
 	auto w = obj.getSizeW();
 	auto h = obj.getSizeH();
-	auto x = obj.getPosX();
-	auto y = obj.getPosY();
+	auto x = obj.getPosX() + obj.getHitboxOffset().x;
+	auto y = obj.getPosY() + obj.getHitboxOffset().y;
 
 	// original vertex
 	glm::vec4 v1(-w / 2, h / 2, 0.0f, 1.0f);
@@ -362,4 +362,29 @@ void flat::Physical::addHitboxScale(float f)
 const float &flat::Physical::getHitboxScale()
 {
 	return hitboxScale;
+}
+
+const glm::vec3 &flat::Physical::getHitboxOffset()
+{
+	return hitboxOffset;
+}
+
+void flat::Physical::setHitboxOffset(glm::vec3 &offset)
+{
+	hitboxOffset = offset;
+}
+
+void flat::Physical::setHitboxOffset(glm::vec3 &&offset)
+{
+	hitboxOffset = offset;
+}
+
+void flat::Physical::addHitboxOffset(glm::vec3 &vec)
+{
+	hitboxOffset += vec;
+}
+
+void flat::Physical::addHitboxOffset(glm::vec3 &&vec)
+{
+	hitboxOffset += vec;
 }
