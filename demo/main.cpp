@@ -10,10 +10,18 @@ public:
     ~Bird() = default;
 };
 
+class Background : public flat::GameObject
+{
+public:
+    Background();
+    ~Background() = default;
+};
+
 class Demo : public flat::GamePlay
 {
 private:
     Bird bird;
+    Background background;
 
 public:
     Demo();
@@ -32,11 +40,21 @@ public:
         bird.setPosition(glm::vec3(0.5f, 0.5f, 0.5f));
         bird.makeDrawMeta();
 
-        bird.initializeSoundSource();
-        bird.setSoundLoopable(true);
+        background.loadNewAnimation("day",1000,{"../demo/images/bg_day.png"});
+        background.loadAnimation("day");
+        background.setSizeH(2.0f);
+        background.setSizeW(2.0f);
+        background.makeDrawMeta();
+
+        background.initializeSoundSource();
+        background.setSoundLoopable(true);
+        background.setSoundVolume(0.1f);
         flat::Audio testBgm;
         testBgm.load("../demo/sounds/relaxed-vlog-night-street-131746.mp3");
-        bird.playSound(testBgm);
+        background.playSound(testBgm);
+
+        bird.initializeSoundSource();
+        //bird.setSoundLoopable(true);
     }
     void customUpdateTick();
 };
@@ -61,6 +79,7 @@ Demo::Demo()
 
 void Demo::customUpdateTick()
 {
+    camera.draw(background);
     camera.draw(bird);
     // a float (rotate) too big will cause bug
     bird.addRotate(0.01f);
@@ -68,4 +87,9 @@ void Demo::customUpdateTick()
 
 Bird::Bird()
 {
+}
+
+Background::Background()
+{
+
 }
