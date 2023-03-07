@@ -36,6 +36,7 @@ namespace flat
 		std::vector<std::shared_ptr<Texture>>* currentAnimations;
 		std::vector<std::shared_ptr<Texture>>::iterator curretnAnimation;
 		std::chrono::steady_clock::time_point lastAnimationUpdate;
+		glm::vec2 texOffset;
 		uint32_t vboId, eboId, vaoId;
 		uint32_t currentAnimationInterval;
 		void createVBO();
@@ -50,6 +51,11 @@ namespace flat
 		void loadNewAnimation(std::string_view name, uint32_t ms, std::initializer_list<std::string_view> &&pathes);
 		void removeAnimation(std::string_view name);
 		void loadAnimation(std::string_view name);
+		void setTexOffset(glm::vec2& offset);
+		void setTexOffset(glm::vec2&& offset);
+		void addTexOffset(glm::vec2& offset);
+		void addTexOffset(glm::vec2&& offset);
+		glm::vec2 getTexOffset();
 		size_t getAnimationCount();
 		void makeDrawMeta();
 		void makeDrawMeta(std::array<float, 8> &texCoords, std::array<float, 12> &colors);
@@ -74,6 +80,8 @@ namespace flat
 		uint32_t getShaderId();
 		void setTransfrom(glm::mat4 &trans);
 		void setTransfrom(glm::mat4 &&trans);
+		void setTexOffset(glm::vec2 &offset);
+		void setTexOffset(glm::vec2 &&offset);
 		template <typename T>
 		void setUniform(std::string_view uniform, std::initializer_list<T> vals)
 		{

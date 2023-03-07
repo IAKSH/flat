@@ -86,6 +86,7 @@ void Demo::customUpdateTick()
     camera.draw(bird);
     // a float (rotate) too big will cause bug
     bird.addRotate(0.01f);
+    background.addTexOffset(glm::vec2(0.01f,0.0f));
 }
 
 void Demo::customUpdateInput()

@@ -141,6 +141,9 @@ void flat::Camera::draw(GameObject &go)
 	transform = glm::rotate(transform, go.getRotate(), glm::vec3(0.0f, 0.0f, 1.0f));
 	setTransfrom(transform);
 
+	// set tex offset
+	setTexOffset(go.getTexOffset());
+
 	// then draw
 	go.draw();
 }
