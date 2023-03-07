@@ -52,10 +52,18 @@ void flat::GamePlay::updateTick()
 void flat::GamePlay::updateInput()
 {
 	glfwPollEvents();
+
+	// keyboard
 	for(int i = GLFW_KEY_SPACE;i < GLFW_KEY_LAST;i++)
 	{
 		keys[i] = glfwGetKey(camera.getWindow(), i);
 	}
+
+	// mouse
+	glfwGetCursorPos(camera.getWindow(), &mouseX, &mouseY);
+	mouseLeftClick = glfwGetMouseButton(camera.getWindow(),GLFW_MOUSE_BUTTON_LEFT);
+	mouseMiddleClick = glfwGetMouseButton(camera.getWindow(),GLFW_MOUSE_BUTTON_MIDDLE);
+	mouseRightClick = glfwGetMouseButton(camera.getWindow(),GLFW_MOUSE_BUTTON_RIGHT);
 }
 
 flat::GamePlay::GamePlay()
@@ -81,7 +89,32 @@ void flat::GamePlay::destroyGLFW()
 	glfwTerminate();
 }
 
-bool flat::GamePlay::checkKey(int key)
+const double &flat::GamePlay::getMousePosX()
+{
+	return mouseX;
+}
+
+const double &flat::GamePlay::getMousePosY()
+{
+	return mouseY;
+}
+
+const bool &flat::GamePlay::checkMouseLeftClick()
+{
+	return mouseLeftClick;
+}
+
+const bool &flat::GamePlay::checkMouseMiddleClick()
+{
+	return mouseMiddleClick;
+}
+
+const bool &flat::GamePlay::checkMouseRightClick()
+{
+	return mouseRightClick;
+}
+
+const bool &flat::GamePlay::checkKey(int key)
 {
 	if(key < GLFW_KEY_SPACE || key > GLFW_KEY_LAST)
 	{

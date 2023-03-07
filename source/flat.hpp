@@ -35,8 +35,10 @@ namespace flat
 	{
 	private:
 		std::array<bool,GLFW_KEY_LAST> keys;
-		float mouseX, mouseY;
-		uint8_t clickState;
+		double mouseX, mouseY;
+		bool mouseRightClick;
+		bool mouseMiddleClick;
+		bool mouseLeftClick;
 		void updateTick();
 		void updateInput();
 
@@ -51,7 +53,12 @@ namespace flat
 		~GamePlay();
 		void update();
 		void destroyGLFW();
-		bool checkKey(int key);
+		const double &getMousePosX();
+		const double &getMousePosY();
+		const bool &checkMouseLeftClick();
+		const bool &checkMouseMiddleClick();
+		const bool &checkMouseRightClick();
+		const bool &checkKey(int key);
 		bool runing;
 	};
 }

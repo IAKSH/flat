@@ -100,6 +100,11 @@ void Demo::customUpdateInput()
         bird.addPosition(glm::vec3(0.01f,0.0f,0.0f));
     if(checkKey(GLFW_KEY_W))
         bird.addPosition(glm::vec3(0.0f,0.01f,0.0f));
+
+    if(checkMouseLeftClick())
+    {
+        std::cout << "right click at (" << getMousePosX() << "," << getMousePosY() << ")" << std::endl;
+    }
 }
 
 Bird::Bird()
