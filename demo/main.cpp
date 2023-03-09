@@ -36,6 +36,10 @@ public:
     ~Demo() = default;
     void initializeDemo()
     {
+        flat::windowSizeW = 1920;
+        flat::windowSizeH = 1080;
+        flat::windowTitle = "FLAT Demo";
+
         camera.loadVShaderFromFile("../demo/shader/vshader.glsl");
         camera.loadFShaderFromFile("../demo/shader/fshader.glsl");
         camera.initializePainter();
@@ -97,6 +101,7 @@ int main() noexcept
 
 Demo::Demo()
 {
+
 }
 
 void Demo::customUpdateTick()

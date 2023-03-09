@@ -60,6 +60,10 @@ namespace flat
 		void draw();
 	};
 
+	inline int windowSizeH = 600;
+	inline int windowSizeW = 800;
+	inline std::string windowTitle = "FLAT";
+
 	class Painter
 	{
 	private:

@@ -184,7 +184,7 @@ void flat::Painter::initializeGLFW()
 	glfwInitHint(GLFW_VERSION_MINOR, 3);
 	glfwInitHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(800, 600, "Hello OpenGL!", nullptr, nullptr);
+	window = glfwCreateWindow(windowSizeW, windowSizeH, windowTitle.data(), nullptr, nullptr);
 	if (!window)
 	{
 		std::cerr << "[ERROR] Can't create window" << std::endl;
