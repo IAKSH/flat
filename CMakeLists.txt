@@ -17,7 +17,7 @@ target_sources(flat2demo PUBLIC
 )
 target_include_directories(flat2demo PUBLIC 3rdparty/glfw/include)
 target_include_directories(flat2demo PUBLIC 3rdparty/glad/include)
-target_include_directories(flat2demo PUBLIC 3rdparty/glm-0.9.9.8)
+target_include_directories(flat2demo PUBLIC 3rdparty/glm)
 target_include_directories(flat2demo PUBLIC 3rdparty/openal-soft/include)
 target_include_directories(flat2demo PUBLIC 3rdparty/stb-master)
 target_include_directories(flat2demo PUBLIC 3rdparty/minimp3)
