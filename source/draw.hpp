@@ -51,10 +51,8 @@ namespace flat
 		void loadNewAnimation(std::string_view name, uint32_t ms, std::initializer_list<std::string_view> &&pathes);
 		void removeAnimation(std::string_view name);
 		void loadAnimation(std::string_view name);
-		void setTexOffset(glm::vec2& offset);
-		void setTexOffset(glm::vec2&& offset);
-		void addTexOffset(glm::vec2& offset);
-		void addTexOffset(glm::vec2&& offset);
+		void setTexOffset(const glm::vec2& offset);
+		void addTexOffset(const glm::vec2& offset);
 		glm::vec2 getTexOffset();
 		size_t getAnimationCount();
 		void makeDrawMeta();
@@ -78,10 +76,8 @@ namespace flat
 
 	protected:
 		uint32_t getShaderId();
-		void setTransfrom(glm::mat4 &trans);
-		void setTransfrom(glm::mat4 &&trans);
-		void setTexOffset(glm::vec2 &offset);
-		void setTexOffset(glm::vec2 &&offset);
+		void setTransfrom(const glm::mat4 &trans);
+		void setTexOffset(const glm::vec2 &offset);
 		template <typename T>
 		void setUniform(std::string_view uniform, std::initializer_list<T> vals)
 		{

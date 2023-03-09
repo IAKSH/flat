@@ -37,6 +37,7 @@ namespace flat
 		~Physical();
 
 	public:
+		void updatePosition(float ms);
 		bool GJKCollisionCheck(Physical& obj);
 		const glm::vec3 &getPositionVec();
 		const glm::vec3 &getVelocityVec();
@@ -53,18 +54,11 @@ namespace flat
 		void addRotate(float f);
 		void setHitboxScale(float f);
 		void addHitboxScale(float f);
-		void setPosition(glm::vec3 &pos);
-		void setPosition(glm::vec3 &&pos);
-		void addPosition(glm::vec3 &vec);
-		void addPosition(glm::vec3 &&vec);
-		void updatePosition(float ms);
-		void setVelocity(glm::vec3 &vel);
-		void setVelocity(glm::vec3 &&vel);
-		void addVelocity(glm::vec3 &vec);
-		void addVelocity(glm::vec3 &&vec);
-		void addHitboxOffset(glm::vec3 &vec);
-		void addHitboxOffset(glm::vec3 &&vec);
-		void setHitboxOffset(glm::vec3 &offset);
-		void setHitboxOffset(glm::vec3 &&offset);
+		void setPosition(const glm::vec3 &pos);
+		void addPosition(const glm::vec3 &vec);
+		void setVelocity(const glm::vec3 &vel);
+		void addVelocity(const glm::vec3 &vec);
+		void addHitboxOffset(const glm::vec3 &vec);
+		void setHitboxOffset(const glm::vec3 &offset);
 	};
 }

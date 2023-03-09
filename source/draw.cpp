@@ -122,22 +122,12 @@ void flat::Drawmeta::loadAnimation(std::string_view name)
 	lastAnimationUpdate = std::chrono::steady_clock::now();
 }
 
-void flat::Drawmeta::setTexOffset(glm::vec2& offset)
+void flat::Drawmeta::setTexOffset(const glm::vec2& offset)
 {
 	texOffset = offset;
 }
 
-void flat::Drawmeta::setTexOffset(glm::vec2&& offset)
-{
-	texOffset = offset;
-}
-
-void flat::Drawmeta::addTexOffset(glm::vec2& offset)
-{
-	texOffset += offset;
-}
-
-void flat::Drawmeta::addTexOffset(glm::vec2&& offset)
+void flat::Drawmeta::addTexOffset(const glm::vec2& offset)
 {
 	texOffset += offset;
 }
@@ -372,25 +362,13 @@ void flat::Painter::loadVShaderFromFile(std::string_view path)
 	ifs.close();
 }
 
-void flat::Painter::setTransfrom(glm::mat4 &trans)
+void flat::Painter::setTransfrom(const glm::mat4 &trans)
 {
 	auto location = glGetUniformLocation(shaderId, "trans");
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
 }
 
-void flat::Painter::setTransfrom(glm::mat4 &&trans)
-{
-	auto location = glGetUniformLocation(shaderId, "trans");
-	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
-}
-
-void flat::Painter::setTexOffset(glm::vec2 &offset)
-{
-	auto location = glGetUniformLocation(shaderId, "texOffset");
-	glUniform2fv(location,1,glm::value_ptr(offset));
-}
-
-void flat::Painter::setTexOffset(glm::vec2 &&offset)
+void flat::Painter::setTexOffset(const glm::vec2 &offset)
 {
 	auto location = glGetUniformLocation(shaderId, "texOffset");
 	glUniform2fv(location,1,glm::value_ptr(offset));
