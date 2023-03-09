@@ -312,9 +312,15 @@ flat::Texture::Texture(uint32_t id, unsigned char *data, size_t length)
 	auto pair = std::pair(data, length);
 	auto it = globalTextureHashtable.find(pair);
 	if (it != globalTextureHashtable.end())
+	{
+		glDeleteTextures(GL_TEXTURE_2D,&id);
 		bufferId = globalTextureHashtable[pair];
+	}
 	else
+	{
+		globalTextureHashtable[pair] = id;
 		bufferId = id;
+	}
 }
 
 flat::Texture::~Texture()

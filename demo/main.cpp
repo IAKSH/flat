@@ -27,7 +27,7 @@ public:
 class Demo : public flat::GamePlay
 {
 private:
-    Bird bird;
+    Bird birds[5];
     Pipe pipe;
     Background background;
 
@@ -36,8 +36,8 @@ public:
     ~Demo() = default;
     void initializeDemo()
     {
-        flat::windowSizeW = 1920;
-        flat::windowSizeH = 1080;
+        flat::windowSizeW = 800;
+        flat::windowSizeH = 600;
         flat::windowTitle = "FLAT Demo";
 
         camera.loadVShaderFromFile("../demo/shader/vshader.glsl");
@@ -45,14 +45,19 @@ public:
         camera.initializePainter();
         camera.initializeListener();
 
-        bird.loadNewAnimation("fly", 250, {"../demo/images/bird0_0.png", "../demo/images/bird0_1.png", "../demo/images/bird0_2.png"});
-        bird.loadAnimation("fly");
-        bird.setSizeH(0.25f);
-        bird.setSizeW(0.25f);
-        bird.setPosition(glm::vec3(-0.5f, -0.5f, 0.5f));
-        bird.setHitboxScale(0.8f);
-        bird.setHitboxOffset(glm::vec3(-0.25f,0.0f,0.0f));
-        bird.makeDrawMeta();
+        for(int i = 0;i < 5;i++)
+        {
+            Bird& bird = birds[i];
+            bird.loadNewAnimation("stop", 100, {"../demo/images/bird0_0.png"});
+            bird.loadNewAnimation("fly", 125, {"../demo/images/bird0_0.png", "../demo/images/bird0_1.png", "../demo/images/bird0_2.png"});
+            bird.loadAnimation("stop");
+            bird.setSizeH(0.25f);
+            bird.setSizeW(0.25f);
+            bird.setPosition(glm::vec3(-0.8f + 0.001f * i, 0.0f, 0.0f));
+            bird.setHitboxScale(0.8f);
+            bird.setHitboxOffset(glm::vec3(-0.25f,0.0f,0.0f));
+            bird.makeDrawMeta();
+        }
 
         pipe.loadNewAnimation("up",1000,{"../demo/images/pipe_up.png"});
         pipe.loadAnimation("up");
@@ -76,7 +81,7 @@ public:
         testBgm.load("../demo/sounds/relaxed-vlog-night-street-131746.mp3");
         background.playSound(testBgm);
 
-        bird.initializeSoundSource();
+        //bird.initializeSoundSource();
         //bird.setSoundLoopable(true);
     }
     void customUpdateTick();
@@ -85,8 +90,6 @@ public:
 
 int main() noexcept
 {
-    std::cout << "hello\n";
-
     Demo demo;
     demo.initializeDemo();
     demo.runing = true;
@@ -95,7 +98,7 @@ int main() noexcept
         demo.update();
     }
 
-    demo.destroyGLFW();
+    //demo.destroyGLFW();
     return 0;
 }
 
@@ -107,15 +110,25 @@ Demo::Demo()
 void Demo::customUpdateTick()
 {
     camera.draw(background);
-    camera.draw(bird);
+    for(auto bird : birds)
+        camera.draw(bird);
     camera.draw(pipe);
-    // a float (rotate) too big will cause bug
-    bird.addRotate(0.01f);
+
     background.addTexOffset(glm::vec2(0.001f,0.0f));
 
-    if(bird.GJKCollisionCheck(pipe))
+    for(auto bird : birds)
     {
-        std::cout << "hit!" << std::endl;
+        bird.addVelocity(glm::vec3(0.0f,-0.005f,0.0f));
+        bird.updatePosition(1);
+
+        if(bird.getPosY() >= 1.0f)
+        bird.setPosition(glm::vec3(-0.8f,0.99f,0.0f));
+
+        if(bird.GJKCollisionCheck(pipe))
+        {
+            std::cout << "game over!" << std::endl;
+            abort();
+        }
     }
 }
 
@@ -123,14 +136,14 @@ void Demo::customUpdateInput()
 {
     runing = !checkKey(GLFW_KEY_ESCAPE);
 
-    if(checkKey(GLFW_KEY_A))
-        bird.addPosition(glm::vec3(-0.01f,0.0f,0.0f));
-    if(checkKey(GLFW_KEY_S))
-        bird.addPosition(glm::vec3(0.0f,-0.01f,0.0f));
-    if(checkKey(GLFW_KEY_D))
-        bird.addPosition(glm::vec3(0.01f,0.0f,0.0f));
-    if(checkKey(GLFW_KEY_W))
-        bird.addPosition(glm::vec3(0.0f,0.01f,0.0f));
+    if(checkKey(GLFW_KEY_SPACE))
+    {
+        for(auto bird : birds)
+        {
+            bird.setVelocity(glm::vec3(0.0f,0.05f,0.0f));
+            bird.loadAnimation("fly");
+        }
+    }
 
     if(checkMouseLeftClick())
     {
