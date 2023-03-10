@@ -114,3 +114,42 @@ void const flat::FWWindow::updateWindow()
     glfwPollEvents();
     glfwSwapBuffers(window);
 }
+
+bool const flat::FWWindow::checkKeyboardDown(int code)
+{
+    return glfwGetKey(window,code) == GLFW_PRESS;
+}
+
+bool const flat::FWWindow::checkKeyboardUp(int code)
+{
+    return glfwGetKey(window,code) == GLFW_RELEASE;
+}
+
+bool const flat::FWWindow::checkMouseLeft()
+{
+    return glfwGetMouseButton(window,GLFW_MOUSE_BUTTON_LEFT);
+}
+
+bool const flat::FWWindow::checkMouseRight()
+{
+    return glfwGetMouseButton(window,GLFW_MOUSE_BUTTON_RIGHT);
+}
+
+bool const flat::FWWindow::checkMouseMiddle()
+{
+    return glfwGetMouseButton(window,GLFW_MOUSE_BUTTON_MIDDLE);
+}
+
+double const flat::FWWindow::getMousePosX()
+{
+    double buffer;
+    glfwGetCursorPos(window,&buffer,nullptr);
+    return buffer;
+}
+
+double const flat::FWWindow::getMousePosY()
+{
+    double buffer;
+    glfwGetCursorPos(window,nullptr,&buffer);
+    return buffer;
+}

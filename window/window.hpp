@@ -4,6 +4,21 @@
 
 namespace flat
 {
+    struct KeyboardInputSource
+    {
+        virtual bool const checkKeyboardUp(int code) = 0;
+        virtual bool const checkKeyboardDown(int code) = 0;
+    };
+
+    struct MouseInputSource
+    {
+        virtual bool const checkMouseLeft() = 0;
+        virtual bool const checkMouseRight() = 0;
+        virtual bool const checkMouseMiddle()= 0;
+        virtual double const getMousePosX() = 0;
+        virtual double const getMousePosY() = 0;
+    };
+    
     struct Window
     {
         virtual void initWindow() = 0;

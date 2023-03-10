@@ -7,7 +7,7 @@
 
 namespace flat
 {
-    class FWWindow : public Window
+    class FWWindow : public Window, public KeyboardInputSource, public MouseInputSource
     {
     private:
         std::string title;
@@ -20,6 +20,7 @@ namespace flat
     public:
         FWWindow();
         ~FWWindow();
+
         void initWindow() override;
         void destroyWindow() override;
         void bindContext() override;
@@ -32,5 +33,14 @@ namespace flat
         int const getWindowWidth() override;
         int const getWindowHeight() override;
         void const updateWindow() override;
+        
+        bool const checkKeyboardUp(int code) override;
+        bool const checkKeyboardDown(int code) override;
+
+        bool const checkMouseLeft() override;
+        bool const checkMouseRight() override;
+        bool const checkMouseMiddle() override;
+        double const getMousePosX() override;
+        double const getMousePosY() override;
     };
 }
