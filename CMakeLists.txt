@@ -10,6 +10,7 @@ add_subdirectory(3rdparty/openal-soft/)
 
 add_executable(flat2demo)
 target_compile_features(flat2demo PUBLIC cxx_std_20)
+target_compile_options(flat2demo PRIVATE -fmodules-ts -fno-exceptions)
 file(GLOB MY_SOURCE_FILES "source/*.cpp" "source/*.hpp" "demo/*.cpp" "demo/*.hpp")
 target_sources(flat2demo PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/3rdparty/glad/src/glad.c
