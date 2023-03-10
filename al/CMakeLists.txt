@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(flat2demo VERSION 0.1.0)
+project(flat2AudioTest VERSION 0.1.0)
 
-include(CTest)
-enable_testing()
-
-add_library(audio)
+add_library(audio STATIC)
 target_compile_features(audio PUBLIC cxx_std_20)
 target_sources(audio PRIVATE audio.hpp al_audio.hpp al_audio.cpp wavaudio.hpp wavaudio.cpp)
 target_include_directories(audio PUBLIC 
@@ -18,7 +15,3 @@ add_executable(audio_test)
 target_compile_features(audio_test PUBLIC cxx_std_20)
 target_sources(audio_test PRIVATE test.cpp)
 target_link_libraries(audio_test PUBLIC audio)
-
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)

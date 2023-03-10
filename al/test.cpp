@@ -15,8 +15,8 @@ int main()
     flat::AudioSource& source1 = alSource1;
     flat::AudioSource& source2 = alSource2;
 
-    audio1.loadAudioFromFile("../../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
-    audio2.loadAudioFromFile("../../../demo/sounds/test_sounds_walk.wav");
+    audio1.loadAudioFromFile("../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
+    audio2.loadAudioFromFile("../../demo/sounds/test_sounds_walk.wav");
 
     listner.initAudioListener();
     listner.setAudioListenerVolume(0.5f);

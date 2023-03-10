@@ -48,8 +48,8 @@ namespace flat
         void setAudioSourceVelocity(float x,float y,float z) override;
         void addAudioSourcePosition(float x,float y,float z) override;
         void addAudioSourceVelocity(float x,float y,float z) override;
-        void setAudioSourceVolume(float v);
-        void setAudioSourceLooping(bool b);
+        void setAudioSourceVolume(float v) override;
+        void setAudioSourceLooping(bool b) override;
         bool const getAudioSourceLooping() override;
         float const getAudioSourcePosX() override;
         float const getAudioSourcePosY() override;

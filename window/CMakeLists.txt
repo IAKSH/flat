@@ -1,10 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(flat2demo VERSION 0.1.0)
+project(flat2WindowTest VERSION 0.1.0)
 
-include(CTest)
-enable_testing()
-
-add_library(window)
+add_library(window STATIC)
 target_compile_features(window PUBLIC cxx_std_20)
 target_sources(window PRIVATE window.hpp glfw_window.hpp glfw_window.cpp ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/src/glad.c)
 target_include_directories(window PUBLIC 
@@ -18,7 +15,3 @@ add_executable(window_test)
 target_compile_features(window_test PRIVATE cxx_std_20)
 target_sources(window_test PRIVATE test.cpp)
 target_link_libraries(window_test PRIVATE window)
-
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
