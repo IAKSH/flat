@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <filesystem>
 
 namespace flat
 {
@@ -51,7 +50,7 @@ namespace flat
     struct Audio
     {
         virtual ~Audio() {}
-        virtual void loadAudioFromFile(std::filesystem::path path) = 0;
+        virtual void loadAudioFromFile(const char* path) = 0;
         virtual uint32_t getAudioId() = 0;
     };
 }

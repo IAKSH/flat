@@ -2,9 +2,10 @@
 
 #include "audio.hpp"
 
+#include <filesystem>
+
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <filesystem>
 
 namespace flat::al
 {
@@ -66,7 +67,6 @@ namespace flat::al
         virtual void resumeAudio() override;
     };
 
-    /*
     class Audio : public flat::Audio
     {
     private:
@@ -76,9 +76,8 @@ namespace flat::al
 
     public:
         Audio();
-        ~Audio();
-        virtual void loadAudioFromFile(std::filesystem::path path) override;
+        virtual ~Audio();
+        virtual void loadAudioFromFile(const char* path) override;
         virtual uint32_t getAudioId() override;
     };
-    */
 }

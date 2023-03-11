@@ -1,17 +1,15 @@
 #include "al_audio.hpp"
 
 #include <vector>
+#include <memory>
 #include <fstream>
 #include <iostream>
 
-#include <AL/al.h>
-#include <AL/alc.h>
-
-/*
 #define MINIMP3_IMPLEMENTATION
 #include <minimp3.h>
 #include <minimp3_ex.h>
-*/
+
+#include "wavaudio.hpp"
 
 /*
     flat::al::Listener
@@ -305,7 +303,6 @@ void flat::al::Source::resumeAudio()
     flat::al::Audio
 */
 
-/*
 flat::al::Audio::Audio()
     : bufferId(0)
 {
@@ -331,19 +328,26 @@ void flat::al::Audio::checkBuffer()
     }
 }
 
-void flat::al::Audio::loadAudioFromFile(std::filesystem::path path)
+void flat::al::Audio::loadAudioFromFile(const char* path)
 {
     if(bufferId)
         alDeleteBuffers(1,&bufferId);
 
-    // only mp3 file for now
-    if(path.extension().string().compare(".mp3") == 0)
+    //if(std::filesystem::path(path).string().compare(".wav") == 0)
+    if(false)
     {
-        // super bad bad code for test
-        std::ifstream ifs(path.c_str(), std::ios::binary);
+        wava::WavAudio wav;
+        wav.load(path);
+        bufferId = wav.getBuffer();
+    }
+    //else if(std::filesystem::path(path).string().compare(".mp3") == 0)
+    else if(true)
+    {
+        // read in the whole mp3 file
+        std::ifstream ifs(path, std::ios::binary);
         if (!ifs)
         {
-            std::cerr << "error: can't open " << path << std::endl;
+            std::cerr << "[ERROR] Can't open " << path << std::endl;
             abort();
         }
         ifs.seekg(0, std::ios::end);
@@ -363,7 +367,7 @@ void flat::al::Audio::loadAudioFromFile(std::filesystem::path path)
         int samples = mp3dec_decode_frame(&mp3d, mp3Binary.data(), static_cast<int>(fileSize), pcm, &info);
         while (samples)
         {
-        // collect pcm
+            // collect pcm
             for (auto item : pcm)
                 allPCM.push_back(item);
             readLength += info.frame_bytes;
@@ -387,4 +391,3 @@ uint32_t flat::al::Audio::getAudioId()
     checkBuffer();
     return bufferId;
 }
-*/
