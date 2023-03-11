@@ -1,8 +1,17 @@
 #include "al_audio.hpp"
-#include "AL/al.h"
-#include "AL/alc.h"
+
+#include <vector>
+#include <fstream>
 #include <iostream>
-#include <process.h>
+
+#include <AL/al.h>
+#include <AL/alc.h>
+
+/*
+#define MINIMP3_IMPLEMENTATION
+#include <minimp3.h>
+#include <minimp3_ex.h>
+*/
 
 /*
     flat::al::Listener
@@ -292,4 +301,90 @@ void flat::al::Source::resumeAudio()
     alSourcei(sourceId, AL_SAMPLE_OFFSET, sampleOffset);
 }
 
+/*
+    flat::al::Audio
+*/
 
+/*
+flat::al::Audio::Audio()
+    : bufferId(0)
+{
+}
+
+flat::al::Audio::~Audio()
+{
+    releaseAudio();
+}
+
+void flat::al::Audio::releaseAudio()
+{
+    if(bufferId)
+        alDeleteBuffers(1,&bufferId);
+}
+
+void flat::al::Audio::checkBuffer()
+{
+    if(!bufferId)
+    {
+        std::cerr << "error: use empty openal audio" << std::endl;
+        abort();
+    }
+}
+
+void flat::al::Audio::loadAudioFromFile(std::filesystem::path path)
+{
+    if(bufferId)
+        alDeleteBuffers(1,&bufferId);
+
+    // only mp3 file for now
+    if(path.extension().string().compare(".mp3") == 0)
+    {
+        // super bad bad code for test
+        std::ifstream ifs(path.c_str(), std::ios::binary);
+        if (!ifs)
+        {
+            std::cerr << "error: can't open " << path << std::endl;
+            abort();
+        }
+        ifs.seekg(0, std::ios::end);
+        std::streampos fileSize = ifs.tellg();
+        ifs.seekg(0, std::ios::beg);
+        std::vector<uint8_t> mp3Binary(fileSize);
+        ifs.read((char *)(mp3Binary.data()), fileSize);
+        ifs.close();
+
+        // decode with minimp3
+        mp3dec_t mp3d;
+        mp3dec_frame_info_t info;
+        std::vector<short> allPCM;
+        short pcm[MINIMP3_MAX_SAMPLES_PER_FRAME];
+        int readLength = 0;
+        // decode frame by frame
+        int samples = mp3dec_decode_frame(&mp3d, mp3Binary.data(), static_cast<int>(fileSize), pcm, &info);
+        while (samples)
+        {
+        // collect pcm
+            for (auto item : pcm)
+                allPCM.push_back(item);
+            readLength += info.frame_bytes;
+            samples = mp3dec_decode_frame(&mp3d, mp3Binary.data() + readLength, static_cast<int>(fileSize) - readLength, pcm, &info);
+        }
+
+        // prepare OpenAL buffer
+        alGenBuffers(1, &bufferId);
+        ALenum format = (info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16);
+        alBufferData(bufferId, format, allPCM.data(), allPCM.size() * sizeof(short), info.hz);
+    }
+    else
+    {
+        std::cerr << "error: unsupported audio type" << std::endl;
+        abort();
+    }
+}
+
+uint32_t flat::al::Audio::getAudioId()
+{
+    checkBuffer();
+    return bufferId;
+}
+*/

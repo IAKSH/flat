@@ -4,6 +4,7 @@
 
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <filesystem>
 
 namespace flat::al
 {
@@ -64,4 +65,20 @@ namespace flat::al
         virtual void pauseAudio() override;
         virtual void resumeAudio() override;
     };
+
+    /*
+    class Audio : public flat::Audio
+    {
+    private:
+        uint32_t bufferId;
+        void releaseAudio();
+        void checkBuffer();
+
+    public:
+        Audio();
+        ~Audio();
+        virtual void loadAudioFromFile(std::filesystem::path path) override;
+        virtual uint32_t getAudioId() override;
+    };
+    */
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <filesystem>
 
 namespace flat
 {
@@ -45,5 +46,12 @@ namespace flat
         virtual void playAudio(uint32_t id) = 0;
         virtual void pauseAudio() = 0;
         virtual void resumeAudio() = 0;
+    };
+
+    struct Audio
+    {
+        virtual ~Audio() {}
+        virtual void loadAudioFromFile(std::filesystem::path path) = 0;
+        virtual uint32_t getAudioId() = 0;
     };
 }
