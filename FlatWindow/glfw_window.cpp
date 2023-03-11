@@ -9,7 +9,10 @@ flat::FWWindow::~FWWindow() {}
 void flat::FWWindow::initGLAD()
 {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "error: can't get load glad" << std::endl;
         abort();
+    }
 }
 
 void flat::FWWindow::initGLFW()
@@ -23,7 +26,10 @@ void flat::FWWindow::initGLFW()
 
     window = glfwCreateWindow(800, 600, "FALT", nullptr, nullptr);
     if (!window)
+    {
+        std::cerr << "error: can't create glfw window" << std::endl;
         abort();
+    }
 
     //glfwSwapInterval(3);
 }
