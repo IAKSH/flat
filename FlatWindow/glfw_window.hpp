@@ -21,26 +21,26 @@ namespace flat
         FWWindow();
         ~FWWindow();
 
-        void initWindow() override;
-        void destroyWindow() override;
-        void bindContext() override;
-        void setWindowTitle(std::string_view t) override;
-        void setWindowWidth(int w) override;
-        void setWindowHeight(int h) override;
-        void setWindowPosition(int x,int y) override;
-        int const getWindowPositionX() override;
-        int const getWindowPositionY() override;
-        int const getWindowWidth() override;
-        int const getWindowHeight() override;
-        void const updateWindow() override;
+        virtual void initWindow() override;
+        virtual void destroyWindow() override;
+        virtual void bindContext() override;
+        virtual void setWindowTitle(std::string_view t) override;
+        virtual void setWindowWidth(int w) override;
+        virtual void setWindowHeight(int h) override;
+        virtual void setWindowPosition(int x,int y) override;
+        virtual int const getWindowPositionX() override;
+        virtual int const getWindowPositionY() override;
+        virtual int const getWindowWidth() override;
+        virtual int const getWindowHeight() override;
+        virtual void const updateWindow() override;
         
-        bool const checkKeyboardUp(int code) override;
-        bool const checkKeyboardDown(int code) override;
+        virtual bool const checkKeyboardUp(int code) override;
+        virtual bool const checkKeyboardDown(int code) override;
 
-        bool const checkMouseLeft() override;
-        bool const checkMouseRight() override;
-        bool const checkMouseMiddle() override;
-        double const getMousePosX() override;
-        double const getMousePosY() override;
+        virtual bool const checkMouseLeft() override;
+        virtual bool const checkMouseRight() override;
+        virtual bool const checkMouseMiddle() override;
+        virtual double const getMousePosX() override;
+        virtual double const getMousePosY() override;
     };
 }
