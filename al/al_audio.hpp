@@ -1,87 +1,67 @@
+#pragma once
+
 #include "audio.hpp"
 
 #include <AL/al.h>
 #include <AL/alc.h>
 
-#include "wavaudio.hpp"
-
-namespace flat
+namespace flat::al
 {
-    class Mp3Audio : public Audio
+    class Listener : public flat::AudioListener
     {
     private:
-        uint32_t alBufferId;
+        ALCdevice* device;
+        ALCcontext* context;
+        void releaseOpenAL();
+
     public:
-        Mp3Audio();
-        ~Mp3Audio();
-        void loadAudioFromFile(std::filesystem::path path) override;
-        void releaseAudio() override;
-        uint32_t const getAudioBufferId() override;
+        Listener();
+        virtual ~Listener() override;
+        virtual void initAudioListner() override;
+        virtual void setAudioListenerPosition(float x,float y,float z) override;
+        virtual void addAudioListenerPosition(float x,float y,float z) override;
+        virtual float const getAudioListenerPosX() override;
+        virtual float const getAudioListenerPosY() override;
+        virtual float const getAudioListenerPosZ() override;
+        virtual void setAudioListenerVelocity(float x,float y,float z) override;
+        virtual void addAudioListenerVelocity(float x,float y,float z) override;
+        virtual float const getAudioListenerVelX() override;
+        virtual float const getAudioListenerVelY() override;
+        virtual float const getAudioListenerVelZ() override;
+        virtual void setAudioListenerGain(float gain) override;
+        virtual void addAudioListenerGain(float gain) override;
+        virtual float const getAudioListenerGain() override;
     };
 
-    class WavAudio : public Audio
+    class Source : public flat::AudioSource
     {
     private:
-        uint32_t alBufferId;
-    public:
-        WavAudio();
-        ~WavAudio();
-        void loadAudioFromFile(std::filesystem::path path) override;
-        void releaseAudio() override;
-        uint32_t const getAudioBufferId() override;
-    };
-
-    class ALAudioSource : public AudioSource
-    {
-    private:
-        uint32_t alSourceId;
-        int alSampleOffset;
-    public:
-        ALAudioSource();
-        ~ALAudioSource();
-        void initAudioSource() override;
-        void releaseAudioSource() override;
-        void pauseAudio() override;
-        void resumeAudio() override;
-        void playAudio(uint32_t bufferId) override;
-        void setAudioSourcePosition(float x,float y,float z) override;
-        void setAudioSourceVelocity(float x,float y,float z) override;
-        void addAudioSourcePosition(float x,float y,float z) override;
-        void addAudioSourceVelocity(float x,float y,float z) override;
-        void setAudioSourceVolume(float v) override;
-        void setAudioSourceLooping(bool b) override;
-        bool const getAudioSourceLooping() override;
-        float const getAudioSourcePosX() override;
-        float const getAudioSourcePosY() override;
-        float const getAudioSourcePosZ() override;
-        float const getAudioSourceVelX() override;
-        float const getAudioSourceVelY() override;
-        float const getAudioSourceVelZ() override;
-        float const getAudioSourceVolume() override;
-    };
-
-    class ALAudioListener : public AudioListener
-    {
-    private:
-        ALCdevice *device;
-		ALCcontext *context;
+        uint32_t sourceId;
+        int sampleOffset;
+        void releaseSource();
+        void checkSource();
 
     public:
-        ALAudioListener();
-        ~ALAudioListener();
-        void initAudioListener() override;
-        void releaseAudioListener() override;
-        void setAudioListenerPosition(float x,float y,float z) override;
-        void setAudioListenerVelocity(float x,float y,float z) override;
-        void addAudioListenerPosition(float x,float y,float z) override;
-        void addAudioListenerVelocity(float x,float y,float z) override;
-        void setAudioListenerVolume(float v) override;
-        float const getAudioListenerPosX() override;
-        float const getAudioListenerPosY() override;
-        float const getAudioListenerPosZ() override;
-        float const getAudioListenerVelX() override;
-        float const getAudioListenerVelY() override;
-        float const getAudioListenerVelZ() override;
-        float const getAudioListenerVolume() override;
+        Source();
+        virtual ~Source() override;
+        virtual void initAudioSource() override;
+        virtual void setAudioSourcePosition(float x,float y,float z) override;
+        virtual void addAudioSourcePosition(float x,float y,float z) override;
+        virtual float const getAudioSourcePosX() override;
+        virtual float const getAudioSourcePosY() override;
+        virtual float const getAudioSourcePosZ() override;
+        virtual void setAudioSourceVelocity(float x,float y,float z) override;
+        virtual void addAudioSourceVelocity(float x,float y,float z) override;
+        virtual float const getAudioSourceVelX() override;
+        virtual float const getAudioSourceVelY() override;
+        virtual float const getAudioSourceVelZ() override;
+        virtual void setAudioSourceGain(float gain) override;
+        virtual void addAudioSourceGain(float gain) override;
+        virtual float const getAudioSourceGain() override;
+        virtual void setAudioSourceLooping(bool looping) override;
+        virtual bool const getAudioSourceLooping() override;
+        virtual void playAudio(uint32_t id) override;
+        virtual void pauseAudio() override;
+        virtual void resumeAudio() override;
     };
 }

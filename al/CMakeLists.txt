@@ -3,7 +3,7 @@ project(flat2AudioTest VERSION 0.1.0)
 
 add_library(audio STATIC)
 target_compile_features(audio PUBLIC cxx_std_20)
-target_sources(audio PRIVATE audio.hpp al_audio.hpp al_audio.cpp wavaudio.hpp wavaudio.cpp)
+target_sources(audio PRIVATE audio.hpp al_audio.hpp al_audio.cpp)
 target_include_directories(audio PUBLIC 
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/openal-soft/include
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/minimp3
