@@ -5,20 +5,30 @@
 
 int main()
 {
-    flat::FWWindow glfwWindow;
+    flat::gl::FWWindow glfwWindow;
     flat::Window& window = glfwWindow;
     flat::KeyboardInputSource& kbInput = glfwWindow;
     flat::MouseInputSource& msInput = glfwWindow;
+    flat::Renderer& renderer  = glfwWindow;
 
     window.initWindow();
     window.setWindowWidth(720);
     window.setWindowTitle("hello world!");
-    window.bindContext();
+
+    flat::RGBAColor color;
+    color.r = 1.0f;
+    color.g = 0.0f;
+    color.b = 0.0f;
+    color.a = 0.5f;
+
+    std::cout << glfwGetVersionString() << std::endl;
 
     while(true)
     {
         if(kbInput.checkKeyboardDown(GLFW_KEY_ESCAPE))
             break;
+
+        renderer.cleanScreen(color);
 
         window.setWindowPosition(1000,500);
         window.updateWindow();
