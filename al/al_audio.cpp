@@ -333,15 +333,24 @@ void flat::al::Audio::loadAudioFromFile(const char* path)
     if(bufferId)
         alDeleteBuffers(1,&bufferId);
 
-    //if(std::filesystem::path(path).string().compare(".wav") == 0)
-    if(false)
+    auto getExtension = [](std::string path)
+    {
+        std::size_t found = path.find_last_of(".");
+        if (found != std::string::npos) {
+            std::string extension = path.substr(found+1);
+            return extension;
+        }
+        std::cerr << "error: can't get extension name of " << path << std::endl;
+        abort();
+    };
+
+    if(getExtension(path).compare("wav") == 0)
     {
         wava::WavAudio wav;
         wav.load(path);
         bufferId = wav.getBuffer();
     }
-    //else if(std::filesystem::path(path).string().compare(".mp3") == 0)
-    else if(true)
+    else if(getExtension(path).compare("mp3") == 0)
     {
         // read in the whole mp3 file
         std::ifstream ifs(path, std::ios::binary);

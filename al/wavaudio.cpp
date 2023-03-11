@@ -3,10 +3,7 @@
 int wava::WavAudio::getFileCursorMark(std::ifstream &fs, std::string mark)
 {
     int len = mark.length();
-    // dynamic C-style array may not work on msvc
-    // if that happens, fix it by yourself
-    // it's sample, good luck
-    char buf[len + 1];
+    char* buf = new char[len + 1];
     buf[len] = '\0';
     int i = 0;
     while (!fs.eof())
@@ -14,7 +11,10 @@ int wava::WavAudio::getFileCursorMark(std::ifstream &fs, std::string mark)
         fs.seekg(i++, std::ios::beg);
         fs.read(buf, sizeof(char) * len);
         if (mark.compare(buf) == 0)
+        {
+            delete[] buf;
             return i;
+        }
     }
     std::cerr << "[libwavaudio] ERROR: failed to locate mark (" << mark << ") in moveFileCursorToMark()\n";
     abort();

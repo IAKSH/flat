@@ -14,14 +14,19 @@ void checkError()
 int main()
 {
     flat::al::Listener _listener;
-    flat::al::Source _source;
-    flat::al::Audio _audio;
+    flat::al::Source _source0;
+    flat::al::Source _source1;
+    flat::al::Audio _audio0;
+    flat::al::Audio _audio1;
     flat::AudioListener& listener = _listener;
-    flat::AudioSource& source = _source;
-    flat::Audio& audio = _audio;
+    flat::AudioSource& mp3Source = _source0;
+    flat::AudioSource& wavSource = _source1;
+    flat::Audio& mp3Audio = _audio0;
+    flat::Audio& wavAudio = _audio1;
 
     listener.initAudioListner();
-    audio.loadAudioFromFile("../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
+    mp3Audio.loadAudioFromFile("../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
+    wavAudio.loadAudioFromFile("../../demo/sounds/test_sounds_walk.wav");
 
     checkError();
 
@@ -37,31 +42,35 @@ int main()
 
     checkError();
 
-    source.initAudioSource();
+    mp3Source.initAudioSource();
+    wavSource.initAudioSource();
 
     checkError();
 
-    source.setAudioSourceGain(1.0f);
+    mp3Source.setAudioSourceGain(0.25f);
+    wavSource.setAudioSourceGain(1.0f);
 
     checkError();
 
-    source.setAudioSourcePosition(0.0f,0.0f,0.0f);
+    mp3Source.setAudioSourcePosition(0.0f,0.0f,0.0f);
+    wavSource.setAudioSourcePosition(1.0f,0.0f,0.0f);
 
     checkError();
 
-    source.setAudioSourceVelocity(0.0f,0.0f,0.0f);
+    mp3Source.setAudioSourceVelocity(0.0f,0.0f,0.0f);
+    wavSource.setAudioSourceVelocity(-0.5f,0.0f,0.0f);
 
     checkError();
 
-    source.setAudioSourceLooping(true);
+    mp3Source.setAudioSourceLooping(true);
+    wavSource.setAudioSourceLooping(true);
 
     checkError();
 
-    source.playAudio(audio.getAudioId());
+    mp3Source.playAudio(mp3Audio.getAudioId());
+    wavSource.playAudio(wavAudio.getAudioId());
 
     checkError();
-
-    std::cout << "f*cking C++\n" << listener.getAudioListenerGain() << std::endl;
 
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
