@@ -30,13 +30,10 @@ int main()
         if(kbInput.checkKeyboardDown(GLFW_KEY_ESCAPE))
             break;
 
-        glClearColor(color.r,color.g,color.b,color.a);
-	    glClear(GL_COLOR_BUFFER_BIT);
-
         window.setWindowPosition(1000,500);
         window.updateWindow();
 
-        //renderer.cleanScreen(color);
+        renderer.cleanScreen(color);
     }
 
     window.destroyWindow();
