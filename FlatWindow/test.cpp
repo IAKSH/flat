@@ -1,7 +1,7 @@
 #include <memory>
 #include <iostream>
 
-#include "glfw_window.hpp"
+#include "flat_gl/window.hpp"
 
 int main()
 {

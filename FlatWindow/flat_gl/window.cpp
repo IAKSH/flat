@@ -1,4 +1,4 @@
-#include "glfw_window.hpp"
+#include "window.hpp"
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/fwd.hpp"
 #include <iostream>
@@ -245,8 +245,13 @@ void flat::gl::FWWindow::drawPixel(const Pixel& pixel)
 
 void flat::gl::FWWindow::drawRectangle(const flat::Rectangle &rectangle)
 {
-    // TODO
-    const auto ptr = dynamic_cast<flat::gl::Rectangle*>(const_cast<flat::Rectangle*>(&rectangle));
+    if(typeid(rectangle) != typeid(flat::gl::Rectangle))
+    {
+        std::cerr << "error: unreconglized rectangle" << std::endl;
+        abort();
+    }
+
+    const auto ptr =(flat::gl::Rectangle*)(&rectangle);
     if(!ptr->vao)
     {
         std::cerr << "error: trying to draw an empty rectangle" << std::endl;
@@ -276,13 +281,17 @@ void flat::gl::FWWindow::drawTriangle(const flat::Triangle &triangle)
 void flat::gl::FWWindow::makeupTriangle(flat::Triangle *triangle)
 {
     // TODO
-    //auto ptr = dynamic_cast<flat::gl::Triangle*>(triangle);
 }
 
 void flat::gl::FWWindow::makeupRectangle(flat::Rectangle *rectangle)
 {
-    // TODO
-    auto ptr = dynamic_cast<flat::gl::Rectangle*>(rectangle);
+    if(typeid(*rectangle) != typeid(flat::gl::Rectangle))
+    {
+        std::cerr << "error: unreconglized rectangle" << std::endl;
+        abort();
+    }
+
+    auto ptr = (flat::gl::Rectangle*)(rectangle);
 
     // create VAO part1
     glGenVertexArrays(1, &ptr->vao);
