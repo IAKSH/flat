@@ -1,4 +1,4 @@
-#include "al_audio.hpp"
+#include "audio.hpp"
 
 #include <vector>
 #include <memory>
@@ -9,7 +9,7 @@
 #include <minimp3.h>
 #include <minimp3_ex.h>
 
-#include "wavaudio.hpp"
+#include "wav.hpp"
 
 /*
     flat::al::Listener

@@ -1,4 +1,4 @@
-#include "wavaudio.hpp"
+#include "wav.hpp"
 
 int wava::WavAudio::getFileCursorMark(std::ifstream &fs, std::string mark)
 {

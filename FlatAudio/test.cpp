@@ -2,7 +2,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "al_audio.hpp"
+#include "flat_al/audio.hpp"
 
 void checkError()
 {
