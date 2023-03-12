@@ -493,7 +493,8 @@ void flat::gl::Shader::linkShader(uint32_t vshaderId,uint32_t fshaderId)
 
 void flat::gl::Shader::releaseShader()
 {
-    glDeleteProgram(shaderId);
+    if(shaderId)
+        glDeleteProgram(shaderId);
 }
 
 void flat::gl::Shader::useShader()
@@ -528,12 +529,13 @@ flat::gl::Triangle::Triangle()
 
 flat::gl::Triangle::~Triangle()
 {   
-    releaseRectangle();
+    releaseTriangle();
 }
 
-void flat::gl::Triangle::releaseRectangle()
+void flat::gl::Triangle::releaseTriangle()
 {
-    glDeleteVertexArrays(1,&vao);
+    if(vao)
+        glDeleteVertexArrays(1,&vao);
 }
 
 /*
@@ -552,5 +554,6 @@ flat::gl::Rectangle::~Rectangle()
 
 void flat::gl::Rectangle::releaseRectangle()
 {
-    glDeleteVertexArrays(1,&vao);
+    if(vao)
+        glDeleteVertexArrays(1,&vao);
 }

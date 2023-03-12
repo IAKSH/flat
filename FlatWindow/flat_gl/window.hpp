@@ -24,7 +24,7 @@ namespace flat::gl
     class Triangle : public flat::Triangle
     {
     private:
-        void releaseRectangle();
+        void releaseTriangle();
 
     public:
         Triangle();

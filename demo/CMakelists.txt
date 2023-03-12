@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(flat2AudioTest VERSION 0.1.0)
+
+add_executable(flappybird)
+add_dependencies(flappybird window audio collision)
+target_include_directories(flappybird PUBLIC 
+    ${CMAKE_CURRENT_LIST_DIR}/../FlatAudio
+    ${CMAKE_CURRENT_LIST_DIR}/../FlatWindow
+    ${CMAKE_CURRENT_LIST_DIR}/../FlatCollision
+    )
+target_compile_features(flappybird PUBLIC cxx_std_20)
+target_sources(flappybird PRIVATE flappybird.cpp gameplay.hpp gameplay.cpp)
+target_link_libraries(flappybird PUBLIC audio window collision)
