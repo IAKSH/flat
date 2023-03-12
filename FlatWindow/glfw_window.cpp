@@ -1,4 +1,7 @@
 #include "glfw_window.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/fwd.hpp"
+#include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -55,7 +58,7 @@ void flat::gl::FWWindow::initErrorCallback()
 
 void flat::gl::FWWindow::initUniversalShader()
 {
-    static const char* VERTEX_SOURCE = 
+    static const char* FRAGMENT_SOURCE = 
     "#version 330 core\n"
     "out vec4 FragColor;\n"
     "in vec3 ourColor;\n"
@@ -64,13 +67,13 @@ void flat::gl::FWWindow::initUniversalShader()
     "uniform sampler2D texture1;\n"
     "void main()\n"
     "{\n"
-    "   vec4 texColor = texture(texture0,TexCoord) * vec4(ourColor,1.0f);\n"
-    "   //if(texColor.a < 0.1)\n"
-    "   //    discard;\n"
+    "   vec4 texColor = mix(texture(texture0,TexCoord),texture(texture1,TexCoord),0.5) * vec4(ourColor,1.0f);\n"
+    "   if(texColor.a < 0.1)\n"
+    "       discard;\n"
     "   FragColor = texColor;\n"
     "}\n";
 
-    static const char* FRAGMENT_SOURCE =
+    static const char* VERTEX_SOURCE =
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "layout (location = 1) in vec3 aColor;\n"
@@ -78,10 +81,10 @@ void flat::gl::FWWindow::initUniversalShader()
     "out vec3 ourColor;\n"
     "out vec2 TexCoord;\n"
     "uniform vec2 texOffset;\n"
-    "uniform mat4 trans;\n"
+    "uniform mat4 transform;\n"
     "void main()\n"
     "{\n"
-    "   gl_Position = trans * vec4(aPos, 1.0);\n"
+    "   gl_Position = transform * vec4(aPos, 1.0);\n"
     "   ourColor = aColor;\n"
     "   TexCoord = vec2(aTexCoord.x + texOffset.x, 1.0 - aTexCoord.y + texOffset.y);\n"
     "}\n";
@@ -243,6 +246,26 @@ void flat::gl::FWWindow::drawPixel(const Pixel& pixel)
 void flat::gl::FWWindow::drawRectangle(const flat::Rectangle &rectangle)
 {
     // TODO
+    const auto ptr = dynamic_cast<flat::gl::Rectangle*>(const_cast<flat::Rectangle*>(&rectangle));
+    if(!ptr->vao)
+    {
+        std::cerr << "error: trying to draw an empty rectangle" << std::endl;
+        abort();
+    }
+
+    // transform
+    glm::mat4 transfom(1.0f);
+    //transfom *= glm::scale(transfom,glm::vec3(ptr->))
+    transfom *= glm::translate(glm::mat4(1.0f),glm::vec3(ptr->x,ptr->y,ptr->z));
+    transfom *= glm::rotate(glm::mat4(1.0f),ptr->rotateX,glm::vec3(1.0f,0.0f,0.0f));
+    transfom *= glm::rotate(glm::mat4(1.0f),ptr->rotateY,glm::vec3(0.0f,1.0f,0.0f));
+    transfom *= glm::rotate(glm::mat4(1.0f),ptr->rotateZ,glm::vec3(0.0f,0.0f,1.0f));
+    
+
+    universalShader.writeUniformMat4("transform",transfom);
+
+    glBindVertexArray(ptr->vao);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void flat::gl::FWWindow::drawTriangle(const flat::Triangle &triangle)
@@ -253,11 +276,78 @@ void flat::gl::FWWindow::drawTriangle(const flat::Triangle &triangle)
 void flat::gl::FWWindow::makeupTriangle(flat::Triangle *triangle)
 {
     // TODO
+    //auto ptr = dynamic_cast<flat::gl::Triangle*>(triangle);
 }
 
 void flat::gl::FWWindow::makeupRectangle(flat::Rectangle *rectangle)
 {
     // TODO
+    auto ptr = dynamic_cast<flat::gl::Rectangle*>(rectangle);
+
+    // create VAO part1
+    glGenVertexArrays(1, &ptr->vao);
+	glBindVertexArray(ptr->vao);
+
+    // create VBO
+    float z = ptr->z;
+	float hh = ptr->h / 2.0f;
+	float hw = ptr->w / 2.0f;
+    float r1 = ptr->colors[0].r;
+    float g1 = ptr->colors[0].g;
+    float b1 = ptr->colors[0].b;
+    float a1 = ptr->colors[0].a;
+    float r2 = ptr->colors[1].r;
+    float g2 = ptr->colors[1].g;
+    float b2 = ptr->colors[1].b;
+    float a2 = ptr->colors[1].a;
+    float r3 = ptr->colors[2].r;
+    float g3 = ptr->colors[2].g;
+    float b3 = ptr->colors[2].b;
+    float a3 = ptr->colors[2].a;
+    float r4 = ptr->colors[3].r;
+    float g4 = ptr->colors[3].g;
+    float b4 = ptr->colors[3].b;
+    float a4 = ptr->colors[3].a;
+    float t1x = ptr->texCoord1[0];
+    float t1y = ptr->texCoord1[1];
+    float t2x = ptr->texCoord2[0];
+    float t2y = ptr->texCoord2[1];
+    float t3x = ptr->texCoord3[0];
+    float t3y = ptr->texCoord3[1];
+    float t4x = ptr->texCoord4[0];
+    float t4y = ptr->texCoord4[1];
+
+
+	float vertices[]{
+		hw, hh, z, r1, g1, b1, t1x ,t1y,
+		hw, -1.0f * hh, z, r2 ,g2, b2, t2x, t2y,
+		-1.0f * hw, -1.0f * hh, z, r3, g3, b3, t3x, t3y,
+		-1.0f * hw, hh, z, r4, g4, b4, t4x, t4y};
+
+	glGenBuffers(1, &ptr->vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, ptr->vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // create EBO
+    const uint32_t indices[] =
+		{
+			0, 1, 3,
+			1, 3, 2};
+
+	glGenBuffers(1, &ptr->ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ptr->ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // create VAO part2
+    // vertex position attrib
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+	glEnableVertexAttribArray(0);
+	// vertex color attrib
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	// texture coord attrib
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 }
 
 /*
@@ -415,7 +505,7 @@ void flat::gl::Shader::compileShader(std::string_view vsource, std::string_view 
 
 void flat::gl::Shader::writeUniformMat4(std::string_view uniform, const glm::mat4 &mat)
 {
-    glUniformMatrix4fv(glGetUniformLocation(shaderId,uniform.data()),1,false,glm::value_ptr(mat));
+    glUniformMatrix4fv(glGetUniformLocation(shaderId,uniform.data()),1,GL_FALSE,glm::value_ptr(mat));
 }
 
 /*

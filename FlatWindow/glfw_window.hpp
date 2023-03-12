@@ -13,23 +13,23 @@ namespace flat::gl
     class Rectangle : public flat::Rectangle
     {
     private:
-        uint32_t vao,vbo,ebo;
         void releaseRectangle();
 
     public:
         Rectangle();
         ~Rectangle();
+        uint32_t vao,vbo,ebo;
     };
 
     class Triangle : public flat::Triangle
     {
     private:
-        uint32_t vao,vbo,ebo;
         void releaseRectangle();
 
     public:
         Triangle();
         ~Triangle();
+        uint32_t vao,vbo,ebo;
     };
 
     class Shader
@@ -51,7 +51,7 @@ namespace flat::gl
         void writeUniformMat4(std::string_view uniform,const glm::mat4& mat);
     };
 
-    class Texture : flat::Texture
+    class Texture : public flat::Texture
     {
     private:
         uint32_t textureId;

@@ -23,12 +23,38 @@ int main()
 
     std::cout << glfwGetVersionString() << std::endl;
 
+    flat::gl::Texture _texture;
+    flat::Texture& texture = _texture;
+    texture.initTexture();
+    texture.loadTextureFromFile("D:/Programming-Playground/flat2/demo/images/test.png");
+
+    flat::gl::Rectangle _rect;
+    flat::Rectangle& rect = _rect;
+    rect.w = 0.75f;
+    rect.x = 0.5f;
+    rect.colors[0].r = 0.8f;
+    rect.colors[0].a = 0.5f;
+    rect.colors[1].r = 0.8f;
+    rect.colors[1].a = 0.5f;
+    rect.colors[2].b = 0.8f;
+    rect.colors[2].a = 0.5f;
+    rect.colors[3].r = 0.8f;
+    rect.colors[3].a = 0.5f;
+
+    renderer.makeupRectangle(&rect);
+
     while(true)
     {
         if(kbInput.checkKeyboardDown(GLFW_KEY_ESCAPE))
             break;
 
         renderer.cleanScreen(color);
+        renderer.bindTexture(0, texture);
+        renderer.drawRectangle(rect);
+
+        rect.rotateX += 0.01f;
+        rect.rotateY += 0.0025f;
+        rect.rotateZ += 0.005f;
 
         window.setWindowPosition(1000,500);
         window.updateWindow();

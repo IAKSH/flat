@@ -26,7 +26,7 @@ namespace flat
         RGBAColor()
             : r(0.0f),g(0.0f),b(0.0f),a(0.0f)
         {}
-        ~RGBAColor() = default;
+        virtual ~RGBAColor() {}
     };
     struct Pixel
     {
@@ -35,7 +35,7 @@ namespace flat
         Pixel()
             : x(0.0f),y(0.0f),z(0.0f)
         {}
-        ~Pixel() = default;
+        virtual ~Pixel() {}
     };
     struct Rectangle
     {
@@ -43,13 +43,13 @@ namespace flat
         std::array<float,2> texCoord1,texCoord2,texCoord3,texCoord4;
         std::array<RGBAColor,4> colors;
         Rectangle()
-            : x(0.0f),y(0.0f),z(0.0f),w(0.0f),h(0.0f),rotateX(0.0f),rotateY(0.0f),rotateZ(0.0f),
-            texCoord1({0.0f,0.0f}),
-            texCoord2({0.0f,0.0f}),
+            : x(0.0f),y(0.0f),z(0.0f),w(0.5f),h(0.5f),rotateX(0.0f),rotateY(0.0f),rotateZ(0.0f),
+            texCoord1({1.0f,1.0f}),
+            texCoord2({1.0f,0.0f}),
             texCoord3({0.0f,0.0f}),
-            texCoord4({0.0f,0.0f})
+            texCoord4({0.0f,1.0f})
         {}
-        ~Rectangle() = default;
+        virtual ~Rectangle() {}
     };
     struct Triangle
     {
@@ -64,7 +64,7 @@ namespace flat
             texCoord2({0.0f,0.0f}),
             texCoord3({0.0f,0.0f})
         {}
-        ~Triangle() = default;
+        virtual ~Triangle() {}
     };
     struct Texture
     {
