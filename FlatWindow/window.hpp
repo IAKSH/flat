@@ -20,7 +20,7 @@ namespace flat
         virtual double const getMousePosX() = 0;
         virtual double const getMousePosY() = 0;
     };
-     struct RGBAColor
+    struct RGBAColor
     {
         float r,g,b,a;
         RGBAColor()
