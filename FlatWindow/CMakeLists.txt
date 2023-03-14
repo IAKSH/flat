@@ -4,7 +4,7 @@ project(flat2WindowTest VERSION 0.1.0)
 add_library(window STATIC)
 add_dependencies(window glfw)
 target_compile_features(window PUBLIC cxx_std_20)
-target_sources(window PRIVATE window.hpp flat_gl/window.hpp flat_gl/window.cpp ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/src/glad.c)
+target_sources(window PRIVATE window.hpp flat_gl/renderer.hpp flat_gl/glcore_renderer.hpp flat_gl/glcore_renderer.hpp flat_gl/window.hpp flat_gl/window.cpp ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/src/glad.c)
 target_include_directories(window PUBLIC 
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glfw/include
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/include

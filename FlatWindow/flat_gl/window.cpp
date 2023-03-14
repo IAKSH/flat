@@ -99,7 +99,7 @@ void flat::gl::FWWindow::initWindow()
     bindContext();
     initGLAD();
     initViewport();
-    initUniversalShader();
+    //initUniversalShader();
 }
 
 void flat::gl::FWWindow::destroyWindow()
