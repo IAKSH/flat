@@ -186,8 +186,8 @@ namespace glcore
         void imp_drawRectangle(renapi::Rectangle& rectangle)
         {
             glm::mat4 trans(1.0f);
-            trans *= glm::scale(glm::mat4(1.0f), glm::vec3(rectangle.getWidth(), rectangle.getHeight(), 1.0f));
             trans *= glm::translate(glm::mat4(1.0f), glm::vec3(rectangle.getX(), rectangle.getY(), rectangle.getZ()));
+            trans *= glm::scale(glm::mat4(1.0f), glm::vec3(rectangle.getWidth(), rectangle.getHeight(), 1.0f));
             trans *= glm::rotate(glm::mat4(1.0f), glm::radians(rectangle.getRotateZ()), glm::vec3(0.0f, 0.0f, 1.0f));
 
             unsigned int location = glGetUniformLocation(shader, "transform");
