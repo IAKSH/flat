@@ -1,6 +1,28 @@
 #include <gtest/gtest.h>
 #include "glcore_imp.hpp"
 
+TEST(RendererTest, DrawRectangle)
+{
+    renapi::Renderer<glcore::Renderer>&& ren = glcore::Renderer();
+    ren.initialize();
+    
+    GLFWwindow* win = glfwGetCurrentContext();
+    while(true)
+    {
+        if(glfwGetKey(win,GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            break;
+
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        ren << renapi::Color(1.0f,0.0f,0.0f,0.5f) << renapi::Rectangle(0.5f,0.5f,0.5f,0.5f,0.5f,0.0f,0.0f,0.0f) << renapi::flush;
+
+        glfwPollEvents();
+        glfwSwapBuffers(win);
+    }
+
+    EXPECT_TRUE(true);
+}
+
 TEST(RendererTest, SteadyWindow)
 {
     renapi::Renderer<glcore::Renderer>&& ren = glcore::Renderer();

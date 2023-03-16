@@ -68,7 +68,7 @@ namespace renapi
 
     template <typename T> struct Renderer
     {
-        template <typename U> Renderer<T>& operator<<(U&& u) requires(DrawArgs<T>)
+        template <typename U> Renderer<T>& operator<<(U&& u) requires(DrawArgs<U>)
         {
             using UType = std::remove_cvref<U>;
             if constexpr(std::is_same<UType, Color>())
