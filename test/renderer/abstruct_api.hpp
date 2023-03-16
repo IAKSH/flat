@@ -1,7 +1,7 @@
 #pragma once
 
+#include <memory>
 #include <string_view>
-#include <utility>
 
 #include "static_type_check.hpp"
 
@@ -43,8 +43,28 @@ namespace renapi
         ~Color() = default;
     };
 
+    class Texture
+    {
+    public:
+        virtual ~Texture() {}
+    };
+
+    class TextureSelectBox
+    {
+    private:
+        float upperLeftX, upperLeftY, width, height;
+
+    public:
+        TextureSelectBox(float x, float y, float w, float h) : upperLeftX(x), upperLeftY(y), width(w), height(h) {}
+        ~TextureSelectBox(){};
+        float getUpperLeftPosX() { return upperLeftX; }
+        float getUpperLeftPosY() { return upperLeftY; }
+        float getWidth() { return width; }
+        float getHeight() { return height; }
+    };
+
     template <typename T>
-    concept DrawArgs = stool::same_type<T, Rectangle,Color>();
+    concept DrawArgs = stool::same_type<T, Rectangle, Color, Texture>();
 
     template <typename T> struct Renderer
     {
@@ -52,12 +72,17 @@ namespace renapi
         Renderer<T>& operator<<(U&& u)
             requires(DrawArgs<U>)
         {
-            if constexpr(std::is_same<U, Rectangle>()) static_cast<T*>(this)->imp_drawRectangle(u);
-            else if constexpr(std::is_same<U,Color>()) static_cast<T*>(this)->imp_setColor(u);
+            if constexpr(std::is_same<U, Rectangle>())
+                static_cast<T*>(this)->imp_drawRectangle(u);
+            else if constexpr(std::is_same<U, Color>())
+                static_cast<T*>(this)->imp_setColor(u);
+            else if constexpr(std::is_same<U, Texture>())
+                static_cast<T*>(this)->imp_bindTexture(u);
 
             return *this;
         }
 
+        std::unique_ptr<Texture> genTexture(std::string_view path) { return static_cast<T*>(this)->imp_genTexture(path); }
         void initialize() { static_cast<T*>(this)->imp_initialize(); }
     };
 }  // namespace renapi

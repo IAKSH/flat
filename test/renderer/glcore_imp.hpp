@@ -10,17 +10,28 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <iterator>
-
+#include <memory>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
 namespace glcore
 {
+    class Texture : public renapi::Texture
+    {
+    private:
+        uint32_t textureId;
+
+    public:
+        Texture(uint32_t id) : textureId(id) {}
+        virtual ~Texture() override { glDeleteTextures(1, &textureId); }
+        uint32_t getTextureId() { return textureId; }
+    };
+
     class Renderer : public renapi::Renderer<Renderer>
     {
     private:
@@ -28,21 +39,29 @@ namespace glcore
 
         const char* vertexShaderSource = "#version 330 core\n"
                                          "layout (location = 0) in vec3 aPos;\n"
-                                         "out vec4 entireColor;\n"
+                                         "layout (location = 1) in vec2 aTexCoord;\n"
+                                         "out vec4 aColor;\n"
+                                         "out vec2 aTexCoordOut;\n"
                                          "uniform mat4 transform;\n"
                                          "uniform vec4 color;\n"
                                          "void main()\n"
                                          "{\n"
                                          "    gl_Position = transform * vec4(aPos, 1.0f);\n"
-                                         "    entireColor = color;\n"
+                                         "    aColor = color;\n"
+                                         "    aTexCoordOut = aTexCoord;\n"
                                          "}\0";
 
         const char* fragmentShaderSource = "#version 330 core\n"
                                            "out vec4 FragColor;\n"
-                                           "in vec4 entireColor;\n"
+                                           "in vec4 aColor;\n"
+                                           "in vec2 aTexCoordOut;\n"
+                                           "uniform sampler2D texture0;\n"
                                            "void main()\n"
                                            "{\n"
-                                           "    FragColor = entireColor;\n"
+                                           "    vec4 texColor = texture(texture0,aTexCoordOut);\n"
+                                           "    if(texColor.a < 0.1)\n"
+                                           "        discard;\n"
+                                           "    FragColor = texColor * aColor;\n"
                                            "}\n\0";
 
         void initGLFW()
@@ -86,7 +105,7 @@ namespace glcore
             if(!success)
             {
                 glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-                std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+                std::cout << "error: vertex shader compilation failed\n" << infoLog << std::endl;
             }
             // fragment shader
             unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -97,7 +116,7 @@ namespace glcore
             if(!success)
             {
                 glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-                std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+                std::cout << "error: fragment shader compilation failed\n" << infoLog << std::endl;
             }
             // link shaders
             shader = glCreateProgram();
@@ -109,21 +128,22 @@ namespace glcore
             if(!success)
             {
                 glGetProgramInfoLog(shader, 512, NULL, infoLog);
-                std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+                std::cout << "error: can't link shader\n" << infoLog << std::endl;
             }
             glDeleteShader(vertexShader);
             glDeleteShader(fragmentShader);
 
             glUseProgram(shader);
+            glUniform1i(glGetUniformLocation(shader, "texture0"), 0);
         }
 
         void makeDrawMeta()
         {
             float vertices[] = {
-                1.0f,  1.0f,  0.0f,  // top right
-                1.0f,  -1.0f, 0.0f,  // bottom right
-                -1.0f, -1.0f, 0.0f,  // bottom left
-                -1.0f, 1.0f,  0.0f   // top left
+                1.0f,  1.0f,  0.0f, 1.0f, 1.0f,  // top right
+                1.0f,  -1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,  // bottom left
+                -1.0f, 1.0f,  0.0f, 0.0f, 1.0f   // top left
             };
             unsigned int indices[] = {
                 0, 1, 3,  // first Triangle
@@ -140,8 +160,13 @@ namespace glcore
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+            // position attribute
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);
+            // texture coord attribute
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+            glEnableVertexAttribArray(1);
+
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
         }
@@ -158,7 +183,7 @@ namespace glcore
         void imp_drawRectangle(renapi::Rectangle& rectangle)
         {
             glm::mat4 trans(1.0f);
-            trans *= glm::scale(glm::mat4(1.0f),glm::vec3(rectangle.getWidth(),rectangle.getHeight(),1.0f));
+            trans *= glm::scale(glm::mat4(1.0f), glm::vec3(rectangle.getWidth(), rectangle.getHeight(), 1.0f));
             trans *= glm::translate(glm::mat4(1.0f), glm::vec3(rectangle.getX(), rectangle.getY(), rectangle.getZ()));
             trans *= glm::rotate(glm::mat4(1.0f), glm::radians(rectangle.getRotateZ()), glm::vec3(0.0f, 0.0f, 1.0f));
 
@@ -172,7 +197,7 @@ namespace glcore
         void imp_setColor(renapi::Color& color)
         {
             unsigned int location = glGetUniformLocation(shader, "color");
-            glUniform4f(location,color.getRed(),color.getGreen(),color.getBlue(),color.getAlpha());
+            glUniform4f(location, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
         }
 
         void imp_initialize()
@@ -192,6 +217,46 @@ namespace glcore
 
             initShader();
             makeDrawMeta();
+        }
+
+        void imp_bindTexture(renapi::Texture& texture)
+        {
+            if(typeid(texture) != typeid(Texture))
+            {
+                std::cerr << "error: wrong texture type" << std::endl;
+                abort();
+            }
+
+            Texture& tex = (Texture&)texture;
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, tex.getTextureId());
+        }
+
+        std::unique_ptr<renapi::Texture> imp_genTexture(std::string_view path)
+        {
+            uint32_t textureId;
+            glGenTextures(1, &textureId);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            int w, h, channels;
+            unsigned char* data;
+
+            data = stbi_load(path.data(), &w, &h, &channels, 0);
+            if(!data)
+            {
+                std::cerr << "[ERROR] Can't load " << path.data() << std::endl;
+                abort();
+            }
+
+            glBindTexture(GL_TEXTURE_2D, textureId);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+            stbi_image_free(data);
+            return std::make_unique<Texture>(textureId);
         }
     };
 }  // namespace glcore

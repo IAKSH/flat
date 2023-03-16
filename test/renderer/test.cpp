@@ -7,6 +7,8 @@ TEST(RendererTest, DrawRectangleWithColor)
     renapi::Renderer<glcore::Renderer>&& ren = glcore::Renderer();
     ren.initialize();
 
+    auto texture = ren.genTexture("../../../demo/images/bird0_0.png");
+
     GLFWwindow* win = glfwGetCurrentContext();
     float rotate = 0.0f;
     while(true)
@@ -16,7 +18,7 @@ TEST(RendererTest, DrawRectangleWithColor)
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ren << renapi::Color(0.5f, sin(rotate), 1.0f, 0.5f) << renapi::Rectangle(0.1f, 0.0f, 0.0f, 0.25f, 0.25f, rotate);
+        ren << renapi::Color(0.5f, sin(rotate), 1.0f, 0.5f) << *texture << renapi::Rectangle(0.1f, 0.0f, 0.0f, 0.25f, 0.25f, rotate);
 
         rotate += 0.1f;
 
