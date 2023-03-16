@@ -43,21 +43,21 @@ BinPackParameters:	true
 # 大括号换行，只有当BreakBeforeBraces设置为Custom时才有效
 BraceWrapping:   
   # class定义后面
-  AfterClass:	false
+  AfterClass:	true
   # 控制语句后面
   AfterControlStatement:	true
   # enum定义后面
-  AfterEnum:	false
+  AfterEnum:	true
   # 函数定义后面
   AfterFunction:	true
   # 命名空间定义后面
   AfterNamespace:	true
   # ObjC定义后面
-  AfterObjCDeclaration:	false
+  AfterObjCDeclaration:	true
   # struct定义后面
-  AfterStruct:	false
+  AfterStruct:	true
   # union定义后面
-  AfterUnion:	false
+  AfterUnion:	true
   # catch之前
   BeforeCatch:	true
   # else之前
