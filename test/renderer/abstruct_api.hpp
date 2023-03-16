@@ -29,8 +29,22 @@ namespace renapi
         virtual ~Rectangle(){};
     };
 
+    class Color
+    {
+    private:
+        const float R, G, B, A;
+
+    public:
+        float const getRed() { return R; }
+        float const getGreen() { return G; }
+        float const getBlue() { return B; }
+        float const getAlpha() { return A; }
+        Color(float red, float green, float blue, float alpha) : R(red), G(green), B(blue), A(alpha) {}
+        ~Color() = default;
+    };
+
     template <typename T>
-    concept DrawArgs = stool::same_type<T, Rectangle>();
+    concept DrawArgs = stool::same_type<T, Rectangle,Color>();
 
     template <typename T> struct Renderer
     {
@@ -39,6 +53,7 @@ namespace renapi
             requires(DrawArgs<U>)
         {
             if constexpr(std::is_same<U, Rectangle>()) static_cast<T*>(this)->imp_drawRectangle(u);
+            else if constexpr(std::is_same<U,Color>()) static_cast<T*>(this)->imp_setColor(u);
 
             return *this;
         }

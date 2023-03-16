@@ -28,17 +28,21 @@ namespace glcore
 
         const char* vertexShaderSource = "#version 330 core\n"
                                          "layout (location = 0) in vec3 aPos;\n"
+                                         "out vec4 entireColor;\n"
                                          "uniform mat4 transform;\n"
+                                         "uniform vec4 color;\n"
                                          "void main()\n"
                                          "{\n"
-                                         "   gl_Position = transform * vec4(aPos, 1.0f);\n"
+                                         "    gl_Position = transform * vec4(aPos, 1.0f);\n"
+                                         "    entireColor = color;\n"
                                          "}\0";
 
         const char* fragmentShaderSource = "#version 330 core\n"
                                            "out vec4 FragColor;\n"
+                                           "in vec4 entireColor;\n"
                                            "void main()\n"
                                            "{\n"
-                                           "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                           "    FragColor = entireColor;\n"
                                            "}\n\0";
 
         void initGLFW()
@@ -158,11 +162,17 @@ namespace glcore
             trans *= glm::translate(glm::mat4(1.0f), glm::vec3(rectangle.getX(), rectangle.getY(), rectangle.getZ()));
             trans *= glm::rotate(glm::mat4(1.0f), glm::radians(rectangle.getRotateZ()), glm::vec3(0.0f, 0.0f, 1.0f));
 
-            unsigned int transformLoc = glGetUniformLocation(shader, "transform");
-            glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+            unsigned int location = glGetUniformLocation(shader, "transform");
+            glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
 
             glBindVertexArray(vao);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+
+        void imp_setColor(renapi::Color& color)
+        {
+            unsigned int location = glGetUniformLocation(shader, "color");
+            glUniform4f(location,color.getRed(),color.getGreen(),color.getBlue(),color.getAlpha());
         }
 
         void imp_initialize()
