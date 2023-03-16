@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "glcore_imp.hpp"
 
-TEST(RendererTest, DrawRectangle)
+TEST(RendererTest, DrawRectangleWithTransform)
 {
     renapi::Renderer<glcore::Renderer>&& ren = glcore::Renderer();
     ren.initialize();
