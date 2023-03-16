@@ -175,7 +175,12 @@ namespace glcore
         }
 
     public:
-        Renderer() : vao(0), vbo(0), ebo(0), shaderProgram(0) {}
+        Renderer() : vao(0), vbo(0), ebo(0), shaderProgram(0)
+        {
+            imp_initialize();
+            //makeShaderProgram();
+            makeDrawMeta();
+        }
 
         ~Renderer()
         {
