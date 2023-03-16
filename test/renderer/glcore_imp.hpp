@@ -24,35 +24,22 @@ namespace glcore
     private:
         uint32_t vao, vbo, ebo, shader;
 
-    public:
-        Renderer() : vao(0), vbo(0), ebo(0) {}
+        const char* vertexShaderSource = "#version 330 core\n"
+                                         "layout (location = 0) in vec3 aPos;\n"
+                                         "void main()\n"
+                                         "{\n"
+                                         "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                         "}\0";
+        const char* fragmentShaderSource = "#version 330 core\n"
+                                           "out vec4 FragColor;\n"
+                                           "void main()\n"
+                                           "{\n"
+                                           "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                           "}\n\0";
 
-        ~Renderer()
+        void initGLFW()
         {
-            glDeleteVertexArrays(1, &vao);
-            glDeleteProgram(shader);
-        }
-
-        void imp_drawRectangle(renapi::Rectangle&& rectangle)
-        {
-            glBindVertexArray(vao);
-            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        }
-
-        bool imp_initialize()
-        {
-            const char* vertexShaderSource = "#version 330 core\n"
-                                             "layout (location = 0) in vec3 aPos;\n"
-                                             "void main()\n"
-                                             "{\n"
-                                             "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                             "}\0";
-            const char* fragmentShaderSource = "#version 330 core\n"
-                                               "out vec4 FragColor;\n"
-                                               "void main()\n"
-                                               "{\n"
-                                               "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                               "}\n\0";
+            std::cerr << "warnning: glfw initialized by Renderer" << std::endl;
 
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -64,18 +51,23 @@ namespace glcore
             {
                 std::cout << "Failed to create GLFW window" << std::endl;
                 glfwTerminate();
-                return -1;
+                abort();
             }
             glfwMakeContextCurrent(window);
             glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) { glViewport(0, 0, width, height); });
+        }
 
+        void initGLAD()
+        {
             if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             {
                 std::cout << "Failed to initialize GLAD" << std::endl;
-                return -1;
+                abort();
             }
+        }
 
-            // vertex shader
+        void initShader()
+        {
             unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
             glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
             glCompileShader(vertexShader);
@@ -100,20 +92,23 @@ namespace glcore
                 std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
             }
             // link shaders
-            unsigned int shaderProgram = glCreateProgram();
-            glAttachShader(shaderProgram, vertexShader);
-            glAttachShader(shaderProgram, fragmentShader);
-            glLinkProgram(shaderProgram);
+            shader = glCreateProgram();
+            glAttachShader(shader, vertexShader);
+            glAttachShader(shader, fragmentShader);
+            glLinkProgram(shader);
             // check for linking errors
-            glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+            glGetProgramiv(shader, GL_LINK_STATUS, &success);
             if(!success)
             {
-                glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+                glGetProgramInfoLog(shader, 512, NULL, infoLog);
                 std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
             }
             glDeleteShader(vertexShader);
             glDeleteShader(fragmentShader);
+        }
 
+        void makeDrawMeta()
+        {
             float vertices[] = {
                 0.5f,  0.5f,  0.0f,  // top right
                 0.5f,  -0.5f, 0.0f,  // bottom right
@@ -139,6 +134,40 @@ namespace glcore
             glEnableVertexAttribArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
+        }
+
+    public:
+        Renderer() : vao(0), vbo(0), ebo(0) {}
+
+        ~Renderer()
+        {
+            glDeleteVertexArrays(1, &vao);
+            glDeleteProgram(shader);
+        }
+
+        void imp_drawRectangle(renapi::Rectangle&& rectangle)
+        {
+            glBindVertexArray(vao);
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        }
+
+        bool imp_initialize()
+        {
+
+            if(std::find(std::begin(init::initialized), std::end(init::initialized), "glfw") == std::end(init::initialized))
+            {
+                initGLFW();
+                init::initialized.push_back("glfw");
+            }
+
+            if(std::find(std::begin(init::initialized), std::end(init::initialized), "glad") == std::end(init::initialized))
+            {
+                initGLAD();
+                init::initialized.push_back("glad");
+            }
+
+            initShader();
+            makeDrawMeta();
         }
     };
 }  // namespace glcore
