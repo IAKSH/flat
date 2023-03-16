@@ -49,22 +49,22 @@ namespace renapi
         virtual ~Texture() {}
     };
 
-    class TextureSelectBox
+    class TextureOffset
     {
     private:
-        float upperLeftX, upperLeftY, width, height;
+        float offsetX, offsetY, scaleX, scaleY;
 
     public:
-        TextureSelectBox(float x, float y, float w, float h) : upperLeftX(x), upperLeftY(y), width(w), height(h) {}
-        ~TextureSelectBox(){};
-        float getUpperLeftPosX() { return upperLeftX; }
-        float getUpperLeftPosY() { return upperLeftY; }
-        float getWidth() { return width; }
-        float getHeight() { return height; }
+        TextureOffset(float x, float y, float sx, float sy) : offsetX(x), offsetY(y), scaleX(sx), scaleY(sy) {}
+        ~TextureOffset(){};
+        float getOffsetX() { return offsetX; }
+        float getOffsetY() { return offsetY; }
+        float getScaleX() { return scaleX; }
+        float getScaleY() { return scaleY; }
     };
 
     template <typename T>
-    concept DrawArgs = stool::same_type<T, Rectangle, Color, Texture>();
+    concept DrawArgs = stool::same_type<T, Rectangle, Color, Texture, TextureOffset>();
 
     template <typename T> struct Renderer
     {
@@ -78,6 +78,8 @@ namespace renapi
                 static_cast<T*>(this)->imp_setColor(u);
             else if constexpr(std::is_same<U, Texture>())
                 static_cast<T*>(this)->imp_bindTexture(u);
+            else if constexpr(std::is_same<U,TextureOffset>())
+                static_cast<T*>(this)->imp_setTextureOffset(u);
 
             return *this;
         }

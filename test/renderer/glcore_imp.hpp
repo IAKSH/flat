@@ -6,6 +6,7 @@
 #include "abstruct_api.hpp"
 #include "glcore_imp.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 #include "initialized.hpp"
 
 #include <glad/glad.h>
@@ -43,14 +44,16 @@ namespace glcore
                                          "out vec4 aColor;\n"
                                          "out vec2 aTexCoordOut;\n"
                                          "uniform mat4 transform;\n"
+                                         "uniform vec2 texOffset;\n"
+                                         "uniform vec2 texScale;\n"
                                          "uniform vec4 color;\n"
                                          "void main()\n"
                                          "{\n"
                                          "    gl_Position = transform * vec4(aPos, 1.0f);\n"
                                          "    aColor = color;\n"
-                                         "    aTexCoordOut = aTexCoord;\n"
+                                         "    aTexCoordOut = (aTexCoord * texScale) + texOffset;\n"
                                          "}\0";
-
+ 
         const char* fragmentShaderSource = "#version 330 core\n"
                                            "out vec4 FragColor;\n"
                                            "in vec4 aColor;\n"
@@ -230,6 +233,15 @@ namespace glcore
             Texture& tex = (Texture&)texture;
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, tex.getTextureId());
+        }
+
+        void imp_setTextureOffset(renapi::TextureOffset& offset)
+        {
+            unsigned int texOffset = glGetUniformLocation(shader, "texOffset");
+            glUniform2f(texOffset,offset.getOffsetX(),offset.getOffsetY());
+
+            unsigned int texScale = glGetUniformLocation(shader, "texScale");
+            glUniform2f(texScale,offset.getScaleX(),offset.getScaleY());
         }
 
         std::unique_ptr<renapi::Texture> imp_genTexture(std::string_view path)
