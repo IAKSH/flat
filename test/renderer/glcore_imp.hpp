@@ -5,6 +5,7 @@
 
 #include "abstruct_api.hpp"
 #include "glcore_imp.hpp"
+#include "glm/ext/matrix_transform.hpp"
 #include "initialized.hpp"
 
 #include <glad/glad.h>
@@ -13,6 +14,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iterator>
+
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -26,10 +28,12 @@ namespace glcore
 
         const char* vertexShaderSource = "#version 330 core\n"
                                          "layout (location = 0) in vec3 aPos;\n"
+                                         "uniform mat4 transform;\n"
                                          "void main()\n"
                                          "{\n"
-                                         "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                         "   gl_Position = transform * vec4(aPos, 1.0f);\n"
                                          "}\0";
+
         const char* fragmentShaderSource = "#version 330 core\n"
                                            "out vec4 FragColor;\n"
                                            "void main()\n"
@@ -105,15 +109,17 @@ namespace glcore
             }
             glDeleteShader(vertexShader);
             glDeleteShader(fragmentShader);
+
+            glUseProgram(shader);
         }
 
         void makeDrawMeta()
         {
             float vertices[] = {
-                0.5f,  0.5f,  0.0f,  // top right
-                0.5f,  -0.5f, 0.0f,  // bottom right
-                -0.5f, -0.5f, 0.0f,  // bottom left
-                -0.5f, 0.5f,  0.0f   // top left
+                1.0f,  1.0f,  0.0f,  // top right
+                1.0f,  -1.0f, 0.0f,  // bottom right
+                -1.0f, -1.0f, 0.0f,  // bottom left
+                -1.0f, 1.0f,  0.0f   // top left
             };
             unsigned int indices[] = {
                 0, 1, 3,  // first Triangle
@@ -145,13 +151,21 @@ namespace glcore
             glDeleteProgram(shader);
         }
 
-        void imp_drawRectangle(renapi::Rectangle&& rectangle)
+        void imp_drawRectangle(renapi::Rectangle& rectangle)
         {
+            glm::mat4 trans(1.0f);
+            trans *= glm::scale(glm::mat4(1.0f),glm::vec3(rectangle.getWidth(),rectangle.getHeight(),1.0f));
+            trans *= glm::translate(glm::mat4(1.0f), glm::vec3(rectangle.getX(), rectangle.getY(), rectangle.getZ()));
+            trans *= glm::rotate(glm::mat4(1.0f), glm::radians(rectangle.getRotateZ()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+            unsigned int transformLoc = glGetUniformLocation(shader, "transform");
+            glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
             glBindVertexArray(vao);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         }
 
-        bool imp_initialize()
+        void imp_initialize()
         {
 
             if(std::find(std::begin(init::initialized), std::end(init::initialized), "glfw") == std::end(init::initialized))

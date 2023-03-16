@@ -7,6 +7,7 @@ TEST(RendererTest, DrawRectangle)
     ren.initialize();
     
     GLFWwindow* win = glfwGetCurrentContext();
+    float rotate = 0.0f;
     while(true)
     {
         if(glfwGetKey(win,GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -15,7 +16,9 @@ TEST(RendererTest, DrawRectangle)
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ren << renapi::Rectangle(0.5f,0.5f,0.5f,0.5f,0.5f,0.0f,0.0f,0.0f);
+        ren << renapi::Rectangle(0.1f,0.0f,0.0f,0.25f,0.25f,rotate);
+
+        rotate += 0.1f;
 
         glfwPollEvents();
         glfwSwapBuffers(win);
@@ -40,12 +43,6 @@ TEST(RendererTest, SteadyWindow)
     }
 
     EXPECT_TRUE(true);
-}
-
-TEST(RendererTest, InitializeBackend)
-{
-    renapi::Renderer<glcore::Renderer>&& ren = glcore::Renderer();
-    EXPECT_TRUE(ren.initialize());
 }
 
 int main(int argc, char** argv)
