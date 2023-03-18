@@ -50,6 +50,11 @@ namespace glfw
                 initGLFW();
                 init::initialized.push_back("glfw");
             }
+            else
+            {
+                std::cerr << "warning: window module using glfw window created by other modules" << std::endl;
+                window = glfwGetCurrentContext();
+            }
 
             if(std::find(std::begin(init::initialized), std::end(init::initialized), "glad") == std::end(init::initialized))
             {
