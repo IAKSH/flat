@@ -34,12 +34,16 @@ namespace alsoft
     {
     private:
         uint32_t sourceId;
+        int offset;
 
     public:
         AudioSource(uint32_t id) : sourceId(id) {}
         ~AudioSource() { alDeleteSources(1, &sourceId); }
 
         uint32_t getSourceid() { return sourceId; }
+
+        int getOffset() { return offset; }
+        void setOffset(int i) { offset = i; }
 
         virtual void setAttrib(audapi::AudioAttrib attrib) override
         {
@@ -207,6 +211,34 @@ namespace alsoft
             ALenum format = (info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16);
             alBufferData(bufferId, format, allPCM.data(), allPCM.size() * sizeof(short), info.hz);
             return std::make_unique<Audio>(bufferId);
+        }
+
+        void imp_stopAudioSource(audapi::StopFlag& flag)
+        {
+            if(typeid(flag.getAudioSource()) != typeid(AudioSource))
+            {
+                std::cerr << "error: wrong audio source type in stop flag" << std::endl;
+                abort();
+            }
+
+            AudioSource& source = (AudioSource&)flag.getAudioSource();
+            int offset;
+            alSourcePause(source.getSourceid());
+            alGetSourcei(source.getSourceid(), AL_SAMPLE_OFFSET, &offset);
+            source.setOffset(offset);
+        }
+
+        void imp_resumeAudioSource(audapi::ResumeFlag& flag)
+        {
+            if(typeid(flag.getAudioSource()) != typeid(AudioSource))
+            {
+                std::cerr << "error: wrong audio source type in resume flag" << std::endl;
+                abort();
+            }
+
+            AudioSource& source = (AudioSource&)flag.getAudioSource();
+            alSourcePlay(source.getSourceid());
+            alSourcei(source.getSourceid(), AL_SAMPLE_OFFSET, source.getOffset());
         }
     };
 }  // namespace alsoft

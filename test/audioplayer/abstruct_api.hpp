@@ -57,8 +57,48 @@ namespace audapi
         Audio& getCurrentAudio() { return *currentAudio; }
     };
 
+    class StopFlag
+    {
+    private:
+        AudioSource* source;
+
+    public:
+        StopFlag(AudioSource& s) : source(&s) {}
+        ~StopFlag() {}
+        AudioSource& getAudioSource()
+        {
+            if(!source)
+            {
+                std::cerr << "error: null audio source in StopFlag" << std::endl;
+                abort();
+            }
+
+            return *source;
+        }
+    };
+
+    class ResumeFlag
+    {
+    private:
+        AudioSource* source;
+
+    public:
+        ResumeFlag(AudioSource& s) : source(&s) {}
+        ~ResumeFlag() {}
+        AudioSource& getAudioSource()
+        {
+            if(!source)
+            {
+                std::cerr << "error: null audio source in ResumeFlag" << std::endl;
+                abort();
+            }
+
+            return *source;
+        }
+    };
+
     template <typename T>
-    concept AudioMixerAttribArgs = stool::same_type<T, AudioAttrib, AudioSource>();
+    concept AudioMixerAttribArgs = stool::same_type<T, AudioAttrib, AudioSource,StopFlag,ResumeFlag>();
 
     template <typename T> struct AudioMixer
     {
@@ -71,6 +111,10 @@ namespace audapi
                 static_cast<T*>(this)->imp_setAttrib(u);
             else if constexpr(std::is_same<UType, AudioSource>())
                 static_cast<T*>(this)->imp_playAudioFromSource(u);
+            else if constexpr(std::is_same<UType,StopFlag>())
+                static_cast<T*>(this)->imp_stopAudioSource(u);
+            else if constexpr(std::is_same<UType,ResumeFlag>())
+                static_cast<T*>(this)->imp_resumeAudioSource(u);
 
             return *this;
         }
