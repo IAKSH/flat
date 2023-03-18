@@ -1,5 +1,4 @@
 #include "gameplay.hpp"
-#include <_mingw_mac.h>
 
 flappy::BackGround::BackGround()
 {
