@@ -45,40 +45,45 @@ namespace alsoft
         int getOffset() { return offset; }
         void setOffset(int i) { offset = i; }
 
-        virtual void setAttrib(audapi::AudioAttrib attrib) override
+        virtual std::function<void(float)> operator[](audapi::AudioAttribType type) override
         {
-            float oriPos[3];
-            float oriVel[3];
-            alGetSource3f(sourceId, AL_POSITION, oriPos, oriPos + 1, oriPos + 2);
-            alGetSource3f(sourceId, AL_VELOCITY, oriVel, oriVel + 1, oriVel + 2);
+            auto func = [&type,this](float f) {
+                uint32_t id = this->sourceId;
+                float oriPos[3];
+                float oriVel[3];
+                alGetSource3f(id, AL_POSITION, oriPos, oriPos + 1, oriPos + 2);
+                alGetSource3f(id, AL_VELOCITY, oriVel, oriVel + 1, oriVel + 2);
 
-            switch(attrib.getType())
-            {
-            case audapi::AudioAttribType::positionX:
-                alSource3f(sourceId, AL_POSITION, attrib.getVal(), oriPos[1], oriPos[2]);
-                break;
-            case audapi::AudioAttribType::positionY:
-                alSource3f(sourceId, AL_POSITION, oriPos[0], attrib.getVal(), oriPos[2]);
-                break;
-            case audapi::AudioAttribType::positionZ:
-                alSource3f(sourceId, AL_POSITION, oriPos[0], oriPos[1], attrib.getVal());
-                break;
-            case audapi::AudioAttribType::velocityX:
-                alSource3f(sourceId, AL_VELOCITY, attrib.getVal(), oriVel[1], oriVel[2]);
-                break;
-            case audapi::AudioAttribType::velocityY:
-                alSource3f(sourceId, AL_VELOCITY, oriVel[0], attrib.getVal(), oriVel[2]);
-                break;
-            case audapi::AudioAttribType::velocityZ:
-                alSource3f(sourceId, AL_VELOCITY, oriVel[0], oriVel[1], attrib.getVal());
-                break;
-            case audapi::AudioAttribType::looping:
-                alSourcei(sourceId, AL_LOOPING, static_cast<ALboolean>(attrib.getVal()));
-                break;
-            case audapi::AudioAttribType::gain:
-                alSourcef(sourceId, AL_GAIN, attrib.getVal());
-                break;
-            }
+                switch(type)
+                {
+                case audapi::AudioAttribType::positionX:
+                    alSource3f(id, AL_POSITION, f, oriPos[1], oriPos[2]);
+                    break;
+                case audapi::AudioAttribType::positionY:
+                    alSource3f(id, AL_POSITION, oriPos[0], f, oriPos[2]);
+                    break;
+                case audapi::AudioAttribType::positionZ:
+                    alSource3f(id, AL_POSITION, oriPos[0], oriPos[1], f);
+                    break;
+                case audapi::AudioAttribType::velocityX:
+                    alSource3f(id, AL_VELOCITY, f, oriVel[1], oriVel[2]);
+                    break;
+                case audapi::AudioAttribType::velocityY:
+                    alSource3f(id, AL_VELOCITY, oriVel[0], f, oriVel[2]);
+                    break;
+                case audapi::AudioAttribType::velocityZ:
+                    alSource3f(id, AL_VELOCITY, oriVel[0], oriVel[1], f);
+                    break;
+                case audapi::AudioAttribType::looping:
+                    alSourcei(id, AL_LOOPING, static_cast<ALboolean>(f));
+                    break;
+                case audapi::AudioAttribType::gain:
+                    alSourcef(id, AL_GAIN, f);
+                    break;
+                }
+            };
+
+            return func;
         }
     };
 

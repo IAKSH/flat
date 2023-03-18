@@ -1,5 +1,6 @@
 #pragma once
 #include "static_type_check.hpp"
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <string_view>
@@ -52,7 +53,7 @@ namespace audapi
             return *this;
         }
 
-        virtual void setAttrib(AudioAttrib attri) = 0;
+        virtual std::function<void(float)> operator[](audapi::AudioAttribType type) = 0;
 
         Audio& getCurrentAudio() { return *currentAudio; }
     };
