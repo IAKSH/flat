@@ -55,7 +55,7 @@ namespace glcore
                                          "{\n"
                                          "    gl_Position = transform * vec4(aPos, 1.0f);\n"
                                          "    aColor = color;\n"
-                                         "    aTexCoordOut = (aTexCoord * texScale) + texOffset;\n"
+                                         "    aTexCoordOut = (vec2(aTexCoord.x + texOffset.x, 1.0 - aTexCoord.y + texOffset.y) * texScale) + texOffset;\n"
                                          "}\0";
 
         const char* fragmentShaderSource = "#version 330 core\n"
