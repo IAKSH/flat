@@ -80,6 +80,9 @@ namespace alsoft
                 case audapi::AudioAttribType::gain:
                     alSourcef(id, AL_GAIN, f);
                     break;
+                default:
+                    std::cerr << "error: wrong attrib for audio source" << std::endl;
+                    abort();
                 }
             };
 
