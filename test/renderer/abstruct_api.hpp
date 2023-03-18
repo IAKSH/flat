@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <string_view>
 
 #include "static_type_check.hpp"
@@ -63,12 +64,38 @@ namespace renapi
         float getScaleY() { return scaleY; }
     };
 
+    class Font;
+    class Text
+    {
+    private:
+        Font& font;
+        std::string string;
+        float posX, posY, rotateZ;
+
+    public:
+        Text(Font& f, std::string_view s, float x, float y, float rotate) : font(f), string(s), posX(x), posY(y), rotateZ(rotate) {}
+        ~Text() {}
+        float getPosX() { return posX; }
+        float getPosY() { return posY; }
+        float getRotateZ() { return rotateZ; }
+        std::string_view getString() { return string; }
+        Font& getFont() { return font; }
+    };
+
+    class Font
+    {
+    private:
+    public:
+        virtual ~Font() {}
+        Text operator()(std::string_view str, float x, float y, float scale) { return Text(*this, str, x, y, scale); };
+    };
+
     template <typename T>
-    concept DrawArgs = stool::same_type<T, Rectangle, Color, Texture, TextureOffset>();
+    concept DrawArgs = stool::same_type<T, Rectangle, Color, Texture, TextureOffset, Font, Text>();
 
     template <typename T> struct Renderer
     {
-        template <typename U>
+        template <DrawArgs U>
         Renderer<T>& operator<<(U&& u)
             requires(DrawArgs<U>)
         {
@@ -78,13 +105,16 @@ namespace renapi
                 static_cast<T*>(this)->imp_setColor(u);
             else if constexpr(std::is_same<U, Texture>())
                 static_cast<T*>(this)->imp_bindTexture(u);
-            else if constexpr(std::is_same<U,TextureOffset>())
+            else if constexpr(std::is_same<U, TextureOffset>())
                 static_cast<T*>(this)->imp_setTextureOffset(u);
+            else if constexpr(std::is_same<U, Text>())
+                static_cast<T*>(this)->imp_drawText(u);
 
             return *this;
         }
 
         std::unique_ptr<Texture> genTexture(std::string_view path) { return static_cast<T*>(this)->imp_genTexture(path); }
+        std::unique_ptr<Font> genFont(std::string_view path) { return static_cast<T*>(this)->imp_genFont(path); }
         void initialize() { static_cast<T*>(this)->imp_initialize(); }
     };
 }  // namespace renapi

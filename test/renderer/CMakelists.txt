@@ -5,7 +5,7 @@ include(CTest)
 enable_testing()
 
 add_executable(gtestprogram)
-add_dependencies(gtestprogram gtest glfw)
+add_dependencies(gtestprogram gtest glfw freetype)
 target_compile_features(gtestprogram PRIVATE cxx_std_20)
 target_sources(gtestprogram PRIVATE 
     test.cpp 
@@ -18,13 +18,14 @@ target_sources(gtestprogram PRIVATE
 
 target_include_directories(gtestprogram PUBLIC 
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/googletest/googletest/include
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/freetype/include
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glfw/include
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glad/include
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glm
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/stb
     )
 
-target_link_libraries(gtestprogram PRIVATE gtest glfw)
+target_link_libraries(gtestprogram PRIVATE gtest glfw freetype)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

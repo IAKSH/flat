@@ -5,5 +5,6 @@ add_subdirectory(3rdparty/zlib/)
 add_subdirectory(3rdparty/glfw/)
 add_subdirectory(3rdparty/googletest/)
 add_subdirectory(3rdparty/openal-soft/)
+add_subdirectory(3rdparty/freetype/)
 
 add_subdirectory(test)
