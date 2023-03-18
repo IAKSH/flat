@@ -4,10 +4,10 @@ project(flat3 VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_executable(gtestprogram)
-add_dependencies(gtestprogram gtest glfw)
-target_compile_features(gtestprogram PRIVATE cxx_std_20)
-target_sources(gtestprogram PRIVATE 
+add_executable(gtestprogram_renderer)
+add_dependencies(gtestprogram_renderer gtest glfw)
+target_compile_features(gtestprogram_renderer PRIVATE cxx_std_20)
+target_sources(gtestprogram_renderer PRIVATE 
     test.cpp 
     initialized.hpp 
     abstruct_api.hpp 
@@ -16,7 +16,7 @@ target_sources(gtestprogram PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glad/src/glad.c
     )
 
-target_include_directories(gtestprogram PUBLIC 
+target_include_directories(gtestprogram_renderer PUBLIC 
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/googletest/googletest/include
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glfw/include
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glad/include
@@ -24,7 +24,7 @@ target_include_directories(gtestprogram PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/stb
     )
 
-target_link_libraries(gtestprogram PRIVATE gtest glfw)
+target_link_libraries(gtestprogram_renderer PRIVATE gtest glfw)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
