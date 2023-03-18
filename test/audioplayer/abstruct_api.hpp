@@ -1,44 +1,81 @@
 #pragma once
 #include "static_type_check.hpp"
+#include <iostream>
+#include <memory>
+#include <string_view>
+#include <type_traits>
 
 namespace audapi
 {
     struct Audio
     {
-
+        virtual ~Audio() {}
     };
 
-    enum class AudioAtribType
+    enum class AudioAttribType
     {
-        positionX,positionY,positionZ,velocityX,velocityY,velocityZ,gain,
+        positionX,
+        positionY,
+        positionZ,
+        velocityX,
+        velocityY,
+        velocityZ,
+        looping,
+        gain,
     };
 
-    struct AudioAtrrib
+    class AudioAttrib
     {
+    private:
+        AudioAttribType type;
+        float val;
 
+    public:
+        AudioAttrib(AudioAttribType t, float f) : type(t), val(f) {}
+        ~AudioAttrib() {}
+        AudioAttribType getType() { return type; }
+        float getVal() { return val; }
+    };
+
+    struct AudioSource
+    {
+    private:
+        Audio* currentAudio;
+
+    public:
+        AudioSource() : currentAudio(nullptr) {}
+        virtual ~AudioSource() {}
+
+        AudioSource& operator()(Audio& audio)
+        {
+            currentAudio = &audio;
+            return *this;
+        }
+
+        virtual void setAttrib(AudioAttrib attri) = 0;
+
+        Audio& getCurrentAudio() { return *currentAudio; }
     };
 
     template <typename T>
-    concept AudioSourceArgs = stool::same_type<T, Audio,AudioAtrrib>();
+    concept AudioMixerAttribArgs = stool::same_type<T, AudioAttrib, AudioSource>();
 
-    template <typename T> struct AudioSource
+    template <typename T> struct AudioMixer
     {
         template <typename U>
-        AudioSource<T>& operator<<(U&& u)
-            requires(AudioSourceArgs<U>)
+        AudioMixer& operator<<(U&& u)
+            requires(AudioMixerAttribArgs<U>)
         {
-            if constexpr(std::is_same<U, Audio>())
-                static_cast<T*>(this)->imp_playAudio(u);
-            else if constexpr(std::is_same<U, AudioAtrrib>())
-                static_cast<T*>(this)->imp_seAttrib(u);
+            using UType = std::remove_cvref_t<U>;
+            if constexpr(std::is_same<UType, AudioAttrib>())
+                static_cast<T*>(this)->imp_setAttrib(u);
+            else if constexpr(std::is_same<UType, AudioSource>())
+                static_cast<T*>(this)->imp_playAudioFromSource(u);
 
             return *this;
         }
-    };
 
-    template <typename T,typename AudioSourceType>
-    struct AudioMixer
-    {
-        AudioSource<AudioSourceType>& genAudioSource() {return static_cast<T*>(this)->imp_genAudioSource();}
+        std::unique_ptr<AudioSource> genAudioSource() { return static_cast<T*>(this)->imp_genAudioSource(); }
+        std::unique_ptr<Audio> genAudio(std::string_view path) { return static_cast<T*>(this)->imp_genAudio(path); }
     };
 }  // namespace audapi
