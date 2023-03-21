@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <vector>
 
-
 #include "renderer.hpp"
 
 namespace flat
@@ -34,16 +33,17 @@ namespace flat
     {
     private:
         std::unordered_map<std::string, std::pair<uint32_t, std::vector<std::unique_ptr<flat::Texture>>>> textureSets;
-        std::pair<uint32_t, std::vector<std::unique_ptr<flat::Texture>>> currentSet;
+        std::unordered_map<std::string, std::pair<uint32_t, std::vector<std::unique_ptr<flat::Texture>>>>::iterator currentSet;
         std::vector<std::unique_ptr<flat::Texture>>::iterator currentTexture;
         std::chrono::steady_clock::time_point lastTextureSwap;
+        void tryUpdateAnimation();
 
     public:
         Animation();
         ~Animation();
-        void createNewTextureSet(std::string, uint32_t intervalMs);
         void addTextureToSet(std::string name, std::unique_ptr<flat::Texture>& tex);
-        void switchTextureSet(std::string);
+        void addTextureToSet(std::string name, int intervalMS, std::unique_ptr<flat::Texture>& tex);
+        void switchTextureSet(std::string name);
         flat::Texture& getCurrentTexture();
     };
 
