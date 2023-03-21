@@ -6,11 +6,12 @@ add_dependencies(flappybird glfw OpenAL)
 target_sources(flappybird PRIVATE 
     flappybird.cpp
     gameplay.hpp
-    gameplay.cpp
-    alsoft.hpp
+    physics.cpp
+    animation.cpp
+    audio_alsoft.hpp
     audio.hpp
-    glcore.hpp
-    glfw.hpp
+    renderer_glcore.hpp
+    window_glfw.hpp
     initialized.hpp
     renderer.hpp
     typecontrol.hpp
