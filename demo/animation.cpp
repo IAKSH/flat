@@ -1,54 +1,84 @@
 #include "gameplay.hpp"
 
+#include <chrono>
 #include <cstdlib>
 #include <iostream>
-#include <chrono>
 #include <memory>
 #include <vector>
 
-flat::Animation::Animation() : currentSet(nullptr),lastTextureSwap(std::chrono::steady_clock::now()) {}
-
-flat::Animation::~Animation() {}
-
-void flat::Animation::tryUpdateAnimation()
+flat::TextureSet::TextureSet()
+    : intervalMS(0), index(0)
 {
-    if(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastTextureSwap).count() >= currentSet->second.first)
-    {
-        lastTextureSwap = std::chrono::steady_clock::now();
-        if(currentTexture != currentSet->second.second.end())
-            currentTexture++;
-        else
-            currentTexture = currentSet->second.second.begin();
-    }
+}
+
+void flat::TextureSet::updateCurrentTexture()
+{
+    if(index == textures.size() - 1)
+        index = 0;
+    else
+        ++index;
+}
+
+void flat::TextureSet::resetCurrentTexture()
+{
+    index = 0;
+}
+
+void flat::TextureSet::setIntervalMS(int ms)
+{
+    intervalMS = ms;
+}
+
+void flat::TextureSet::addTexture(flat::Texture& texture)
+{
+    textures.push_back(std::make_unique<flat::Texture>(std::move(texture)));
+}
+
+const int& flat::TextureSet::getIntervalMS()
+{
+    return intervalMS;
+}
+
+flat::Texture& flat::TextureSet::getCurrentTexture()
+{
+    auto& buffer = *textures.at(index);;
+    updateCurrentTexture();
+    return buffer;
+}
+
+flat::Animation::Animation()
+    : currentSet(nullptr), lastTextureSwap(std::chrono::steady_clock::now())
+{
+}
+
+flat::Animation::~Animation()
+{
 }
 
 void flat::Animation::addTextureToSet(std::string name, int intervalMS, std::unique_ptr<flat::Texture>& tex)
 {
     auto& temp = textureSets[name];
-    temp.first = intervalMS;
-    temp.second.push_back(std::move(tex));
+    temp.setIntervalMS(intervalMS);
+    temp.addTexture(*tex);
 }
 
-void flat::Animation::addTextureToSet(std::string name, std::unique_ptr<flat::Texture> &tex)
+void flat::Animation::addTextureToSet(std::string name, std::unique_ptr<flat::Texture>& tex)
 {
-    textureSets[name].second.push_back(std::move(tex));
+    textureSets[name].addTexture(*tex);
 }
 
 void flat::Animation::switchTextureSet(std::string name)
 {
+    currentSet->second.resetCurrentTexture();
     currentSet = textureSets.find(name);
     if(currentSet == textureSets.end())
     {
         std::cerr << "error: can't find key \"" << name << "\" in textureSets" << std::endl;
         abort();
     }
-
-    currentTexture = currentSet->second.second.begin();
 }
 
 flat::Texture& flat::Animation::getCurrentTexture()
 {
-    flat::Texture& temp = **currentTexture;
-    tryUpdateAnimation();
-    return temp;
+    return currentSet->second.getCurrentTexture();
 }

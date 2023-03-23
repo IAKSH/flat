@@ -29,14 +29,31 @@ namespace flat
         void setRotate(float f);
         bool collisionCheck(Physics2D& obj);
     };
+
+    class TextureSet
+    {
+    private:
+        int intervalMS;
+        std::vector<std::unique_ptr<flat::Texture>> textures;
+        int index;
+        void updateCurrentTexture();
+
+    public:
+        TextureSet();
+        ~TextureSet();
+        void resetCurrentTexture();
+        void setIntervalMS(int ms);
+        void addTexture(flat::Texture& texture);
+        const int& getIntervalMS();
+        flat::Texture& getCurrentTexture();
+    };
+
     class Animation
     {
     private:
-        std::unordered_map<std::string, std::pair<uint32_t, std::vector<std::unique_ptr<flat::Texture>>>> textureSets;
-        std::unordered_map<std::string, std::pair<uint32_t, std::vector<std::unique_ptr<flat::Texture>>>>::iterator currentSet;
-        std::vector<std::unique_ptr<flat::Texture>>::iterator currentTexture;
+        std::unordered_map<std::string,TextureSet> textureSets;
+        std::unordered_map<std::string,TextureSet>::iterator currentSet;
         std::chrono::steady_clock::time_point lastTextureSwap;
-        void tryUpdateAnimation();
 
     public:
         Animation();
