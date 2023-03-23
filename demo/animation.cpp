@@ -11,6 +11,10 @@ flat::TextureSet::TextureSet()
 {
 }
 
+flat::TextureSet::~TextureSet()
+{
+}
+
 void flat::TextureSet::updateCurrentTexture()
 {
     if(index == textures.size() - 1)
