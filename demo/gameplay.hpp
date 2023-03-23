@@ -2,8 +2,11 @@
 
 #include <chrono>
 #include <memory>
-#include <unordered_map>
 #include <vector>
+#include <iterator>
+#include <algorithm>
+#include <string_view>
+#include <unordered_map>
 
 #include "renderer.hpp"
 
@@ -51,8 +54,8 @@ namespace flat
     class Animation
     {
     private:
-        std::unordered_map<std::string,TextureSet> textureSets;
-        std::unordered_map<std::string,TextureSet>::iterator currentSet;
+        std::unordered_map<std::string, TextureSet> textureSets;
+        std::unordered_map<std::string, TextureSet>::iterator currentSet;
         std::chrono::steady_clock::time_point lastTextureSwap;
 
     public:
@@ -64,11 +67,25 @@ namespace flat
         flat::Texture& getCurrentTexture();
     };
 
-    class GameObject : public Physics2D, public Animation
+    template <typename T> class GameObject : public Physics2D, public Animation
     {
     private:
+        std::unordered_map<std::string,std::string> attribs;
+
     public:
-        GameObject();
-        ~GameObject();
+        void onInitialize() { static_cast<T*>(this)->imp_onInitialize(); }
+        void onCreate() { static_cast<T*>(this)->imp_onCreate(); }
+        void onTick() { static_cast<T*>(this)->imp_onTick(); }
+        void onDestroy() { static_cast<T*>(this)->imp_onDestroy(); }
+
+        void setAttrib(std::string_view name,std::string_view val)
+        {
+            attribs[std::move(std::string(name))] = std::move(std::string(val));
+        }
+
+        std::string_view getAttrib(std::string_view name)
+        {
+            return attribs[std::move(std::string(name))];
+        }
     };
 }  // namespace flat
