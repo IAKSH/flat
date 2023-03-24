@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(flat2demo VERSION 0.1.0)
-
-include(CTest)
-enable_testing()
+project(flat3 VERSION 0.1.0)
 
 add_subdirectory(3rdparty/zlib/)
 add_subdirectory(3rdparty/glfw/)
+add_subdirectory(3rdparty/googletest/)
 add_subdirectory(3rdparty/openal-soft/)
+add_subdirectory(3rdparty/freetype/)
 
-add_subdirectory(FlatWindow)
-add_subdirectory(FlatAudio)
-add_subdirectory(FlatCollision)
-
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+add_subdirectory(test)
+add_subdirectory(demo)

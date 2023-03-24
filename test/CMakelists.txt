@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(flat3 VERSION 0.1.0)
+
+add_subdirectory(renderer)
+add_subdirectory(audioplayer)
+add_subdirectory(window)
+add_subdirectory(kbinput)
+add_subdirectory(msinput)

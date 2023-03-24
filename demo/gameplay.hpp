@@ -1,80 +1,90 @@
 #pragma once
 
-#include <array>
-#include <iostream>
+#include <chrono>
+#include <deque>
+#include <initializer_list>
+#include <memory>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include <string_view>
+#include <unordered_map>
 
-#include <flat_al/audio.hpp>
-#include <flat_gl/window.hpp>
-#include <flat_gjk/gjk.hpp>
-#include <utility>
+#include "renderer.hpp"
 
-namespace flappy
+namespace flat
 {
-
-    class BackGround
-    {
-    public:
-        BackGround();
-        ~BackGround() = default;
-        flat::AudioSource&& source = std::move(flat::al::Source());
-        flat::Texture&& texture =  std::move(flat::gl::Texture());
-        flat::Rectangle&& rectangle = std::move(flat::gl::Rectangle());
-        flat::Hitbox2D&& hitbox = std::move(flat::gjk::Hitbox2D());
-    };
-
-    class Pipe
-    {
-    public:
-        Pipe();
-        ~Pipe() = default;
-        flat::Rectangle&& rectangle = std::move(flat::gl::Rectangle());
-        flat::Hitbox2D&& hitbox = std::move(flat::gjk::Hitbox2D());
-        flat::Texture&& texture =  std::move(flat::gl::Texture());
-    };
-
-    class Bird
-    {
-    public:
-        Bird();
-        ~Bird() = default;
-        flat::AudioSource&& source = std::move(flat::al::Source());
-        flat::Texture&& texture0 =  std::move(flat::gl::Texture());
-        flat::Texture&& texture1 =  std::move(flat::gl::Texture());
-        flat::Texture&& texture2 =  std::move(flat::gl::Texture());
-        flat::Rectangle&& rectangle = std::move(flat::gl::Rectangle());
-        flat::Hitbox2D&& hitbox = std::move(flat::gjk::Hitbox2D());
-        float velocityY;
-    };
-
-    class GamePlay
+    class Physics2D
     {
     private:
-        flat::gl::FWWindow _window;
-        flat::Window& window = _window;
-        flat::KeyboardInputSource& kbInput = _window;
-        flat::MouseInputSource& msInput = _window;
-        flat::Renderer& renderer  = _window;
-
-        flat::al::Listener _listener;
-        flat::AudioListener& listener = _listener;
-        flat::al::Audio bgm;
-        //flat::al::Audio fly;
-        //flat::al::Audio die;
-        //flat::al::Audio scored;
-
-        BackGround background;
-        Bird bird;
-        std::array<Pipe,4> pipes;
-
-        void initWindow();
-        void initListener();
-        void initBird();
-        void initPipes();
-        void initBackGround();
+        float posX, posY, width, height, rotate;
 
     public:
-        GamePlay();
-        ~GamePlay() = default;
-        void start();
+        Physics2D();
+        ~Physics2D();
+        float getPosX();
+        float getPosY();
+        float getWidth();
+        float getHeight();
+        float getRotate();
+        void setPosX(float f);
+        void setPosY(float f);
+        void setWidth(float f);
+        void setHeight(float f);
+        void setRotate(float f);
+        bool collisionCheck(Physics2D& obj);
     };
-}
+
+    class Animation
+    {
+    private:
+        std::deque<flat::Texture*> textures;
+        int intervalMS;
+
+    public:
+        Animation();
+        Animation(int ms,std::initializer_list<flat::Texture*> list);
+        ~Animation();
+        int getTotalFrameCount();
+        int getIntervalMS();
+        void addTexture(flat::Texture* texture);
+        void setInterval(int ms);
+        flat::Texture* getTextureAt(int index);
+    };
+
+    class Animator
+    {
+    private:
+        std::unordered_map<std::string, Animation> animations;
+        std::chrono::steady_clock::time_point lastUpdate;
+        Animation* currentAnimation;
+        int currentTextureIndex;
+        void tryUpdateTextureIndex();
+
+    public:
+        Animator();
+        ~Animator();
+        void bindAnimation(std::string_view name,Animation& ani);
+        void switchAnimationTo(std::string_view name);
+        flat::Texture& getCurrentTexture();
+    };
+
+    template <typename T> class GameObject : public Physics2D, public Animator
+    {
+    private:
+        std::unordered_map<std::string,std::string> attribs;
+
+    public:
+        void onTick() { static_cast<T*>(this)->imp_onTick(); }
+
+        void setAttrib(std::string_view name,std::string_view val)
+        {
+            attribs[std::move(std::string(name))] = std::move(std::string(val));
+        }
+
+        std::string_view getAttrib(std::string_view name)
+        {
+            return attribs[std::move(std::string(name))];
+        }
+    };
+}  // namespace flat
