@@ -167,7 +167,7 @@ namespace flat::imp::audio::alsoft
                 alListeneri(AL_LOOPING, static_cast<ALboolean>(attrib.getVal()));
                 break;
             case flat::AudioAttribType::gain:
-                alListeneri(AL_GAIN, attrib.getVal());
+                alListenerf(AL_GAIN, attrib.getVal());
                 break;
             }
         }
