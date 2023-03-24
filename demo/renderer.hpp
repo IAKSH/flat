@@ -73,13 +73,14 @@ namespace flat
         Renderer<T>& operator<<(U&& u)
             requires(DrawArgs<U>)
         {
-            if constexpr(std::is_same<U, Rectangle>())
+            using UType = std::remove_cvref_t<U>;
+            if constexpr(std::is_same<UType, Rectangle>())
                 static_cast<T*>(this)->imp_drawRectangle(u);
-            else if constexpr(std::is_same<U, Color>())
+            else if constexpr(std::is_same<UType, Color>())
                 static_cast<T*>(this)->imp_setColor(u);
-            else if constexpr(std::is_same<U, Texture>())
+            else if constexpr(std::is_same<UType, Texture>())
                 static_cast<T*>(this)->imp_bindTexture(u);
-            else if constexpr(std::is_same<U, TextureOffset>())
+            else if constexpr(std::is_same<UType, TextureOffset>())
                 static_cast<T*>(this)->imp_setTextureOffset(u);
 
             return *this;

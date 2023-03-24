@@ -70,8 +70,9 @@ void flat::Animator::bindAnimation(std::string_view name, Animation &ani)
 
 void flat::Animator::tryUpdateTextureIndex()
 {
-    if(std::chrono::steady_clock::now() - lastUpdate <= std::chrono::milliseconds(currentAnimation->getIntervalMS()))
+    if(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastUpdate).count() >= currentAnimation->getIntervalMS())
     {
+        lastUpdate = std::chrono::steady_clock::now();
         if(currentTextureIndex < (currentAnimation->getTotalFrameCount() - 1))
             ++currentTextureIndex;
         else
