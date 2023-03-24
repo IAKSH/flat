@@ -63,14 +63,14 @@ namespace glfwms
 
         ~MouseSource() {}
 
-        float imp_getMousePositionX()
+        double imp_getMousePositionX()
         {
             double buffer;
             glfwGetCursorPos(window, &buffer, nullptr);
             return buffer;
         }
 
-        float imp_getMousePositionY()
+        double imp_getMousePositionY()
         {
             double buffer;
             glfwGetCursorPos(window, nullptr, &buffer);

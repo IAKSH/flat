@@ -108,28 +108,28 @@ namespace flat::imp::window::glfw
 
         void imp_setWindowTitle(std::string_view str) { glfwSetWindowTitle(window, str.data()); }
 
-        float imp_getWindowPosX()
+        int imp_getWindowPosX()
         {
             int x;
             glfwGetWindowPos(window, &x, nullptr);
             return x;
         }
 
-        float imp_getWindowPosY()
+        int imp_getWindowPosY()
         {
             int y;
             glfwGetWindowPos(window, nullptr, &y);
             return y;
         }
 
-        float imp_getWindowSizeW()
+        int imp_getWindowSizeW()
         {
             int w;
             glfwGetWindowSize(window, &w, nullptr);
             return w;
         }
 
-        float imp_getWindowSizeH()
+        int imp_getWindowSizeH()
         {
             int h;
             glfwGetWindowSize(window, nullptr, &h);
