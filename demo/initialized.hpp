@@ -5,5 +5,5 @@
 
 namespace flat
 {
-    inline static std::vector<std::string> initialized;
+	inline static std::vector<std::string> initialized;
 }

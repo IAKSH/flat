@@ -28,94 +28,94 @@ static flat::Animation pipeAnimation(1000, { pipeTexUp.get() });
 class Bird : public flat::GameObject<Bird>
 {
 private:
-    float velocityY;
+	float velocityY;
 
 public:
-    Bird()
-        : velocityY(0.0f)
-    {
-        
-        bindAnimation("fly", birdAnimation);
-        switchAnimationTo("fly");
+	Bird()
+		: velocityY(0.0f)
+	{
 
-        setPosX(-0.8f);
-        setWidth(0.09f);
-        setHeight(0.1f);
-    }
+		bindAnimation("fly", birdAnimation);
+		switchAnimationTo("fly");
 
-    ~Bird() = default;
-    void imp_onTick()
-    {
-        if(keyboard.checkKey(GLFW_KEY_SPACE))
-            velocityY = 0.05f;
+		setPosX(-0.8f);
+		setWidth(0.09f);
+		setHeight(0.1f);
+	}
 
-        setPosY(getPosY() + velocityY);
-        if(velocityY > -0.075f)
-            velocityY -= 0.005f;
-        
-        ren << flat::Color(1.0f,1.0f,1.0f,1.0f) << flat::TextureOffset(0.0f,0.0f,1.0f,1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(),getPosY(),0.0f,getWidth(),getHeight(),getRotate());
-    }
+	~Bird() = default;
+	void imp_onTick()
+	{
+		if (keyboard.checkKey(GLFW_KEY_SPACE))
+			velocityY = 0.05f;
+
+		setPosY(getPosY() + velocityY);
+		if (velocityY > -0.075f)
+			velocityY -= 0.005f;
+
+		ren << flat::Color(1.0f, 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
+	}
 };
 
 class Pipe : public flat::GameObject<Pipe>
 {
 public:
-    Pipe()
-    {
-        bindAnimation("up", pipeAnimation);
-        switchAnimationTo("up");
-        setHeight(0.5f);
-        setWidth(0.1f);
-    }
+	Pipe()
+	{
+		bindAnimation("up", pipeAnimation);
+		switchAnimationTo("up");
+		setHeight(0.5f);
+		setWidth(0.1f);
+	}
 
-    ~Pipe() = default;
+	~Pipe() = default;
 
-    void imp_onTick()
-    {
-        if (keyboard.checkKey(GLFW_KEY_A))
-            setPosX(getPosX() - 0.01f);
-        if (keyboard.checkKey(GLFW_KEY_D))
-            setPosX(getPosX() + 0.01f);
+	void imp_onTick()
+	{
+		if (keyboard.checkKey(GLFW_KEY_A))
+			setPosX(getPosX() - 0.01f);
+		if (keyboard.checkKey(GLFW_KEY_D))
+			setPosX(getPosX() + 0.01f);
 
-        ren << flat::Color(1.0f, 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
-    }
+		ren << flat::Color(1.0f, 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
+	}
 };
 
 int main()
 {
-    auto source = mixer.genAudioSource();
-    auto mp3 = mixer.genAudio("../../../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
+	auto source = mixer.genAudioSource();
+	auto mp3 = mixer.genAudio("../../../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
 
-    (*source)[flat::AudioAttribType::looping](true);
-    (*source)[flat::AudioAttribType::gain](0.2f);
-    mixer << flat::AudioAttrib(flat::AudioAttribType::gain,0.2f) << (*source)(*mp3);
+	(*source)[flat::AudioAttribType::looping](true);
+	(*source)[flat::AudioAttribType::gain](0.2f);
+	mixer << flat::AudioAttrib(flat::AudioAttribType::gain, 0.75f) << (*source)(*mp3);
 
-    flat::GameObject<Bird>&& bird = Bird();
-    flat::GameObject<Pipe>&& pipe = Pipe();
+	flat::GameObject<Bird>&& bird = Bird();
+	flat::GameObject<Pipe>&& pipe = Pipe();
 
-    while(true)
-    {
-        if(keyboard.checkKey(GLFW_KEY_ESCAPE))
-            break;
-        if(mouse.checkMouseLeft())
-            mixer << flat::StopFlag(*source);
-        if(mouse.checkMouseRight())
-            mixer << flat::ResumeFlag(*source);
+	while (true)
+	{
+		if (keyboard.checkKey(GLFW_KEY_ESCAPE))
+			break;
+		if (mouse.checkMouseLeft())
+			mixer << flat::StopFlag(*source);
+		if (mouse.checkMouseRight())
+			mixer << flat::ResumeFlag(*source);
 
-        bird.onTick();
-        pipe.onTick();
+		bird.onTick();
+		pipe.onTick();
 
-        // DEBUG: hit check
-        if (bird.collisionCheck(pipe))
-        {
-            std::cout << "Hit!\n";
-        }
-        // end
-        
-        std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::milliseconds(12));
+		// DEBUG: hit check
+		if (bird.collisionCheck(pipe))
+		{
+			std::cout << "Hit!\n";
+		}
+		// end
 
-        win.updateWindow();
-    }
+		std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::milliseconds(12));
 
-    return 0;
+		win.updateWindow();
+	}
+
+	return 0;
 }

@@ -165,7 +165,7 @@ size_t flat::Physics2D::indexOfFurthestPoint(const Vec2* vertices, size_t count,
 	return index;
 }
 
-flat::Physics2D::Vec2 flat::Physics2D::support(const Vec2* vertices1, size_t count1,const Vec2* vertices2, size_t count2, Vec2 d)
+flat::Physics2D::Vec2 flat::Physics2D::support(const Vec2* vertices1, size_t count1, const Vec2* vertices2, size_t count2, Vec2 d)
 {
 	// get furthest point of first body along an arbitrary direction
 	size_t i = indexOfFurthestPoint(vertices1, count1, d);
@@ -177,78 +177,78 @@ flat::Physics2D::Vec2 flat::Physics2D::support(const Vec2* vertices1, size_t cou
 	return subtract(vertices1[i], vertices2[j]);
 }
 
-int flat::Physics2D::gjk(const Vec2* vertices1, size_t count1,const Vec2* vertices2, size_t count2)
+int flat::Physics2D::gjk(const Vec2* vertices1, size_t count1, const Vec2* vertices2, size_t count2)
 {
-    size_t index = 0; // index of current vertex of simplex
+	size_t index = 0; // index of current vertex of simplex
 	Vec2 a, b, c, d, ao, ab, ac, abperp, acperp, simplex[3];
 
 	Vec2 position1 = averagePoint(vertices1, count1); // not a CoG but
 	Vec2 position2 = averagePoint(vertices2, count2); // it's ok for GJK )
 
-    // initial direction from the center of 1st body to the center of 2nd body
-    d = subtract(position1, position2);
+	// initial direction from the center of 1st body to the center of 2nd body
+	d = subtract(position1, position2);
 
-    // if initial direction is zero ¨C set it to any arbitrary axis (we choose X)
-    if ((d.x == 0) && (d.y == 0))
-        d.x = 1.f;
+	// if initial direction is zero ¨C set it to any arbitrary axis (we choose X)
+	if ((d.x == 0) && (d.y == 0))
+		d.x = 1.f;
 
-    // set the first support as initial point of the new simplex
-    a = simplex[0] = support(vertices1, count1, vertices2, count2, d);
+	// set the first support as initial point of the new simplex
+	a = simplex[0] = support(vertices1, count1, vertices2, count2, d);
 
-    if (dotProduct(a, d) <= 0)
-        return 0; // no collision
+	if (dotProduct(a, d) <= 0)
+		return 0; // no collision
 
-    d = negate(a); // The next search direction is always towards the origin, so the next search direction is negate(a)
+	d = negate(a); // The next search direction is always towards the origin, so the next search direction is negate(a)
 
-    while (1) {
-        iter_count++;
+	while (1) {
+		iter_count++;
 
-        a = simplex[++index] = support(vertices1, count1, vertices2, count2, d);
+		a = simplex[++index] = support(vertices1, count1, vertices2, count2, d);
 
-        if (dotProduct(a, d) <= 0)
-            return 0; // no collision
+		if (dotProduct(a, d) <= 0)
+			return 0; // no collision
 
-        ao = negate(a); // from point A to Origin is just negative A
+		ao = negate(a); // from point A to Origin is just negative A
 
-        // simplex has 2 points (a line segment, not a triangle yet)
-        if (index < 2) {
-            b = simplex[0];
-            ab = subtract(b, a); // from point A to B
-            d = tripleProduct(ab, ao, ab); // normal to AB towards Origin
-            if (lengthSquared(d) == 0)
-                d = perpendicular(ab);
-            continue; // skip to next iteration
-        }
+		// simplex has 2 points (a line segment, not a triangle yet)
+		if (index < 2) {
+			b = simplex[0];
+			ab = subtract(b, a); // from point A to B
+			d = tripleProduct(ab, ao, ab); // normal to AB towards Origin
+			if (lengthSquared(d) == 0)
+				d = perpendicular(ab);
+			continue; // skip to next iteration
+		}
 
-        b = simplex[1];
-        c = simplex[0];
-        ab = subtract(b, a); // from point A to B
-        ac = subtract(c, a); // from point A to C
+		b = simplex[1];
+		c = simplex[0];
+		ab = subtract(b, a); // from point A to B
+		ac = subtract(c, a); // from point A to C
 
-        acperp = tripleProduct(ab, ac, ac);
+		acperp = tripleProduct(ab, ac, ac);
 
-        if (dotProduct(acperp, ao) >= 0) {
+		if (dotProduct(acperp, ao) >= 0) {
 
-            d = acperp; // new direction is normal to AC towards Origin
+			d = acperp; // new direction is normal to AC towards Origin
 
-        }
-        else {
+		}
+		else {
 
-            abperp = tripleProduct(ac, ab, ab);
+			abperp = tripleProduct(ac, ab, ab);
 
-            if (dotProduct(abperp, ao) < 0)
-                return 1; // collision
+			if (dotProduct(abperp, ao) < 0)
+				return 1; // collision
 
-            simplex[0] = simplex[1]; // swap first element (point C)
+			simplex[0] = simplex[1]; // swap first element (point C)
 
-            d = abperp; // new direction is normal to AB towards Origin
-        }
+			d = abperp; // new direction is normal to AB towards Origin
+		}
 
-        simplex[1] = simplex[2]; // swap element in the middle (point B)
-        --index;
-    }
+		simplex[1] = simplex[2]; // swap element in the middle (point B)
+		--index;
+	}
 
-    return 0;
+	return 0;
 }
 
 float flat::Physics2D::Perturbation()
