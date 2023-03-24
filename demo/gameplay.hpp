@@ -1,6 +1,8 @@
 #pragma once
 
 #include <chrono>
+#include <deque>
+#include <initializer_list>
 #include <memory>
 #include <vector>
 #include <iterator>
@@ -33,50 +35,47 @@ namespace flat
         bool collisionCheck(Physics2D& obj);
     };
 
-    class TextureSet
-    {
-    private:
-        int intervalMS;
-        std::vector<std::unique_ptr<flat::Texture>> textures;
-        int index;
-        void updateCurrentTexture();
-
-    public:
-        TextureSet();
-        ~TextureSet();
-        void resetCurrentTexture();
-        void setIntervalMS(int ms);
-        void addTexture(flat::Texture& texture);
-        const int& getIntervalMS();
-        flat::Texture& getCurrentTexture();
-    };
-
     class Animation
     {
     private:
-        std::unordered_map<std::string, TextureSet> textureSets;
-        std::unordered_map<std::string, TextureSet>::iterator currentSet;
-        std::chrono::steady_clock::time_point lastTextureSwap;
+        std::deque<flat::Texture*> textures;
+        int intervalMS;
 
     public:
         Animation();
+        Animation(int ms,std::initializer_list<flat::Texture*> list);
         ~Animation();
-        void addTextureToSet(std::string name, std::unique_ptr<flat::Texture>& tex);
-        void addTextureToSet(std::string name, int intervalMS, std::unique_ptr<flat::Texture>& tex);
-        void switchTextureSet(std::string name);
+        int getTotalFrameCount();
+        int getIntervalMS();
+        void addTexture(flat::Texture* texture);
+        void setInterval(int ms);
+        flat::Texture* getTextureAt(int index);
+    };
+
+    class Animator
+    {
+    private:
+        std::unordered_map<std::string, Animation> animations;
+        std::chrono::steady_clock::time_point lastUpdate;
+        Animation* currentAnimation;
+        int currentTextureIndex;
+        void tryUpdateTextureIndex();
+
+    public:
+        Animator();
+        ~Animator();
+        void bindAnimation(std::string_view name,Animation& ani);
+        void switchAnimationTo(std::string_view name);
         flat::Texture& getCurrentTexture();
     };
 
-    template <typename T> class GameObject : public Physics2D, public Animation
+    template <typename T> class GameObject : public Physics2D, public Animator
     {
     private:
         std::unordered_map<std::string,std::string> attribs;
 
     public:
-        void onInitialize() { static_cast<T*>(this)->imp_onInitialize(); }
-        void onCreate() { static_cast<T*>(this)->imp_onCreate(); }
         void onTick() { static_cast<T*>(this)->imp_onTick(); }
-        void onDestroy() { static_cast<T*>(this)->imp_onDestroy(); }
 
         void setAttrib(std::string_view name,std::string_view val)
         {

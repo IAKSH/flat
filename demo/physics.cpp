@@ -1,5 +1,4 @@
 #include "gameplay.hpp"
-#include <_mingw_mac.h>
 
 flat::Physics2D::Physics2D()
     : posX(0.0f),posY(0.0f),width(0.0f),height(0.0f),rotate(0.0f)
@@ -63,4 +62,5 @@ void flat::Physics2D::setRotate(float f)
 bool flat::Physics2D::collisionCheck(Physics2D &obj)
 {
     // TODO: GJK collision check
+    return false;
 }
