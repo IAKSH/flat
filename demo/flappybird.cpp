@@ -23,6 +23,7 @@ static std::unique_ptr<flat::Texture> pipeTexDown = ren.genTexture("../../../../
 static std::unique_ptr<flat::Texture> pipeTexUp = ren.genTexture("../../../../demo/images/pipe_up.png");
 
 static flat::Animation birdAnimation(250, { birdTex0.get(), birdTex1.get(), birdTex2.get() });
+static flat::Animation pipeAnimation(1000, { pipeTexUp.get() });
 
 class Bird : public flat::GameObject<Bird>
 {
@@ -42,7 +43,7 @@ public:
         setHeight(0.1f);
     }
 
-    ~Bird() {}
+    ~Bird() = default;
     void imp_onTick()
     {
         if(keyboard.checkKey(GLFW_KEY_SPACE))
@@ -56,6 +57,30 @@ public:
     }
 };
 
+class Pipe : public flat::GameObject<Pipe>
+{
+public:
+    Pipe()
+    {
+        bindAnimation("up", pipeAnimation);
+        switchAnimationTo("up");
+        setHeight(0.5f);
+        setWidth(0.1f);
+    }
+
+    ~Pipe() = default;
+
+    void imp_onTick()
+    {
+        if (keyboard.checkKey(GLFW_KEY_A))
+            setPosX(getPosX() - 0.01f);
+        if (keyboard.checkKey(GLFW_KEY_D))
+            setPosX(getPosX() + 0.01f);
+
+        ren << flat::Color(1.0f, 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
+    }
+};
+
 int main()
 {
     auto source = mixer.genAudioSource();
@@ -66,6 +91,7 @@ int main()
     mixer << flat::AudioAttrib(flat::AudioAttribType::gain,0.2f) << (*source)(*mp3);
 
     flat::GameObject<Bird>&& bird = Bird();
+    flat::GameObject<Pipe>&& pipe = Pipe();
 
     while(true)
     {
@@ -77,6 +103,14 @@ int main()
             mixer << flat::ResumeFlag(*source);
 
         bird.onTick();
+        pipe.onTick();
+
+        // DEBUG: hit check
+        if (bird.collisionCheck(pipe))
+        {
+            std::cout << "Hit!\n";
+        }
+        // end
         
         std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::milliseconds(12));
 
