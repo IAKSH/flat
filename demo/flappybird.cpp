@@ -36,7 +36,6 @@ public:
 	Bird()
 		: velocityY(0.0f)
 	{
-
 		bindAnimation("fly", birdAnimation);
 		switchAnimationTo("fly");
 
@@ -115,11 +114,11 @@ int main()
 		// end
 
 		// DEBUG: draw text
-		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('H') << flat::Rectangle(0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
-		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('E') << flat::Rectangle(0.075f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
-		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('L') << flat::Rectangle(0.15f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
-		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('L') << flat::Rectangle(0.225f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
-		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('O') << flat::Rectangle(0.3f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('H') << flat::Rectangle(0.0f, 0.0f, 0.0f, 0.05f, 0.05f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('E') << flat::Rectangle(0.15f, 0.0f, 0.0f, 0.05f, 0.05f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('L') << flat::Rectangle(0.3f, 0.0f, 0.0f, 0.05f, 0.05f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('L') << flat::Rectangle(0.45f, 0.0f, 0.0f, 0.05f, 0.05f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('O') << flat::Rectangle(0.6f, 0.0f, 0.0f, 0.05f, 0.05f, 0.0f);
 		// end
 
 		std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::milliseconds(12));
