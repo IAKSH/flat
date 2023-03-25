@@ -16,11 +16,11 @@ static flat::KeyboardSource<flat::imp::keyboard::glfw::KeyboardSource>&& keyboar
 static flat::MouseSource<flat::imp::mouse::glfw::MouseSource>&& mouse = flat::imp::mouse::glfw::MouseSource();
 static flat::AudioMixer<flat::imp::audio::alsoft::AudioMixer>&& mixer = flat::imp::audio::alsoft::AudioMixer();
 
-static std::unique_ptr<flat::Texture> birdTex0 = ren.genTexture("../../../../demo/images/bird0_0.png");
-static std::unique_ptr<flat::Texture> birdTex1 = ren.genTexture("../../../../demo/images/bird0_1.png");
-static std::unique_ptr<flat::Texture> birdTex2 = ren.genTexture("../../../../demo/images/bird0_2.png");
-static std::unique_ptr<flat::Texture> pipeTexDown = ren.genTexture("../../../../demo/images/pipe_down.png");
-static std::unique_ptr<flat::Texture> pipeTexUp = ren.genTexture("../../../../demo/images/pipe_up.png");
+static std::unique_ptr<flat::Texture> birdTex0 = ren.genTexture("../../demo/images/bird0_0.png");
+static std::unique_ptr<flat::Texture> birdTex1 = ren.genTexture("../../demo/images/bird0_1.png");
+static std::unique_ptr<flat::Texture> birdTex2 = ren.genTexture("../../demo/images/bird0_2.png");
+static std::unique_ptr<flat::Texture> pipeTexDown = ren.genTexture("../../demo/images/pipe_down.png");
+static std::unique_ptr<flat::Texture> pipeTexUp = ren.genTexture("../../demo/images/pipe_up.png");
 
 static flat::Animation birdAnimation(250, { birdTex0.get(), birdTex1.get(), birdTex2.get() });
 static flat::Animation pipeAnimation(1000, { pipeTexUp.get() });
@@ -84,7 +84,7 @@ public:
 int main()
 {
 	auto source = mixer.genAudioSource();
-	auto mp3 = mixer.genAudio("../../../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
+	auto mp3 = mixer.genAudio("../../demo/sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
 
 	(*source)[flat::AudioAttribType::looping](true);
 	(*source)[flat::AudioAttribType::gain](0.2f);
