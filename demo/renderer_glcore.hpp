@@ -182,6 +182,9 @@ namespace flat::imp::renderer::glcore
 
 			glUseProgram(shader);
 			glUniform1i(glGetUniformLocation(shader, "texture0"), 0);
+
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 
 		void makeDrawMeta()
@@ -330,13 +333,13 @@ namespace flat::imp::renderer::glcore
 
 			FT_Set_Pixel_Sizes(face, 0, 48);
 
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // ½ûÓÃ×Ö½Ú¶ÔÆëÏÞÖÆ
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // ï¿½ï¿½ï¿½ï¿½ï¿½Ö½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 			auto font = std::make_unique<Font>();
 
 			for (GLubyte c = 0; c < 128; c++)
 			{
-				// ¼ÓÔØ×Ö·ûµÄ×ÖÐÎ
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if (FT_Load_Char(face, c, FT_LOAD_RENDER))
 				{
 					std::cout << "error: failed to load Glyph" << std::endl;
