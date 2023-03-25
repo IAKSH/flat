@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(flat3 VERSION 0.1.0)
+
+include(CTest)
+enable_testing()
+
+add_executable(gtestprogram_font)
+add_dependencies(gtestprogram_font glfw freetype)
+target_compile_features(gtestprogram_font PRIVATE cxx_std_20)
+target_sources(gtestprogram_font PRIVATE 
+    test.cpp 
+    initialized.hpp 
+    abstruct_api.hpp 
+    glcore_imp.hpp 
+    static_type_check.hpp 
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glad/src/glad.c
+    )
+
+target_include_directories(gtestprogram_font PUBLIC 
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/freetype/include
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glfw/include
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glad/include
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/glm
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/stb
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/freetype/include
+    )
+
+target_link_libraries(gtestprogram_font PRIVATE glfw freetype)
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)
