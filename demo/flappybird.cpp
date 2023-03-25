@@ -22,6 +22,8 @@ static std::unique_ptr<flat::Texture> birdTex2 = ren.genTexture("images/bird0_2.
 static std::unique_ptr<flat::Texture> pipeTexDown = ren.genTexture("images/pipe_down.png");
 static std::unique_ptr<flat::Texture> pipeTexUp = ren.genTexture("images/pipe_up.png");
 
+static std::unique_ptr<flat::Font> unifont = ren.genFont("fonts/unifont-15.0.01.ttf");
+
 static flat::Animation birdAnimation(250, { birdTex0.get(), birdTex1.get(), birdTex2.get() });
 static flat::Animation pipeAnimation(1000, { pipeTexUp.get() });
 
@@ -110,6 +112,14 @@ int main()
 		{
 			std::cout << "Hit!\n";
 		}
+		// end
+
+		// DEBUG: draw text
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('H') << flat::Rectangle(0.0f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('E') << flat::Rectangle(0.075f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('L') << flat::Rectangle(0.15f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('L') << flat::Rectangle(0.225f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
+		ren << flat::Color(sin(glfwGetTime()), 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << (*unifont)('O') << flat::Rectangle(0.3f, 0.0f, 0.0f, 0.025f, 0.025f, 0.0f);
 		// end
 
 		std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::milliseconds(12));

@@ -64,6 +64,13 @@ namespace flat
 		float getScaleY() { return scaleY; }
 	};
 
+	class Font
+	{
+	public:
+		virtual ~Font() {}
+		virtual flat::Texture& operator() (char c) = 0;
+	};
+
 	template <typename T>
 	concept DrawArgs = flat::is_same<T, Rectangle, Color, Texture, TextureOffset>();
 
@@ -87,6 +94,7 @@ namespace flat
 		}
 
 		std::unique_ptr<Texture> genTexture(std::string_view path) { return static_cast<T*>(this)->imp_genTexture(path); }
+		std::unique_ptr<Font> genFont(std::string_view path) { return static_cast<T*>(this)->imp_genFont(path); }
 		void initialize() { static_cast<T*>(this)->imp_initialize(); }
 	};
 }

@@ -15,6 +15,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <freetype/freetype.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -30,6 +31,50 @@ namespace flat::imp::renderer::glcore
 		Texture(uint32_t id) : textureId(id) {}
 		virtual ~Texture() override { glDeleteTextures(1, &textureId); }
 		uint32_t getTextureId() { return textureId; }
+	};
+
+	class Font : public flat::Font
+	{
+	private:
+		std::unordered_map<char, std::unique_ptr<Texture>> textures;
+		int fontSize;
+
+	public:
+		Font() : fontSize(0)
+		{}
+		virtual ~Font() override {}
+
+		int getFontSize()
+		{
+			return fontSize;
+		}
+
+		void setFontSize(int size)
+		{
+			fontSize = size;
+		}
+
+		void addTexture(char c, int texId)
+		{
+			if (textures.count(c) != 0)
+			{
+				std::cerr << "error: texture conflict in Font, c = " << '\'' << c << '\'' << std::endl;
+				abort();
+			}
+
+			textures[c] = std::move(std::make_unique<Texture>(texId));
+		}
+
+		flat::Texture& operator() (char c) override
+		{
+			if (textures.count(c) == 0)
+			{
+				std::cerr << "error: can't find texture \'" << c << "\' from Font" << std::endl;
+				abort();
+			}
+
+			return *textures[c];
+		}
 	};
 
 	class Renderer : public flat::Renderer<Renderer>
@@ -271,6 +316,76 @@ namespace flat::imp::renderer::glcore
 
 			stbi_image_free(data);
 			return std::make_unique<Texture>(textureId);
+		}
+
+		std::unique_ptr<Font> imp_genFont(std::string_view path)
+		{
+			FT_Library ft;
+			if (FT_Init_FreeType(&ft))
+				std::cout << "error: could not init FreeType Library" << std::endl;
+
+			FT_Face face;
+			if (FT_New_Face(ft, path.data(), 0, &face))
+				std::cout << "error: failed to load font" << std::endl;
+
+			FT_Set_Pixel_Sizes(face, 0, 48);
+
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  // 禁用字节对齐限制
+
+			auto font = std::make_unique<Font>();
+
+			for (GLubyte c = 0; c < 128; c++)
+			{
+				// 加载字符的字形
+				if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+				{
+					std::cout << "error: failed to load Glyph" << std::endl;
+					continue;
+				}
+
+				// gen RGBA
+				unsigned char* rgbaData = new unsigned char[face->glyph->bitmap.width * face->glyph->bitmap.rows * 4];
+				for (int i = 0; i < face->glyph->bitmap.width * face->glyph->bitmap.rows; i++) {
+					rgbaData[i * 4] = face->glyph->bitmap.buffer[i];
+					rgbaData[i * 4 + 1] = face->glyph->bitmap.buffer[i];
+					rgbaData[i * 4 + 2] = face->glyph->bitmap.buffer[i];
+					rgbaData[i * 4 + 3] = 255;
+				}
+
+				// set every black pixel's alpha to 255
+				for (int i = 0; i < face->glyph->bitmap.width * face->glyph->bitmap.rows; i++) {
+					if ((rgbaData[i * 4] == 0) && (rgbaData[i * 4 + 1] == 0) && (rgbaData[i * 4 + 2] == 0)) {
+						rgbaData[i * 4] = 0;
+						rgbaData[i * 4 + 1] = 0;
+						rgbaData[i * 4 + 2] = 0;
+						rgbaData[i * 4 + 3] = 0;
+					}
+					else {
+						rgbaData[i * 4] = rgbaData[i * 4];
+						rgbaData[i * 4 + 1] = rgbaData[i * 4 + 1];
+						rgbaData[i * 4 + 2] = rgbaData[i * 4 + 2];
+						rgbaData[i * 4 + 3] = 255;
+					}
+				}
+
+				GLuint texture;
+				glGenTextures(1, &texture);
+				glBindTexture(GL_TEXTURE_2D, texture);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgbaData);
+
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+				font->addTexture(c, texture);
+				delete[] rgbaData;
+			}
+
+			FT_Done_Face(face);
+			FT_Done_FreeType(ft);
+
+			return font;
 		}
 	};
 }
