@@ -7,6 +7,7 @@ enable_testing()
 add_subdirectory(3rdparty/glfw-3.3.8/)
 
 add_executable(flat2demo)
+add_dependencies(flat2demo glfw)
 target_compile_features(flat2demo PUBLIC cxx_std_20)
 file(GLOB MY_SOURCE_FILES "source/*.cpp" "source/*.hpp" "demo/*.cpp" "demo/*.hpp")
 target_sources(flat2demo PUBLIC
