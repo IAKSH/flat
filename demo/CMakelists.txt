@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 3.0.0)
+project(flat2AudioTest VERSION 0.1.0)
+
+add_executable(flappybird)
+add_dependencies(flappybird glfw OpenAL freetype)
+target_sources(flappybird PRIVATE 
+    flappybird.cpp
+    gameplay.hpp
+    physics.cpp
+    animation.cpp
+    audio_alsoft.hpp
+    audio.hpp
+    renderer_glcore.hpp
+    window_glfw.hpp
+    initialized.hpp
+    renderer.hpp
+    typecontrol.hpp
+    window.hpp
+    dtype.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/src/glad.c
+    )
+
+target_include_directories(flappybird PUBLIC 
+    ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/openal-soft/include
+    ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/minimp3
+    ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glfw/include
+    ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/include
+    ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glm
+    ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/stb
+    ${CMAKE_CURRENT_LIST_DIR}/../../3rdparty/freetype/include
+    )
+
+target_compile_features(flappybird PUBLIC cxx_std_20)
+target_link_libraries(flappybird PUBLIC glfw OpenAL freetype)
