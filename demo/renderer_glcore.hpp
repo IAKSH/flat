@@ -88,12 +88,13 @@ namespace flat::imp::renderer::glcore
 			"out vec4 aColor;\n"
 			"out vec2 aTexCoordOut;\n"
 			"uniform mat4 transform;\n"
+			"uniform mat4 coordsTrans;\n"
 			"uniform vec2 texOffset;\n"
 			"uniform vec2 texScale;\n"
 			"uniform vec4 color;\n"
 			"void main()\n"
 			"{\n"
-			"    gl_Position = transform * vec4(aPos, 1.0f);\n"
+			"    gl_Position = coordsTrans * transform * vec4(aPos, 1.0f);\n"
 			"    aColor = color;\n"
 			"    aTexCoordOut = (vec2(aTexCoord.x + texOffset.x, 1.0 - aTexCoord.y + texOffset.y) * texScale) + texOffset;\n"
 			"}\0";
@@ -185,6 +186,13 @@ namespace flat::imp::renderer::glcore
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// coords translation
+			GLFWwindow* win = glfwGetCurrentContext();
+			int winWidth, winHeight;
+			glfwGetWindowSize(win, &winWidth, &winHeight);
+			auto ortho = glm::ortho(0.0f, static_cast<float>(winWidth), 0.0f, static_cast<float>(winHeight), -1.0f, 1.0f);
+			glUniformMatrix4fv(glGetUniformLocation(shader, "coordsTrans"), 1, GL_FALSE, glm::value_ptr(ortho));
 		}
 
 		void makeDrawMeta()
@@ -239,9 +247,7 @@ namespace flat::imp::renderer::glcore
 			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(rectangle.getX(), rectangle.getY(), rectangle.getZ()));
 			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(rectangle.getWidth(), rectangle.getHeight(), 1.0f));
 			trans *= glm::rotate(glm::mat4(1.0f), glm::radians(rectangle.getRotateZ()), glm::vec3(0.0f, 0.0f, 1.0f));
-
-			unsigned int location = glGetUniformLocation(shader, "transform");
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
+			glUniformMatrix4fv(glGetUniformLocation(shader, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 
 			glBindVertexArray(vao);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

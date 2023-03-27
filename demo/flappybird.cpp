@@ -41,22 +41,23 @@ public:
 		bindAnimation("stand", emptyManStandAnimation);
 		switchAnimationTo("stand");
 
-		setPosX(-0.8f);
-		setWidth(0.19f);
-		setHeight(0.2f);
+		setPosX(100.0f);
+		setPosY(100.0f);
+		setWidth(20.0f);
+		setHeight(20.0f);
 	}
 
 	~Man() = default;
 	void imp_onTick()
 	{
 		if (keyboard.checkKey(GLFW_KEY_D))
-			setPosX(getPosX() + 0.01f);
+			setPosX(getPosX() + 1.01f);
 		if (keyboard.checkKey(GLFW_KEY_A))
-			setPosX(getPosX() - 0.01f);
+			setPosX(getPosX() - 1.0f);
 		if (keyboard.checkKey(GLFW_KEY_W))
-			setPosY(getPosY() + 0.01f);
+			setPosY(getPosY() + 1.0f);
 		if (keyboard.checkKey(GLFW_KEY_S))
-			setPosY(getPosY() - 0.01f);
+			setPosY(getPosY() - 1.0f);
 
 		ren << flat::Color(1.0f, 1.0f, 1.0f, 0.8f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
 	}
@@ -74,16 +75,16 @@ private:
 
 public:
 	Man2()
-		: lastMove(std::chrono::steady_clock::now()), maxMoveIntervalMS(1), gen(rd()), intervalDis(maxMoveIntervalMS / 2, maxMoveIntervalMS), moveDis(-1, 1)
+		: lastMove(std::chrono::steady_clock::now()), maxMoveIntervalMS(10), gen(rd()), intervalDis(maxMoveIntervalMS / 2, maxMoveIntervalMS), moveDis(-1, 1)
 	{
 		bindAnimation("stand", emptyManStandAnimation);
 		switchAnimationTo("stand");
 
-		setPosX(moveDis(gen) / 1.25f);
-		setPosY(moveDis(gen) / 1.25f);
+		setPosX(200.0f + abs(moveDis(gen)) * 250.0f);
+		setPosY(200.0f + abs(moveDis(gen)) * 250.0f);
 
-		setWidth(0.19f);
-		setHeight(0.2f);
+		setWidth(20.0f);
+		setHeight(20.0f);
 	}
 
 	~Man2() = default;
@@ -91,36 +92,12 @@ public:
 	{
 		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastMove).count() >= maxMoveIntervalMS)
 		{
-			setPosX(getPosX() + (moveDis(gen) / 100.0f));
-			setPosY(getPosY() + (moveDis(gen) / 100.0f));
+			setPosX(getPosX() + (moveDis(gen)));
+			setPosY(getPosY() + (moveDis(gen)));
 			lastMove = std::chrono::steady_clock::now();
 		}
 
 		ren << flat::Color(sin(moveDis(gen) * 10), cos(moveDis(gen) * 10), sin(moveDis(gen) * 10), 0.75f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
-	}
-};
-
-class Pipe : public flat::GameObject<Pipe>
-{
-public:
-	Pipe()
-	{
-		bindAnimation("up", pipeAnimation);
-		switchAnimationTo("up");
-		setHeight(0.5f);
-		setWidth(0.1f);
-	}
-
-	~Pipe() = default;
-
-	void imp_onTick()
-	{
-		if (keyboard.checkKey(GLFW_KEY_A))
-			setPosX(getPosX() - 0.01f);
-		if (keyboard.checkKey(GLFW_KEY_D))
-			setPosX(getPosX() + 0.01f);
-
-		ren << flat::Color(1.0f, 1.0f, 1.0f, 1.0f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
 	}
 };
 
@@ -140,8 +117,8 @@ public:
 	{
 		bindAnimation("strangeSky", strangeSkyAnimation);
 		switchAnimationTo("strangeSky");
-		setHeight(4.0f);
-		setWidth(4.0f);
+		setHeight(600.0f);
+		setWidth(800.0f);
 	}
 
 	~Background() = default;
@@ -150,8 +127,8 @@ public:
 	{
 		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastMove).count() >= intervalDis(gen))
 		{
-			setPosX(moveDis(gen) / 10.0f);
-			setPosY(moveDis(gen) / 10.0f);
+			setPosX(moveDis(gen));
+			setPosY(moveDis(gen));
 			lastMove = std::chrono::steady_clock::now();
 		}
 
@@ -176,7 +153,6 @@ int main()
 	mixer << flat::AudioAttrib(flat::AudioAttribType::gain, 0.75f) << (*source)(*mp3);
 
 	flat::GameObject<Man>&& man = Man();
-	flat::GameObject<Pipe>&& pipe = Pipe();
 	flat::GameObject<Background>&& background = Background();
 
 	auto otherMen = std::make_unique<Man2[]>(8);
