@@ -106,8 +106,8 @@ namespace flat::imp::renderer::glcore
 			"void main()\n"
 			"{\n"
 			"    vec4 texColor = texture(texture0,aTexCoordOut);\n"
-			"    if(texColor.a < 0.1)\n"
-			"        discard;\n"
+			"    //if(texColor.a < 0.1)\n"
+			"    //    discard;\n"
 			"    FragColor = texColor * aColor;\n"
 			"}\n\0";
 

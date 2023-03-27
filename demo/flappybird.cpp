@@ -62,6 +62,44 @@ public:
 	}
 };
 
+class Man2 : public flat::GameObject<Man2>
+{
+private:
+	std::chrono::steady_clock::time_point lastMove;
+	int maxMoveIntervalMS;
+	std::random_device rd;
+	std::mt19937 gen;
+	std::uniform_int_distribution<> intervalDis;
+	std::uniform_int_distribution<> moveDis;
+
+public:
+	Man2()
+		: lastMove(std::chrono::steady_clock::now()), maxMoveIntervalMS(1), gen(rd()), intervalDis(maxMoveIntervalMS / 2, maxMoveIntervalMS), moveDis(-1, 1)
+	{
+		bindAnimation("stand", emptyManStandAnimation);
+		switchAnimationTo("stand");
+
+		setPosX(moveDis(gen) / 1.25f);
+		setPosY(moveDis(gen) / 1.25f);
+
+		setWidth(0.19f);
+		setHeight(0.2f);
+	}
+
+	~Man2() = default;
+	void imp_onTick()
+	{
+		if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastMove).count() >= maxMoveIntervalMS)
+		{
+			setPosX(getPosX() + (moveDis(gen) / 100.0f));
+			setPosY(getPosY() + (moveDis(gen) / 100.0f));
+			lastMove = std::chrono::steady_clock::now();
+		}
+
+		ren << flat::Color(sin(moveDis(gen) * 10), cos(moveDis(gen) * 10), sin(moveDis(gen) * 10), 0.75f) << flat::TextureOffset(0.0f, 0.0f, 1.0f, 1.0f) << getCurrentTexture() << flat::Rectangle(getPosX(), getPosY(), 0.0f, getWidth(), getHeight(), getRotate());
+	}
+};
+
 class Pipe : public flat::GameObject<Pipe>
 {
 public:
@@ -141,6 +179,8 @@ int main()
 	flat::GameObject<Pipe>&& pipe = Pipe();
 	flat::GameObject<Background>&& background = Background();
 
+	auto otherMen = std::make_unique<Man2[]>(8);
+
 	while (true)
 	{
 		if (keyboard.checkKey(GLFW_KEY_ESCAPE))
@@ -152,14 +192,16 @@ int main()
 
 		background.onTick();
 		man.onTick();
+		for (int i = 0; i < 8; i++)
+			otherMen[i].onTick();
+
 		//pipe.onTick();
 
-		// DEBUG: hit check
-		//if (bird.collisionCheck(pipe))
-		//{
-		//	std::cout << "Hit!\n";
-		//}
-		// end
+		//DEBUG: hit check
+		//for(int i = 0;i < 1024;i++)
+		//	if (man.collisionCheck(otherMen[i]))
+		//		std::cout << "Hit!\n";
+		//end
 
 		std::this_thread::sleep_until(std::chrono::steady_clock::now() + std::chrono::milliseconds(12));
 
