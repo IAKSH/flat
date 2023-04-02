@@ -3,6 +3,7 @@
 #include "core/winevent.hpp"
 #include "utils/shader.hpp"
 #include "utils/texture.hpp"
+#include "utils/audio.hpp"
 
 #include <iostream>
 
@@ -38,6 +39,8 @@ private:
 	flat::utils::Shader mainShader;
 	GLuint vbo, vao, ebo;
 	flat::utils::Texture testTex;
+	flat::utils::Audio testAudio;
+	ALuint testAudioSourceID;
 
 public:
 	MainLayer()
@@ -94,6 +97,12 @@ public:
 
 		// texture test
 		testTex.loadFromFile("images/bird0_0.png");
+
+		// audio test
+		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
+		alGenSources(1, &testAudioSourceID);
+		alSourcei(testAudioSourceID, AL_BUFFER, testAudio.getBufferID());
+		alSourcePlay(testAudioSourceID);
 	}
 
 	virtual void onDetach() override
