@@ -4,7 +4,7 @@
 
 #include <glad/glad.h>
 
-namespace flat::core
+namespace flat::utils
 {
 	class Shader
 	{

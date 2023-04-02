@@ -1,7 +1,8 @@
 #include "core/application.hpp"
-#include "core/shader.hpp"
 #include "core/keyevent.hpp"
 #include "core/winevent.hpp"
+#include "utils/shader.hpp"
+#include "utils/texture.hpp"
 
 #include <iostream>
 
@@ -11,25 +12,32 @@
 
 const char* vshader =
 "#version 330 core\n"
-"layout (location = 0) in vec3 position;\n"
+"layout (location = 0) in vec3 aPos;\n"
+"layout (location = 1) in vec2 aTexCoord;\n"
+"out vec2 aTexCoordOut;\n"
 "void main()\n"
 "{\n"
-"   gl_Position = vec4(position.x, position.y, position.z, 1.0);\n"
-"}\n";
+"    gl_Position =  vec4(aPos, 1.0f);\n"
+"    aTexCoordOut = vec2(aTexCoord.x, 1.0 - aTexCoord.y);\n"
+"}\0";
 
 const char* fshader =
 "#version 330 core\n"
-"out vec4 color;\n"
+"out vec4 FragColor;\n"
+"in vec2 aTexCoordOut;\n"
+"uniform sampler2D texture0;\n"
 "void main()\n"
 "{\n"
-"   color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n";
+"    vec4 texColor = texture(texture0,aTexCoordOut);\n"
+"    FragColor = texColor * vec4(1.0f,1.0f,1.0f,1.0f);\n"
+"}\n\0";
 
 class MainLayer : public flat::core::Layer
 {
 private:
-	flat::core::Shader mainShader;
-	GLuint VBO, VAO;
+	flat::utils::Shader mainShader;
+	GLuint vbo, vao, ebo;
+	flat::utils::Texture testTex;
 
 public:
 	MainLayer()
@@ -42,20 +50,38 @@ public:
 	virtual void onAttach() override
 	{
 		mainShader.loadFromGLSL(vshader, fshader);
+		glUniform1i(glGetUniformLocation(mainShader.getShaderID(), "texture0"), 0);
 
 		// Set up vertex data and buffers
-		GLfloat vertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f,  0.5f, 0.0f
+		float vertices[] = {
+				1.0f,  1.0f,  0.0f, 1.0f, 1.0f,  // top right
+				1.0f,  -1.0f, 0.0f, 1.0f, 0.0f,  // bottom right
+				-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,  // bottom left
+				-1.0f, 1.0f,  0.0f, 0.0f, 1.0f   // top left
 		};
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-		glBindVertexArray(VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		unsigned int indices[] = {
+			0, 1, 3,  // first Triangle
+			1, 2, 3   // second Triangle
+		};
+		glGenVertexArrays(1, &vao);
+		glGenBuffers(1, &vbo);
+		glGenBuffers(1, &ebo);
+		glBindVertexArray(vao);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+		// position attribute
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
+		// texture coord attribute
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
 		// imgui test
@@ -65,12 +91,15 @@ public:
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+
+		// texture test
+		testTex.loadFromFile("images/bird0_0.png");
 	}
 
 	virtual void onDetach() override
 	{
-		glDeleteVertexArrays(1, &VAO);
-		glDeleteBuffers(1, &VBO);
+		glDeleteVertexArrays(1, &vao);
+		glDeleteBuffers(1, &vbo);
 	}
 
 	virtual void onUpdate() override
@@ -80,11 +109,15 @@ public:
 
 	virtual void onRender() override
 	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, testTex.getTextureID());
+
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(mainShader.getShaderID());
-		glBindVertexArray(VAO);
+		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
 		// imgui test

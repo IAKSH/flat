@@ -5,6 +5,7 @@
 
 #include "window.hpp"
 #include "layer.hpp"
+#include "mixer.hpp"
 
 namespace flat::core
 {
@@ -14,8 +15,10 @@ namespace flat::core
 		bool shouldExit;
 		std::deque<Window*> windows;
 		std::stack<Layer*> layers;
+		Mixer* mixer;
 		void bindInstance();
 		void addMainWindow();
+		void createMixer();
 		void initialize();
 		void release();
 		static void forwardEvent(Event& event);

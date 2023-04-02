@@ -4,7 +4,7 @@
 
 #include "log.hpp"
 
-flat::core::Shader::~Shader()
+flat::utils::Shader::~Shader()
 {
     if (shaderID)
     {
@@ -12,7 +12,7 @@ flat::core::Shader::~Shader()
     }
 }
 
-void flat::core::Shader::loadFromFile(std::string_view vertexShaderPath, std::string_view fragmentShaderPath)
+void flat::utils::Shader::loadFromFile(std::string_view vertexShaderPath, std::string_view fragmentShaderPath)
 {
     std::ifstream vshaderIfs(vertexShaderPath.data(), std::ios::in);
     vshaderIfs.seekg(0, std::ios::end);
@@ -33,7 +33,7 @@ void flat::core::Shader::loadFromFile(std::string_view vertexShaderPath, std::st
     loadFromGLSL(vshaderCode, fshaderCode);
 }
 
-void flat::core::Shader::loadFromGLSL(std::string_view vertexShaderCode, std::string_view fragmentShaderCode)
+void flat::utils::Shader::loadFromGLSL(std::string_view vertexShaderCode, std::string_view fragmentShaderCode)
 {
     auto vshaderID = compileVertexShader(vertexShaderCode);
     checkVertexShader(vshaderID);
@@ -45,7 +45,7 @@ void flat::core::Shader::loadFromGLSL(std::string_view vertexShaderCode, std::st
     glDeleteShader(fshaderID);
 }
 
-GLuint flat::core::Shader::compileVertexShader(std::string_view code)
+GLuint flat::utils::Shader::compileVertexShader(std::string_view code)
 {
     const char* source = code.data();
     uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -55,7 +55,7 @@ GLuint flat::core::Shader::compileVertexShader(std::string_view code)
     return vertexShader;
 }
 
-GLuint flat::core::Shader::compileFragmentShader(std::string_view code)
+GLuint flat::utils::Shader::compileFragmentShader(std::string_view code)
 {
     const char* source = code.data();
     uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -65,7 +65,7 @@ GLuint flat::core::Shader::compileFragmentShader(std::string_view code)
     return fragmentShader;
 }
 
-GLuint flat::core::Shader::linkShaderProgram(GLuint vertexShaderID, GLuint fragmentShaderID)
+GLuint flat::utils::Shader::linkShaderProgram(GLuint vertexShaderID, GLuint fragmentShaderID)
 {
     GLuint shaderProgramID = glCreateProgram();
     glAttachShader(shaderProgramID, vertexShaderID);
@@ -75,7 +75,7 @@ GLuint flat::core::Shader::linkShaderProgram(GLuint vertexShaderID, GLuint fragm
     return shaderProgramID;
 }
 
-bool flat::core::Shader::checkVertexShader(GLuint vertexShaderID)
+bool flat::utils::Shader::checkVertexShader(GLuint vertexShaderID)
 {
     int success;
     char infoLog[512];
@@ -88,7 +88,7 @@ bool flat::core::Shader::checkVertexShader(GLuint vertexShaderID)
     }
 }
 
-bool flat::core::Shader::checkFragmentShader(GLuint fragmentShaderID)
+bool flat::utils::Shader::checkFragmentShader(GLuint fragmentShaderID)
 {
     int success;
     char infoLog[512];

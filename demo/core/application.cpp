@@ -1,6 +1,7 @@
 #include "application.hpp"
 
 #include "log.hpp"
+#include "../utils/log.hpp"
 
 #include <functional>
 
@@ -30,9 +31,11 @@ flat::core::Application::~Application()
 
 void flat::core::Application::initialize()
 {
-    Log::init();
+    core::Log::init();
+    utils::Log::init();
 	bindInstance();
 	addMainWindow();
+    createMixer();
 }
 
 void flat::core::Application::release()
@@ -43,6 +46,12 @@ void flat::core::Application::release()
         tempStack.top()->onDetach();
         tempStack.pop();
     }
+
+    for (auto& item : windows)
+        delete item;
+
+    if(mixer)
+        delete mixer;
 }
 
 void flat::core::Application::forwardEvent(Event& event)
@@ -70,6 +79,13 @@ void flat::core::Application::addMainWindow()
 {
 	windows.push_back(new Window("MainWindow"));
     windows[0]->setEventCallbackFunc(forwardEvent);
+}
+
+void flat::core::Application::createMixer()
+{
+    LOG_TRACE("creating mixer");
+    mixer = new Mixer();
+    LOG_TRACE("ok");
 }
 
 void flat::core::Application::pushLayer(Layer* layer)
