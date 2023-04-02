@@ -18,7 +18,7 @@ target_sources(flappybird PRIVATE
     window.hpp
     core/application.hpp
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/src/glad.c
-     "core/application.hpp" "core/application.cpp" "core/window.hpp" "core/window.cpp" "core/log.hpp" "core/mixer.hpp" "core/mixer.cpp" "core/layer.hpp" "core/event.hpp" "core/keycode.hpp" "core/keyevent.hpp" "core/mousevent.hpp" "core/appevent.hpp" "core/winevent.hpp" "core_test.cpp" "core/shader.hpp" "core/shader.cpp")
+     "core/application.hpp" "core/application.cpp" "core/window.hpp" "core/window.cpp" "core/log.hpp" "core/mixer.hpp" "core/mixer.cpp" "core/layer.hpp" "core/event.hpp" "core/keycode.hpp" "core/keyevent.hpp" "core/mousevent.hpp" "core/winevent.hpp" "core_test.cpp" "core/shader.hpp" "core/shader.cpp")
 
 target_include_directories(flappybird PUBLIC 
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/openal-soft/include

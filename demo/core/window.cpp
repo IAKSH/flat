@@ -4,7 +4,6 @@
 #include "keyevent.hpp"
 #include "winevent.hpp"
 #include "mousevent.hpp"
-#include "appevent.hpp"
 
 flat::core::Window::Window(std::string_view name)
     : winName(name)
