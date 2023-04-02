@@ -57,7 +57,8 @@ public:
 
 	virtual void onDetach() override
 	{
-
+		glDeleteVertexArrays(1, &VAO);
+		glDeleteBuffers(1, &VBO);
 	}
 
 	virtual void onUpdate() override
