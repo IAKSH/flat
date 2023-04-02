@@ -67,7 +67,6 @@ public:
 
 	virtual void onRender() override
 	{
-		glUseProgram(mainShader.getShaderID());
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(mainShader.getShaderID());
@@ -78,16 +77,10 @@ public:
 
 	virtual void onEvent(flat::core::Event& e) override
 	{
-		try
-		{
-			if ((dynamic_cast<flat::core::KeyPress&>(e)).getKeyCode() == flat::core::KeyCode::A)
-				std::cout << "A pressed\n";
-			else if ((dynamic_cast<flat::core::KeyPress&>(e)).getKeyCode() == flat::core::KeyCode::ESCAPE)
-				flat::core::Application::getInstance()->exit();
-		}
-		catch (...)
-		{
-		}
+		if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::A)
+			std::cout << "A pressed\n";
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::ESCAPE)
+			flat::core::Application::getInstance()->exit();
 	}
 };
 
