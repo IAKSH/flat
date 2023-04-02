@@ -5,6 +5,10 @@
 
 #include <iostream>
 
+#include <imgui.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
+
 const char* vshader =
 "#version 330 core\n"
 "layout (location = 0) in vec3 position;\n"
@@ -53,6 +57,14 @@ public:
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(0);
+
+		// imgui test
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGui::StyleColorsDark();
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
+		ImGui_ImplOpenGL3_Init("#version 330");
 	}
 
 	virtual void onDetach() override
@@ -74,6 +86,18 @@ public:
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindVertexArray(0);
+
+		// imgui test
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("ImGui Test");
+		ImGui::Text("glfwGetTime(): %lf", glfwGetTime());
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
 	virtual void onEvent(flat::core::Event& e) override
