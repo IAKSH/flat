@@ -4,9 +4,9 @@
 #include "utils/shader.hpp"
 #include "utils/texture.hpp"
 #include "utils/audio.hpp"
+#include "utils/time.hpp"
 
 #include <iostream>
-#include <chrono>
 
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -38,15 +38,15 @@ class MainLayer : public flat::core::Layer
 {
 private:
 	flat::utils::Shader mainShader;
-	GLuint vbo, vao, ebo;
+	flat::utils::TimeRecorder recoreder;
 	flat::utils::Texture testTex;
 	flat::utils::Audio testAudio;
+	GLuint vbo, vao, ebo;
 	ALuint testAudioSourceID;
-	std::chrono::steady_clock::time_point lastDraw;
 
 public:
 	MainLayer()
-		: Layer("MainLayer"), lastDraw(std::chrono::steady_clock::now())
+		: Layer("MainLayer")
 	{
 	}
 
@@ -106,6 +106,8 @@ public:
 		alSourcei(testAudioSourceID, AL_BUFFER, testAudio.getBufferID());
 		alSourcef(testAudioSourceID, AL_GAIN, 0.25f);
 		alSourcePlay(testAudioSourceID);
+
+		// timer test
 	}
 
 	virtual void onDetach() override
@@ -117,13 +119,11 @@ public:
 
 	virtual void onUpdate() override
 	{
-
+		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
 
 	virtual void onRender() override
 	{
-		auto now = std::chrono::steady_clock::now();
-
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, testTex.getTextureID());
 
@@ -142,13 +142,13 @@ public:
 
 		ImGui::Begin("ImGui Test");
 		ImGui::Text("glfwGetTime(): %lf", glfwGetTime());
-		ImGui::Text("FPS: %f", 1000.0f / (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - lastDraw).count()));
+		ImGui::Text("FPS: %f", 1000000.0f / recoreder.getSpanAsMicroSeconds().count());
 		ImGui::End();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		lastDraw = now;
+		recoreder.update();
 	}
 
 	virtual void onEvent(flat::core::Event& e) override
