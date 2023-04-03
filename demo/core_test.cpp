@@ -5,6 +5,7 @@
 #include "utils/texture.hpp"
 #include "utils/audio.hpp"
 #include "utils/time.hpp"
+#include "ni/camera.hpp"
 
 #include <iostream>
 
@@ -21,9 +22,10 @@ const char* vshader =
 "layout (location = 1) in vec2 aTexCoord;\n"
 "out vec2 aTexCoordOut;\n"
 "uniform mat4 transform;\n"
+"uniform mat4 camTrans;\n"
 "void main()\n"
 "{\n"
-"    gl_Position =  transform * vec4(aPos, 1.0f);\n"
+"    gl_Position =  camTrans * transform * vec4(aPos, 1.0f);\n"
 "    aTexCoordOut = vec2(aTexCoord.x, 1.0 - aTexCoord.y);\n"
 "}\0";
 
@@ -46,8 +48,12 @@ private:
 	flat::utils::Timer timer;
 	flat::utils::Texture testTex;
 	flat::utils::Audio testAudio;
+	flat::ni::Camera cam;
 	GLuint vbo, vao, ebo;
 	ALuint testAudioSourceID;
+
+	float camDownVec{ 0.0f };
+	float camLeftVec{ 0.0f };
 
 public:
 	MainLayer()
@@ -59,6 +65,8 @@ public:
 
 	virtual void onAttach() override
 	{
+		cam.setPositionX(-0.5f);
+
 		mainShader.loadFromGLSL(vshader, fshader);
 		glUniform1i(glGetUniformLocation(mainShader.getShaderID(), "texture0"), 0);
 
@@ -103,7 +111,7 @@ public:
 		ImGui_ImplOpenGL3_Init("#version 330");
 
 		// texture test
-		testTex.loadFromFile("images/bird0_0.png");
+		testTex.loadFromFile("images/floor.png");
 
 		// audio test
 		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
@@ -126,9 +134,10 @@ public:
 
 	virtual void onUpdate() override
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(16));
+		std::this_thread::sleep_for(std::chrono::milliseconds(3));
 
-		
+		cam.move(cam.getVelocityX(), cam.getVelocityY());
+		cam.rotate(camLeftVec, camDownVec);
 	}
 
 	virtual void onRender() override
@@ -144,11 +153,14 @@ public:
 
 		glm::mat4 trans(1.0f);
 		trans *= glm::translate(glm::mat4(1.0f), glm::vec3(sin(glfwGetTime()) / 2.0f, cos(glfwGetTime()) / 2.0f, 0.0f));
-		trans *= glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
-		trans *= glm::rotate(glm::mat4(1.0f), static_cast<float>(sin(glfwGetTime())), glm::vec3(cos(glfwGetTime()), 1.0f, 1.0f));
+		trans *= glm::scale(glm::mat4(1.0f), glm::vec3(10.0f, 10.0f, 1.0f));
+		//trans *= glm::rotate(glm::mat4(1.0f), static_cast<float>(sin(glfwGetTime())), glm::vec3(cos(glfwGetTime()), 1.0f, 1.0f));
 
-		unsigned int location = glGetUniformLocation(mainShader.getShaderID(), "transform");
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
+		unsigned int transLocation = glGetUniformLocation(mainShader.getShaderID(), "transform");
+		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+
+		unsigned int camTrans = glGetUniformLocation(mainShader.getShaderID(), "camTrans");
+		glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
 
 		glBindVertexArray(vao);
 		glUseProgram(mainShader.getShaderID());
@@ -163,6 +175,12 @@ public:
 		ImGui::Begin("ImGui Test");
 		ImGui::Text("glfwGetTime(): %lf", glfwGetTime());
 		ImGui::Text("FPS: %f", 1000000.0f / recoreder.getSpanAsMicroSeconds().count());
+		ImGui::Text("cam.x: %f", cam.getPositionX());
+		ImGui::Text("cam.y: %f", cam.getPositionY());
+		ImGui::Text("cam.z: %f", cam.getPositionZ());
+		ImGui::Text("cam.front.x: %f", cam.getFrontX());
+		ImGui::Text("cam.front.y: %f", cam.getFrontY());
+		ImGui::Text("cam.front.z: %f", cam.getFrontZ());
 		ImGui::End();
 
 		ImGui::Render();
@@ -173,8 +191,38 @@ public:
 
 	virtual void onEvent(flat::core::Event& e) override
 	{
-		if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::A)
-			std::cout << "A pressed\n";
+		if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::W)
+			cam.setVelocityX(0.1f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::S)
+			cam.setVelocityX(-0.1f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::D)
+			cam.setVelocityY(0.1f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::A)
+			cam.setVelocityY(-0.1f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::Q)
+			camDownVec = 1.0f;
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::E)
+			camDownVec = -1.0f;
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::LEFT_SHIFT)
+			camLeftVec = 1.0f;
+		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::LEFT_CONTROL)
+			camLeftVec = -1.0f;
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::W)
+			cam.setVelocityX(0.0f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::S)
+			cam.setVelocityX(0.0f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::D)
+			cam.setVelocityY(0.0f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::A)
+			cam.setVelocityY(0.0f);
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::Q)
+			camDownVec = 0.0f;
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::E)
+			camDownVec = 0.0f;
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::LEFT_SHIFT)
+			camLeftVec = 0.0f;
+		else if (auto ptr = dynamic_cast<flat::core::KeyRelease*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::LEFT_CONTROL)
+			camLeftVec = 0.0f;
 		else if (auto ptr = dynamic_cast<flat::core::KeyPress*>(&e); ptr && ptr->getKeyCode() == flat::core::KeyCode::ESCAPE)
 			flat::core::Application::getInstance()->exit();
 	}
