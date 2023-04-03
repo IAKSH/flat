@@ -4,19 +4,6 @@ project(flat2AudioTest VERSION 0.1.0)
 add_executable(flappybird)
 add_dependencies(flappybird glfw OpenAL freetype spdlog)
 target_sources(flappybird PRIVATE 
-    flappybird.cpp
-    gameplay.hpp
-    physics.cpp
-    animation.cpp
-    audio_alsoft.hpp
-    audio.hpp
-    renderer_glcore.hpp
-    window_glfw.hpp
-    initialized.hpp
-    renderer.hpp
-    typecontrol.hpp
-    window.hpp
-    core/application.hpp
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/glad/src/glad.c
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/imgui/imgui.cpp
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/imgui/imgui_draw.cpp
