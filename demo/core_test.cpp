@@ -11,15 +11,19 @@
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 const char* vshader =
 "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
 "layout (location = 1) in vec2 aTexCoord;\n"
 "out vec2 aTexCoordOut;\n"
+"uniform mat4 transform;\n"
 "void main()\n"
 "{\n"
-"    gl_Position =  vec4(aPos, 1.0f);\n"
+"    gl_Position =  transform * vec4(aPos, 1.0f);\n"
 "    aTexCoordOut = vec2(aTexCoord.x, 1.0 - aTexCoord.y);\n"
 "}\0";
 
@@ -129,12 +133,24 @@ public:
 
 	virtual void onRender() override
 	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, testTex.getTextureID());
-
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(mainShader.getShaderID());
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, testTex.getTextureID());
+
+		glm::mat4 trans(1.0f);
+		trans *= glm::translate(glm::mat4(1.0f), glm::vec3(sin(glfwGetTime()) / 2.0f, cos(glfwGetTime()) / 2.0f, 0.0f));
+		trans *= glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 1.0f));
+		trans *= glm::rotate(glm::mat4(1.0f), static_cast<float>(sin(glfwGetTime())), glm::vec3(cos(glfwGetTime()), 1.0f, 1.0f));
+
+		unsigned int location = glGetUniformLocation(mainShader.getShaderID(), "transform");
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(trans));
+
 		glBindVertexArray(vao);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
