@@ -6,6 +6,7 @@
 #include "utils/audio.hpp"
 
 #include <iostream>
+#include <chrono>
 
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -41,10 +42,11 @@ private:
 	flat::utils::Texture testTex;
 	flat::utils::Audio testAudio;
 	ALuint testAudioSourceID;
+	std::chrono::steady_clock::time_point lastDraw;
 
 public:
 	MainLayer()
-		: Layer("MainLayer")
+		: Layer("MainLayer"), lastDraw(std::chrono::steady_clock::now())
 	{
 	}
 
@@ -120,6 +122,8 @@ public:
 
 	virtual void onRender() override
 	{
+		auto now = std::chrono::steady_clock::now();
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, testTex.getTextureID());
 
@@ -138,10 +142,13 @@ public:
 
 		ImGui::Begin("ImGui Test");
 		ImGui::Text("glfwGetTime(): %lf", glfwGetTime());
+		ImGui::Text("FPS: %f", 1000.0f / (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - lastDraw).count()));
 		ImGui::End();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		lastDraw = now;
 	}
 
 	virtual void onEvent(flat::core::Event& e) override
