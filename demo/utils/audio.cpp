@@ -23,7 +23,10 @@ flat::utils::Audio::Audio(std::string_view path)
 flat::utils::Audio::~Audio()
 {
 	if (bufferID)
+	{
+		LOG_TRACE("deleted audio buffer with id = {}", bufferID);
 		alDeleteBuffers(1, &bufferID);
+	}
 }
 
 void flat::utils::Audio::loadFromFile(std::string_view path)
