@@ -32,11 +32,9 @@ namespace flat::utils
 	private:
 		bool shoudPause;
 		bool* shouldQuit;
+		std::function<void(void)> callback;
 		TimeRecorder recorder;
 		MicroSeconds interval;
-		std::thread thread;
-		std::function<void(void)> callbackFunc;
-		void makeupThread();
 
 	public:
 		Timer(const MilliSeconds& i, std::function<void(void)> callback);
@@ -44,9 +42,8 @@ namespace flat::utils
 		~Timer();
 		void setInterval(const MicroSeconds& i);
 		const MicroSeconds& getInterval();
-		void setCallback(std::function<void(void)> callback);
-		void join();
-		void detach();
+		void joinRun(const std::function<void(void)>& func);
+		void detachRun(const std::function<void(void)>& func);
 		void pause();
 		void resume();
 	};

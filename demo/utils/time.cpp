@@ -33,40 +33,18 @@ flat::utils::NanoSeconds flat::utils::TimeRecorder::getSpanAsNanoSeconds()
 }
 
 flat::utils::Timer::Timer(const MilliSeconds& i, std::function<void(void)> callback)
-	: interval(i), callbackFunc(callback), shoudPause(false), shouldQuit(nullptr)
+	: interval(i), shoudPause(false), shouldQuit(nullptr)
 {
-	makeupThread();
 }
 
 flat::utils::Timer::Timer()
 	: interval(MilliSeconds(0)), shoudPause(false), shouldQuit(nullptr)
 {
-	makeupThread();
 }
 
 flat::utils::Timer::~Timer()
 {
 	*shouldQuit = true;
-}
-
-void flat::utils::Timer::makeupThread()
-{
-	thread = std::thread([&]()
-		{
-			bool subthreadShoudQuit;
-			shouldQuit = &subthreadShoudQuit;
-
-			while (!subthreadShoudQuit)
-			{
-				while(shoudPause)
-					std::this_thread::sleep_for(MicroSeconds(1));
-
-				if (recorder.getSpanAsMicroSeconds() >= interval)
-					callbackFunc();
-				else
-					std::this_thread::sleep_for(MicroSeconds(1));
-			}
-		});
 }
 
 void flat::utils::Timer::setInterval(const MicroSeconds& i)
@@ -79,19 +57,52 @@ const flat::utils::MicroSeconds& flat::utils::Timer::getInterval()
 	return interval;
 }
 
-void flat::utils::Timer::setCallback(std::function<void(void)> callback)
+void flat::utils::Timer::joinRun(const std::function<void(void)>& func)
 {
-	callbackFunc = callback;
+	callback = func;
+	std::thread([&]()
+		{
+			bool subthreadShoudQuit;
+			shouldQuit = &subthreadShoudQuit;
+
+			while (!subthreadShoudQuit)
+			{
+				while (shoudPause)
+					std::this_thread::sleep_for(MicroSeconds(1));
+
+				if (recorder.getSpanAsMicroSeconds() < interval)
+					std::this_thread::sleep_for(MicroSeconds(1));
+				else
+				{
+					callback();
+					recorder.update();
+				}
+			}
+		}).detach();
 }
 
-void flat::utils::Timer::join()
+void flat::utils::Timer::detachRun(const std::function<void(void)>& func)
 {
-	thread.join();
-}
+	callback = func;
+	std::thread([&]()
+		{
+			bool subthreadShoudQuit{ false };
+			shouldQuit = &subthreadShoudQuit;
 
-void flat::utils::Timer::detach()
-{
-	thread.detach();
+			while (!subthreadShoudQuit)
+			{
+				while (shoudPause)
+					std::this_thread::sleep_for(MicroSeconds(1));
+
+				if (recorder.getSpanAsMicroSeconds() < interval)
+					std::this_thread::sleep_for(MicroSeconds(1));
+				else
+				{
+					callback();
+					recorder.update();
+				}
+			}
+		}).detach();
 }
 
 void flat::utils::Timer::pause()

@@ -39,6 +39,7 @@ class MainLayer : public flat::core::Layer
 private:
 	flat::utils::Shader mainShader;
 	flat::utils::TimeRecorder recoreder;
+	flat::utils::Timer timer;
 	flat::utils::Texture testTex;
 	flat::utils::Audio testAudio;
 	GLuint vbo, vao, ebo;
@@ -108,6 +109,8 @@ public:
 		alSourcePlay(testAudioSourceID);
 
 		// timer test
+		timer.setInterval(flat::utils::Seconds(1));
+		timer.detachRun([]() {std::clog << "Timer thread (id=" << std::this_thread::get_id() << ") running!\n"; });
 	}
 
 	virtual void onDetach() override
@@ -120,6 +123,8 @@ public:
 	virtual void onUpdate() override
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(16));
+
+		
 	}
 
 	virtual void onRender() override
