@@ -44,6 +44,8 @@ target_sources(flappybird PRIVATE
     "utils/texture.cpp"
     "utils/audio.hpp"
     "utils/audio.cpp"
+    "utils/time.hpp"
+    "utils/time.cpp"
 )
 
 target_include_directories(flappybird PUBLIC 
