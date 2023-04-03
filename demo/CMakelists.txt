@@ -33,7 +33,13 @@ target_sources(flappybird PRIVATE
     "utils/audio.cpp"
     "utils/time.hpp"
     "utils/time.cpp"
-)
+    "ni/animation.hpp"
+    "ni/animation.cpp"
+    "ni/camera.hpp"
+    "ni/gameobject.hpp"
+    "ni/physical.hpp"
+
+ "ni/camera.cpp")
 
 target_include_directories(flappybird PUBLIC 
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/openal-soft/include
