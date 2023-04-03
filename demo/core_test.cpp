@@ -102,6 +102,7 @@ public:
 		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
 		alGenSources(1, &testAudioSourceID);
 		alSourcei(testAudioSourceID, AL_BUFFER, testAudio.getBufferID());
+		alSourcef(testAudioSourceID, AL_GAIN, 0.25f);
 		alSourcePlay(testAudioSourceID);
 	}
 
@@ -109,6 +110,7 @@ public:
 	{
 		glDeleteVertexArrays(1, &vao);
 		glDeleteBuffers(1, &vbo);
+		alDeleteSources(1, &testAudioSourceID);
 	}
 
 	virtual void onUpdate() override
