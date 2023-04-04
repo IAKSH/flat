@@ -40,7 +40,10 @@ namespace flat::ni
 		float rx, ry, rz;
 
 	public:
-		Plane() {}
+		Plane()
+			: w(1.0f), h(1.0f), rx(0.0f), ry(0.0f), rz(0.0f)
+		{
+		}
 		~Plane() {}
 		const float& getWidth() { return w; }
 		const float& getHeight() { return h; }
