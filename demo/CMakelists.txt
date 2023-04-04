@@ -38,8 +38,9 @@ target_sources(flappybird PRIVATE
     "ni/camera.hpp"
     "ni/gameobject.hpp"
     "ni/physical.hpp"
-
- "ni/camera.cpp")
+    "ni/gjk.cpp"
+    "ni/camera.cpp"
+)
 
 target_include_directories(flappybird PUBLIC 
     ${CMAKE_CURRENT_LIST_DIR}/../3rdparty/openal-soft/include
