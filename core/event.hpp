@@ -2,7 +2,7 @@
 
 namespace ni::core
 {
-    enum class EventType
+    enum class EventType : unsigned short
     {
         KeyPress,KeyRelease,
         MousePress,MouseRelease,MouseScroll,MouseMove,
