@@ -55,6 +55,8 @@ target_sources(flat PRIVATE
     "utils/camera.cpp"
     "utils/mass_point.hpp"
     "utils/vao.hpp"
+    "utils/audio_source.hpp"
+    "utils/audio_source.cpp"
 )
 
 add_executable(flat_test "main.cpp")

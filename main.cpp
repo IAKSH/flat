@@ -1,3 +1,4 @@
+#include "al.h"
 #include "core/application.hpp"
 #include "core/event_keyboard.hpp"
 #include "core/event_window.hpp"
@@ -7,6 +8,7 @@
 #include "utils/timer.hpp"
 #include "utils/camera.hpp"
 #include "utils/vao.hpp"
+#include "utils/audio_source.hpp"
 
 #include <array>
 #include <memory>
@@ -59,7 +61,7 @@ private:
 	ni::utils::Audio testAudio;
 	ni::utils::Camera2D cam;
 	ni::utils::VertexArrayObj vao;
-	ALuint testAudioSourceID;
+	ni::utils::AudioSource testAudioSource;
 
 	float camDownVec{ 0.0f };
 	float camLeftVec{ 0.0f };
@@ -108,10 +110,10 @@ public:
 
 		// audio test
 		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
-		alGenSources(1, &testAudioSourceID);
-		alSourcei(testAudioSourceID, AL_BUFFER, testAudio.getBufferID());
-		alSourcef(testAudioSourceID, AL_GAIN, 0.1f);
-		alSourcePlay(testAudioSourceID);
+		alSourcei(testAudioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
+		alSourcef(testAudioSource.getSourceID(), AL_GAIN, 0.1f);
+		alSourcei(testAudioSource.getSourceID(), AL_LOOPING, AL_TRUE);
+		alSourcePlay(testAudioSource.getSourceID());
 
 		// timer test
 		timer.setInterval(ni::utils::Seconds(1));
@@ -120,7 +122,7 @@ public:
 
 	virtual void onDetach() override
 	{
-		alDeleteSources(1, &testAudioSourceID);
+
 	}
 
 	virtual void onUpdate() override
