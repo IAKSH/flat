@@ -1,25 +1,39 @@
 
-[submodule "3rdparty/openal-soft"]
-	path = 3rdparty/openal-soft
+[submodule "vendor/openal-soft"]
+	path = vendor/openal-soft
 	url = https://github.com/kcat/openal-soft.git
-[submodule "3rdparty/glm"]
-	path = 3rdparty/glm
+[submodule "vendor/glm"]
+	path = vendor/glm
 	url = https://github.com/g-truc/glm.git
-[submodule "3rdparty/minimp3"]
-	path = 3rdparty/minimp3
+[submodule "vendor/minimp3"]
+	path = vendor/minimp3
 	url = https://github.com/lieff/minimp3.git
-[submodule "3rdparty/stb"]
-	path = 3rdparty/stb
+[submodule "vendor/stb"]
+	path = vendor/stb
 	url = https://github.com/nothings/stb.git
-[submodule "3rdparty/glfw"]
-	path = 3rdparty/glfw
+[submodule "vendor/glfw"]
+	path = vendor/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "3rdparty/zlib"]
-	path = 3rdparty/zlib
+[submodule "vendor/zlib"]
+	path = vendor/zlib
 	url = https://github.com/madler/zlib.git
+<<<<<<< HEAD
 [submodule "3rdparty/freetype"]
 	path = 3rdparty/freetype
+=======
+[submodule "vendor/googletest"]
+	path = vendor/googletest
+	url = https://github.com/google/googletest.git
+[submodule "vendor/freetype"]
+	path = vendor/freetype
+>>>>>>> dev
 	url = https://github.com/freetype/freetype.git
-[submodule "3rdparty/pybind11"]
-	path = 3rdparty/pybind11
+[submodule "vendor/pybind11"]
+	path = vendor/pybind11
 	url = https://github.com/pybind/pybind11.git
+[submodule "vendor/spdlog"]
+	path = vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "vendor/imgui"]
+	path = vendor/imgui
+	url = https://github.com/ocornut/imgui.git
