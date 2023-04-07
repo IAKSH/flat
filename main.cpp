@@ -194,40 +194,63 @@ public:
 
 	virtual void onEvent(ni::core::Event& e) override
 	{
-		if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::W)
-			cam.setVelocityY(0.1f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::S)
-			cam.setVelocityY(-0.1f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::D)
-			cam.setVelocityX(0.1f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::A)
-			cam.setVelocityX(-0.1f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::Q)
-			camDownVec = 1.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::E)
-			camDownVec = -1.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::LEFT_SHIFT)
-			camLeftVec = 1.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::LEFT_CONTROL)
-			camLeftVec = -1.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::W)
-			cam.setVelocityY(0.0f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::S)
-			cam.setVelocityY(0.0f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::D)
-			cam.setVelocityX(0.0f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::A)
-			cam.setVelocityX(0.0f);
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::Q)
-			camDownVec = 0.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::E)
-			camDownVec = 0.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::LEFT_SHIFT)
-			camLeftVec = 0.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyReleaseEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::LEFT_CONTROL)
-			camLeftVec = 0.0f;
-		else if (auto ptr = dynamic_cast<ni::core::KeyPressEvent*>(&e); ptr && ptr->getKeyCode() == ni::core::KeyCode::ESCAPE)
-			ni::core::Application::getInstance()->exit();
+		if(e.getType() == ni::core::EventType::KeyPress)
+		{
+			switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode()) {
+				case ni::core::KeyCode::W:
+					cam.setVelocityY(0.1f);
+					break;
+				case ni::core::KeyCode::S:
+					cam.setVelocityY(-0.1f);
+					break;
+				case ni::core::KeyCode::D:
+					cam.setVelocityX(0.1f);
+					break;
+				case ni::core::KeyCode::A:
+					cam.setVelocityX(-0.1f);
+					break;
+				case ni::core::KeyCode::Q:
+					camDownVec = 1.0f;
+					break;
+				case ni::core::KeyCode::E:
+					camDownVec = -1.0f;
+					break;
+				case ni::core::KeyCode::LEFT_SHIFT:
+					camLeftVec = 1.0f;
+					break;
+				case ni::core::KeyCode::LEFT_CONTROL:
+					camLeftVec = -1.0f;
+					break;
+				case ni::core::KeyCode::ESCAPE:
+					ni::core::Application::getInstance()->exit();
+					break;
+				default:
+					break;
+			}
+		}
+		else if (e.getType() == ni::core::EventType::KeyRelease)
+		{
+			switch (static_cast<ni::core::KeyReleaseEvent&>(e).getKeyCode()) {
+				case ni::core::KeyCode::W:
+				case ni::core::KeyCode::S:
+					cam.setVelocityY(0.0f);
+					break;
+				case ni::core::KeyCode::D:
+				case ni::core::KeyCode::A:
+					cam.setVelocityX(0.0f);
+					break;
+				case ni::core::KeyCode::Q:
+				case ni::core::KeyCode::E:
+					camDownVec = 0.0f;
+					break;
+				case ni::core::KeyCode::LEFT_SHIFT:
+				case ni::core::KeyCode::LEFT_CONTROL:
+					camLeftVec = 0.0f;
+					break;
+				default:
+					break;
+			}
+		}
 	}
 };
 
