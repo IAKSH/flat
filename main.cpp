@@ -95,7 +95,7 @@ public:
 			1, 2, 3   // second Triangle
 		};
 
-		vao.create(vertices,indices);
+		vao.create(ni::utils::GLBufferType::Static,vertices,indices);
 
 		// imgui test
 		IMGUI_CHECKVERSION();
