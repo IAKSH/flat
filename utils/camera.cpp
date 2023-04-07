@@ -3,7 +3,7 @@
 #include "GLFW/glfw3.h"
 
 ni::utils::Camera3D::Camera3D()
-	: fov{ 45.0f }, aspectRatio{ 16.0f / 9.0f }, nearPlane{ 0.01f }, farPlane{ 100.0f }, yaw(0.0f), pitch(0.0f), zoom(0.0f),
+	: fov{ 45.0f }, aspectRatio{ 16.0f / 9.0f }, nearPlane{ 0.01f }, farPlane{ 100.0f }, yaw{0.0f}, pitch{0.0f}, zoom{0.0f},
 	up{ 0.0f, 0.0f, 1.0f }, worldUp{ up }
 {
 	update();
