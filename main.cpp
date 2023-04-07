@@ -196,7 +196,8 @@ public:
 	{
 		if(e.getType() == ni::core::EventType::KeyPress)
 		{
-			switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode()) {
+			switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode())
+			{
 				case ni::core::KeyCode::W:
 					cam.setVelocityY(0.1f);
 					break;
@@ -230,7 +231,8 @@ public:
 		}
 		else if (e.getType() == ni::core::EventType::KeyRelease)
 		{
-			switch (static_cast<ni::core::KeyReleaseEvent&>(e).getKeyCode()) {
+			switch (static_cast<ni::core::KeyReleaseEvent&>(e).getKeyCode())
+			{
 				case ni::core::KeyCode::W:
 				case ni::core::KeyCode::S:
 					cam.setVelocityY(0.0f);
