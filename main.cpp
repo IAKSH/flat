@@ -9,6 +9,8 @@
 #include "utils/camera.hpp"
 #include "utils/vao.hpp"
 #include "utils/audio_source.hpp"
+#include "utils/logger.hpp"
+#include "flat/collision_detect.hpp"
 
 #include <array>
 #include <memory>
@@ -58,6 +60,7 @@ private:
 	ni::utils::TimeRecorder recoreder;
 	ni::utils::Timer timer;
 	ni::utils::Texture testTex;
+	ni::utils::Texture birdTex;
 	ni::utils::Audio testAudio;
 	ni::utils::Camera2D cam;
 	ni::utils::VertexArrayObj vao;
@@ -85,10 +88,10 @@ public:
 
 		// Set up vertex data and buffers
 		std::array<float,36> vertices {
-				1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 0.1f, 1.0f, 1.0f,  // top right
-				1.0f,  -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 0.1f, 1.0f, 0.0f,  // bottom right
-				-1.0f, -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-				-1.0f, 1.0f,  0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f   // top left
+				100.0f,  100.0f,  0.0f, 1.0f, 1.0f, 1.0f, 0.1f, 1.0f, 1.0f,  // top right
+				100.0f,  -100.0f, 0.0f,1.0f, 1.0f, 1.0f, 0.1f, 1.0f, 0.0f,  // bottom right
+				-100.0f, -100.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+				-100.0f, 100.0f,  0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f   // top left
 		};
 		std::array<unsigned int, 6> indices {
 			0, 1, 3,  // first Triangle
@@ -107,6 +110,7 @@ public:
 
 		// texture test
 		testTex.loadFromFile("images/floor.png");
+		birdTex.loadFromFile("images/bird0_0.png");
 
 		// audio test
 		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
@@ -116,8 +120,12 @@ public:
 		alSourcePlay(testAudioSource.getSourceID());
 
 		// timer test
-		timer.setInterval(ni::utils::Seconds(1));
-		timer.detachRun([]() {std::clog << "Timer thread (id=" << std::this_thread::get_id() << ") running!\n"; });
+		timer.setInterval(ni::utils::MilliSeconds(3));
+		timer.detachRun([&]() 
+		{
+			if(ni::flat::collisionCheckGJK(cam.getPositionX(),cam.getPositionY(),0.1f,0.1f,0.0f,0.0f,0.0f,100.0f,100.0f,glfwGetTime()))
+				ni::utils::otherLogger()->warn("collision: cam at ({},{}) hit obj at ({},{})",cam.getPositionX(),cam.getPositionY(),0.0f,0.0f);
+		});
 	}
 
 	virtual void onDetach() override
@@ -149,8 +157,8 @@ public:
 
 		glm::mat4 trans(1.0f);
 		trans *= glm::translate(glm::mat4(1.0f), glm::vec3(sin(glfwGetTime()) / 2.0f, cos(glfwGetTime()) / 2.0f, 0.0f));
-		trans *= glm::scale(glm::mat4(1.0f), glm::vec3(200.0f, 100.0f, 1.0f));
-		//trans *= glm::rotate(glm::mat4(1.0f), static_cast<float>(sin(glfwGetTime())), glm::vec3(cos(glfwGetTime()), 1.0f, 1.0f));
+		trans *= glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+		trans *= glm::rotate(glm::mat4(1.0f), static_cast<float>(sin(glfwGetTime())), glm::vec3(0.0f, 0.0f, 1.0f));
 
 		unsigned int transLocation = glGetUniformLocation(mainShader.getShaderID(), "transform");
 		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));

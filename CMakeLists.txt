@@ -57,6 +57,8 @@ target_sources(flat PRIVATE
     "utils/vao.hpp"
     "utils/audio_source.hpp"
     "utils/audio_source.cpp"
+    "flat/collision_detect.hpp"
+    "flat/gjk.cpp"
 )
 
 add_executable(flat_test "main.cpp")
