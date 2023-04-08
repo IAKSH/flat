@@ -15,7 +15,7 @@ namespace ni::utils
 		Texture();
 		Texture(std::string_view path);
 		~Texture();
-		const GLuint& getTextureID() { return textureID; }
+		const GLuint& getTextureID() const { return textureID; }
 		void loadFromFile(std::string_view path);
 	};
 }

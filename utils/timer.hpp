@@ -15,7 +15,7 @@ namespace ni::utils
 	class TimeRecorder
 	{
 	private:
-		std::chrono::steady_clock::time_point lastUpdate;
+		Clock::time_point lastUpdate;
 
 	public:
 		TimeRecorder();
