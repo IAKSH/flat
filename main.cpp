@@ -12,6 +12,7 @@
 #include "utils/logger.hpp"
 #include "utils/animation.hpp"
 #include "flat/collision_detect.hpp"
+#include "demo_obj.hpp"
 
 #include <array>
 #include <memory>
@@ -66,24 +67,11 @@ private:
 	ni::utils::Camera2D cam;
 	ni::utils::VertexArrayObj vao;
 	ni::utils::VertexArrayObj backgroundVAO;
-	ni::utils::VertexArrayObj birdVAO;
-	ni::utils::AudioSource testAudioSource;
-	ni::utils::Animation<3> birdAnimation
-	{
-		ni::utils::MilliSeconds(150),
-		"images/bird0_0.png",
-		"images/bird0_1.png",
-		"images/bird0_2.png"
-	};
+	demo::Bird bird {mainShader,cam};
 
 	float camDownVec{ 0.0f };
 	float camLeftVec{ 0.0f };
 	float camSensitivity{ 2.5f };
-
-	float birdPosX { 0.0f };
-	float birdPosY { 0.0f };
-	float birdVelX { 0.0f };
-	float birdVelY { 0.0f };
 
 public:
 	MainLayer()
@@ -121,7 +109,6 @@ public:
 
 		vao.create(ni::utils::GLBufferType::Static,vertices,indices);
 		backgroundVAO.create(ni::utils::GLBufferType::Static,nonTransparentVertices,indices);
-		birdVAO.create(ni::utils::GLBufferType::Static,nonTransparentVertices,indices);
 
 		// imgui test
 		IMGUI_CHECKVERSION();
@@ -137,23 +124,25 @@ public:
 
 		// audio test
 		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
-		alSourcei(testAudioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
-		alSourcef(testAudioSource.getSourceID(), AL_GAIN, 0.1f);
-		alSourcei(testAudioSource.getSourceID(), AL_LOOPING, AL_TRUE);
-		alSourcePlay(testAudioSource.getSourceID());
+		alSourcei(bird.getSourceID(), AL_BUFFER, testAudio.getBufferID());
+		alSourcef(bird.getSourceID(), AL_GAIN, 0.1f);
+		alSourcei(bird.getSourceID(), AL_LOOPING, AL_TRUE);
+		alSourcePlay(bird.getSourceID());
 
 		// timer test
 		timer.setInterval(ni::utils::MilliSeconds(3));
 		timer.detachRun([&]() 
 		{
-			if(ni::flat::collisionCheckGJK(birdPosX,birdPosY,50.0f,50.0f,0.0f,0.0f,0.0f,100.0f,100.0f,glfwGetTime()))
-				ni::utils::otherLogger()->warn("collision: bird at ({},{}) hit obj at ({},{})",birdPosX,birdPosY,0.0f,0.0f);
+			if(ni::flat::collisionCheckGJK(bird.getPositionX(),bird.getPositionY(),50.0f,50.0f,0.0f,0.0f,0.0f,100.0f,100.0f,glfwGetTime()))
+				ni::utils::otherLogger()->warn("collision: bird at ({},{}) hit obj at ({},{})",bird.getPositionX(),bird.getPositionY(),0.0f,0.0f);
 		});
+
+		bird.onAttach();
 	}
 
 	virtual void onDetach() override
 	{
-
+		bird.onDetach();
 	}
 
 	virtual void onUpdate() override
@@ -166,10 +155,7 @@ public:
 		cam.setPositionX(cam.getPositionX() + cam.getVelocityX() * 2);
 		cam.setPositionY(cam.getPositionY() + cam.getVelocityY() * 2);
 
-		birdPosX += birdVelX;
-		birdPosY += birdVelY;
-
-		birdAnimation.tryUpdate();
+		bird.onUpdate();
 	}
 
 	virtual void onRender() override
@@ -220,25 +206,8 @@ public:
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
-		// draw bird
-		{
-			glBindTexture(GL_TEXTURE_2D, birdAnimation.getCurrentTexture().getTextureID());
 
-			glm::mat4 trans(1.0f);
-			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(birdPosX,birdPosY,0.2f));
-			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 1.0f));
-			trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-
-			unsigned int transLocation = glGetUniformLocation(mainShader.getShaderID(), "transform");
-			glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-			unsigned int camTrans = glGetUniformLocation(mainShader.getShaderID(), "camTrans");
-			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
-
-			glBindVertexArray(birdVAO.getVAO());
-			glUseProgram(mainShader.getShaderID());
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
-		}
+		bird.onRender();
 
 		// imgui test
 		ImGui_ImplOpenGL3_NewFrame();
@@ -267,18 +236,6 @@ public:
 		{
 			switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode())
 			{
-				case ni::core::KeyCode::UP:
-					birdVelY = 0.5f;
-					break;
-				case ni::core::KeyCode::DOWN:
-					birdVelY = -0.5f;
-					break;
-				case ni::core::KeyCode::RIGHT:
-					birdVelX = 0.5f;
-					break;
-				case ni::core::KeyCode::LEFT:
-					birdVelX = -0.5f;
-					break;
 				case ni::core::KeyCode::W:
 					cam.setVelocityY(0.1f);
 					break;
@@ -316,14 +273,6 @@ public:
 		{
 			switch (static_cast<ni::core::KeyReleaseEvent&>(e).getKeyCode())
 			{
-				case ni::core::KeyCode::LEFT:
-				case ni::core::KeyCode::RIGHT:
-					birdVelX = 0.0f;
-					break;
-				case ni::core::KeyCode::UP:
-				case ni::core::KeyCode::DOWN:
-					birdVelY = 0.0f;
-					break;
 				case ni::core::KeyCode::W:
 				case ni::core::KeyCode::S:
 					cam.setVelocityY(0.0f);
@@ -344,6 +293,8 @@ public:
 					break;
 			}
 		}
+
+		bird.onEvent(e);
 	}
 };
 

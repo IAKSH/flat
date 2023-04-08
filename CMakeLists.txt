@@ -62,6 +62,6 @@ target_sources(flat PRIVATE
     "flat/gjk.cpp"
 )
 
-add_executable(flat_test "main.cpp")
+add_executable(flat_test "main.cpp" "demo_obj.hpp")
 add_dependencies(flat_test flat)
 target_link_libraries(flat_test flat)

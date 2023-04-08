@@ -1,0 +1,126 @@
+#pragma once
+#include "core/event_keyboard.hpp"
+#include "utils/gameobj.hpp"
+#include "utils/vao.hpp"
+#include "utils/audio_source.hpp"
+#include "utils/animation.hpp"
+#include "utils/shader.hpp"
+#include "utils/camera.hpp"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <glad/glad.h>
+
+#include <iostream>
+
+namespace demo
+{
+    // TODO: audio source should remove from here, it should not inherit from MassPoint
+    class Bird : public ni::utils::GameObject, public ni::utils::AudioSource
+    {
+    private:
+        ni::utils::Animation<3> flyAnimation{ni::utils::MilliSeconds{250},"images/bird0_0.png","images/bird0_1.png","images/bird0_2.png"};
+        ni::utils::VertexArrayObj vao;
+        const ni::utils::Shader& shader;
+        const ni::utils::Camera2D& cam;
+
+    public:
+        Bird(const ni::utils::Shader& shader,const ni::utils::Camera2D& cam)
+            : shader(shader),cam(cam)
+        {
+        }
+        ~Bird() = default;
+
+        virtual void onAttach() override
+        {
+            std::array<float,36> vertices
+            {
+				1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,  // top right
+				1.0f,  -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,  // bottom right
+				-1.0f, -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+				-1.0f, 1.0f,  0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f   // top left
+		    };
+
+            std::array<unsigned int, 6> indices
+            {
+			0, 1, 3,  // first Triangle
+			1, 2, 3   // second Triangle
+		    };
+
+            vao.create(ni::utils::GLBufferType::Static,vertices,indices);
+        }
+
+        virtual void onDetach() override
+        {
+
+        }
+
+        virtual void onUpdate() override
+        {
+            setPositionX(getPositionX() + getVelocityX());
+            setPositionY(getPositionY() + getVelocityY());
+            flyAnimation.tryUpdate();
+        }
+
+        virtual void onRender() override
+        {
+            glBindTexture(GL_TEXTURE_2D, flyAnimation.getCurrentTexture().getTextureID());
+
+			glm::mat4 trans(1.0f);
+			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(getPositionX(),getPositionY(),0.2f));
+			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 1.0f));
+			trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
+			unsigned int transLocation = glGetUniformLocation(shader.getShaderID(), "transform");
+			glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+			unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
+			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
+
+			glBindVertexArray(vao.getVAO());
+			glUseProgram(shader.getShaderID());
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+        }
+
+        virtual void onEvent(ni::core::Event& e) override
+        {
+            if(e.getType() == ni::core::EventType::KeyPress)
+		    {
+			    switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode())
+			    {
+			    	case ni::core::KeyCode::UP:
+			    		setVelocityY(0.5f);
+			    		break;
+			    	case ni::core::KeyCode::DOWN:
+			    		setVelocityY(-0.5f);
+			    		break;
+			    	case ni::core::KeyCode::RIGHT:
+			    		setVelocityX(0.5f);
+			    		break;
+			    	case ni::core::KeyCode::LEFT:
+			    		setVelocityX(-0.5f);
+			    		break;
+                    default:
+                        break;
+			    }
+            }
+            else if (e.getType() == ni::core::EventType::KeyRelease)
+		    {   
+		    	switch (static_cast<ni::core::KeyReleaseEvent&>(e).getKeyCode())
+		    	{
+		    		case ni::core::KeyCode::LEFT:
+		    		case ni::core::KeyCode::RIGHT:
+		    			setVelocityX(0.0f);
+		    			break;
+		    		case ni::core::KeyCode::UP:
+		    		case ni::core::KeyCode::DOWN:
+		    			setVelocityY(0.0f);
+		    			break;
+		    		default:
+		    			break;
+		    	}
+            }
+        }
+    };
+}
