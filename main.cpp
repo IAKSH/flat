@@ -67,7 +67,7 @@ private:
 	ni::utils::Camera2D cam;
 	ni::utils::VertexArrayObj vao;
 	ni::utils::VertexArrayObj backgroundVAO;
-	demo::Bird bird {mainShader,cam};
+	demo::Bird bird {mainShader,cam,testAudio};
 
 	float camDownVec{ 0.0f };
 	float camLeftVec{ 0.0f };
@@ -124,10 +124,6 @@ public:
 
 		// audio test
 		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
-		alSourcei(bird.getSourceID(), AL_BUFFER, testAudio.getBufferID());
-		alSourcef(bird.getSourceID(), AL_GAIN, 0.1f);
-		alSourcei(bird.getSourceID(), AL_LOOPING, AL_TRUE);
-		alSourcePlay(bird.getSourceID());
 
 		// timer test
 		timer.setInterval(ni::utils::MilliSeconds(3));

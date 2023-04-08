@@ -5,7 +5,7 @@
 
 namespace ni::utils
 {
-    class GameObject : virtual public ni::utils::MassPoint
+    class GameObject : public ni::utils::MassPoint
     {
     public:
         virtual void onAttach() = 0;

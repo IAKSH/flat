@@ -16,7 +16,7 @@ namespace ni::utils
 		Audio();
 		Audio(std::string_view path);
 		~Audio();
-		const ALuint& getBufferID() { return bufferID; }
+		const ALuint& getBufferID() const { return bufferID; }
 		void loadFromFile(std::string_view path);
 	};
 }

@@ -7,7 +7,7 @@
 
 namespace ni::utils
 {
-    class AudioSource : virtual public MassPoint
+    class AudioSource
     {
     private:
         ALuint sourceID;

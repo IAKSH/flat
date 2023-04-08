@@ -6,28 +6,33 @@
 #include "utils/animation.hpp"
 #include "utils/shader.hpp"
 #include "utils/camera.hpp"
+#include "utils/audio.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 
 #include <iostream>
 
 namespace demo
 {
     // TODO: audio source should remove from here, it should not inherit from MassPoint
-    class Bird : public ni::utils::GameObject, public ni::utils::AudioSource
+    class Bird : public ni::utils::GameObject
     {
     private:
         ni::utils::Animation<3> flyAnimation{ni::utils::MilliSeconds{250},"images/bird0_0.png","images/bird0_1.png","images/bird0_2.png"};
         ni::utils::VertexArrayObj vao;
+		ni::utils::AudioSource audioSource;
         const ni::utils::Shader& shader;
         const ni::utils::Camera2D& cam;
+		const ni::utils::Audio& testAudio;
 
     public:
-        Bird(const ni::utils::Shader& shader,const ni::utils::Camera2D& cam)
-            : shader(shader),cam(cam)
+        Bird(const ni::utils::Shader& shader,const ni::utils::Camera2D& cam,const ni::utils::Audio& testAudio)
+            : shader(shader),cam(cam),testAudio{testAudio}
         {
         }
         ~Bird() = default;
@@ -49,6 +54,12 @@ namespace demo
 		    };
 
             vao.create(ni::utils::GLBufferType::Static,vertices,indices);
+
+			// audio
+			alSourcei(audioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
+			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.1f);
+			alSourcei(audioSource.getSourceID(), AL_LOOPING, AL_TRUE);
+			alSourcePlay(audioSource.getSourceID());
         }
 
         virtual void onDetach() override
