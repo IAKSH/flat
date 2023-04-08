@@ -10,6 +10,7 @@
 #include "utils/vao.hpp"
 #include "utils/audio_source.hpp"
 #include "utils/logger.hpp"
+#include "utils/animation.hpp"
 #include "flat/collision_detect.hpp"
 
 #include <array>
@@ -58,11 +59,8 @@ class MainLayer : public ni::core::Layer
 private:
 	ni::utils::Shader mainShader;
 	ni::utils::TimeRecorder recorder;
-	ni::utils::TimeRecorder birdAniRecorder;
 	ni::utils::Timer timer;
 	ni::utils::Texture testTex;
-	std::array<ni::utils::Texture,3> birdTexs;
-	std::array<ni::utils::Texture,3>::iterator currentBirdTex { birdTexs.begin() };
 	ni::utils::Texture backgroundTex;
 	ni::utils::Audio testAudio;
 	ni::utils::Camera2D cam;
@@ -70,6 +68,13 @@ private:
 	ni::utils::VertexArrayObj backgroundVAO;
 	ni::utils::VertexArrayObj birdVAO;
 	ni::utils::AudioSource testAudioSource;
+	ni::utils::Animation<3> birdAnimation
+	{
+		ni::utils::MilliSeconds(150),
+		"images/bird0_0.png",
+		"images/bird0_1.png",
+		"images/bird0_2.png"
+	};
 
 	float camDownVec{ 0.0f };
 	float camLeftVec{ 0.0f };
@@ -128,9 +133,6 @@ public:
 
 		// texture test
 		testTex.loadFromFile("images/floor.png");
-		birdTexs[0].loadFromFile("images/bird0_0.png");
-		birdTexs[1].loadFromFile("images/bird0_1.png");
-		birdTexs[2].loadFromFile("images/bird0_2.png");
 		backgroundTex.loadFromFile("images/strangeSky.png");
 
 		// audio test
@@ -167,13 +169,7 @@ public:
 		birdPosX += birdVelX;
 		birdPosY += birdVelY;
 
-		if(birdAniRecorder.getSpanAsMilliSeconds() >= ni::utils::MilliSeconds(250))
-		{
-			if(++currentBirdTex;currentBirdTex == birdTexs.end())
-				currentBirdTex = birdTexs.begin();
-
-			birdAniRecorder.update();
-		}
+		birdAnimation.tryUpdate();
 	}
 
 	virtual void onRender() override
@@ -226,7 +222,7 @@ public:
 		}
 		// draw bird
 		{
-			glBindTexture(GL_TEXTURE_2D, currentBirdTex->getTextureID());
+			glBindTexture(GL_TEXTURE_2D, birdAnimation.getCurrentTexture().getTextureID());
 
 			glm::mat4 trans(1.0f);
 			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(birdPosX,birdPosY,0.2f));

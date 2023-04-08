@@ -57,6 +57,7 @@ target_sources(flat PRIVATE
     "utils/vao.hpp"
     "utils/audio_source.hpp"
     "utils/audio_source.cpp"
+    "utils/animation.hpp"
     "flat/collision_detect.hpp"
     "flat/gjk.cpp"
 )
