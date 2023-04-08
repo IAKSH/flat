@@ -17,13 +17,13 @@ namespace ni::utils
         ~MassPoint() = default;
 
     public:
-        const float& getPositionX() { return x; }
-        const float& getPositionY() { return y; }
-        const float& getPositionZ() { return z; }
-        const float& getVelocityX() { return vx; }
-        const float& getVelocityY() { return vy; }
-        const float& getVelocityZ() { return vz; }
-        const float& getMass() { return mass; }
+        const float& getPositionX() const { return x; }
+        const float& getPositionY() const { return y; }
+        const float& getPositionZ() const { return z; }
+        const float& getVelocityX() const { return vx; }
+        const float& getVelocityY() const { return vy; }
+        const float& getVelocityZ() const { return vz; }
+        const float& getMass() const { return mass; }
         void setPositionX(const float& x) { this->x = x; }
         void setPositionY(const float& y) { this->y = y; }
         void setPositionZ(const float& z) { this->z = z; }
