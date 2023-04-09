@@ -11,6 +11,7 @@
 #include "utils/audio_source.hpp"
 #include "utils/logger.hpp"
 #include "utils/animation.hpp"
+#include "utils/font.hpp"
 #include "flat/collision_detect.hpp"
 #include "demo_obj.hpp"
 
@@ -59,6 +60,7 @@ class MainLayer : public ni::core::Layer
 {
 private:
 	ni::utils::Shader mainShader;
+	ni::utils::Shader fontShader;
 	ni::utils::TimeRecorder recorder;
 	ni::utils::Timer timer;
 	ni::utils::Texture testTex;
@@ -67,6 +69,8 @@ private:
 	ni::utils::Camera2D cam;
 	ni::utils::VertexArrayObj vao;
 	ni::utils::VertexArrayObj backgroundVAO;
+	ni::utils::Font unifont;
+	std::unique_ptr<ni::utils::Texture> fontTex;
 	demo::Bird bird {mainShader,cam,testAudio};
 
 	float camDownVec{ 0.0f };
@@ -88,6 +92,8 @@ public:
 
 		mainShader.loadFromGLSL(vshader, fshader);
 		glUniform1i(glGetUniformLocation(mainShader.getShaderID(), "texture0"), 0);
+		fontShader.loadFromFile("../../font_vshader.glsl","../../font_fshader.glsl");
+		glUniform1i(glGetUniformLocation(fontShader.getShaderID(), "texture0"), 0);
 
 		// Set up vertex data and buffers
 		std::array<float,36> vertices {
@@ -133,6 +139,10 @@ public:
 				ni::utils::otherLogger()->warn("collision: bird at ({},{}) hit obj at ({},{})",bird.getPositionX(),bird.getPositionY(),0.0f,0.0f);
 		});
 
+		// font test
+		unifont.loadTTF("fonts/unifont-15.0.01.ttf");
+		fontTex = unifont.getStringTexture("Hello World! WDNMD");
+
 		bird.onAttach();
 	}
 
@@ -152,6 +162,9 @@ public:
 		cam.setPositionY(cam.getPositionY() + cam.getVelocityY() * 2);
 
 		bird.onUpdate();
+
+		alListener3f(AL_POSITION,cam.getPositionX(),cam.getPositionY(),cam.getPositionZ());
+		alListener3f(AL_VELOCITY,cam.getVelocityX(),cam.getVelocityY(),cam.getVelocityZ());
 	}
 
 	virtual void onRender() override
@@ -166,6 +179,7 @@ public:
 
 		// draw background
 		{
+			glUseProgram(mainShader.getShaderID());
 			glBindTexture(GL_TEXTURE_2D, backgroundTex.getTextureID());
 
 			glm::mat4 trans(1.0f);
@@ -179,12 +193,12 @@ public:
 			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
 
 			glBindVertexArray(backgroundVAO.getVAO());
-			glUseProgram(mainShader.getShaderID());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
 		// draw floor
 		{
+			glUseProgram(mainShader.getShaderID());
 			glBindTexture(GL_TEXTURE_2D, testTex.getTextureID());
 
 			glm::mat4 trans(1.0f);
@@ -198,12 +212,33 @@ public:
 			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
 
 			glBindVertexArray(vao.getVAO());
-			glUseProgram(mainShader.getShaderID());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
-
 		bird.onRender();
+		// test: draw text
+		{
+			
+			glUseProgram(fontShader.getShaderID());
+			glBindTexture(GL_TEXTURE_2D,fontTex->getTextureID());
+
+			glm::mat4 trans(1.0f);
+			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(sin(glfwGetTime()) * 1080, 50.0f, 1.0f));
+			trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+
+			unsigned int transLocation = glGetUniformLocation(fontShader.getShaderID(), "transform");
+			glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
+			unsigned int camTrans = glGetUniformLocation(fontShader.getShaderID(), "camTrans");
+			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
+
+			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"textColor"),0.0f,0.5f,0.8f,0.75f);
+			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"outlineColor"),1.0f,0.0f,0.0f,0.75f);
+			glUniform1f(glGetUniformLocation(fontShader.getShaderID(),"outlineColor"),0.5f);
+
+			glBindVertexArray(backgroundVAO.getVAO());
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		}
 
 		// imgui test
 		ImGui_ImplOpenGL3_NewFrame();

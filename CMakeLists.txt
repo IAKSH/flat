@@ -58,6 +58,8 @@ target_sources(flat PRIVATE
     "utils/audio_source.hpp"
     "utils/audio_source.cpp"
     "utils/animation.hpp"
+    "utils/font.hpp"
+    "utils/font.cpp"
     "flat/collision_detect.hpp"
     "flat/gjk.cpp"
 )
