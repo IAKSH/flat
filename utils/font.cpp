@@ -60,7 +60,7 @@ void ni::utils::Font::loadTTF(std::string_view path)
     }
 }
 
-const ni::utils::Texture& ni::utils::Font::getCharTexture(const char32_t& c)
+const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
 {
     auto ite = std::ranges::find_if(textureCache,[&c](const std::unique_ptr<CharTexture>& tex){return tex->getChar() == c;});
     if(ite != std::end(textureCache))
@@ -95,8 +95,8 @@ const ni::utils::Texture& ni::utils::Font::getCharTexture(const char32_t& c)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        auto ptr = std::make_unique<CharTexture>(c,textureID);
-        ni::utils::Texture& texture = *ptr;
+        auto ptr = std::make_unique<CharTexture>(c,width,height,offset_x,offset_y,textureID);
+        ni::utils::CharTexture& texture = *ptr;
         textureCache.push_back(std::move(ptr));
 
         stbtt_FreeBitmap(bitmap, nullptr);

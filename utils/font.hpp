@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <deque>
 #include <memory>
 #include <string_view>
@@ -15,15 +16,22 @@ namespace ni::utils
     {
     private:
         char c;
+        int width,height;     // 字形大小
+        int offsetX,offsetY;  // 从基准线到字形左部/顶部的偏移值
+        //unsigned int advance;       // 原点距下一个字形原点的距离
 
     public:
-        CharTexture(char c,GLuint texID)
-            : c{c}
+        CharTexture(char c,int w,int h,int offsetX,int offsetY,GLuint texID)
+            : c{c},width{w},height{h},offsetX{offsetX},offsetY{offsetY}
         {
             setTextureID(texID);
         }
         ~CharTexture() = default;
-        const char& getChar() { return c; }
+        const char& getChar() const { return c; }
+        const int& getWidth() const { return width; }
+        const int& getHeight() const { return height; }
+        const int& getOffsetX() const { return offsetX; }
+        const int& getOffsetY() const { return offsetY; }
     };
 
     class Font
@@ -35,8 +43,9 @@ namespace ni::utils
     public:
         Font(std::string_view path);
         Font() = default;
+        Font(Font&) = delete;
         ~Font() = default;
-        const ni::utils::Texture& getCharTexture(const char32_t& c);
+        const ni::utils::CharTexture& getCharTexture(const char32_t& c);
         void freeCacheInRange(const char& low,const char& up);
         void loadTTF(std::string_view path);
     };

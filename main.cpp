@@ -13,6 +13,7 @@
 #include "utils/animation.hpp"
 #include "utils/font.hpp"
 #include "flat/collision_detect.hpp"
+#include "flat/text_renderer.hpp"
 #include "demo_obj.hpp"
 
 #include <array>
@@ -60,7 +61,6 @@ class MainLayer : public ni::core::Layer
 {
 private:
 	ni::utils::Shader mainShader;
-	ni::utils::Shader fontShader;
 	ni::utils::TimeRecorder recorder;
 	ni::utils::Timer timer;
 	ni::utils::Texture testTex;
@@ -70,6 +70,7 @@ private:
 	ni::utils::VertexArrayObj vao;
 	ni::utils::VertexArrayObj backgroundVAO;
 	ni::utils::Font unifont;
+	ni::flat::TextRenderer textRenderer;
 	demo::Bird bird {mainShader,cam,testAudio};
 
 	float camDownVec{ 0.0f };
@@ -91,9 +92,7 @@ public:
 
 		mainShader.loadFromGLSL(vshader, fshader);
 		glUniform1i(glGetUniformLocation(mainShader.getShaderID(), "texture0"), 0);
-		fontShader.loadFromFile("../../font_vshader.glsl","../../font_fshader.glsl");
-		glUniform1i(glGetUniformLocation(fontShader.getShaderID(), "texture0"), 0);
-
+		
 		// Set up vertex data and buffers
 		std::array<float,36> vertices {
 				1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 0.1f, 1.0f, 1.0f,  // top right
@@ -216,25 +215,7 @@ public:
 		bird.onRender();
 		// test: draw text
 		{
-			glUseProgram(fontShader.getShaderID());
-			glBindTexture(GL_TEXTURE_2D,unifont.getCharTexture(U'時').getTextureID());
-
-			glm::mat4 trans(1.0f);
-			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(200.0f, 50.0f, 1.0f));
-			trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-
-			unsigned int transLocation = glGetUniformLocation(fontShader.getShaderID(), "transform");
-			glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
-			unsigned int camTrans = glGetUniformLocation(fontShader.getShaderID(), "camTrans");
-			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
-
-			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"textColor"),1.0f,0.0f,0.3f,0.8);
-			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"outlineColor"),0.0f,0.0f,1.0f,1.0f);
-			glUniform1f(glGetUniformLocation(fontShader.getShaderID(),"outlineThickness"),10.0f);
-
-			glBindVertexArray(backgroundVAO.getVAO());
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			
 		}
 
 		// imgui test

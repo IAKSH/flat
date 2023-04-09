@@ -62,6 +62,8 @@ target_sources(flat PRIVATE
     "utils/font.cpp"
     "flat/collision_detect.hpp"
     "flat/gjk.cpp"
+    "flat/text_renderer.hpp"
+    "flat/text_renderer.cpp"
 )
 
 add_executable(flat_test "main.cpp" "demo_obj.hpp")
