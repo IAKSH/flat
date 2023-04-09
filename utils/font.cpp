@@ -1,3 +1,4 @@
+#include <deque>
 #include <exception>
 #include <ios>
 #include <iterator>
@@ -59,84 +60,47 @@ void ni::utils::Font::loadTTF(std::string_view path)
     }
 }
 
-const ni::utils::Texture& ni::utils::Font::getCharTexture(const char& c) const
+const ni::utils::Texture& ni::utils::Font::getCharTexture(const char32_t& c)
 {
     auto ite = std::ranges::find_if(textureCache,[&c](const std::unique_ptr<CharTexture>& tex){return tex->getChar() == c;});
     if(ite != std::end(textureCache))
         return **ite;
     else
     {
-        // TODO: load bitmap from ttf and save it to cache (just in time)
-    }
-}
-
-std::unique_ptr<ni::utils::Texture> ni::utils::Font::getStringTexture(std::u32string_view str) const
-{
-    stbtt_fontinfo info;
-    if (!stbtt_InitFont_internal(&info, ttfBinary.get(), 0))
-    {
-        ni::utils::coreLogger()->critical("stb init font failed");
-        abort();
-    }
-
-    size_t bitmapWidth = 64 * str.length(); // Use number of Unicode characters instead of bytes
-    constexpr size_t bitmapHeight = 64;
-
-    auto bitmap = std::make_unique<unsigned char[]>(bitmapWidth * bitmapHeight);
-    float pixels = 64.0f;
-    float scale = stbtt_ScaleForPixelHeight(&info, pixels);
-    int ascent = 0;
-    int descent = 0;
-    int lineGap = 0;
-    stbtt_GetFontVMetrics(&info, &ascent, &descent, &lineGap);
-    ascent = roundf(ascent * scale);
-    descent = roundf(descent * scale);
-    int x = 0;
-
-    // load all char
-    for (const auto& c : str)
-    {
-        int glyphIndex = stbtt_FindGlyphIndex(&info, c);
-        if (glyphIndex == 0) // Skip nonexistent glyphs
-            continue;
-
-        int advanceWidth = 0;
-        int leftSideBearing = 0;
-        stbtt_GetGlyphHMetrics(&info, glyphIndex, &advanceWidth, &leftSideBearing);
-
-        int c_x1, c_y1, c_x2, c_y2;
-        stbtt_GetGlyphBitmapBox(&info, glyphIndex, scale, scale, &c_x1, &c_y1, &c_x2, &c_y2);
-
-        int y = ascent + c_y1;
-
-        int byteOffset = x + roundf(leftSideBearing * scale) + (y * bitmapWidth);
-        stbtt_MakeGlyphBitmap(&info, bitmap.get() + byteOffset, c_x2 - c_x1, c_y2 - c_y1, bitmapWidth, scale, scale, glyphIndex);
-
-        x += roundf(advanceWidth * scale);
-
-        // Get the kerning for the next character
-        if (x < bitmapWidth) // Don't do kerning if we're at the end of the string
+        // Load bitmap from TTF and save it to cache
+        stbtt_fontinfo info;
+        if(!stbtt_InitFont(&info, ttfBinary.get(), 0))
         {
-            int nextCharIndex = stbtt_FindGlyphIndex(&info, str[x / 64]);
-            if (nextCharIndex != 0)
-            {
-                int kern = stbtt_GetGlyphKernAdvance(&info, glyphIndex, nextCharIndex);
-                x += roundf(kern * scale);
-            }
+            ni::utils::coreLogger()->critical("stb init font failed");
+            abort();
         }
+
+        int ascent, descent, lineGap;
+        stbtt_GetFontVMetrics(&info, &ascent, &descent, &lineGap);
+        float scale = stbtt_ScaleForPixelHeight(&info, 64.0f);
+
+        int width, height, offset_x, offset_y;
+        unsigned char* bitmap = stbtt_GetCodepointBitmap(&info, scale, scale, c, &width, &height, &offset_x, &offset_y);
+
+        GLuint textureID;
+
+        // create texture
+        glGenTextures(1, &textureID);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        auto ptr = std::make_unique<CharTexture>(c,textureID);
+        ni::utils::Texture& texture = *ptr;
+        textureCache.push_back(std::move(ptr));
+
+        stbtt_FreeBitmap(bitmap, nullptr);
+
+        return texture;
     }
-
-    // create OpenGL Texture2D
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap.get());
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    return std::make_unique<ni::utils::CharTexture>(str[0], textureID); // Use str[0] as the character for CharTexture
 }

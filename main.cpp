@@ -70,7 +70,6 @@ private:
 	ni::utils::VertexArrayObj vao;
 	ni::utils::VertexArrayObj backgroundVAO;
 	ni::utils::Font unifont;
-	std::unique_ptr<ni::utils::Texture> fontTex;
 	demo::Bird bird {mainShader,cam,testAudio};
 
 	float camDownVec{ 0.0f };
@@ -141,7 +140,6 @@ public:
 
 		// font test
 		unifont.loadTTF("fonts/unifont-15.0.01.ttf");
-		fontTex = unifont.getStringTexture(U"Hello World!你好世界！");
 
 		bird.onAttach();
 	}
@@ -218,13 +216,12 @@ public:
 		bird.onRender();
 		// test: draw text
 		{
-			
 			glUseProgram(fontShader.getShaderID());
-			glBindTexture(GL_TEXTURE_2D,fontTex->getTextureID());
+			glBindTexture(GL_TEXTURE_2D,unifont.getCharTexture(U'時').getTextureID());
 
 			glm::mat4 trans(1.0f);
 			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(sin(glfwGetTime()) * 1080, 50.0f, 1.0f));
+			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(200.0f, 50.0f, 1.0f));
 			trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
 			unsigned int transLocation = glGetUniformLocation(fontShader.getShaderID(), "transform");
@@ -232,9 +229,9 @@ public:
 			unsigned int camTrans = glGetUniformLocation(fontShader.getShaderID(), "camTrans");
 			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
 
-			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"textColor"),0.0f,0.5f,0.8f,0.75f);
-			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"outlineColor"),1.0f,0.0f,0.0f,0.75f);
-			glUniform1f(glGetUniformLocation(fontShader.getShaderID(),"outlineColor"),0.5f);
+			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"textColor"),1.0f,0.0f,0.3f,0.8);
+			glUniform4f(glGetUniformLocation(fontShader.getShaderID(),"outlineColor"),0.0f,0.0f,1.0f,1.0f);
+			glUniform1f(glGetUniformLocation(fontShader.getShaderID(),"outlineThickness"),10.0f);
 
 			glBindVertexArray(backgroundVAO.getVAO());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

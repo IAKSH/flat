@@ -5,6 +5,7 @@
 #include <string_view>
 
 #include "texture.hpp"
+#include "shader.hpp"
 
 #include <glad/glad.h>
 
@@ -35,8 +36,7 @@ namespace ni::utils
         Font(std::string_view path);
         Font() = default;
         ~Font() = default;
-        const ni::utils::Texture& getCharTexture(const char& c) const;
-        std::unique_ptr<ni::utils::Texture> getStringTexture(std::u32string_view str) const;
+        const ni::utils::Texture& getCharTexture(const char32_t& c);
         void freeCacheInRange(const char& low,const char& up);
         void loadTTF(std::string_view path);
     };
