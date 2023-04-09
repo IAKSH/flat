@@ -25,6 +25,7 @@ namespace ni::utils
             : interval{interval},textures{std::make_unique<ni::utils::Texture>(std::forward<Args>(args))...},ite{std::begin(textures)}
         {
         }
+        Animation(Animation&) = delete;
         ~Animation() = default;
         const ni::utils::Texture& getCurrentTexture() const { return **ite; }
         void rewind() {ite = std::begin(textures);}

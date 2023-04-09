@@ -14,6 +14,7 @@ namespace ni::utils
 
 	public:
 		Audio();
+		Audio(Audio&) = delete;
 		Audio(std::string_view path);
 		~Audio();
 		const ALuint& getBufferID() const { return bufferID; }

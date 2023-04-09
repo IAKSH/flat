@@ -39,6 +39,7 @@ namespace ni::utils
 	public:
 		Timer(const MilliSeconds& i, std::function<void(void)> callback);
 		Timer();
+		Timer(Timer&) = delete;
 		~Timer();
 		void setInterval(const MicroSeconds& i);
 		const MicroSeconds& getInterval();

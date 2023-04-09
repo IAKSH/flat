@@ -15,6 +15,7 @@ namespace ni::core
 
 	public:
 		Mixer();
+		Mixer(Mixer&) = delete;
 		~Mixer();
 	};
 }

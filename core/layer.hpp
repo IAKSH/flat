@@ -16,6 +16,7 @@ namespace ni::core
 			: layerName(name)
 		{
 		}
+		Layer(Layer&) = delete;
 		~Layer() = default;
 
 		std::string_view getName() { return layerName; }

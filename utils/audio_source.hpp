@@ -16,6 +16,7 @@ namespace ni::utils
 
     public:
         AudioSource();
+        AudioSource(AudioSource&) = delete;
         ~AudioSource();
         const ALuint& getSourceID() { return sourceID; }
     };

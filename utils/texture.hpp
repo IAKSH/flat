@@ -16,6 +16,7 @@ namespace ni::utils
 
 	public:
 		Texture();
+		Texture(Texture&) = delete;
 		Texture(std::string_view path);
 		~Texture();
 		const GLuint& getTextureID() const { return textureID; }
