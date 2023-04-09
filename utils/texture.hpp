@@ -11,6 +11,9 @@ namespace ni::utils
 	private:
 		GLuint textureID;
 
+	protected:
+		void setTextureID(GLuint id) { textureID = id; }
+
 	public:
 		Texture();
 		Texture(std::string_view path);
