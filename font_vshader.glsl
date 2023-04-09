@@ -12,5 +12,5 @@ out vec2 aTexCoordOut;
 void main()
 {
     gl_Position =  camTrans * transform * vec4(aPos, 1.0f);
-    aTexCoordOut = vec2(aTexCoord.x, 1.0 - aTexCoord.y);
+    aTexCoordOut = vec2(aTexCoord.x - 1.0, 1.0f - aTexCoord.y);
 }

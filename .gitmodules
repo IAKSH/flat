@@ -19,3 +19,9 @@
 [submodule "vendor/openal-soft"]
 	path = vendor/openal-soft
 	url = https://github.com/kcat/openal-soft.git
+[submodule "vendor/freetype-gl"]
+	path = vendor/freetype-gl
+	url = https://github.com/rougier/freetype-gl.git
+[submodule "vendor/freetype"]
+	path = vendor/freetype
+	url = https://github.com/freetype/freetype.git

@@ -15,11 +15,10 @@ void main()
     vec3 grayScale = vec3(alpha);
     
     // 计算描边效果
-    //float distance = length((aTexCoordOut - vec2(0.5)) * (1.0 / fwidth(aTexCoordOut)));
-    //float border = smoothstep(0.5 - outlineThickness, 0.5 + outlineThickness, distance);
+    float distance = length((aTexCoordOut - vec2(0.5)) * (1.0 / fwidth(aTexCoordOut)));
+    float border = smoothstep(0.5 - outlineThickness, 0.5 + outlineThickness, distance);
     
     // 计算最终颜色
-    //vec4 color = mix(outlineColor, textColor, border);
-    vec4 color = mix(outlineColor, textColor,1.0f);
+    vec4 color = mix(outlineColor, textColor, border);
     FragColor = vec4(color.rgb * grayScale, alpha * color.a);
 }
