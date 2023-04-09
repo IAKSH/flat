@@ -70,16 +70,16 @@ const ni::utils::Texture& ni::utils::Font::getCharTexture(const char& c) const
     }
 }
 
-std::unique_ptr<ni::utils::Texture> ni::utils::Font::getStringTexture(std::string_view str) const
+std::unique_ptr<ni::utils::Texture> ni::utils::Font::getStringTexture(std::u32string_view str) const
 {
     stbtt_fontinfo info;
-    if(!stbtt_InitFont_internal(&info,ttfBinary.get(),0))
+    if (!stbtt_InitFont_internal(&info, ttfBinary.get(), 0))
     {
         ni::utils::coreLogger()->critical("stb init font failed");
         abort();
     }
 
-    size_t bitmapWidth = 64 * str.length();
+    size_t bitmapWidth = 64 * str.length(); // Use number of Unicode characters instead of bytes
     constexpr size_t bitmapHeight = 64;
 
     auto bitmap = std::make_unique<unsigned char[]>(bitmapWidth * bitmapHeight);
@@ -94,41 +94,49 @@ std::unique_ptr<ni::utils::Texture> ni::utils::Font::getStringTexture(std::strin
     int x = 0;
 
     // load all char
-    for(const auto& c : str)
+    for (const auto& c : str)
     {
-        if(c == '\0')
-            break;
+        int glyphIndex = stbtt_FindGlyphIndex(&info, c);
+        if (glyphIndex == 0) // Skip nonexistent glyphs
+            continue;
 
         int advanceWidth = 0;
         int leftSideBearing = 0;
-        stbtt_GetCodepointHMetrics(&info, c, &advanceWidth, &leftSideBearing);
+        stbtt_GetGlyphHMetrics(&info, glyphIndex, &advanceWidth, &leftSideBearing);
 
         int c_x1, c_y1, c_x2, c_y2;
-        stbtt_GetCodepointBitmapBox(&info, c, scale, scale, &c_x1, &c_y1, &c_x2, &c_y2);
+        stbtt_GetGlyphBitmapBox(&info, glyphIndex, scale, scale, &c_x1, &c_y1, &c_x2, &c_y2);
 
         int y = ascent + c_y1;
 
         int byteOffset = x + roundf(leftSideBearing * scale) + (y * bitmapWidth);
-        stbtt_MakeCodepointBitmap(&info, bitmap.get() + byteOffset, c_x2 - c_x1, c_y2 - c_y1, bitmapWidth, scale, scale, c);
-        
+        stbtt_MakeGlyphBitmap(&info, bitmap.get() + byteOffset, c_x2 - c_x1, c_y2 - c_y1, bitmapWidth, scale, scale, glyphIndex);
+
         x += roundf(advanceWidth * scale);
 
-        int kern;
-        kern = stbtt_GetCodepointKernAdvance(&info, c, *(&c + 1));
-        x += roundf(kern * scale);
+        // Get the kerning for the next character
+        if (x < bitmapWidth) // Don't do kerning if we're at the end of the string
+        {
+            int nextCharIndex = stbtt_FindGlyphIndex(&info, str[x / 64]);
+            if (nextCharIndex != 0)
+            {
+                int kern = stbtt_GetGlyphKernAdvance(&info, glyphIndex, nextCharIndex);
+                x += roundf(kern * scale);
+            }
+        }
     }
-    
+
     // create OpenGL Texture2D
     GLuint textureID;
-    glGenTextures(1,&textureID);
+    glGenTextures(1, &textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap.get());
-	glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap.get());
+    glGenerateMipmap(GL_TEXTURE_2D);
 
-    return std::make_unique<ni::utils::CharTexture>('s',textureID);
+    return std::make_unique<ni::utils::CharTexture>(str[0], textureID); // Use str[0] as the character for CharTexture
 }

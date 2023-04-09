@@ -141,7 +141,7 @@ public:
 
 		// font test
 		unifont.loadTTF("fonts/unifont-15.0.01.ttf");
-		fontTex = unifont.getStringTexture("Hello World! WDNMD");
+		fontTex = unifont.getStringTexture(U"Hello World!你好世界！");
 
 		bird.onAttach();
 	}

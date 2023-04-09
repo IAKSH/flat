@@ -36,7 +36,7 @@ namespace ni::utils
         Font() = default;
         ~Font() = default;
         const ni::utils::Texture& getCharTexture(const char& c) const;
-        std::unique_ptr<ni::utils::Texture> getStringTexture(std::string_view str) const;
+        std::unique_ptr<ni::utils::Texture> getStringTexture(std::u32string_view str) const;
         void freeCacheInRange(const char& low,const char& up);
         void loadTTF(std::string_view path);
     };
