@@ -1,4 +1,5 @@
 #pragma once
+#include "al.h"
 #include "core/event_keyboard.hpp"
 #include "utils/gameobj.hpp"
 #include "utils/vao.hpp"
@@ -57,7 +58,7 @@ namespace demo
 
 			// audio
 			alSourcei(audioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
-			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.1f);
+			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.5f);
 			alSourcei(audioSource.getSourceID(), AL_LOOPING, AL_TRUE);
 			alSourcePlay(audioSource.getSourceID());
         }
@@ -72,10 +73,14 @@ namespace demo
             setPositionX(getPositionX() + getVelocityX());
             setPositionY(getPositionY() + getVelocityY());
             flyAnimation.tryUpdate();
+
+			alSource3f(audioSource.getSourceID(),AL_POSITION,getPositionX(),getPositionY(),getPositionZ());
+			alSource3f(audioSource.getSourceID(),AL_VELOCITY,getVelocityX(),getVelocityY(),getVelocityZ());
         }
 
         virtual void onRender() override
         {
+			glUseProgram(shader.getShaderID());
             glBindTexture(GL_TEXTURE_2D, flyAnimation.getCurrentTexture().getTextureID());
 
 			glm::mat4 trans(1.0f);
@@ -89,7 +94,6 @@ namespace demo
 			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
 
 			glBindVertexArray(vao.getVAO());
-			glUseProgram(shader.getShaderID());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
         }
