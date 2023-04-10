@@ -53,6 +53,6 @@ namespace ni::flat
         TextRenderer(TextRenderer&) = delete;
         ~TextRenderer() = default;
 
-        void drawText(std::u32string_view str,const float& x,const float& y,const float& r,const float& g,const float& b,const float& a,const float& z,const float& scale,Font& font);
+        void drawText(std::u32string_view str,const float& x,const float& y,const float& z,const float& r,const float& g,const float& b,const float& a,const float& scale,Font& font);
     };
 }

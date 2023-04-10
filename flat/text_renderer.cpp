@@ -18,14 +18,14 @@ void ni::flat::TextRenderer::initialize()
 
 }
 
-void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,const float& y,const float& r,const float& g,const float& b,const float& a,const float& z,const float& scale,Font& font)
+void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,const float& y,const float& z,const float& r,const float& g,const float& b,const float& a,const float& scale,Font& font)
 {
     glUseProgram(shader.getShaderID());
     float xpos = x;
 
     for (const auto& c : str)
     {
-        if(c == '\0') break;
+        if(c == U'\0') break;
         
         const auto& charTex = font.getCharTexture(c);
         float xoffset = charTex.getOffsetX() * scale;
@@ -34,7 +34,7 @@ void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,con
         float h = charTex.getHeight() * scale;
         vertices =
         {
-            xpos + xoffset,     y - yoffset + h, z, r,g,b,a,   0.0, 0.0,
+            xpos + xoffset,     y - yoffset + h, z, r,g,b,a,  0.0, 0.0,
             xpos + xoffset,     y - yoffset, z, r,g,b,a,      0.0, 1.0,
             xpos + xoffset + w, y - yoffset, z, r,g,b,a,      1.0, 1.0,
             xpos + xoffset + w, y - yoffset + h, z, r,g,b,a,  1.0, 0.0
@@ -62,6 +62,8 @@ void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,con
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
         
-        xpos += (charTex.getWidth() + font.getCharTexture(*(&c + 1)).getOffsetX()) * scale;
+        const auto& nextChar = *(&c + 1);
+        if(nextChar != U'\0')
+            xpos += (charTex.getWidth() + font.getCharTexture(*(&c + 1)).getOffsetX()) * scale;
     }
 }

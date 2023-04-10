@@ -88,7 +88,6 @@ public:
 	virtual void onAttach() override
 	{
 		cam.setPositionX(-0.5f);
-		//cam.setPositionZ(0.5f);
 
 		mainShader.loadFromGLSL(vshader, fshader);
 		glUniform1i(glGetUniformLocation(mainShader.getShaderID(), "texture0"), 0);
@@ -215,7 +214,7 @@ public:
 		bird.onRender();
 		// test: draw text
 		{
-			
+			textRenderer.drawText(U"我日！",0.0f,0.0f,1.2f,1.0f,0.2f,0.3f,0.8f,1.0f,unifont);
 		}
 
 		// imgui test
