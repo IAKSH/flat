@@ -211,11 +211,10 @@ public:
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
-		bird.onRender();
 		// test: draw text
-		{
-			textRenderer.drawText(U"我日！",0.0f,0.0f,1.2f,1.0f,0.2f,0.3f,0.8f,1.0f,unifont);
-		}
+		textRenderer.drawText(U"我日！",0.0f,0.0f,1.2f,1.0f,0.2f,0.3f,0.8f,1.0f,unifont);
+		
+		bird.onRender();
 
 		// imgui test
 		ImGui_ImplOpenGL3_NewFrame();

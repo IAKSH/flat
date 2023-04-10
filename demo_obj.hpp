@@ -58,7 +58,7 @@ namespace demo
 
 			// audio
 			alSourcei(audioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
-			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.5f);
+			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.25f);
 			alSourcei(audioSource.getSourceID(), AL_LOOPING, AL_TRUE);
 			alSourcePlay(audioSource.getSourceID());
         }

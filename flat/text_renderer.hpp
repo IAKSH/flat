@@ -14,6 +14,7 @@ namespace ni::flat
         using Font = ::ni::utils::Font;
         using Shader = ::ni::utils::Shader;
         using VertexBuffer = ::ni::utils::VertexArrayObj;
+        using CharTexture = ::ni::utils::CharTexture;
 
     private:
         Shader shader;
@@ -30,8 +31,9 @@ namespace ni::flat
             "out vec4 aColorOut;\n"
             "void main()\n"
             "{\n"
-            "    gl_Position =  projTrans * vec4(aPos, 1.0f);\n"
-            "    aTexCoordOut = vec2(aTexCoord.x - 1.0, 1.0f - aTexCoord.y);\n"
+            "    //gl_Position = projTrans * vec4(aPos, 1.0f);\n"
+            "    gl_Position = vec4(aPos, 1.0f);\n"
+            "    aTexCoordOut = vec2(aTexCoord.x,aTexCoord.y);\n"
             "    aColorOut = aColor;\n"
             "}\n";
         const char* const fshaderSource = "#version 330 core\n"
@@ -41,9 +43,10 @@ namespace ni::flat
             "out vec4 FragColor;\n"
             "void main()\n"
             "{\n"
-            "    float alpha = texture(texture0, aTexCoordOut).r;\n"
-            "    vec3 grayScale = vec3(alpha);\n"
-            "    FragColor = vec4(aColorOut.rgb * grayScale, alpha * aColorOut.a);\n"
+            "    //float alpha = texture(texture0, aTexCoordOut).r;\n"
+            "    //vec3 grayScale = vec3(alpha);\n"
+            "    //FragColor = vec4(aColorOut.rgb * grayScale, alpha * aColorOut.a);\n"
+             "   FragColor = aColorOut;\n"
             "}\n";
 
         void initialize();
