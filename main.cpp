@@ -214,12 +214,11 @@ public:
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
+		bird.onRender();
 		// test: draw text
 		{
-			textRenderer.drawText(U"论他妈的。",400.0f,300.0f,0.9f,1.0f,0.2f,0.3f,0.8f,0.5f,unifont);
+			textRenderer.drawText(U"我测你们de码？!",400.0f,300.0f,0.9f,1.0f,0.0f,0.0f,0.8f,abs(sin(glfwGetTime() / 2.0f)),unifont);
 		}
-		
-		bird.onRender();
 
 		// imgui test
 		ImGui_ImplOpenGL3_NewFrame();
