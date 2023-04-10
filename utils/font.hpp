@@ -16,13 +16,14 @@ namespace ni::utils
     {
     private:
         char32_t c;
-        int width,height;     // 字形大小
-        int offsetX,offsetY;  // 从基准线到字形左部/顶部的偏移值
-        //unsigned int advance;       // 原点距下一个字形原点的距离
+        float scale;
+        int width,height;
+        int offsetX,offsetY;
+        int ascent, descent, lineGap;
 
     public:
-        CharTexture(char32_t c,int w,int h,int offsetX,int offsetY,GLuint texID)
-            : c{c},width{w},height{h},offsetX{offsetX},offsetY{offsetY}
+        CharTexture(char32_t c,int w,int h,int offsetX,int offsetY,int ascent,int descent,int lineGap,float scale,GLuint texID)
+            : c{c},width{w},height{h},offsetX{offsetX},offsetY{offsetY},ascent{ascent},descent{descent},lineGap{lineGap},scale{scale}
         {
             setTextureID(texID);
         }
@@ -32,6 +33,10 @@ namespace ni::utils
         const int& getHeight() const { return height; }
         const int& getOffsetX() const { return offsetX; }
         const int& getOffsetY() const { return offsetY; }
+        const float& getScale() const { return scale; }
+        const int& getAscent() const { return ascent; }
+        const int& getDescent() const { return descent; }
+        const int& getLineGap() const { return lineGap; }
     };
 
     class Font

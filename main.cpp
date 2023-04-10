@@ -135,8 +135,8 @@ public:
 		timer.setInterval(ni::utils::MilliSeconds(3));
 		timer.detachRun([&]() 
 		{
-			if(ni::flat::collisionCheckGJK(bird.getPositionX(),bird.getPositionY(),50.0f,50.0f,0.0f,0.0f,0.0f,100.0f,100.0f,glfwGetTime()))
-				ni::utils::otherLogger()->warn("collision: bird at ({},{}) hit obj at ({},{})",bird.getPositionX(),bird.getPositionY(),0.0f,0.0f);
+			//if(ni::flat::collisionCheckGJK(bird.getPositionX(),bird.getPositionY(),50.0f,50.0f,0.0f,0.0f,0.0f,100.0f,100.0f,glfwGetTime()))
+			//	ni::utils::otherLogger()->warn("collision: bird at ({},{}) hit obj at ({},{})",bird.getPositionX(),bird.getPositionY(),0.0f,0.0f);
 		});
 
 		// font test
@@ -152,7 +152,7 @@ public:
 
 	virtual void onUpdate() override
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(3));
+		//std::this_thread::sleep_for(std::chrono::milliseconds(3));
 
 		//cam.move(cam.getVelocityX(), cam.getVelocityY());
 		//cam.turn(camDownVec * camSensitivity, camLeftVec * camSensitivity);
@@ -217,7 +217,7 @@ public:
 		bird.onRender();
 		// test: draw text
 		{
-			textRenderer.drawText(U"我测你们de码？!",400.0f,300.0f,0.9f,1.0f,0.0f,0.0f,0.8f,abs(sin(glfwGetTime() / 2.0f)),unifont);
+			textRenderer.drawText(U"我W测C尼n玛m？!",400.0f,300.0f,0.9f,1.0f,0.0f,0.0f,0.8f,abs(cos(glfwGetTime() * 0.1)),unifont);
 		}
 
 		// imgui test

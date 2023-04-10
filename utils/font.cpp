@@ -67,7 +67,7 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         return **ite;
     else
     {
-        ni::utils::coreLogger()->trace("create texture of {} (char32_t to int) from ttf",static_cast<int>(c));
+        ni::utils::coreLogger()->trace("create texture of 0x{:X} from ttf",static_cast<unsigned int>(c));
 
         // Load bitmap from TTF and save it to cache
         stbtt_fontinfo info;
@@ -97,7 +97,7 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        auto ptr = std::make_unique<CharTexture>(c,width,height,offset_x,offset_y,textureID);
+        auto ptr = std::make_unique<CharTexture>(c,width,height,offset_x,offset_y,ascent,descent,lineGap,scale,textureID);
         ni::utils::CharTexture& texture = *ptr;
         textureCache.push_back(std::move(ptr));
 

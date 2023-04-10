@@ -41,25 +41,24 @@ void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,con
 			break;
 
 		const auto& charTex = font.getCharTexture(str[i]);
-		//const auto& nextCharTex = font.getCharTexture(str[i + 1]);
 
 		float scaledWidth = charTex.getWidth() * scale;
 		float scaledHeight = charTex.getHeight() * scale;
-		float scaledOffsetX = charTex.getOffsetX() * scale;
-		float scaledOffsetY = charTex.getOffsetY() * scale;
+		float scaledAscent = charTex.getAscent() * charTex.getScale() * scale;
+		float scaledDescent = charTex.getDescent() * charTex.getScale() * scale;
+		float oriX = xpos + charTex.getOffsetX() * scale;
+		float oriY = y + (charTex.getOffsetY() - charTex.getAscent()) * charTex.getScale() * scale;
 
 		vertices = 
 		{
-			xpos - scaledOffsetX + scaledWidth,  y - scaledOffsetY / 2.0f + scaledHeight / 2.0f, z, r, g, b, a, 1.0f, 1.0f,  // top right
-			xpos - scaledOffsetX + scaledWidth,  y - scaledOffsetY / 2.0f - scaledHeight / 2.0f, z, r, g, b, a, 1.0f, 0.0f,  // bottom right
-			xpos - scaledOffsetX , y - scaledOffsetY / 2.0f - scaledHeight / 2.0f, z, r, g, b, a, 0.0f, 0.0f,  // bottom left
-			xpos - scaledOffsetX, y - scaledOffsetY / 2.0f + scaledHeight / 2.0f,  z, r, g, b, a, 0.0f, 1.0f   // top left
+			oriX + scaledWidth, oriY + scaledAscent, z, r, g, b, a, 1.0f, 1.0f,  // top right
+			oriX + scaledWidth, oriY - scaledDescent, z, r, g, b, a, 1.0f, 0.0f,  // bottom right
+			oriX, oriY - scaledDescent, z, r, g, b, a, 0.0f, 0.0f,  // bottom left
+			oriX, oriY + scaledAscent, z, r, g, b, a, 0.0f, 1.0f   // top left
 		};
 
 		if(vao.getVAO() == 0)
 			vao.create(utils::GLBufferType::Dynamic,vertices,indices);
-
-		xpos += charTex.getWidth() * scale / 2.0f + 16.0f * scale;
 
     	glUseProgram(shader.getShaderID());
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());
@@ -69,6 +68,6 @@ void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,con
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		//xpos += scaledOffsetX + scaledWidth;
-		xpos += (scaledWidth - scaledOffsetX) / 2.0f;
+		xpos += (charTex.getWidth() + charTex.getOffsetX()) * scale;
 	}
 }
