@@ -67,6 +67,8 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         return **ite;
     else
     {
+        ni::utils::coreLogger()->trace("create texture of {} (char32_t to int) from ttf",static_cast<int>(c));
+
         // Load bitmap from TTF and save it to cache
         stbtt_fontinfo info;
         if(!stbtt_InitFont(&info, ttfBinary.get(), 0))
