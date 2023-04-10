@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <string_view>
 
 ni::flat::TextRenderer::TextRenderer()
 {
@@ -13,8 +14,15 @@ ni::flat::TextRenderer::TextRenderer()
 
 void ni::flat::TextRenderer::initialize()
 {
-    shader.loadFromGLSL(vshaderSource,fshaderSource);
-    glUniform1i(glGetUniformLocation(shader.getShaderID(), "texture0"), 0);
+    //shader.loadFromGLSL(vshaderSource,fshaderSource);
+	shader.loadFromFile("../../font_vshader.glsl","../../font_fshader.glsl");
+    glUniform1i(glGetUniformLocation(shader.getShaderID(), "text"), 0);
+
+	glUseProgram(shader.getShaderID());
+	unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
+	auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
+    glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, static_cast<float>(win->getWidth()), 0.0f, static_cast<float>(win->getHeight()), -1.0f, 1.0f);
+	glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(projection));
 
     indices =
     {
@@ -25,41 +33,44 @@ void ni::flat::TextRenderer::initialize()
 
 void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,const float& y,const float& z,const float& r,const float& g,const float& b,const float& a,const float& scale,Font& font)
 {
-    const GLuint shaderID = shader.getShaderID();
-    glUseProgram(shaderID);
-    // configure projection matrix
-    GLint projLoc = glGetUniformLocation(shaderID, "projTrans");
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(800), 0.0f, static_cast<float>(600));// for test
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	float xpos = x;
 
-    GLfloat cursorX = x, cursorY = y;
+	vertices = 
+	{
+		1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,  // top right
+		1.0f,  -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,  // bottom right
+		-1.0f, -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+		-1.0f, 1.0f,  0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f   // top left
+	};
 
-    for (auto c : str)
-    {
-        const CharTexture& charTex = font.getCharTexture(c);  // 获取字符对应的纹理信息
+	if(vao.getVAO() == 0)
+		vao.create(utils::GLBufferType::Dynamic,vertices,indices);
 
-        GLfloat xpos = cursorX + charTex.getOffsetX() * scale;
-        GLfloat ypos = cursorY - charTex.getHeight() * scale + charTex.getOffsetY() * scale;
-        GLfloat w = charTex.getWidth() * scale;
-        GLfloat h = charTex.getHeight() * scale;
+	for(int i = 0;i < str.length();i++)
+	{
+		if(str[i] == '\0')
+			break;
 
-        // update VBO for each character
-        vertices[0] = xpos;        vertices[1] = ypos + h;   vertices[2] = z;   vertices[3] = r;   vertices[4] = g;   vertices[5] = b;   vertices[6] = a;   vertices[7] = 1.0f - charTex.getHeight() / 64.0f;   vertices[8] = charTex.getOffsetX() / 64.0f;
-        vertices[9] = xpos;        vertices[10] = ypos;       vertices[11] = z;  vertices[12] = r;   vertices[13] = g;  vertices[14] = b;  vertices[15] = a;  vertices[16] = 1.0f - charTex.getHeight() / 64.0f;   vertices[17] = 1.0f - charTex.getOffsetY() / 64.0f;
-        vertices[18] = xpos + w;   vertices[19] = ypos;       vertices[20] = z;  vertices[21] = r;   vertices[22] = g;  vertices[23] = b;  vertices[24] = a;  vertices[25] = 1.0f - charTex.getHeight() / 64.0f + charTex.getWidth() / 64.0f;  vertices[26] = 1.0f - charTex.getOffsetY() / 64.0f;
-        vertices[27] = xpos + w;   vertices[28] = ypos + h;   vertices[29] = z;  vertices[30] = r;   vertices[31] = g;  vertices[32] = b;  vertices[33] = a;  vertices[34] = 1.0f - charTex.getHeight() / 64.0f + charTex.getWidth() / 64.0f;  vertices[35] = charTex.getOffsetX() / 64.0f;
+		const auto& charTex = font.getCharTexture(str[i]);
+		const auto& nextCharTex = font.getCharTexture(str[i + 1]);
 
-        if(vao.getVAO() == 0)
-            vao.create(utils::GLBufferType::Dynamic,vertices,indices);
+		xpos += charTex.getWidth() * scale / 2.0f + 16.0f * scale;
 
-        glBindTexture(GL_TEXTURE_2D, charTex.getTextureID());
-        glBindVertexArray(vao.getVAO());
-        glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices.data());  // 更新VBO数据
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+    	glUseProgram(shader.getShaderID());
+		glBindTexture(GL_TEXTURE_2D,charTex.getTextureID());
+		glm::mat4 trans(1.0f);
+		trans *= glm::translate(glm::mat4(1.0f), glm::vec3(xpos + charTex.getOffsetX(),y, z));
+		trans *= glm::scale(glm::mat4(1.0f), glm::vec3(charTex.getWidth() * scale,charTex.getHeight() * scale, 1.0f));
+		trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+		unsigned int transLocation = glGetUniformLocation(shader.getShaderID(), "transform");
+		glUniformMatrix4fv(transLocation, 1, GL_FALSE, glm::value_ptr(trans));
 
-        // advance cursor for next glyph (note that advance is number of 1/64 pixels)
-        cursorX += (charTex.getWidth() + charTex.getOffsetX()) * scale; // 在每个字符的右侧空出一个像素
-    }
+		glUniform4f(glGetUniformLocation(shader.getShaderID(),"textColor"),0.0f,0.5f,0.8f,0.75f);
+		glUniform4f(glGetUniformLocation(shader.getShaderID(),"outlineColor"),1.0f,0.0f,0.0f,0.75f);
+		glUniform1f(glGetUniformLocation(shader.getShaderID(),"outlineColor"),0.5f);
+		glBindVertexArray(vao.getVAO());
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		xpos += charTex.getOffsetX() * scale  + charTex.getWidth() * scale + nextCharTex.getOffsetX() * scale + 16.0f * scale;
+	}
 }

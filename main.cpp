@@ -61,6 +61,7 @@ class MainLayer : public ni::core::Layer
 {
 private:
 	ni::utils::Shader mainShader;
+	ni::utils::Shader fontShader;
 	ni::utils::TimeRecorder recorder;
 	ni::utils::Timer timer;
 	ni::utils::Texture testTex;
@@ -91,6 +92,8 @@ public:
 
 		mainShader.loadFromGLSL(vshader, fshader);
 		glUniform1i(glGetUniformLocation(mainShader.getShaderID(), "texture0"), 0);
+		fontShader.loadFromFile("../../font_vshader.glsl","../../font_fshader.glsl");
+		glUniform1i(glGetUniformLocation(fontShader.getShaderID(), "texture0"), 0);
 		
 		// Set up vertex data and buffers
 		std::array<float,36> vertices {
@@ -212,7 +215,9 @@ public:
 			glBindVertexArray(0);
 		}
 		// test: draw text
-		textRenderer.drawText(U"我日！",0.0f,0.0f,1.2f,1.0f,0.2f,0.3f,0.8f,1.0f,unifont);
+		{
+			textRenderer.drawText(U"论他妈的。",400.0f,300.0f,0.9f,1.0f,0.2f,0.3f,0.8f,0.5f,unifont);
+		}
 		
 		bird.onRender();
 

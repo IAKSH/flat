@@ -21,33 +21,31 @@ namespace ni::flat
         VertexBuffer vao;
         std::array<float,36> vertices;
         std::array<unsigned int, 6> indices;
-        const char* const vshaderSource = 
+        const char* const vshaderSource =
             "#version 330 core\n"
-            "layout (location = 0) in vec3 aPos;\n"
-            "layout (location = 1) in vec4 aColor;\n"
-            "layout (location = 2) in vec2 aTexCoord;\n"
-            "uniform mat4 projTrans;\n"
-            "out vec2 aTexCoordOut;\n"
-            "out vec4 aColorOut;\n"
+            "layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>\n"
+            "out vec2 TexCoords;\n"
+            "\n"
+            "uniform mat4 projection;\n"
+            "\n"
             "void main()\n"
             "{\n"
-            "    //gl_Position = projTrans * vec4(aPos, 1.0f);\n"
-            "    gl_Position = vec4(aPos, 1.0f);\n"
-            "    aTexCoordOut = vec2(aTexCoord.x,aTexCoord.y);\n"
-            "    aColorOut = aColor;\n"
-            "}\n";
-        const char* const fshaderSource = "#version 330 core\n"
-            "uniform sampler2D texture0;\n"
-            "in vec4 aColorOut;\n"
-            "in vec2 aTexCoordOut;\n"
-            "out vec4 FragColor;\n"
+            "    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n"
+            "    TexCoords = vertex.zw;\n"
+            "}\0";
+        const char* const fshaderSource =
+            "#version 330 core\n"
+            "in vec2 TexCoords;\n"
+            "out vec4 color;\n"
+            "\n"
+            "uniform sampler2D text;\n"
+            "uniform vec3 textColor;\n"
+            "\n"
             "void main()\n"
-            "{\n"
-            "    //float alpha = texture(texture0, aTexCoordOut).r;\n"
-            "    //vec3 grayScale = vec3(alpha);\n"
-            "    //FragColor = vec4(aColorOut.rgb * grayScale, alpha * aColorOut.a);\n"
-             "   FragColor = aColorOut;\n"
-            "}\n";
+            "{    \n"
+            "    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);\n"
+            "    color = vec4(textColor, 1.0) * sampled;\n"
+            "}\0";
 
         void initialize();
 
