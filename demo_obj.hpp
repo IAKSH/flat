@@ -20,7 +20,6 @@
 
 namespace demo
 {
-    // TODO: audio source should remove from here, it should not inherit from MassPoint
     class Bird : public ni::utils::GameObject
     {
     private:
