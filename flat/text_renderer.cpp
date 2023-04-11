@@ -33,28 +33,25 @@ void ni::flat::TextRenderer::initialize()
 
 void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,const float& y,const float& z,const float& r,const float& g,const float& b,const float& a,const float& scale,Font& font)
 {
-	float xpos = x;
+	float _x = x;
 
 	for(int i = 0;i < str.length();i++)
 	{
 		if(str[i] == '\0')
 			break;
 
-		const auto& charTex = font.getCharTexture(str[i]);
-
-		float scaledWidth = charTex.getWidth() * scale;
-		float scaledHeight = charTex.getHeight() * scale;
-		float scaledAscent = charTex.getAscent() * charTex.getScale() * scale;
-		float scaledDescent = charTex.getDescent() * charTex.getScale() * scale;
-		float oriX = xpos + charTex.getOffsetX() * scale;
-		float oriY = y + (charTex.getOffsetY() - charTex.getAscent()) * charTex.getScale() * scale;
+		const auto& ch = font.getCharTexture(str[i]);
+		GLfloat xpos = _x + ch.getOffsetX() * scale;
+        GLfloat ypos = y - (ch.getHeight() - ch.getOffsetY()) * scale;
+        GLfloat w = ch.getWidth() * scale;
+        GLfloat h = ch.getHeight() * scale;
 
 		vertices = 
 		{
-			oriX + scaledWidth, oriY + scaledAscent, z, r, g, b, a, 1.0f, 1.0f,  // top right
-			oriX + scaledWidth, oriY - scaledDescent, z, r, g, b, a, 1.0f, 0.0f,  // bottom right
-			oriX, oriY - scaledDescent, z, r, g, b, a, 0.0f, 0.0f,  // bottom left
-			oriX, oriY + scaledAscent, z, r, g, b, a, 0.0f, 1.0f   // top left
+			xpos + w,	ypos + h, 	z,	r, g, b, a, 1.0f, 1.0f,  // top right
+			xpos + w,	ypos, 		z,	r, g, b, a, 1.0f, 0.0f,  // bottom right
+			xpos,		ypos, 		z,	r, g, b, a, 0.0f, 0.0f,  // bottom left
+			xpos,		ypos + h, 	z, 	r, g, b, a, 0.0f, 1.0f   // top left
 		};
 
 		if(vao.getVAO() == 0)
@@ -63,11 +60,10 @@ void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,con
     	glUseProgram(shader.getShaderID());
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices.data());
-		glBindTexture(GL_TEXTURE_2D,charTex.getTextureID());
+		glBindTexture(GL_TEXTURE_2D,ch.getTextureID());
 		glBindVertexArray(vao.getVAO());
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-		//xpos += scaledOffsetX + scaledWidth;
-		xpos += (charTex.getWidth() + charTex.getOffsetX()) * scale;
+		_x += (ch.getAdvance() >> 6) * scale; // 位偏移6个单位来获取单位为像素的值 (2^6 = 64)
 	}
 }

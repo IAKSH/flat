@@ -8,13 +8,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 add_subdirectory(vendor)
 
 add_library(flat)
-add_dependencies(flat glfw OpenAL spdlog)
+add_dependencies(flat glfw OpenAL spdlog freetype)
 target_compile_features(flat PUBLIC cxx_std_20)
-target_link_libraries(flat PUBLIC glfw OpenAL)
+target_link_libraries(flat PUBLIC glfw OpenAL freetype)
 target_include_directories(flat PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glad/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glfw/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/spdlog/include
+    ${CMAKE_CURRENT_LIST_DIR}/vendor/freetype/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/openal-soft
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glm
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui

@@ -9,6 +9,8 @@
 #include "shader.hpp"
 
 #include <glad/glad.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H  
 
 namespace ni::utils
 {
@@ -16,32 +18,31 @@ namespace ni::utils
     {
     private:
         char32_t c;
-        float scale;
-        int width,height;
-        int offsetX,offsetY;
-        int ascent, descent, lineGap;
+        const float scale { 48 };
+        int advance;
+        std::array<int,2> size;
+        std::array<int,2> bearing;
 
     public:
-        CharTexture(char32_t c,int w,int h,int offsetX,int offsetY,int ascent,int descent,int lineGap,float scale,GLuint texID)
-            : c{c},width{w},height{h},offsetX{offsetX},offsetY{offsetY},ascent{ascent},descent{descent},lineGap{lineGap},scale{scale}
+        CharTexture(char32_t c,int s1,int s2,int b1,int b2,int adv,GLuint texID)
+            : c{c},advance{adv},size{s1,s2},bearing{b1,b2}
         {
             setTextureID(texID);
         }
         ~CharTexture() = default;
         const char32_t& getChar() const { return c; }
-        const int& getWidth() const { return width; }
-        const int& getHeight() const { return height; }
-        const int& getOffsetX() const { return offsetX; }
-        const int& getOffsetY() const { return offsetY; }
+        const int& getWidth() const { return size[0]; }
+        const int& getHeight() const { return size[1]; }
+        const int& getOffsetX() const { return bearing[0]; }
+        const int& getOffsetY() const { return bearing[1]; }
+        const int& getAdvance() const { return advance; }
         const float& getScale() const { return scale; }
-        const int& getAscent() const { return ascent; }
-        const int& getDescent() const { return descent; }
-        const int& getLineGap() const { return lineGap; }
     };
 
     class Font
     {
     private:
+        FT_Face face;
         std::unique_ptr<unsigned char[]> ttfBinary;
         std::deque<std::unique_ptr<CharTexture>> textureCache;
 
@@ -49,7 +50,7 @@ namespace ni::utils
         Font(std::string_view path);
         Font() = default;
         Font(Font&) = delete;
-        ~Font() = default;
+        ~Font();
         const ni::utils::CharTexture& getCharTexture(const char32_t& c);
         void freeCacheInRange(const char& low,const char& up);
         void loadTTF(std::string_view path);
