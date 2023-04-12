@@ -65,6 +65,8 @@ target_sources(flat PRIVATE
     "flat/gjk.cpp"
     "flat/text_renderer.hpp"
     "flat/text_renderer.cpp"
+    "flat/any_same.hpp"
+    "flat/dtype.hpp"
 )
 
 add_executable(flat_test "main.cpp" "demo_obj.hpp")

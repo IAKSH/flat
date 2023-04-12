@@ -29,10 +29,24 @@ void ni::flat::TextRenderer::initialize()
 		0, 1, 3,  // first Triangle
 		1, 2, 3   // second Triangle
 	};
+
+	vertices[7] = 1.0f;
+	vertices[8] = 1.0f;
+	vertices[16] = 1.0f;
+	vertices[17] = 0.0f;
+	vertices[25] = 0.0f;
+	vertices[26] = 0.0f;
+	vertices[34] = 0.0f;
+	vertices[35] = 1.0f;
 }
 
-void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,const float& y,const float& z,const float& r,const float& g,const float& b,const float& a,const float& scale,Font& font)
+void ni::flat::TextRenderer::_drawText()
 {
+	// TODO: check required data
+
+	if(vao.getVAO() == 0)
+			vao.create(utils::GLBufferType::Dynamic,vertices,indices);
+
 	float _x = x;
 
 	for(int i = 0;i < str.length();i++)
@@ -40,22 +54,20 @@ void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,con
 		if(str[i] == '\0')
 			break;
 
-		const auto& ch = font.getCharTexture(str[i]);
+		const auto& ch = font->getCharTexture(str[i]);
 		GLfloat xpos = _x + ch.getOffsetX() * scale;
         GLfloat ypos = y - (ch.getHeight() - ch.getOffsetY()) * scale;
         GLfloat w = ch.getWidth() * scale;
         GLfloat h = ch.getHeight() * scale;
 
-		vertices = 
-		{
-			xpos + w,	ypos + h, 	z,	r, g, b, a, 1.0f, 1.0f,  // top right
-			xpos + w,	ypos, 		z,	r, g, b, a, 1.0f, 0.0f,  // bottom right
-			xpos,		ypos, 		z,	r, g, b, a, 0.0f, 0.0f,  // bottom left
-			xpos,		ypos + h, 	z, 	r, g, b, a, 0.0f, 1.0f   // top left
-		};
-
-		if(vao.getVAO() == 0)
-			vao.create(utils::GLBufferType::Dynamic,vertices,indices);
+		vertices[0] = xpos + w;
+		vertices[1] = ypos + h;
+		vertices[9] = xpos + w;
+		vertices[10] = ypos;
+		vertices[18] = xpos;
+		vertices[19] = ypos;
+		vertices[27] = xpos;
+		vertices[28] = ypos + h;
 
     	glUseProgram(shader.getShaderID());
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());
@@ -66,4 +78,49 @@ void ni::flat::TextRenderer::drawText(std::u32string_view str,const float& x,con
 
 		_x += (ch.getAdvance() >> 6) * scale; // 位偏移6个单位来获取单位为像素的值 (2^6 = 64)
 	}
+}
+
+void ni::flat::TextRenderer::drawTextHelper(Color&& color)
+{
+	vertices[3] = color.getRed();
+	vertices[4] = color.getGreen();
+	vertices[5] = color.getBlue();
+	vertices[6] = color.getAlpha();
+	vertices[12] = color.getRed();
+	vertices[13] = color.getGreen();
+	vertices[14] = color.getBlue();
+	vertices[15] = color.getAlpha();
+	vertices[21] = color.getRed();
+	vertices[22] = color.getGreen();
+	vertices[23] = color.getBlue();
+	vertices[24] = color.getAlpha();
+	vertices[30] = color.getRed();
+	vertices[31] = color.getGreen();
+	vertices[32] = color.getBlue();
+	vertices[33] = color.getAlpha();
+}
+
+void ni::flat::TextRenderer::drawTextHelper(Point&& point)
+{
+	x = point.getX();
+	y = point.getY();
+	vertices[2] = point.getZ();
+	vertices[11] = point.getZ();
+	vertices[20] = point.getZ();
+	vertices[29]  = point.getZ();
+}
+
+void ni::flat::TextRenderer::drawTextHelper(Scale&& scale)
+{
+	this->scale = scale;
+}
+
+void ni::flat::TextRenderer::drawTextHelper(Font* font)
+{
+	this->font = font;
+}
+
+void ni::flat::TextRenderer::drawTextHelper(std::u32string_view str)
+{
+	this->str = str;
 }

@@ -19,6 +19,7 @@
 #include <array>
 #include <memory>
 #include <iostream>
+#include <string_view>
 
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
@@ -217,7 +218,8 @@ public:
 		bird.onRender();
 		// test: draw text
 		{
-			textRenderer.drawText(U"我W测C尼n玛m？!",400.0f,300.0f,0.9f,1.0f,0.0f,0.0f,0.8f,abs(cos(glfwGetTime() * 0.1)),unifont);
+			textRenderer.drawText(std::u32string_view(U"我测你们de码?！"),ni::flat::Point(400.0f,300.0f,0.9f),
+				ni::flat::Color(1.0f,0.0f,0.0f,0.8f),ni::flat::Scale(cos(glfwGetTime() * 0.1)),&unifont);
 		}
 
 		// imgui test

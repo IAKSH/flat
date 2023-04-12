@@ -1,13 +1,18 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 
 #include "../utils/shader.hpp"
 #include "../utils/font.hpp"
 #include "../utils/vao.hpp"
+#include "any_same.hpp"
+#include "dtype.hpp"
 
 namespace ni::flat
 {
+    template <typename T>
+    concept DrawTextArg = any_same<T,Color,Point,Scale,utils::Font*,std::u32string_view>();
 
     class TextRenderer
     {
@@ -17,8 +22,11 @@ namespace ni::flat
         using CharTexture = ::ni::utils::CharTexture;
 
     private:
+        float x,y,scale;
+        Font* font;
         Shader shader;
         VertexBuffer vao;
+        std::u32string str;
         std::array<float,36> vertices;
         std::array<unsigned int, 6> indices;
         const char* const vshaderSource =
@@ -48,12 +56,29 @@ namespace ni::flat
             "}\0";
 
         void initialize();
+        void setDrawColor(const Color& color);
+        void setDrawPosition();
+
+        template <typename T>
+        void drawTextHelper(T&& arg);
+        void drawTextHelper(Color&& color);
+        void drawTextHelper(Point&& point);
+        void drawTextHelper(Scale&& scale);
+        void drawTextHelper(Font* font);
+        void drawTextHelper(std::u32string_view str);
+        void _drawText();
 
     public:
         TextRenderer();
         TextRenderer(TextRenderer&) = delete;
         ~TextRenderer() = default;
 
-        void drawText(std::u32string_view str,const float& x,const float& y,const float& z,const float& r,const float& g,const float& b,const float& a,const float& scale,Font& font);
+        // need Concepts here
+        template <DrawTextArg... Args>
+        void drawText(Args... args)
+        {
+            (drawTextHelper(std::forward<Args>(args)), ...);
+            _drawText();
+        }
     };
 }
