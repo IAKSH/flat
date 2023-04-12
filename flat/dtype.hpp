@@ -85,20 +85,28 @@ namespace ni::flat
         void setZ(const float& val) { z = val; }
     };
 
-    class Scale
+    template <typename T>
+    class ValPack
     {
     private:
-        float scale;
+        T t;
 
     public:
-        Scale() : scale(0.0f) {}
-        Scale(float s) : scale(s) {}
+        ValPack() = default;
+        ValPack(const T& t) : t{t} {}
 
-        operator float() const { return scale; }
+        operator float() const { return t; }
 
-        Scale operator+(const Scale& other) const { return Scale(scale + other.scale); }
-        Scale operator-(const Scale& other) const { return Scale(scale - other.scale); }
-        Scale operator*(const Scale& other) const { return Scale(scale * other.scale); }
-        Scale operator/(const Scale& other) const { return Scale(scale / other.scale); }
+        ValPack operator+(const ValPack& other) const { return ValPack(t + other.scale); }
+        ValPack operator-(const ValPack& other) const { return ValPack(t - other.scale); }
+        ValPack operator*(const ValPack& other) const { return ValPack(t * other.scale); }
+        ValPack operator/(const ValPack& other) const { return ValPack(t / other.scale); }
+    };
+
+    class Scale : public ValPack<float>
+    {
+    public:
+        Scale() : ValPack(1.0f) {}
+        Scale(float s) : ValPack(s) {}
     };
 }
