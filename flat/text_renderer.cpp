@@ -8,6 +8,7 @@
 #include <string_view>
 
 ni::flat::TextRenderer::TextRenderer()
+	: font{nullptr},cam{nullptr}
 {
     initialize();
 }
@@ -17,12 +18,6 @@ void ni::flat::TextRenderer::initialize()
     //shader.loadFromGLSL(vshaderSource,fshaderSource);
 	shader.loadFromFile("../../font_vshader.glsl","../../font_fshader.glsl");
     glUniform1i(glGetUniformLocation(shader.getShaderID(), "text"), 0);
-
-	glUseProgram(shader.getShaderID());
-	unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
-	auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
-    glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, static_cast<float>(win->getWidth()), 0.0f, static_cast<float>(win->getHeight()), -1.0f, 1.0f);
-	glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(projection));
 
     indices =
     {
@@ -70,6 +65,21 @@ void ni::flat::TextRenderer::_drawText()
 		vertices[28] = ypos + h;
 
     	glUseProgram(shader.getShaderID());
+
+		if(cam)
+		{
+			unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
+			auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
+			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam->getTranslateMatrix()));
+		}
+		else 
+		{
+			unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
+			auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
+    		glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, static_cast<float>(win->getWidth()), 0.0f, static_cast<float>(win->getHeight()), -1.0f, 1.0f);
+			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(projection));
+		}
+
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices.data());
 		glBindTexture(GL_TEXTURE_2D,ch.getTextureID());
@@ -78,6 +88,8 @@ void ni::flat::TextRenderer::_drawText()
 
 		_x += (ch.getAdvance() >> 6) * scale; // 位偏移6个单位来获取单位为像素的值 (2^6 = 64)
 	}
+
+	if(cam) cam = nullptr;
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Color&& color)
@@ -118,6 +130,11 @@ void ni::flat::TextRenderer::drawTextHelper(Scale&& scale)
 void ni::flat::TextRenderer::drawTextHelper(Font* font)
 {
 	this->font = font;
+}
+
+void ni::flat::TextRenderer::drawTextHelper(Camera* cam)
+{
+	this->cam = cam;
 }
 
 void ni::flat::TextRenderer::drawTextHelper(std::u32string_view str)

@@ -6,13 +6,14 @@
 #include "../utils/shader.hpp"
 #include "../utils/font.hpp"
 #include "../utils/vao.hpp"
+#include "../utils/camera.hpp"
 #include "any_same.hpp"
 #include "dtype.hpp"
 
 namespace ni::flat
 {
     template <typename T>
-    concept DrawTextArg = any_same<T,Color,Point,Scale,utils::Font*,std::u32string_view>();
+    concept DrawTextArg = any_same<T,Color,Point,Scale,std::u32string_view,utils::Font*,utils::Camera2D*>();
 
     class TextRenderer
     {
@@ -20,10 +21,12 @@ namespace ni::flat
         using Shader = ::ni::utils::Shader;
         using VertexBuffer = ::ni::utils::VertexArrayObj;
         using CharTexture = ::ni::utils::CharTexture;
+        using Camera = ::ni::utils::Camera2D;
 
     private:
         float x,y,scale;
         Font* font;
+        Camera* cam;
         Shader shader;
         VertexBuffer vao;
         std::u32string str;
@@ -65,6 +68,7 @@ namespace ni::flat
         void drawTextHelper(Point&& point);
         void drawTextHelper(Scale&& scale);
         void drawTextHelper(Font* font);
+        void drawTextHelper(Camera* cam);
         void drawTextHelper(std::u32string_view str);
         void _drawText();
 
