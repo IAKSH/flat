@@ -8,15 +8,14 @@
 #include <string_view>
 
 ni::flat::TextRenderer::TextRenderer()
-	: font{nullptr},cam{nullptr}
+	: font{nullptr},cam{nullptr},x{0.0f},y{0.0f},scale{1.0f}
 {
     initialize();
 }
 
 void ni::flat::TextRenderer::initialize()
 {
-    //shader.loadFromGLSL(vshaderSource,fshaderSource);
-	shader.loadFromFile("../../font_vshader.glsl","../../font_fshader.glsl");
+	shader.loadFromGLSL(vshaderSource,fshaderSource);
     glUniform1i(glGetUniformLocation(shader.getShaderID(), "text"), 0);
 
     indices =
@@ -33,6 +32,10 @@ void ni::flat::TextRenderer::initialize()
 	vertices[26] = 0.0f;
 	vertices[34] = 0.0f;
 	vertices[35] = 1.0f;
+
+	auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
+	viewWidth = win->getWidth();
+	viewHeight = win->getHeight();
 }
 
 void ni::flat::TextRenderer::_drawText()
@@ -72,8 +75,7 @@ void ni::flat::TextRenderer::_drawText()
 		else 
 		{
 			unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
-			auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
-    		glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, static_cast<float>(win->getWidth()), 0.0f, static_cast<float>(win->getHeight()), -1.0f, 1.0f);
+    		glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, viewWidth, 0.0f, viewHeight, -1.0f, 1.0f);
 			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(projection));
 		}
 

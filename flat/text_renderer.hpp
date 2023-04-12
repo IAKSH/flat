@@ -32,6 +32,7 @@ namespace ni::flat
 
     private:
         float x,y,scale;
+        float viewWidth,viewHeight;
         Font* font;
         Camera* cam;
         Shader shader;
@@ -41,28 +42,32 @@ namespace ni::flat
         std::array<unsigned int, 6> indices;
         const char* const vshaderSource =
             "#version 330 core\n"
-            "layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>\n"
-            "out vec2 TexCoords;\n"
+            "layout (location = 0) in vec3 aPos;\n"
+            "layout (location = 1) in vec4 aColor;\n"
+            "layout (location = 2) in vec2 aTexCoord;\n"
             "\n"
-            "uniform mat4 projection;\n"
+            "uniform mat4 camTrans;\n"
+            "out vec4 aColorOut;\n"
+            "out vec2 aTexCoordOut;\n"
             "\n"
             "void main()\n"
             "{\n"
-            "    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);\n"
-            "    TexCoords = vertex.zw;\n"
+            "    gl_Position =  camTrans * vec4(aPos.xy,0.9f, 1.0f);\n"
+            "    aColorOut = aColor;\n"
+            "    aTexCoordOut = vec2(aTexCoord.x, 1.0 - aTexCoord.y);\n"
             "}\0";
         const char* const fshaderSource =
             "#version 330 core\n"
-            "in vec2 TexCoords;\n"
-            "out vec4 color;\n"
-            "\n"
-            "uniform sampler2D text;\n"
-            "uniform vec3 textColor;\n"
+            "uniform sampler2D texture0; // 纹理采样器\n"
+            "in vec2 aTexCoordOut; // 输入的纹理坐标\n"
+            "in vec4 aColorOut;\n"
+            "out vec4 FragColor; // 输出的颜色\n"
             "\n"
             "void main()\n"
-            "{    \n"
-            "    vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);\n"
-            "    color = vec4(textColor, 1.0) * sampled;\n"
+            "{\n"
+            "    float alpha = texture(texture0, aTexCoordOut).r;\n"
+            "    vec3 grayScale = vec3(alpha);\n"
+            "    FragColor = vec4(aColorOut.rgb * grayScale, alpha * aColorOut.a);\n"
             "}\0";
 
         void initialize();
@@ -83,6 +88,11 @@ namespace ni::flat
         TextRenderer();
         TextRenderer(TextRenderer&) = delete;
         ~TextRenderer() = default;
+
+        void setViewWidth(const float& val) { viewWidth = val; }
+        void setViewHeight(const float& val) { viewHeight = val; }
+        const float& getViewWidth() { return viewWidth; }
+        const float& getViewHeight() { return viewHeight; }
 
         template <DrawTextArg... Args>
         void drawText(Args... args)
