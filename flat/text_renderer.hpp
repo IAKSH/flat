@@ -12,8 +12,15 @@
 
 namespace ni::flat
 {
+    template<typename... Args>
+    struct ContainsU32string_view : std::false_type {};
+
+    template<typename T, typename... Rest>
+    struct ContainsU32string_view<T, Rest...> : 
+        std::conditional_t<std::is_same_v<T, std::u32string_view>, std::true_type, ContainsU32string_view<Rest...>> {};
+
     template <typename T>
-    concept DrawTextArg = any_same<T,Color,Point,Scale,std::u32string_view,utils::Font*,utils::Camera2D*>();
+    concept DrawTextArg = any_same<T,Color,Point,Scale,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
 
     class TextRenderer
     {
@@ -77,12 +84,12 @@ namespace ni::flat
         TextRenderer(TextRenderer&) = delete;
         ~TextRenderer() = default;
 
-        // need Concepts here
         template <DrawTextArg... Args>
         void drawText(Args... args)
         {
             (drawTextHelper(std::forward<Args>(args)), ...);
-            _drawText();
+            if constexpr (ContainsU32string_view<Args...>::value)
+                _drawText();
         }
     };
 }

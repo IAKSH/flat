@@ -224,8 +224,12 @@ public:
 			textRenderer.drawText(std::u32string_view(U"WoDiaoNiMa"),ni::flat::Point(0.0f,300.0f,0.9f),
 				ni::flat::Color(abs(cos(glfwGetTime() * 0.1)),0.0f,abs(sin(glfwGetTime() * 0.1)),0.8f),ni::flat::Scale(abs(sin(glfwGetTime() * 2.0f))));
 
+			//textRenderer.drawText(std::u32string_view(U"傻逼鸟"),ni::flat::Point(bird.getPositionX() - 40.0f,bird.getPositionY() + 25.0f,0.9f),
+			//	ni::flat::Color(1.0f,1.0f,abs(sin(glfwGetTime() * 0.1)),1.0f),ni::flat::Scale(0.5f),&cam);
+
+			textRenderer.drawText(&cam);
 			textRenderer.drawText(std::u32string_view(U"傻逼鸟"),ni::flat::Point(bird.getPositionX() - 40.0f,bird.getPositionY() + 25.0f,0.9f),
-				ni::flat::Color(1.0f,1.0f,abs(sin(glfwGetTime() * 0.1)),1.0f),ni::flat::Scale(0.5f),&cam);
+				ni::flat::Color(1.0f,1.0f,abs(sin(glfwGetTime() * 0.1)),1.0f),ni::flat::Scale(0.5f));
 		}
 
 		// imgui test

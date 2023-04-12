@@ -46,9 +46,6 @@ void ni::flat::TextRenderer::_drawText()
 
 	for(int i = 0;i < str.length();i++)
 	{
-		if(str[i] == '\0')
-			break;
-
 		const auto& ch = font->getCharTexture(str[i]);
 		GLfloat xpos = _x + ch.getOffsetX() * scale;
         GLfloat ypos = y - (ch.getHeight() - ch.getOffsetY()) * scale;
