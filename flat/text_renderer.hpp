@@ -58,10 +58,10 @@ namespace ni::flat
             "}\0";
         const char* const fshaderSource =
             "#version 330 core\n"
-            "uniform sampler2D texture0; // 纹理采样器\n"
-            "in vec2 aTexCoordOut; // 输入的纹理坐标\n"
+            "uniform sampler2D texture0;\n"
+            "in vec2 aTexCoordOut;\n"
             "in vec4 aColorOut;\n"
-            "out vec4 FragColor; // 输出的颜色\n"
+            "out vec4 FragColor;\n"
             "\n"
             "void main()\n"
             "{\n"
