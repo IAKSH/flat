@@ -40,7 +40,6 @@ namespace ni::flat
             GLint location;
 
             Uniform(GLint loc) : location{loc} {}
-            //void setValue(const T& value) { *valuePtr = value; glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(*valuePtr)); }
             template <typename T>
             void operator=(const UniformArg<T>& arg)
             {
