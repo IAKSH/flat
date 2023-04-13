@@ -1,4 +1,3 @@
-#include "al.h"
 #include "core/application.hpp"
 #include "core/event_keyboard.hpp"
 #include "core/event_window.hpp"

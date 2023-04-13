@@ -1,5 +1,4 @@
 #pragma once
-#include "al.h"
 #include "core/event_keyboard.hpp"
 #include "utils/gameobj.hpp"
 #include "utils/vao.hpp"
@@ -15,6 +14,7 @@
 #include <glad/glad.h>
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <GLFW/glfw3.h>
 
 #include <iostream>
 
@@ -57,7 +57,7 @@ namespace demo
 
 			// audio
 			alSourcei(audioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
-			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.25f);
+			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.5f);
 			alSourcei(audioSource.getSourceID(), AL_LOOPING, AL_TRUE);
 			alSourcePlay(audioSource.getSourceID());
         }
@@ -75,6 +75,7 @@ namespace demo
 
 			alSource3f(audioSource.getSourceID(),AL_POSITION,getPositionX(),getPositionY(),getPositionZ());
 			alSource3f(audioSource.getSourceID(),AL_VELOCITY,getVelocityX(),getVelocityY(),getVelocityZ());
+			alSourcef(audioSource.getSourceID(),AL_PITCH,abs(sin(glfwGetTime() * 3.0f) * 10.0f));
         }
 
         virtual void onRender() override

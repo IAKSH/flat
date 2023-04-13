@@ -24,6 +24,12 @@ void ni::core::Mixer::initialize()
 		utils::coreLogger()->critical("OpenAL error: {}", alGetString(error));
 		abort();
 	}
+
+	alDistanceModel(AL_LINEAR_DISTANCE);
+	ALfloat listenerPosition[] = {0.0f, 0.0f, 0.0f};
+	alListenerfv(AL_POSITION, listenerPosition);
+	ALfloat listenerOrientation[] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
+	alListenerfv(AL_ORIENTATION, listenerOrientation);
 }
 
 void ni::core::Mixer::release()
