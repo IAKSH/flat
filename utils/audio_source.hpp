@@ -2,8 +2,8 @@
 
 #include "mass_point.hpp"
 
-#include <al/al.h>
-#include <al/alc.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 
 namespace ni::utils
 {

@@ -16,7 +16,6 @@ target_include_directories(flat PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glfw/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/spdlog/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/freetype/include
-    ${CMAKE_CURRENT_LIST_DIR}/vendor/openal-soft
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glm
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui
     ${CMAKE_CURRENT_LIST_DIR}/vendor/minimp3
