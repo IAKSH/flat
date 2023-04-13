@@ -7,6 +7,7 @@
 #include <string_view>
 
 #include "../utils/shader.hpp"
+#include "../utils/logger.hpp"
 #include "any_same.hpp"
 
 #include "glm/fwd.hpp"
@@ -35,11 +36,14 @@ namespace ni::flat
     class Shader : public ni::utils::Shader
     {
     public:
-        struct Uniform
+        class Uniform
         {
+        private:
+            Shader& shader;
             GLint location;
 
-            Uniform(GLint loc) : location{loc} {}
+        public:
+            Uniform(Shader& shader,GLint loc) : shader{shader},location{loc} {}
             template <typename T>
             void operator=(const UniformArg<T>& arg)
             {
@@ -56,12 +60,50 @@ namespace ni::flat
                 else if constexpr (std::is_same_v<T,glm::mat4>)
                     glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(arg.get()));
             }
+
+            template <UniformArgType T>
+            operator T() const
+            {
+                GLint size;
+                GLenum type;
+                glGetActiveUniform(shader.getShaderID(),location,0,nullptr,&size,&type,nullptr);
+
+                GLenum aimType;
+                if constexpr (std::is_same_v<T,float>)
+                    aimType = GL_FLOAT;
+                else if constexpr (std::is_same_v<T,int>)
+                    aimType = GL_INT;
+                else if constexpr (std::is_same_v<T,glm::vec2>)
+                    aimType = GL_FLOAT_VEC2;
+                else if constexpr (std::is_same_v<T,glm::vec3>)
+                    aimType = GL_FLOAT_VEC3;
+                else if constexpr (std::is_same_v<T,glm::vec4>)
+                    aimType = GL_FLOAT_VEC4;
+                else if constexpr (std::is_same_v<T,glm::mat4>)
+                    aimType = GL_FLOAT_MAT4;
+
+                if(size != 1 || type != aimType)
+                {
+                    ni::utils::otherLogger()->critical("uniform cast failed");
+                    abort();
+                }
+
+                T value;
+                if constexpr (std::is_same_v<T,float>)
+                    glGetUniformfv(shader.getShaderID(),location,&value);
+                else if constexpr (std::is_same_v<T,int>)
+                    glGetUniformiv(shader.getShaderID(),location,&value);
+                else
+                    glGetUniformfv(shader.getShaderID(),location,glm::value_ptr(value));
+
+                return value;
+            }
         };
 
         Uniform operator[](std::string_view uniform)
         {
             auto location = glGetUniformLocation(getShaderID(), uniform.data());
-            return Uniform{location};
+            return Uniform{*this,location};
         }
     };
 }
