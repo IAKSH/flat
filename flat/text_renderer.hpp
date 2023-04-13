@@ -3,11 +3,11 @@
 #include <string>
 #include <string_view>
 
-#include "../utils/shader.hpp"
 #include "../utils/font.hpp"
 #include "../utils/vao.hpp"
 #include "../utils/camera.hpp"
 #include "any_same.hpp"
+#include "shader.hpp"
 #include "dtype.hpp"
 
 namespace ni::flat
@@ -25,7 +25,7 @@ namespace ni::flat
     class TextRenderer
     {
         using Font = ::ni::utils::Font;
-        using Shader = ::ni::utils::Shader;
+        using Shader = ::ni::flat::Shader;
         using VertexBuffer = ::ni::utils::VertexArrayObj;
         using CharTexture = ::ni::utils::CharTexture;
         using Camera = ::ni::utils::Camera2D;

@@ -1,6 +1,7 @@
 #include "text_renderer.hpp"
 #include "../core/window.hpp"
 #include "GLFW/glfw3.h"
+#include "glm/fwd.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -67,16 +68,11 @@ void ni::flat::TextRenderer::_drawText()
     	glUseProgram(shader.getShaderID());
 
 		if(cam)
-		{
-			unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
-			auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
-			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam->getTranslateMatrix()));
-		}
+			shader["camTrans"] = UniformArg(cam->getTranslateMatrix());
 		else 
 		{
-			unsigned int camTrans = glGetUniformLocation(shader.getShaderID(), "camTrans");
-    		glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, viewWidth, 0.0f, viewHeight, -1.0f, 1.0f);
-			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(projection));
+			glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, viewWidth, 0.0f, viewHeight, -1.0f, 1.0f);
+			shader["camTrans"] = UniformArg(projection);
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());

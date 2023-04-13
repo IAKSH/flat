@@ -67,6 +67,7 @@ target_sources(flat PRIVATE
     "flat/text_renderer.cpp"
     "flat/any_same.hpp"
     "flat/dtype.hpp"
+    "flat/shader.hpp"
 )
 
 add_executable(flat_test "main.cpp" "demo_obj.hpp")
