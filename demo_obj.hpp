@@ -12,8 +12,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
-#include <AL/al.h>
-#include <AL/alc.h>
+#include <al/al.h>
+#include <al/alc.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>

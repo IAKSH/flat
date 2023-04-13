@@ -78,6 +78,6 @@ glm::mat4 const ni::utils::Camera2D::getTranslateMatrix() const
 	int w, h;
 	glfwGetWindowSize(win, &w, &h);
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(w), 0.0f, static_cast<float>(h), -1.0f, 1.0f);
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-getPositionX() + w / 2, -getPositionY() + h / 2, 0.0f));
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-getPositionX() + w / 2.0f, -getPositionY() + h / 2.0f, 0.0f));
 	return projection * view;
 }
