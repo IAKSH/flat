@@ -4,13 +4,18 @@
 
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <string_view>
 
 namespace ni::utils
 {
 	class Audio
 	{
 	private:
-		 ALuint bufferID;
+		ALuint bufferID;
+		void loadWavFromFile(std::string_view path);
+		void loadMp3FromFile(std::string_view path);
+		void loadOggFromFile(std::string_view path);
+		void loadFlacFromFile(std::string_view path);
 
 	public:
 		Audio();
