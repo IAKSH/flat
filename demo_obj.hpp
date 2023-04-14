@@ -57,8 +57,9 @@ namespace demo
 
 			// audio
 			alSourcei(audioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
-			alSourcef(audioSource.getSourceID(), AL_GAIN, 0.5f);
+			alSourcef(audioSource.getSourceID(), AL_GAIN, 1.0f);
 			alSourcei(audioSource.getSourceID(), AL_LOOPING, AL_TRUE);
+			alSourcef(audioSource.getSourceID(),AL_REFERENCE_DISTANCE,100.0f);
 			alSourcePlay(audioSource.getSourceID());
         }
 
@@ -75,7 +76,7 @@ namespace demo
 
 			alSource3f(audioSource.getSourceID(),AL_POSITION,getPositionX(),getPositionY(),getPositionZ());
 			alSource3f(audioSource.getSourceID(),AL_VELOCITY,getVelocityX(),getVelocityY(),getVelocityZ());
-			alSourcef(audioSource.getSourceID(),AL_PITCH,abs(sin(glfwGetTime() * 3.0f) * 10.0f));
+			//alSourcef(audioSource.getSourceID(),AL_PITCH,abs(sin(glfwGetTime() * 3.0f) * 10.0f));
         }
 
         virtual void onRender() override

@@ -129,7 +129,7 @@ public:
 		backgroundTex.loadFromFile("images/strangeSky.png");
 
 		// audio test
-		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746.mp3");
+		testAudio.loadFromFile("sounds/test_sounds_walk.wav");
 
 		// timer test
 		timer.setInterval(ni::utils::MilliSeconds(3));
