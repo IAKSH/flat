@@ -26,9 +26,9 @@ void ni::core::Mixer::initialize()
 	}
 
 	alDistanceModel(AL_LINEAR_DISTANCE);
-	ALfloat listenerPosition[] = {0.0f, 0.0f, 0.0f};
+	ALfloat listenerPosition[] = {0.0f, 0.0f, 1.0f};
 	alListenerfv(AL_POSITION, listenerPosition);
-	ALfloat listenerOrientation[] = {0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f};
+	ALfloat listenerOrientation[] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
 	alListenerfv(AL_ORIENTATION, listenerOrientation);
 }
 
