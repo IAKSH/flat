@@ -6,7 +6,7 @@
 #include "../utils/font.hpp"
 #include "../utils/vao.hpp"
 #include "../utils/camera.hpp"
-#include "any_same.hpp"
+#include "../utils/any_same.hpp"
 #include "shader.hpp"
 #include "dtype.hpp"
 
@@ -20,7 +20,7 @@ namespace ni::flat
         std::conditional_t<std::is_same_v<T, std::u32string_view>, std::true_type, ContainsU32string_view<Rest...>> {};
 
     template <typename T>
-    concept DrawTextArg = any_same<T,Color,Point,Scale,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
+    concept DrawTextArg = ni::utils::any_same<T,Color,Point,Scale,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
 
     class TextRenderer
     {

@@ -8,7 +8,7 @@
 
 #include "../utils/shader.hpp"
 #include "../utils/logger.hpp"
-#include "any_same.hpp"
+#include "../utils/any_same.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -17,7 +17,7 @@
 namespace ni::flat
 {
     template <typename T>
-    concept UniformArgType = any_same<T,float,int,glm::vec2,glm::vec3,glm::vec4,glm::mat4>();
+    concept UniformArgType = ni::utils::any_same<T,float,int,glm::vec2,glm::vec3,glm::vec4,glm::mat4>();
 
     template <UniformArgType T>
     class UniformArg

@@ -2,7 +2,7 @@
 
 #include <concepts>
 
-namespace ni::flat
+namespace ni::utils
 {
     template <typename T, typename... Args> constexpr bool any_same()
     {
