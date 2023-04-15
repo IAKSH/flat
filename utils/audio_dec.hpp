@@ -10,7 +10,7 @@ namespace ni::utils
     class AudioDecoder
     {
     public:
-        const unsigned char* const getPCM()
+        unsigned char* const getPCM()
         {
             return static_cast<T*>(this)->imp_getPCM();
         }
