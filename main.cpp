@@ -15,6 +15,7 @@
 #include "flat/collision_detect.hpp"
 #include "flat/text_renderer.hpp"
 #include "demo_obj.hpp"
+#include "text.hpp"
 
 #include <array>
 #include <memory>
@@ -75,6 +76,7 @@ private:
 	ni::utils::Font unifont;
 	ni::flat::TextRenderer textRenderer;
 	demo::Bird bird {mainShader,cam,testAudio};
+	demo::Text text{textRenderer,ni::utils::MilliSeconds(1000),U"家人们，谁懂啊"};
 
 	float camDownVec{ 0.0f };
 	float camLeftVec{ 0.0f };
@@ -234,6 +236,8 @@ public:
 			textRenderer.drawText(&cam);
 			textRenderer.drawText(std::u32string_view(U"傻逼鸟"),ni::flat::Point(bird.getPositionX() - 40.0f,bird.getPositionY() + 25.0f,0.9f),
 				ni::flat::Color(1.0f,1.0f,abs(sin(glfwGetTime() * 0.1)),1.0f),ni::flat::Scale(0.5f));
+			
+			text.tryToWrite();
 		}
 
 		// imgui test
