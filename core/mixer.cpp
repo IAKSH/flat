@@ -1,5 +1,7 @@
 #include "mixer.hpp"
 
+#include <exception>
+
 #include "../utils/logger.hpp"
 
 ni::core::Mixer::Mixer()
@@ -22,7 +24,7 @@ void ni::core::Mixer::initialize()
 	if (error != AL_NO_ERROR)
 	{
 		utils::coreLogger()->critical("OpenAL error: {}", alGetString(error));
-		abort();
+		std::terminate();
 	}
 
 	alDistanceModel(AL_LINEAR_DISTANCE);

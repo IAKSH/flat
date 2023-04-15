@@ -45,7 +45,7 @@ void ni::utils::Font::loadTTF(std::string_view path)
         if (FT_Init_FreeType(&ft))
         {
             ni::utils::coreLogger()->critical("could not initialize freetype library");
-            abort();
+            std::terminate();
         }
         ni::utils::coreLogger()->trace("freetype library loaded");
     }
@@ -54,7 +54,7 @@ void ni::utils::Font::loadTTF(std::string_view path)
     if (FT_New_Face(ft, path.data(), 0, &face))
     {
         ni::utils::coreLogger()->critical("could not load ttf from {}",path);
-        abort();
+        std::terminate();
     }
 
     // font size = 48
@@ -75,7 +75,7 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         if (FT_Load_Char(face,c,FT_LOAD_RENDER))
         {
             ni::utils::coreLogger()->critical("can't load 0x{:X} from ttf",static_cast<unsigned int>(c));
-            abort();
+            std::terminate();
         }
 
         GLuint textureID;
