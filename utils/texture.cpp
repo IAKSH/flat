@@ -42,6 +42,7 @@ void ni::utils::Texture::loadFromFile(std::string_view path)
 	if (!data)
 	{
 		utils::coreLogger()->critical("failed to load image file at {}", path.data());
+		stbi_image_free(data);
 		std::terminate();
 	}
 
