@@ -15,7 +15,7 @@ namespace ni::utils
 	class TimeRecorder
 	{
 	private:
-		std::chrono::steady_clock::time_point lastUpdate;
+		Clock::time_point lastUpdate;
 
 	public:
 		TimeRecorder();
@@ -39,6 +39,7 @@ namespace ni::utils
 	public:
 		Timer(const MilliSeconds& i, std::function<void(void)> callback);
 		Timer();
+		Timer(Timer&) = delete;
 		~Timer();
 		void setInterval(const MicroSeconds& i);
 		const MicroSeconds& getInterval();

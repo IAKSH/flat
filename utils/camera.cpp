@@ -3,7 +3,7 @@
 #include "GLFW/glfw3.h"
 
 ni::utils::Camera3D::Camera3D()
-	: fov{ 45.0f }, aspectRatio{ 16.0f / 9.0f }, nearPlane{ 0.01f }, farPlane{ 100.0f }, yaw(0.0f), pitch(0.0f), zoom(0.0f),
+	: fov{ 45.0f }, aspectRatio{ 16.0f / 9.0f }, nearPlane{ 0.01f }, farPlane{ 100.0f }, yaw{0.0f}, pitch{0.0f}, zoom{0.0f},
 	up{ 0.0f, 0.0f, 1.0f }, worldUp{ up }
 {
 	update();
@@ -72,12 +72,12 @@ void ni::utils::Camera3D::update()
 	up = glm::normalize(glm::cross(right, front));
 }
 
-glm::mat4 ni::utils::Camera2D::getTranslateMatrix()
+glm::mat4 const ni::utils::Camera2D::getTranslateMatrix() const
 {
 	GLFWwindow* win = glfwGetCurrentContext();
 	int w, h;
 	glfwGetWindowSize(win, &w, &h);
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(w), 0.0f, static_cast<float>(h), -1.0f, 1.0f);
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-getPositionX() + w / 2, -getPositionY() + h / 2, 0.0f));
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-getPositionX() + w / 2.0f, -getPositionY() + h / 2.0f, 0.0f));
 	return projection * view;
 }

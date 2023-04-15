@@ -26,6 +26,7 @@ namespace ni::core
 
     public:
         Application();
+        Application(Application&) = delete;
         ~Application();
 
         void pushLayer(std::unique_ptr<Layer> layer);

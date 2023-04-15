@@ -1,12 +1,15 @@
 #include "audio.hpp"
 
+#include <cstdint>
 #include <fstream>
+#include <filesystem>
+#include <memory>
+#include <string_view>
+#include <type_traits>
 
 #include "logger.hpp"
-
-#define MINIMP3_IMPLEMENTATION
-#include <minimp3.h>
-#include <minimp3_ex.h>
+#include "wav_dec.hpp"
+#include "any_same.hpp"
 
 ni::utils::Audio::Audio()
 	: bufferID(0)
@@ -31,42 +34,123 @@ ni::utils::Audio::~Audio()
 
 void ni::utils::Audio::loadFromFile(std::string_view path)
 {
-	utils::coreLogger()->trace("loading audio from {}", path.data());
-
-	// read in the whole mp3 file
-	std::ifstream ifs(path.data(), std::ios::binary);
-	if (!ifs)
+    std::filesystem::path file_path(path);
+    std::string extension = file_path.extension().string();
+	if(extension == std::string_view{".mp3"})
+		loadMp3FromFile(path);
+	else if(extension == std::string_view{".wav"})
+		loadWavFromFile(path);
+	else if(extension == std::string_view{".ogg"})
+		loadOggFromFile(path);
+	else if(extension == std::string_view{".flac"})
+		loadFlacFromFile(path);
+	else
 	{
-		utils::coreLogger()->critical("can't open audio file at {}", path.data());
+		ni::utils::coreLogger()->critical("unknow extension type: {} ({})",extension,path);
 		abort();
 	}
-	ifs.seekg(0, std::ios::end);
-	std::streampos fileSize = ifs.tellg();
-	ifs.seekg(0, std::ios::beg);
-	// std::vector<uint8_t> mp3Binary(fileSize);
-	std::unique_ptr<uint8_t[]> mp3Binary = std::make_unique<uint8_t[]>(static_cast<long>(fileSize));
-	ifs.read((char*)(mp3Binary.get()), fileSize);
-	ifs.close();
+}
 
-	// decode with minimp3
-	mp3dec_t mp3d;
-	mp3dec_frame_info_t info;
-	std::vector<short> allPCM;
-	short pcm[MINIMP3_MAX_SAMPLES_PER_FRAME];
-	int readLength = 0;
-	// decode frame by frame
-	int samples = mp3dec_decode_frame(&mp3d, mp3Binary.get(), static_cast<int>(fileSize), pcm, &info);
-	while (samples)
+void ni::utils::Audio::loadMp3FromFile(std::string_view path)
+{
+	// TODO
+	ni::utils::coreLogger()->critical("mp3 audio is not supported yet");
+	abort();
+}
+
+void ni::utils::Audio::loadWavFromFile(std::string_view path)
+{
+    AudioDecoder<WavDecoder>&& decoder = WavDecoder(path);
+    ALenum format;
+
+    if (decoder.getBytesPerSec() == 16)
+        format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO16:AL_FORMAT_STEREO16);
+    else if (decoder.getBytesPerSec() == 8)
+        format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO8:AL_FORMAT_STEREO8);
+    else
+    {
+        ni::utils::coreLogger()->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
+        abort();
+    }
+
+    alGenBuffers(1, &bufferID);
+    alBufferData(bufferID,format,decoder.getPCM(),decoder.getPCMLength(), decoder.getSimpleRate());
+}
+
+void ni::utils::Audio::loadOggFromFile(std::string_view path)
+{
+	// TODO
+	ni::utils::coreLogger()->critical("ogg audio is not supported yet");
+	abort();
+}
+
+void ni::utils::Audio::loadFlacFromFile(std::string_view path)
+{
+	// TODO
+	ni::utils::coreLogger()->critical("flac audio is not supported yet");
+	abort();
+}
+
+void ni::utils::SoundEffect::loadMp3FromFile(std::string_view path)
+{
+	// TODO
+	ni::utils::coreLogger()->critical("mp3 audio is not supported yet");
+	abort();
+}
+
+void ni::utils::SoundEffect::loadWavFromFile(std::string_view path)
+{
+	AudioDecoder<WavDecoder>&& decoder = WavDecoder(path);
+    ALenum format;
+
+    if (decoder.getBytesPerSec() == 16)
+        format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO16:AL_FORMAT_STEREO16);
+    else if (decoder.getBytesPerSec() == 8)
+        format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO8:AL_FORMAT_STEREO8);
+    else
+    {
+        ni::utils::coreLogger()->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
+        abort();
+    }
+
+	auto handleFunc = [&decoder,this](auto type)
 	{
-		// collect pcm
-		for (auto item : pcm)
-			allPCM.push_back(item);
-		readLength += info.frame_bytes;
-		samples = mp3dec_decode_frame(&mp3d, mp3Binary.get() + readLength, static_cast<int>(fileSize) - readLength, pcm, &info);
-	}
+		static_assert(any_same<decltype(type),uint16_t,uint8_t>(),"wrong type");
+		struct PCMBlock
+		{
+			decltype(type) left;
+			decltype(type) right;
+		};
+		auto ptr = reinterpret_cast<uint16_t* const>(decoder.getPCM());
+		for(size_t i = 0;i < decoder.getPCMLength() / sizeof(PCMBlock);i++)
+		{
+			//reinterpret_cast<uint16_t*>(ptr)[i] = (reinterpret_cast<PCMBlock*>(ptr)[i].left + reinterpret_cast<PCMBlock*>(ptr)[i].right) / 2;
+			//TODO: for it's a little bit difficult to mix, only left side PCM was used
+			reinterpret_cast<uint16_t*>(ptr)[i] = reinterpret_cast<PCMBlock*>(ptr)[i].left;
+		}
 
-	// prepare OpenAL buffer
+    	alBufferData(bufferID,AL_FORMAT_MONO16,ptr,decoder.getPCMLength() / 2, decoder.getSimpleRate());
+	};
+
 	alGenBuffers(1, &bufferID);
-	ALenum format = (info.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16);
-	alBufferData(bufferID, format, allPCM.data(), allPCM.size() * sizeof(short), info.hz);
+	if(format == AL_FORMAT_STEREO16)
+		handleFunc(uint16_t());
+	else if(format == AL_FORMAT_STEREO8)
+		handleFunc(uint8_t());
+	else
+		alBufferData(bufferID,format,decoder.getPCM(),decoder.getPCMLength(), decoder.getSimpleRate());
+}
+
+void ni::utils::SoundEffect::loadOggFromFile(std::string_view path)
+{
+	// TODO
+	ni::utils::coreLogger()->critical("ogg audio is not supported yet");
+	abort();
+}
+
+void ni::utils::SoundEffect::loadFlacFromFile(std::string_view path)
+{
+	// TODO
+	ni::utils::coreLogger()->critical("flac audio is not supported yet");
+	abort();
 }

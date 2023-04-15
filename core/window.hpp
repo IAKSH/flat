@@ -23,6 +23,7 @@ namespace ni::core
 
 	public:
 		Window(std::string_view name);
+		Window(Window&) = delete;
 		~Window();
 		GLFWwindow* getGLFWWindow();
 		void update();

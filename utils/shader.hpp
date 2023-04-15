@@ -18,6 +18,7 @@ namespace ni::utils
 
 	public:
 		Shader() = default;
+		Shader(Shader&) = delete;
 		~Shader();
 		const GLuint& getShaderID() const
 		{

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <AL/al.h>
-#include <al/alc.h>
+#include <AL/alc.h>
 
 namespace ni::core
 {
@@ -15,6 +15,7 @@ namespace ni::core
 
 	public:
 		Mixer();
+		Mixer(Mixer&) = delete;
 		~Mixer();
 	};
 }

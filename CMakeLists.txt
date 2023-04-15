@@ -8,14 +8,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 add_subdirectory(vendor)
 
 add_library(flat)
-add_dependencies(flat glfw OpenAL spdlog)
+add_dependencies(flat glfw OpenAL spdlog freetype)
 target_compile_features(flat PUBLIC cxx_std_20)
-target_link_libraries(flat PUBLIC glfw OpenAL)
+target_link_libraries(flat PUBLIC glfw OpenAL freetype)
 target_include_directories(flat PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glad/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glfw/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/spdlog/include
-    ${CMAKE_CURRENT_LIST_DIR}/vendor/openal-soft
+    ${CMAKE_CURRENT_LIST_DIR}/vendor/freetype/include
     ${CMAKE_CURRENT_LIST_DIR}/vendor/glm
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui
     ${CMAKE_CURRENT_LIST_DIR}/vendor/minimp3
@@ -57,10 +57,21 @@ target_sources(flat PRIVATE
     "utils/vao.hpp"
     "utils/audio_source.hpp"
     "utils/audio_source.cpp"
+    "utils/animation.hpp"
+    "utils/font.hpp"
+    "utils/font.cpp"
+    "utils/wav_dec.hpp"
+    "utils/wav_dec.cpp"
+    "utils/audio_dec.hpp"
+    "utils/any_same.hpp"
     "flat/collision_detect.hpp"
     "flat/gjk.cpp"
+    "flat/text_renderer.hpp"
+    "flat/text_renderer.cpp"
+    "flat/dtype.hpp"
+    "flat/shader.hpp"
 )
 
-add_executable(flat_test "main.cpp")
+add_executable(flat_test "main.cpp" "demo_obj.hpp")
 add_dependencies(flat_test flat)
 target_link_libraries(flat_test flat)

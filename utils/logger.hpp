@@ -18,6 +18,7 @@ namespace ni::utils
 
     public:
         Logger(std::string_view name);
+        Logger(Logger&) = delete;
         ~Logger() = default;
 
         const std::shared_ptr<spdlog::logger>& operator()()

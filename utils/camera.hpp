@@ -13,7 +13,7 @@ namespace ni::utils
     public:
         Camera2D() = default;
         ~Camera2D() = default;
-        glm::mat4 getTranslateMatrix();
+        glm::mat4 const getTranslateMatrix() const;
     };
 
     // bad

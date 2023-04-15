@@ -2,12 +2,12 @@
 
 #include "mass_point.hpp"
 
-#include <al/al.h>
-#include <al/alc.h>
+#include <AL/al.h>
+#include <AL/alc.h>
 
 namespace ni::utils
 {
-    class AudioSource : public MassPoint
+    class AudioSource
     {
     private:
         ALuint sourceID;
@@ -16,6 +16,7 @@ namespace ni::utils
 
     public:
         AudioSource();
+        AudioSource(AudioSource&) = delete;
         ~AudioSource();
         const ALuint& getSourceID() { return sourceID; }
     };
