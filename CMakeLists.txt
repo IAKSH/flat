@@ -1,16 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(flat3 VERSION 0.1.0)
 
-<<<<<<< HEAD
-add_subdirectory(3rdparty/zlib/)
-add_subdirectory(3rdparty/glfw/)
-add_subdirectory(3rdparty/openal-soft/)
-add_subdirectory(3rdparty/freetype/)
-add_subdirectory(3rdparty/pybind11/)
-add_subdirectory(test)
-
-add_subdirectory(demo)
-=======
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -74,4 +64,3 @@ target_sources(flat PRIVATE
 add_executable(flat_test "main.cpp")
 add_dependencies(flat_test flat)
 target_link_libraries(flat_test flat)
->>>>>>> dev
