@@ -60,27 +60,11 @@ void ni::utils::Audio::loadWavFromFile(std::string_view path)
 {
     AudioDecoder<WavDecoder>&& decoder = WavDecoder(path);
     ALenum format;
-    std::unique_ptr<unsigned char[]> pcmData;
-
-	// mix stereo to mono
-    if (decoder.getChannelCount() == 2)
-    {
-        const auto& stereoData = decoder.getPCM();
-        const auto stereoDataSize = decoder.getPCMLength();
-		pcmData = std::move(std::make_unique<unsigned char[]>(stereoDataSize / 2));
-        int16_t* monoData = reinterpret_cast<int16_t*>(pcmData.get());
-
-        for (size_t i = 0; i < stereoDataSize; i += 4)
-        {
-			// mix by average
-            *monoData++ = (int16_t)((stereoData[i] + stereoData[i + 2]) / 2);
-        }
-    }
 
     if (decoder.getBytesPerSec() == 16)
-        format = AL_FORMAT_MONO16;
+        format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO16:AL_FORMAT_STEREO16);
     else if (decoder.getBytesPerSec() == 8)
-        format = AL_FORMAT_MONO8;
+        format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO8:AL_FORMAT_STEREO8);
     else
     {
         ni::utils::coreLogger()->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
@@ -88,7 +72,7 @@ void ni::utils::Audio::loadWavFromFile(std::string_view path)
     }
 
     alGenBuffers(1, &bufferID);
-    alBufferData(bufferID, format, decoder.getPCM(), decoder.getPCMLength(), decoder.getSimpleRate());
+    alBufferData(bufferID,format,decoder.getPCM(),decoder.getPCMLength(), decoder.getSimpleRate());
 }
 
 void ni::utils::Audio::loadOggFromFile(std::string_view path)

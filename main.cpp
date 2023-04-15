@@ -129,7 +129,7 @@ public:
 		backgroundTex.loadFromFile("images/strangeSky.png");
 
 		// audio test
-		testAudio.loadFromFile("sounds/test_sounds_walk.wav");
+		testAudio.loadFromFile("sounds/single.wav");
 
 		// timer test
 		timer.setInterval(ni::utils::MilliSeconds(3));
@@ -162,7 +162,7 @@ public:
 
 		bird.onUpdate();
 
-		alListener3f(AL_POSITION,cam.getPositionX(),cam.getPositionY(),cam.getPositionZ());
+		alListener3f(AL_POSITION,cam.getPositionX(),cam.getPositionY(),1.0f);
 		alListener3f(AL_VELOCITY,cam.getVelocityX(),cam.getVelocityY(),cam.getVelocityZ());
 	}
 
