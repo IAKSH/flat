@@ -1,3 +1,4 @@
+#include "AL/al.h"
 #include "core/application.hpp"
 #include "core/event_keyboard.hpp"
 #include "core/event_window.hpp"
@@ -67,6 +68,7 @@ private:
 	ni::utils::Texture testTex;
 	ni::utils::Texture backgroundTex;
 	ni::utils::Audio testAudio;
+	ni::utils::AudioSource testSource;
 	ni::utils::Camera2D cam;
 	ni::utils::VertexArrayObj vao;
 	ni::utils::VertexArrayObj backgroundVAO;
@@ -129,7 +131,10 @@ public:
 		backgroundTex.loadFromFile("images/strangeSky.png");
 
 		// audio test
-		testAudio.loadFromFile("sounds/single.wav");
+		testAudio.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746_01.wav");
+		alSourcei(testSource.getSourceID(),AL_BUFFER,testAudio.getBufferID());
+		alSourcef(testSource.getSourceID(),AL_GAIN,0.25f);
+		alSourcePlay(testSource.getSourceID());
 
 		// timer test
 		timer.setInterval(ni::utils::MilliSeconds(3));

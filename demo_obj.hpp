@@ -29,11 +29,10 @@ namespace demo
 		ni::utils::SoundEffect testSound;
         const ni::utils::Shader& shader;
         const ni::utils::Camera2D& cam;
-		const ni::utils::Audio& testAudio;
 
     public:
         Bird(const ni::utils::Shader& shader,const ni::utils::Camera2D& cam,const ni::utils::Audio& testAudio)
-            : shader(shader),cam(cam),testAudio{testAudio}
+            : shader(shader),cam(cam)
         {
         }
         ~Bird() = default;
