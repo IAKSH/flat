@@ -26,10 +26,13 @@ void ni::core::Mixer::initialize()
 	}
 
 	alDistanceModel(AL_LINEAR_DISTANCE);
-	ALfloat listenerPosition[] = {0.0f, 0.0f, 1.0f};
+	ALfloat listenerPosition[] = {0.0f, 0.0f, 0.0f};
 	alListenerfv(AL_POSITION, listenerPosition);
 	ALfloat listenerOrientation[] = {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f};
 	alListenerfv(AL_ORIENTATION, listenerOrientation);
+
+	// set global distance model to inverse
+    alDistanceModel(AL_INVERSE_DISTANCE_CLAMPED);
 }
 
 void ni::core::Mixer::release()
