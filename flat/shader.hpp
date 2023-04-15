@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <exception>
 #include <memory>
 #include <functional>
 #include <type_traits>
@@ -83,7 +84,7 @@ namespace ni::flat
                 if(size != 1 || type != aimType)
                 {
                     ni::utils::otherLogger()->critical("uniform cast failed");
-                    abort();
+                    std::terminate();
                 }
 
                 T value;

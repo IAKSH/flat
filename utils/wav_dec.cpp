@@ -1,5 +1,6 @@
 #include "wav_dec.hpp"
 #include "logger.hpp"
+#include <exception>
 #include <memory>
 #include <vector>
 
@@ -9,7 +10,7 @@ ni::utils::WavDecoder::WavDecoder(std::string_view path)
     if(!ifs)
     {
         ni::utils::coreLogger()->critical("failed to open file at {}",path);
-        abort();
+        std::terminate();
     }
 
     load();
@@ -23,7 +24,7 @@ void ni::utils::WavDecoder::load()
         std::string(structure.subchunk1ID, 4) != "fmt ")
     {
         ni::utils::coreLogger()->critical("trying to decode a non-wav file");
-        abort();
+        std::terminate();
     }
 
     std::string buffer(4,'\0');
@@ -49,5 +50,5 @@ void ni::utils::WavDecoder::load()
     }
 
     ni::utils::coreLogger()->critical("can't locate data chunk in WAV file");
-    abort();
+    std::terminate();
 }

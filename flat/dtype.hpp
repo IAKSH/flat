@@ -34,7 +34,7 @@ namespace ni::flat
             if(index > len)
             {
                 ni::utils::otherLogger()->critical("ni::flat::Vector out of range");
-                abort();
+                std::terminate();
             }
             return data[index];
         }

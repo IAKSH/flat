@@ -1,6 +1,7 @@
 #include "audio.hpp"
 
 #include <cstdint>
+#include <exception>
 #include <fstream>
 #include <filesystem>
 #include <memory>
@@ -47,7 +48,7 @@ void ni::utils::Audio::loadFromFile(std::string_view path)
 	else
 	{
 		ni::utils::coreLogger()->critical("unknow extension type: {} ({})",extension,path);
-		abort();
+		std::terminate();
 	}
 }
 
@@ -55,7 +56,7 @@ void ni::utils::Audio::loadMp3FromFile(std::string_view path)
 {
 	// TODO
 	ni::utils::coreLogger()->critical("mp3 audio is not supported yet");
-	abort();
+	std::terminate();
 }
 
 void ni::utils::Audio::loadWavFromFile(std::string_view path)
@@ -70,7 +71,7 @@ void ni::utils::Audio::loadWavFromFile(std::string_view path)
     else
     {
         ni::utils::coreLogger()->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
-        abort();
+        std::terminate();
     }
 
     alGenBuffers(1, &bufferID);
@@ -81,21 +82,21 @@ void ni::utils::Audio::loadOggFromFile(std::string_view path)
 {
 	// TODO
 	ni::utils::coreLogger()->critical("ogg audio is not supported yet");
-	abort();
+	std::terminate();
 }
 
 void ni::utils::Audio::loadFlacFromFile(std::string_view path)
 {
 	// TODO
 	ni::utils::coreLogger()->critical("flac audio is not supported yet");
-	abort();
+	std::terminate();
 }
 
 void ni::utils::SoundEffect::loadMp3FromFile(std::string_view path)
 {
 	// TODO
 	ni::utils::coreLogger()->critical("mp3 audio is not supported yet");
-	abort();
+	std::terminate();
 }
 
 void ni::utils::SoundEffect::loadWavFromFile(std::string_view path)
@@ -110,7 +111,7 @@ void ni::utils::SoundEffect::loadWavFromFile(std::string_view path)
     else
     {
         ni::utils::coreLogger()->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
-        abort();
+        std::terminate();
     }
 
 	auto handleFunc = [&decoder,this](auto type)
@@ -145,12 +146,12 @@ void ni::utils::SoundEffect::loadOggFromFile(std::string_view path)
 {
 	// TODO
 	ni::utils::coreLogger()->critical("ogg audio is not supported yet");
-	abort();
+	std::terminate();
 }
 
 void ni::utils::SoundEffect::loadFlacFromFile(std::string_view path)
 {
 	// TODO
 	ni::utils::coreLogger()->critical("flac audio is not supported yet");
-	abort();
+	std::terminate();
 }

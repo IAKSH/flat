@@ -1,6 +1,7 @@
 #include "texture.hpp"
 
 #include "logger.hpp"
+#include <exception>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -41,7 +42,7 @@ void ni::utils::Texture::loadFromFile(std::string_view path)
 	if (!data)
 	{
 		utils::coreLogger()->critical("failed to load image file at {}", path.data());
-		abort();
+		std::terminate();
 	}
 
 	glBindTexture(GL_TEXTURE_2D, textureID);

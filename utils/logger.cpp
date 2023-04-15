@@ -1,5 +1,6 @@
 #include "logger.hpp"
 
+#include <exception>
 #include <iostream>
 
 namespace ni::utils
@@ -26,6 +27,6 @@ void ni::utils::Logger::initialize()
     catch (const spdlog::spdlog_ex& ex)
     {
         std::cerr << "Logger initialization failed: " << ex.what() << std::endl;
-        abort();
+        std::terminate();
     }
 }
