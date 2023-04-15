@@ -76,7 +76,6 @@ namespace demo
 
 			alSource3f(audioSource.getSourceID(),AL_POSITION,getPositionX(),getPositionY(),getPositionZ());
 			alSource3f(audioSource.getSourceID(),AL_VELOCITY,getVelocityX(),getVelocityY(),getVelocityZ());
-			//alSourcef(audioSource.getSourceID(),AL_PITCH,abs(sin(glfwGetTime() * 3.0f) * 10.0f));
         }
 
         virtual void onRender() override
