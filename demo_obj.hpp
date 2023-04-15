@@ -26,6 +26,7 @@ namespace demo
         ni::utils::Animation<3> flyAnimation{ni::utils::MilliSeconds{250},"images/bird0_0.png","images/bird0_1.png","images/bird0_2.png"};
         ni::utils::VertexArrayObj vao;
 		ni::utils::AudioSource audioSource;
+		ni::utils::SoundEffect testSound;
         const ni::utils::Shader& shader;
         const ni::utils::Camera2D& cam;
 		const ni::utils::Audio& testAudio;
@@ -56,10 +57,11 @@ namespace demo
             vao.create(ni::utils::GLBufferType::Static,vertices,indices);
 
 			// audio
-			alSourcei(audioSource.getSourceID(), AL_BUFFER, testAudio.getBufferID());
+			testSound.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746_01.wav");
 			alSourcef(audioSource.getSourceID(), AL_GAIN, 1.0f);
 			alSourcei(audioSource.getSourceID(), AL_LOOPING, AL_TRUE);
 			alSourcef(audioSource.getSourceID(),AL_REFERENCE_DISTANCE,100.0f);
+			alSourcei(audioSource.getSourceID(), AL_BUFFER, testSound.getBufferID());
 			alSourcePlay(audioSource.getSourceID());
         }
 

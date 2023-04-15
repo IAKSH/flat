@@ -38,7 +38,7 @@ namespace ni::utils
         WavDecoder(WavDecoder&) = delete;
         ~WavDecoder() = default;
 
-        const unsigned char* const imp_getPCM() { return pcm.get(); }
+        unsigned char* const imp_getPCM() { return pcm.get(); }
         const auto& imp_getPCMLength() { return structure.subchunk2Size; }
         const auto& imp_getChannelCount() { return structure.numChannels; }
         const auto& imp_getBytesPerSec() { return structure.bitsPerSample; }
