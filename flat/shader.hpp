@@ -104,5 +104,11 @@ namespace ni::flat
             auto location = glGetUniformLocation(getShaderID(), uniform.data());
             return Uniform{*this,location};
         }
+
+        Uniform operator[](const char* uniform)
+        {
+            auto location = glGetUniformLocation(getShaderID(), uniform);
+            return Uniform{*this,location};
+        }
     };
 }

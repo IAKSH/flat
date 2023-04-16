@@ -11,7 +11,7 @@ ni::utils::Camera3D::Camera3D()
 
 glm::mat4 ni::utils::Camera3D::getTranslateMatrix()
 {
-	glm::vec3 position{ getPositionX(),getPositionY(),getPositionZ() };
+	glm::vec3 position{ getPosX(),getPosY(),getPosZ() };
 	auto win = glfwGetCurrentContext();
 	int h, w;
 	glfwGetWindowSize(win, &w, &h);
@@ -21,12 +21,12 @@ glm::mat4 ni::utils::Camera3D::getTranslateMatrix()
 
 void ni::utils::Camera3D::move(float dforward, float dright)
 {
-	glm::vec3 position{ getPositionX(),getPositionY(),getPositionZ() };
+	glm::vec3 position{ getPosX(),getPosY(),getPosZ() };
 	position += front * dforward;
 	position += right * dright;
-	setPositionX(position[0]);
-	setPositionY(position[1]);
-	setPositionZ(position[2]);
+	setPosX(position[0]);
+	setPosY(position[1]);
+	setPosZ(position[2]);
 }
 
 void ni::utils::Camera3D::turn(float upOffset, float rightOffset)
@@ -78,6 +78,6 @@ glm::mat4 const ni::utils::Camera2D::getTranslateMatrix() const
 	int w, h;
 	glfwGetWindowSize(win, &w, &h);
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(w), 0.0f, static_cast<float>(h), -1.0f, 1.0f);
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-getPositionX() + w / 2.0f, -getPositionY() + h / 2.0f, 0.0f));
+	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-getPosX() + w / 2.0f, -getPosY() + h / 2.0f, 0.0f));
 	return projection * view;
 }

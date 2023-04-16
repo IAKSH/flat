@@ -1,36 +1,46 @@
 #pragma once
 
+#include <array>
+
 namespace ni::utils
 {
     class Point
     {
     private:
-        float x,y,z;
-        float vx,vy,vz;
-
-    protected:
-        Point()
-            : x{0.0f},y{0.0f},z{0.0f},vx{0.0f},vy{0.0f},vz{0.0f}
-        {
-        }
-        ~Point() = default;
+        std::array<float,3> xyz;
 
     public:
-        const float& getPositionX() const { return x; }
-        const float& getPositionY() const { return y; }
-        const float& getPositionZ() const { return z; }
-        const float& getVelocityX() const { return vx; }
-        const float& getVelocityY() const { return vy; }
-        const float& getVelocityZ() const { return vz; }
-        void setPositionX(const float& x) { this->x = x; }
-        void setPositionY(const float& y) { this->y = y; }
-        void setPositionZ(const float& z) { this->z = z; }
-        void setVelocityX(const float& vx) { this->vx = vx; }
-        void setVelocityY(const float& vy) { this->vy = vy; }
-        void setVelocityZ(const float& vz) { this->vz = vz; }
+        Point() : xyz{0.0f,0.0f,0.0f} {}
+        Point(const float& x,const float& y,const float& z) : xyz{x,y,z} {}
+        ~Point() = default;
+
+        const float& getPosX() const {return xyz[0];}
+        const float& getPosY() const {return xyz[1];}
+        const float& getPosZ() const {return xyz[2];}
+        void setPosX(const float& val) {xyz[0] = val;}
+        void setPosY(const float& val) {xyz[1] = val;}
+        void setPosZ(const float& val) {xyz[2] = val;}
     };
 
-    class MassPoint : public Point
+    class Velocity
+    {
+    private:
+        std::array<float,3> xyz;
+
+    public:
+        Velocity() : xyz{0.0f,0.0f,0.0f} {}
+        Velocity(const float& x,const float& y,const float& z) : xyz{x,y,z} {}
+        ~Velocity() = default;
+
+        const float& getVelX() const {return xyz[0];}
+        const float& getVelY() const {return xyz[1];}
+        const float& getVelZ() const {return xyz[2];}
+        void setVelX(const float& val) {xyz[0] = val;}
+        void setVelY(const float& val) {xyz[1] = val;}
+        void setVelZ(const float& val) {xyz[2] = val;}
+    };
+
+    class MassPoint : public Point, public Velocity
     {
     private:
         float mass;
