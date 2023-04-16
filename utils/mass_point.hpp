@@ -2,19 +2,18 @@
 
 namespace ni::utils
 {
-    class MassPoint
+    class Point
     {
     private:
         float x,y,z;
         float vx,vy,vz;
-        float mass;
 
     protected:
-        MassPoint()
-            : x{0.0f},y{0.0f},z{0.0f},vx{0.0f},vy{0.0f},vz{0.0f},mass{1.0f}
+        Point()
+            : x{0.0f},y{0.0f},z{0.0f},vx{0.0f},vy{0.0f},vz{0.0f}
         {
         }
-        ~MassPoint() = default;
+        ~Point() = default;
 
     public:
         const float& getPositionX() const { return x; }
@@ -23,13 +22,25 @@ namespace ni::utils
         const float& getVelocityX() const { return vx; }
         const float& getVelocityY() const { return vy; }
         const float& getVelocityZ() const { return vz; }
-        const float& getMass() const { return mass; }
         void setPositionX(const float& x) { this->x = x; }
         void setPositionY(const float& y) { this->y = y; }
         void setPositionZ(const float& z) { this->z = z; }
         void setVelocityX(const float& vx) { this->vx = vx; }
         void setVelocityY(const float& vy) { this->vy = vy; }
         void setVelocityZ(const float& vz) { this->vz = vz; }
+    };
+
+    class MassPoint : public Point
+    {
+    private:
+        float mass;
+
+    protected:
+        MassPoint() :Point(),mass{1.0f} {}
+        ~MassPoint() = default;
+
+    public:
+        const float& getMass() const { return mass; }
         void setMass(const float& mass) { this->mass = mass; }
     };
 }
