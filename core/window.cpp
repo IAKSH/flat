@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include <exception>
+
 #include "../utils/logger.hpp"
 #include "event_keyboard.hpp"
 #include "event_window.hpp"
@@ -126,7 +128,7 @@ void ni::core::Window::initialize()
 
     glfwSetErrorCallback([](int error, const char* description) {
         utils::coreLogger()->critical("GLFW Error {}: {}", error, description);
-        abort();
+        std::terminate();
         });
 
     initializeWithoutBackends();
@@ -134,7 +136,7 @@ void ni::core::Window::initialize()
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         utils::coreLogger()->critical("Failed to initialize GLAD");
-        abort();
+        std::terminate();
     }
 
     utils::coreLogger()->info("OpenGL Info:");

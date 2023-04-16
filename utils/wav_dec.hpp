@@ -11,7 +11,6 @@ namespace ni::utils
     class WavDecoder : public AudioDecoder<WavDecoder>
     {
     private:
-        std::ifstream ifs;
         std::unique_ptr<unsigned char[]> pcm;
 
         struct WavStructure
@@ -31,7 +30,7 @@ namespace ni::utils
             uint32_t subchunk2Size;
         } structure;
         
-        void load();
+        void load(std::string_view path) noexcept(false);
 
     public:
         WavDecoder(std::string_view path);

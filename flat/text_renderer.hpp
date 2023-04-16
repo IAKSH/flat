@@ -4,7 +4,7 @@
 #include <string_view>
 
 #include "../utils/font.hpp"
-#include "../utils/vao.hpp"
+#include "../utils/rectangle_vao.hpp"
 #include "../utils/camera.hpp"
 #include "../utils/any_same.hpp"
 #include "shader.hpp"
@@ -26,9 +26,11 @@ namespace ni::flat
     {
         using Font = ::ni::utils::Font;
         using Shader = ::ni::flat::Shader;
-        using VertexBuffer = ::ni::utils::VertexArrayObj;
         using CharTexture = ::ni::utils::CharTexture;
         using Camera = ::ni::utils::Camera2D;
+        using GLBufferType = ::ni::utils::GLBufferType;
+        template <GLBufferType T>
+        using VertexBuffer = ::ni::utils::VertexBuffer<T>;
 
     private:
         float x,y,scale;
@@ -36,7 +38,7 @@ namespace ni::flat
         Font* font;
         Camera* cam;
         Shader shader;
-        VertexBuffer vao;
+        VertexBuffer<GLBufferType::Dynamic> vao;
         std::u32string str;
         std::array<float,36> vertices;
         std::array<unsigned int, 6> indices;

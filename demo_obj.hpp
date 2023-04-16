@@ -1,7 +1,7 @@
 #pragma once
 #include "core/event_keyboard.hpp"
 #include "utils/gameobj.hpp"
-#include "utils/vao.hpp"
+#include "utils/rectangle_vao.hpp"
 #include "utils/audio_source.hpp"
 #include "utils/animation.hpp"
 #include "utils/shader.hpp"
@@ -24,7 +24,7 @@ namespace demo
     {
     private:
         ni::utils::Animation<3> flyAnimation{ni::utils::MilliSeconds{250},"images/bird0_0.png","images/bird0_1.png","images/bird0_2.png"};
-        ni::utils::VertexArrayObj vao;
+        ni::utils::VertexBuffer<ni::utils::GLBufferType::Static> vao;
 		ni::utils::AudioSource audioSource;
 		ni::utils::SoundEffect testSound;
         const ni::utils::Shader& shader;
@@ -53,7 +53,7 @@ namespace demo
 			1, 2, 3   // second Triangle
 		    };
 
-            vao.create(ni::utils::GLBufferType::Static,vertices,indices);
+            //vao.create(vertices,indices);
 
 			// audio
 			testSound.loadFromFile("sounds/demo_sounds_relaxed-vlog-night-street-131746_01.wav");
@@ -71,12 +71,12 @@ namespace demo
 
         virtual void onUpdate() override
         {
-            setPositionX(getPositionX() + getVelocityX());
-            setPositionY(getPositionY() + getVelocityY());
+            setPosX(getPosX() + getVelX());
+            setPosY(getPosY() + getVelY());
             flyAnimation.tryUpdate();
 
-			alSource3f(audioSource.getSourceID(),AL_POSITION,getPositionX(),getPositionY(),getPositionZ());
-			alSource3f(audioSource.getSourceID(),AL_VELOCITY,getVelocityX(),getVelocityY(),getVelocityZ());
+			alSource3f(audioSource.getSourceID(),AL_POSITION,getPosX(),getPosY(),getPosZ());
+			alSource3f(audioSource.getSourceID(),AL_VELOCITY,getVelX(),getVelY(),getVelZ());
         }
 
         virtual void onRender() override
@@ -85,7 +85,7 @@ namespace demo
             glBindTexture(GL_TEXTURE_2D, flyAnimation.getCurrentTexture().getTextureID());
 
 			glm::mat4 trans(1.0f);
-			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(getPositionX(),getPositionY(),0.2f));
+			trans *= glm::translate(glm::mat4(1.0f), glm::vec3(getPosX(),getPosY(),0.2f));
 			trans *= glm::scale(glm::mat4(1.0f), glm::vec3(50.0f, 50.0f, 1.0f));
 			trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 
@@ -106,16 +106,16 @@ namespace demo
 			    switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode())
 			    {
 			    	case ni::core::KeyCode::UP:
-			    		setVelocityY(0.5f);
+			    		setVelY(0.5f);
 			    		break;
 			    	case ni::core::KeyCode::DOWN:
-			    		setVelocityY(-0.5f);
+			    		setVelY(-0.5f);
 			    		break;
 			    	case ni::core::KeyCode::RIGHT:
-			    		setVelocityX(0.5f);
+			    		setVelX(0.5f);
 			    		break;
 			    	case ni::core::KeyCode::LEFT:
-			    		setVelocityX(-0.5f);
+			    		setVelX(-0.5f);
 			    		break;
                     default:
                         break;
@@ -127,11 +127,11 @@ namespace demo
 		    	{
 		    		case ni::core::KeyCode::LEFT:
 		    		case ni::core::KeyCode::RIGHT:
-		    			setVelocityX(0.0f);
+		    			setVelX(0.0f);
 		    			break;
 		    		case ni::core::KeyCode::UP:
 		    		case ni::core::KeyCode::DOWN:
-		    			setVelocityY(0.0f);
+		    			setVelY(0.0f);
 		    			break;
 		    		default:
 		    			break;

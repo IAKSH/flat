@@ -6,6 +6,22 @@
 
 namespace ni::utils
 {
+	class TextureCoord
+	{
+	private:
+		float x,y;
+
+	public:
+		TextureCoord() : x(0.0f),y(0.0f) {}
+		TextureCoord(float x,float y) : x(x),y(y) {}
+		~TextureCoord() = default;
+
+		const float& getX() {return x;}
+		const float& getY() {return y;}
+		void setX(const float& val) {x = val;}
+		void setY(const float& val) {y = val;}
+	};
+
 	class Texture
 	{
 	private:

@@ -1,29 +1,37 @@
 #include "wav_dec.hpp"
 #include "logger.hpp"
+#include <algorithm>
+#include <exception>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 ni::utils::WavDecoder::WavDecoder(std::string_view path)
 {
-    ifs.open(path,std::ios::in | std::ios::binary);
-    if(!ifs)
+    try
     {
-        ni::utils::coreLogger()->critical("failed to open file at {}",path);
-        abort();
+        load(path);
+        return;
     }
-
-    load();
+    catch(const std::exception& e)
+    {
+        ni::utils::coreLogger()->critical("exception catched in WavDecoder: {}",e.what());
+    }
+    std::terminate();
 }
 
-void ni::utils::WavDecoder::load()
+void ni::utils::WavDecoder::load(std::string_view path) noexcept(false)
 {
+    std::ifstream ifs(path,std::ios::in | std::ios::binary);
+    if(!ifs)
+        throw std::runtime_error("failed to open file");
+
     ifs.read(reinterpret_cast<char*>(&structure), sizeof(structure));
     if (std::string(structure.chunkID, 4) != "RIFF" ||
         std::string(structure.format, 4) != "WAVE" ||
         std::string(structure.subchunk1ID, 4) != "fmt ")
     {
-        ni::utils::coreLogger()->critical("trying to decode a non-wav file");
-        abort();
+        throw std::runtime_error("trying to decode a non-wav file");
     }
 
     std::string buffer(4,'\0');
@@ -48,6 +56,5 @@ void ni::utils::WavDecoder::load()
         }
     }
 
-    ni::utils::coreLogger()->critical("can't locate data chunk in WAV file");
-    abort();
+    throw std::runtime_error("can't locate data chunk in WAV file");
 }

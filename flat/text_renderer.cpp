@@ -43,8 +43,8 @@ void ni::flat::TextRenderer::_drawText()
 {
 	// TODO: check required data
 
-	if(vao.getVAO() == 0)
-			vao.create(utils::GLBufferType::Dynamic,vertices,indices);
+	//if(vao.getVAO() == 0)
+	//		vao.create(vertices,indices);
 
 	float _x = x;
 

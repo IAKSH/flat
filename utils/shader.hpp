@@ -27,5 +27,10 @@ namespace ni::utils
 
 		void loadFromFile(std::string_view vertexShaderPath, std::string_view fragmentShaderPath);
 		void loadFromGLSL(std::string_view vertexShaderCode, std::string_view fragmentShaderCode);
+
+		operator GLuint() const
+		{
+			return shaderID;
+		}
 	};
 }

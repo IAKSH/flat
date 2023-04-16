@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <exception>
 #include <memory>
 #include <functional>
 #include <type_traits>
@@ -83,7 +84,7 @@ namespace ni::flat
                 if(size != 1 || type != aimType)
                 {
                     ni::utils::otherLogger()->critical("uniform cast failed");
-                    abort();
+                    std::terminate();
                 }
 
                 T value;
@@ -101,6 +102,12 @@ namespace ni::flat
         Uniform operator[](std::string_view uniform)
         {
             auto location = glGetUniformLocation(getShaderID(), uniform.data());
+            return Uniform{*this,location};
+        }
+
+        Uniform operator[](const char* uniform)
+        {
+            auto location = glGetUniformLocation(getShaderID(), uniform);
             return Uniform{*this,location};
         }
     };

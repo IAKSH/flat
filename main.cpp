@@ -7,7 +7,7 @@
 #include "utils/audio.hpp"
 #include "utils/timer.hpp"
 #include "utils/camera.hpp"
-#include "utils/vao.hpp"
+#include "utils/rectangle_vao.hpp"
 #include "utils/audio_source.hpp"
 #include "utils/logger.hpp"
 #include "utils/animation.hpp"
@@ -15,6 +15,7 @@
 #include "flat/collision_detect.hpp"
 #include "flat/text_renderer.hpp"
 #include "demo_obj.hpp"
+#include "text.hpp"
 
 #include <array>
 #include <memory>
@@ -70,11 +71,12 @@ private:
 	ni::utils::Audio testAudio;
 	ni::utils::AudioSource testSource;
 	ni::utils::Camera2D cam;
-	ni::utils::VertexArrayObj vao;
-	ni::utils::VertexArrayObj backgroundVAO;
+	ni::utils::VertexBuffer<ni::utils::GLBufferType::Static> vertexBuffer;
+	ni::utils::VertexBuffer<ni::utils::GLBufferType::Static> backGroundVertexBuffer;
 	ni::utils::Font unifont;
 	ni::flat::TextRenderer textRenderer;
 	demo::Bird bird {mainShader,cam,testAudio};
+	demo::Text text{textRenderer,ni::utils::MilliSeconds(50),U"家人们，谁懂啊，下头C++真的下头。"};
 
 	float camDownVec{ 0.0f };
 	float camLeftVec{ 0.0f };
@@ -90,7 +92,7 @@ public:
 
 	virtual void onAttach() override
 	{
-		cam.setPositionX(-0.5f);
+		cam.setPosX(-0.5f);
 
 		mainShader.loadFromGLSL(vshader, fshader);
 		glUniform1i(glGetUniformLocation(mainShader.getShaderID(), "texture0"), 0);
@@ -115,8 +117,8 @@ public:
 			1, 2, 3   // second Triangle
 		};
 
-		vao.create(ni::utils::GLBufferType::Static,vertices,indices);
-		backgroundVAO.create(ni::utils::GLBufferType::Static,nonTransparentVertices,indices);
+		//vertexBuffer.create(vertices,indices);
+		//backGroundVertexBuffer.create(nonTransparentVertices,indices);
 
 		// imgui test
 		IMGUI_CHECKVERSION();
@@ -162,13 +164,13 @@ public:
 		//cam.move(cam.getVelocityX(), cam.getVelocityY());
 		//cam.turn(camDownVec * camSensitivity, camLeftVec * camSensitivity);
 		//cam.update();
-		cam.setPositionX(cam.getPositionX() + cam.getVelocityX() * 2);
-		cam.setPositionY(cam.getPositionY() + cam.getVelocityY() * 2);
+		cam.setPosX(cam.getPosX() + cam.getVelX() * 2);
+		cam.setPosY(cam.getPosY() + cam.getVelY() * 2);
 
 		bird.onUpdate();
 
-		alListener3f(AL_POSITION,cam.getPositionX(),cam.getPositionY(),1.0f);
-		alListener3f(AL_VELOCITY,cam.getVelocityX(),cam.getVelocityY(),cam.getVelocityZ());
+		alListener3f(AL_POSITION,cam.getPosX(),cam.getPosY(),1.0f);
+		alListener3f(AL_VELOCITY,cam.getVelX(),cam.getVelY(),cam.getVelZ());
 	}
 
 	virtual void onRender() override
@@ -196,7 +198,7 @@ public:
 			unsigned int camTrans = glGetUniformLocation(mainShader.getShaderID(), "camTrans");
 			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
 
-			glBindVertexArray(backgroundVAO.getVAO());
+			glBindVertexArray(backGroundVertexBuffer.getVAO());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
@@ -215,7 +217,7 @@ public:
 			unsigned int camTrans = glGetUniformLocation(mainShader.getShaderID(), "camTrans");
 			glUniformMatrix4fv(camTrans, 1, GL_FALSE, glm::value_ptr(cam.getTranslateMatrix()));
 
-			glBindVertexArray(vao.getVAO());
+			glBindVertexArray(vertexBuffer.getVAO());
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
@@ -232,8 +234,10 @@ public:
 			//	ni::flat::Color(1.0f,1.0f,abs(sin(glfwGetTime() * 0.1)),1.0f),ni::flat::Scale(0.5f),&cam);
 
 			textRenderer.drawText(&cam);
-			textRenderer.drawText(std::u32string_view(U"傻逼鸟"),ni::flat::Point(bird.getPositionX() - 40.0f,bird.getPositionY() + 25.0f,0.9f),
+			textRenderer.drawText(std::u32string_view(U"傻逼鸟"),ni::flat::Point(bird.getPosX() - 40.0f,bird.getPosY() + 25.0f,0.9f),
 				ni::flat::Color(1.0f,1.0f,abs(sin(glfwGetTime() * 0.1)),1.0f),ni::flat::Scale(0.5f));
+			
+			text.tryToWrite();
 		}
 
 		// imgui test
@@ -244,9 +248,9 @@ public:
 		ImGui::Begin("ImGui Test");
 		ImGui::Text("glfwGetTime(): %lf", glfwGetTime());
 		ImGui::Text("FPS: %f", 1000000.0f / recorder.getSpanAsMicroSeconds().count());
-		ImGui::Text("cam.x: %f", cam.getPositionX());
-		ImGui::Text("cam.y: %f", cam.getPositionY());
-		ImGui::Text("cam.z: %f", cam.getPositionZ());
+		ImGui::Text("cam.x: %f", cam.getPosX());
+		ImGui::Text("cam.y: %f", cam.getPosY());
+		ImGui::Text("cam.z: %f", cam.getPosZ());
 		//ImGui::Text("cam.pitch: %f", cam.getPitch());
 		//ImGui::Text("cam.yaw: %f", cam.getYaw());
 		ImGui::End();
@@ -264,16 +268,16 @@ public:
 			switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode())
 			{
 				case ni::core::KeyCode::W:
-					cam.setVelocityY(0.1f);
+					cam.setVelY(0.1f);
 					break;
 				case ni::core::KeyCode::S:
-					cam.setVelocityY(-0.1f);
+					cam.setVelY(-0.1f);
 					break;
 				case ni::core::KeyCode::D:
-					cam.setVelocityX(0.1f);
+					cam.setVelX(0.1f);
 					break;
 				case ni::core::KeyCode::A:
-					cam.setVelocityX(-0.1f);
+					cam.setVelX(-0.1f);
 					break;
 				/*
 				case ni::core::KeyCode::Q:
@@ -302,11 +306,11 @@ public:
 			{
 				case ni::core::KeyCode::W:
 				case ni::core::KeyCode::S:
-					cam.setVelocityY(0.0f);
+					cam.setVelY(0.0f);
 					break;
 				case ni::core::KeyCode::D:
 				case ni::core::KeyCode::A:
-					cam.setVelocityX(0.0f);
+					cam.setVelX(0.0f);
 					break;
 				case ni::core::KeyCode::Q:
 				case ni::core::KeyCode::E:

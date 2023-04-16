@@ -1,5 +1,6 @@
 #include "shader.hpp"
 
+#include <exception>
 #include <fstream>
 
 #include "logger.hpp"
@@ -84,7 +85,7 @@ void ni::utils::Shader::checkVertexShader(GLuint vertexShaderID)
     {
         glGetShaderInfoLog(vertexShaderID, sizeof(infoLog), nullptr, infoLog);
         utils::coreLogger()->critical("Vertex shader compilation failed! ShaderInfoLog: {}", infoLog);
-        abort();
+        std::terminate();
     }
 }
 
@@ -97,6 +98,6 @@ void ni::utils::Shader::checkFragmentShader(GLuint fragmentShaderID)
     {
         glGetShaderInfoLog(fragmentShaderID, sizeof(infoLog), nullptr, infoLog);
         utils::coreLogger()->critical("Fragment shader compilation failed! ShaderInfoLog: {}", infoLog);
-        abort();
+        std::terminate();
     }
 }
