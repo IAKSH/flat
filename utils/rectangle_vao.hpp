@@ -5,6 +5,7 @@
 #include "logger.hpp"
 #include "texture.hpp"
 #include "mass_point.hpp"
+#include "any_same.hpp"
 
 #include <array>
 #include <type_traits>
@@ -26,7 +27,10 @@ namespace ni::utils
         std::array<float,2> textCoord;
     };
 
-    template<GLBufferType Type>
+    template <typename T>
+    concept VerticesComponent = any_same<T,Point,TextureCoord,Color,Red,Green,Blue,Alpha>();
+
+    template <GLBufferType Type>
     class VertexBuffer : public VertexArrayObj<Type>
     {
     private:
@@ -64,7 +68,7 @@ namespace ni::utils
         }
         ~VertexBuffer() = default;
 
-        template <typename T>
+        template <VerticesComponent T>
         void set(size_t i,const T& t)
         {
             if(i >= vertices.size())
@@ -74,32 +78,41 @@ namespace ni::utils
                 std::terminate();
             }
 
-            if constexpr(std::is_same_v<T,Point>)
+            using U = std::remove_cvref_t<T>;
+            if constexpr(std::is_same_v<U,Point>)
             {
                 auto& xyz = vertices[i].xyz;
                 xyz[0] = static_cast<Point>(t).getPosX();
                 xyz[1] = static_cast<Point>(t).getPosY();
                 xyz[2] = static_cast<Point>(t).getPosZ();
             }
-            else if constexpr(std::is_same_v<T,TextureCoord>)
+            else if constexpr(std::is_same_v<U,TextureCoord>)
             {
                 auto& xy = vertices[i].textCoord;
                 xy[0] = static_cast<TextureCoord>(t).getX();
                 xy[1] = static_cast<TextureCoord>(t).getY();
             }
-            else if constexpr(std::is_same_v<T,Red>)
-                vertices[i].rgba[0] = static_cast<Red>(t);
-            else if constexpr(std::is_same_v<T,Green>)
-                vertices[i].rgba[1] = static_cast<Green>(t);
-            else if constexpr(std::is_same_v<T,Blue>)
-                vertices[i].rgba[2] = static_cast<Blue>(t);
-            else if constexpr(std::is_same_v<T,Alpha>)
-                vertices[i].rgba[3] = static_cast<Alpha>(t);
+            else if constexpr(std::is_same_v<U,Color>)
+            {
+                Color&& color = static_cast<Color>(t);
+                vertices[i].rgba[0] = static_cast<Red>(color) / 255.0f;
+                vertices[i].rgba[1] = static_cast<Green>(color) / 255.0f;
+                vertices[i].rgba[2] = static_cast<Blue>(color) / 255.0f;
+                vertices[i].rgba[3] = static_cast<Alpha>(color) / 255.0f;
+            }
+            else if constexpr(std::is_same_v<U,Red>)
+                vertices[i].rgba[0] = static_cast<Red>(t) / 255.0f;
+            else if constexpr(std::is_same_v<U,Green>)
+                vertices[i].rgba[1] = static_cast<Green>(t) / 255.0f;
+            else if constexpr(std::is_same_v<U,Blue>)
+                vertices[i].rgba[2] = static_cast<Blue>(t) / 255.0f;
+            else if constexpr(std::is_same_v<U,Alpha>)
+                vertices[i].rgba[3] = static_cast<Alpha>(t) / 255.0f;
             
             update();
         }
 
-        template <typename T>
+        template <VerticesComponent T>
         const T& get(size_t i) const
         {
             if(i >= vertices.size())
@@ -109,24 +122,30 @@ namespace ni::utils
                 std::terminate();
             }
 
-            if constexpr(std::is_same_v<T,Point>)
+            using U = std::remove_cvref_t<T>;
+            if constexpr(std::is_same_v<U,Point>)
             {
                 auto& buffer = vertices[i].xyz;
                 return Point({buffer[0],buffer[1],buffer[2]});
             }
-            else if constexpr(std::is_same_v<T,TextureCoord>)
+            else if constexpr(std::is_same_v<U,TextureCoord>)
             {
                 auto& buffer = vertices[i].textCoord;
                 return TextureCoord(buffer[0],buffer[1]);
             }
-            else if constexpr(std::is_same_v<T,Red>)
-                return Red(vertices[i].rgba[0]);
-            else if constexpr(std::is_same_v<T,Green>)
-                return Green(vertices[i].rgba[1]);
-            else if constexpr(std::is_same_v<T,Blue>)
-                return Blue(vertices[i].rgba[2]);
-            else if constexpr(std::is_same_v<T,Alpha>)
-                return Alpha(vertices[i].rgba[3]);
+            else if constexpr(std::is_same_v<U,Color>)
+            {
+                return Color(vertices[i].rgba[0],
+                    vertices[i].rgba[1],vertices[i].rgba[2],vertices[i].rgba[3]);
+            }
+            else if constexpr(std::is_same_v<U,Red>)
+                return Red(vertices[i].rgba[0] * 255);
+            else if constexpr(std::is_same_v<U,Green>)
+                return Green(vertices[i].rgba[1] * 255);
+            else if constexpr(std::is_same_v<U,Blue>)
+                return Blue(vertices[i].rgba[2] * 255);
+            else if constexpr(std::is_same_v<U,Alpha>)
+                return Alpha(vertices[i].rgba[3] * 255);
 
             update();
         }

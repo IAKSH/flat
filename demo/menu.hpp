@@ -1,21 +1,25 @@
 #pragma once
 
 #include "../core/layer.hpp"
-#include "../utils/shader.hpp"
+#include "../core/event_keyboard.hpp"
+#include "../core/application.hpp"
 #include "../utils/camera.hpp"
 #include "../utils/font.hpp"
-#include "../utils/vao.hpp"
+#include "../utils/rectangle_vao.hpp"
+#include "../utils/shader.hpp"
 #include "../flat/text_renderer.hpp"
 
 namespace Flat
 {
     using ni::core::Event;
-    using ni::utils::Shader;
     using ni::utils::Camera2D;
     using ni::utils::Font;
     using ni::utils::Texture;
-    using ni::utils::VertexArrayObj;
     using ni::utils::GLBufferType;
+    using ni::utils::VertexBuffer;
+    using ni::utils::Color;
+    using ni::flat::Shader;
+    using ni::flat::UniformArg;
     using ni::flat::TextRenderer;
 
     inline static const char* vshader =
@@ -68,7 +72,7 @@ namespace Flat
         Camera2D cam;
         Texture background;
         Texture selectIcon;
-        VertexArrayObj<ni::utils::GLBufferType::Static> vao;
+        VertexBuffer<ni::utils::GLBufferType::Dynamic> vao;
 
     public:
         MenuLayer();
