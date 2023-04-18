@@ -3,6 +3,7 @@
 #include "GLFW/glfw3.h"
 #include "glm/fwd.hpp"
 
+#include <exception>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -41,10 +42,11 @@ void ni::flat::TextRenderer::initialize()
 
 void ni::flat::TextRenderer::_drawText()
 {
-	// TODO: check required data
-
-	//if(vao.getVAO() == 0)
-	//		vao.create(vertices,indices);
+	if(!font)
+	{
+		ni::utils::flatLogger()->critical("no font given to TextRenderer");
+		std::terminate();
+	}
 
 	float _x = x;
 
