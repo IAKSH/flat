@@ -50,20 +50,6 @@ namespace Flat
         "    FragColor = texColor * aColorOut;\n"
         "}\n\0";
 
-    inline static std::array<float,36> vertices
-    {
-		1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,  // top right
-		1.0f,  -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,  // bottom right
-		-1.0f, -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-		-1.0f, 1.0f,  0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f   // top left
-	};
-
-	inline static std::array<unsigned int, 6> indices
-    {
-		0, 1, 3,  // first Triangle
-		1, 2, 3   // second Triangle
-	};
-
     class MenuLayer : public ni::core::Layer
     {
     private:
@@ -72,7 +58,7 @@ namespace Flat
         Camera2D cam;
         Texture background;
         Texture selectIcon;
-        VertexBuffer<ni::utils::GLBufferType::Dynamic> vao;
+        VertexBuffer<ni::utils::GLBufferType::Stream> vao;
 
     public:
         MenuLayer();
