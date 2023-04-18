@@ -15,6 +15,9 @@ void Flat::MenuLayer::onAttach()
     background.loadFromFile("images/strangeSky.png");
     selectIcon.loadFromFile("images/bird0_0.png");
 
+    // load font
+    unifont.loadFromFile("fonts/unifont-15.0.01.ttf");
+
     // OpenGL
     glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
@@ -27,10 +30,9 @@ void Flat::MenuLayer::onDetach()
 
 }
 
-static int i = 0;
 void Flat::MenuLayer::onUpdate()
 {
-    vao.set(1,ni::utils::Color(sin((i++) / 100.0f),0,0,0.5f));
+    vao.set(1,ni::utils::Color(sin(recoder.getSpanAsSeconds().count()  / 5.0f),0,0,0.5f));
 }
 
 void Flat::MenuLayer::onRender()
@@ -50,6 +52,8 @@ void Flat::MenuLayer::onRender()
     glBindTexture(GL_TEXTURE_2D,background.getTextureID());
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    gameTitle.tryToWrite(unifont);
 }
 
 void Flat::MenuLayer::onEvent(Event& e)

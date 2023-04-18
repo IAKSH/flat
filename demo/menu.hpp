@@ -5,19 +5,23 @@
 #include "../core/application.hpp"
 #include "../utils/camera.hpp"
 #include "../utils/font.hpp"
-#include "../utils/rectangle_vao.hpp"
+#include "../utils/timer.hpp"
 #include "../utils/shader.hpp"
+#include "../utils/rectangle_vao.hpp"
 #include "../flat/text_renderer.hpp"
+
+#include "text.hpp"
 
 namespace Flat
 {
     using ni::core::Event;
     using ni::utils::Camera2D;
     using ni::utils::Font;
+    using ni::utils::Color;
     using ni::utils::Texture;
     using ni::utils::GLBufferType;
     using ni::utils::VertexBuffer;
-    using ni::utils::Color;
+    using ni::utils::TimeRecorder;
     using ni::flat::Shader;
     using ni::flat::UniformArg;
     using ni::flat::TextRenderer;
@@ -54,11 +58,14 @@ namespace Flat
     {
     private:
         Shader shader;
+        Font unifont;
         TextRenderer texRen;
         Camera2D cam;
         Texture background;
         Texture selectIcon;
-        VertexBuffer<ni::utils::GLBufferType::Stream> vao;
+        TimeRecorder recoder;
+        VertexBuffer<ni::utils::GLBufferType::Dynamic> vao;
+        Text gameTitle{texRen,MilliSeconds(100),U"Flat: a brief demo of engineNI's FLAT framework"};
 
     public:
         MenuLayer();
