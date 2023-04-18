@@ -30,7 +30,7 @@ void Flat::MenuLayer::onDetach()
 static int i = 0;
 void Flat::MenuLayer::onUpdate()
 {
-    vao.set(1,ni::utils::Color(sin((i++) / 100) * 255,0,0,64));
+    vao.set(1,ni::utils::Color(sin((i++) / 100.0f),0,0,0.5f));
 }
 
 void Flat::MenuLayer::onRender()

@@ -95,19 +95,19 @@ namespace ni::utils
             else if constexpr(std::is_same_v<U,Color>)
             {
                 Color&& color = static_cast<Color>(t);
-                vertices[i].rgba[0] = static_cast<Red>(color) / 255.0f;
-                vertices[i].rgba[1] = static_cast<Green>(color) / 255.0f;
-                vertices[i].rgba[2] = static_cast<Blue>(color) / 255.0f;
-                vertices[i].rgba[3] = static_cast<Alpha>(color) / 255.0f;
+                vertices[i].rgba[0] = static_cast<Red>(color);
+                vertices[i].rgba[1] = static_cast<Green>(color);
+                vertices[i].rgba[2] = static_cast<Blue>(color);
+                vertices[i].rgba[3] = static_cast<Alpha>(color);
             }
             else if constexpr(std::is_same_v<U,Red>)
-                vertices[i].rgba[0] = static_cast<Red>(t) / 255.0f;
+                vertices[i].rgba[0] = static_cast<Red>(t);
             else if constexpr(std::is_same_v<U,Green>)
-                vertices[i].rgba[1] = static_cast<Green>(t) / 255.0f;
+                vertices[i].rgba[1] = static_cast<Green>(t);
             else if constexpr(std::is_same_v<U,Blue>)
-                vertices[i].rgba[2] = static_cast<Blue>(t) / 255.0f;
+                vertices[i].rgba[2] = static_cast<Blue>(t);
             else if constexpr(std::is_same_v<U,Alpha>)
-                vertices[i].rgba[3] = static_cast<Alpha>(t) / 255.0f;
+                vertices[i].rgba[3] = static_cast<Alpha>(t);
             
             update();
         }

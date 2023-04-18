@@ -7,20 +7,20 @@ namespace ni::utils
     class ColorComponent
     {
     private:
-        uint8_t component;
+        float component;
 
     public:
         ColorComponent() : component(0) {}
-        ColorComponent(uint8_t val) : component(val) {}
+        ColorComponent(float val) : component(val) {}
         ~ColorComponent() = default;
-        operator uint8_t&() {return component;}
+        operator float&() {return component;}
     };
 
     class Red : public ColorComponent
     {
     public:
         Red() : ColorComponent() {}
-        Red(uint8_t val) : ColorComponent(val) {}
+        Red(float val) : ColorComponent(val) {}
         ~Red() = default;
     };
 
@@ -28,7 +28,7 @@ namespace ni::utils
     {
     public:
         Green() : ColorComponent() {}
-        Green(uint8_t val) : ColorComponent(val) {}
+        Green(float val) : ColorComponent(val) {}
         ~Green() = default;
     };
 
@@ -36,7 +36,7 @@ namespace ni::utils
     {
     public:
         Blue() : ColorComponent() {}
-        Blue(uint8_t val) : ColorComponent(val) {}
+        Blue(float val) : ColorComponent(val) {}
         ~Blue() = default;
     };
 
@@ -44,7 +44,7 @@ namespace ni::utils
     {
     public:
         Alpha() : ColorComponent() {}
-        Alpha(uint8_t val) : ColorComponent(val) {}
+        Alpha(float val) : ColorComponent(val) {}
         ~Alpha() = default;
     };
 
@@ -58,7 +58,7 @@ namespace ni::utils
 
     public:
         Color() : r{0},g{0},b{0},a{0} {}
-        Color(uint8_t r,uint8_t g,uint8_t b,uint8_t a) : r{r},g{g},b{b},a{a} {}
+        Color(float r,float g,float b,float a) : r{r},g{g},b{b},a{a} {}
         ~Color() = default;
 
         operator Red&() {return r;}
