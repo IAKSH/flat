@@ -11,6 +11,8 @@
 #include "../flat/text_renderer.hpp"
 
 #include "text.hpp"
+#include "button.hpp"
+#include <string_view>
 
 namespace Flat
 {
@@ -58,7 +60,8 @@ namespace Flat
     {
     private:
         Shader shader;
-        Font unifont;
+        Font unifont48;
+        Font unifont16;
         TextRenderer texRen;
         Camera2D cam;
         Texture background;
@@ -66,6 +69,11 @@ namespace Flat
         TimeRecorder recoder;
         VertexBuffer<ni::utils::GLBufferType::Dynamic> vao;
         Text gameTitle{texRen,MilliSeconds(100),U"Flat: a brief demo of engineNI's FLAT framework"};
+        Text info0{texRen,MilliSeconds(150),U"这是我在使用C++（几乎）从零构建一个2D甚至3D游戏的实验，它可以说是一堆实验特性的集合。"};
+        Text info1{texRen,MilliSeconds(175),U"FLAT framework是engineNI的基础，也是实际上构成游戏的部分，它是一套能够重复利用的代码。"};
+        Button quitButton{100.0f,50.0f,shader,texRen,cam,unifont48,U"quit",[](){
+            ni::core::Application::getInstance()->exit();
+        }};
 
     public:
         MenuLayer();

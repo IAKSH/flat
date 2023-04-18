@@ -7,6 +7,8 @@ target_sources(demo_flat PRIVATE
     "main.cpp"
     "menu.hpp"
     "menu.cpp"
+    "button.hpp"
+    "button.cpp"
 )
 target_link_libraries(demo_flat PUBLIC flat)
 

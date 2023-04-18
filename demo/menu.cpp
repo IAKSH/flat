@@ -12,12 +12,14 @@ void Flat::MenuLayer::onAttach()
     glUniform1i(glGetUniformLocation(shader, "texture0"), 0);
 
     // load textures
-    background.loadFromFile("images/strangeSky.png");
+    background.loadFromFile("images/wire.png");
     selectIcon.loadFromFile("images/bird0_0.png");
 
     // load font
-    unifont.loadFromFile("fonts/unifont-15.0.01.ttf");
-    unifont.resize(28);
+    unifont48.loadFromFile("fonts/unifont-15.0.01.ttf");
+    unifont48.resize(48);
+    unifont16.loadFromFile("fonts/unifont-15.0.01.ttf");
+    unifont16.resize(16);
 
     // OpenGL
     glEnable(GL_DEPTH_TEST);
@@ -28,6 +30,16 @@ void Flat::MenuLayer::onAttach()
     // move game title
     gameTitle.setPosY(550.0f);
     gameTitle.setPosZ(0.1f);
+    info0.setPosY(525.0f);
+    info0.setPosZ(0.1f);
+    info1.setPosY(500.0f);
+    info1.setPosZ(0.1f);
+
+    // move quit button
+    quitButton.active();
+    quitButton.setPosX(-200.0f);
+    quitButton.setPosY(-200.0f);
+    quitButton.setPosZ(0.2f);
 }
 
 void Flat::MenuLayer::onDetach()
@@ -37,19 +49,22 @@ void Flat::MenuLayer::onDetach()
 
 void Flat::MenuLayer::onUpdate()
 {
-    vao.set(1,ni::utils::Color(sin(recoder.getSpanAsSeconds().count()  / 5.0f),0,0,0.5f));
+    vao.set(0,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 5000.0f),0,0,0.25f));
+    vao.set(1,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 2000.0f),0,0,0.8f));
+    vao.set(2,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 4000.5f),0,0,0.75f));
+    vao.set(3,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 10000.0f),0,0,0.4f));
 }
 
 void Flat::MenuLayer::onRender()
 {
-    //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(shader);
 
     glm::mat4 trans(1.0f);
 	trans *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-	trans *= glm::scale(glm::mat4(1.0f), glm::vec3(800.0f, 600.0f, 1.0f));
+	trans *= glm::scale(glm::mat4(1.0f), glm::vec3(400.0f, 300.0f, 1.0f));
 	trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
     shader["transform"] = UniformArg(trans);
     shader["camTrans"] = UniformArg(cam.getTranslateMatrix());
@@ -58,7 +73,10 @@ void Flat::MenuLayer::onRender()
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    gameTitle.tryToWrite(unifont);
+    gameTitle.tryToWrite(unifont16);
+    info0.tryToWrite(unifont16);
+    info1.tryToWrite(unifont16);
+    quitButton.onRender();
 }
 
 void Flat::MenuLayer::onEvent(Event& e)
@@ -75,4 +93,6 @@ void Flat::MenuLayer::onEvent(Event& e)
                 break;
         }
     }
+
+    quitButton.onEvent(e);
 }
