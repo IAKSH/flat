@@ -20,7 +20,7 @@ namespace ni::utils
 
 ni::utils::Font::Font(std::string_view path)
 {
-    loadTTF(path);
+    loadFromFile(path);
 }
 
 ni::utils::Font::~Font()
@@ -38,7 +38,7 @@ void ni::utils::Font::freeCacheInRange(const char& low,const char& up)
     });
 }
 
-void ni::utils::Font::loadTTF(std::string_view path)
+void ni::utils::Font::loadFromFile(std::string_view path)
 {
     if(!freetypeLoaded)
     {

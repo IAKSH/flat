@@ -53,6 +53,6 @@ namespace ni::utils
         ~Font();
         const ni::utils::CharTexture& getCharTexture(const char32_t& c);
         void freeCacheInRange(const char& low,const char& up);
-        void loadTTF(std::string_view path);
+        void loadFromFile(std::string_view path);
     };
 }
