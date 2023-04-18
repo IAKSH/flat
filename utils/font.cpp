@@ -18,7 +18,8 @@ namespace ni::utils
     static bool freetypeLoaded { false };
 }
 
-ni::utils::Font::Font(std::string_view path)
+ni::utils::Font::Font(unsigned int size,std::string_view path)
+    : fontSize(size)
 {
     loadFromFile(path);
 }
@@ -57,8 +58,7 @@ void ni::utils::Font::loadFromFile(std::string_view path)
         std::terminate();
     }
 
-    // font size = 48
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, fontSize);
 }
 
 const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
@@ -95,4 +95,11 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
 
         return texture;
     }
+}
+
+void ni::utils::Font::resize(unsigned int size)
+{
+    fontSize = size;
+    FT_Set_Pixel_Sizes(face, 0, size);
+    textureCache.clear();
 }

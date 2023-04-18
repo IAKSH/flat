@@ -43,16 +43,18 @@ namespace ni::utils
     {
     private:
         FT_Face face;
+        unsigned int fontSize;
         std::unique_ptr<unsigned char[]> ttfBinary;
         std::deque<std::unique_ptr<CharTexture>> textureCache;
 
     public:
-        Font(std::string_view path);
-        Font() = default;
+        Font(unsigned int size,std::string_view path);
+        Font() : fontSize{48} {}
         Font(Font&) = delete;
         ~Font();
         const ni::utils::CharTexture& getCharTexture(const char32_t& c);
         void freeCacheInRange(const char& low,const char& up);
         void loadFromFile(std::string_view path);
+        void resize(unsigned int size);
     };
 }
