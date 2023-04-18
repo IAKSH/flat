@@ -2,11 +2,9 @@
 
 #include "../flat/text_renderer.hpp"
 #include "../utils/timer.hpp"
+#include "../utils/mass_point.hpp"
 #include <cstdio>
 #include <string_view>
-
-#include <stdio.h>
-#include <stdlib.h>
 
 namespace Flat
 {
@@ -14,8 +12,9 @@ namespace Flat
     using ni::utils::TimeRecorder;
     using ni::utils::MilliSeconds;
     using ni::utils::Font;
+    using ni::utils::Point;
 
-    class Text
+    class Text : public Point
     {
     private:
         TextRenderer& ren;
@@ -38,7 +37,7 @@ namespace Flat
             }
 
             std::u32string_view currentStr{std::begin(str),std::begin(str) + index};
-            ren.drawText(currentStr,ni::flat::Point(0.0f,200.0f,0.9f),
+            ren.drawText(currentStr,ni::flat::Point(getPosX(),getPosY(),getPosZ()),
 				ni::flat::Color(1.0f,1.0f,1.0f,1.0f),ni::flat::Scale(1.0f),&font);
         }
     };

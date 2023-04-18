@@ -17,12 +17,17 @@ void Flat::MenuLayer::onAttach()
 
     // load font
     unifont.loadFromFile("fonts/unifont-15.0.01.ttf");
+    unifont.resize(28);
 
     // OpenGL
     glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glActiveTexture(GL_TEXTURE0);
+
+    // move game title
+    gameTitle.setPosY(550.0f);
+    gameTitle.setPosZ(0.1f);
 }
 
 void Flat::MenuLayer::onDetach()
