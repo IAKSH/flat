@@ -57,7 +57,7 @@ namespace ni::utils
         Alpha a;
 
     public:
-        Color() : r{0},g{0},b{0},a{0} {}
+        Color() : r{1.0f},g{1.0f},b{1.0f},a{1.0f} {}
         Color(float r,float g,float b,float a) : r{r},g{g},b{b},a{a} {}
         ~Color() = default;
 
