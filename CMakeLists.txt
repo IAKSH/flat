@@ -68,6 +68,7 @@ target_sources(flat PRIVATE
     "utils/color.hpp"
     "utils/rectangle_vao.hpp"
     "utils/enchased.hpp"
+    "utils/unicode.hpp"
     "flat/collision_detect.hpp"
     "flat/gjk.cpp"
     "flat/text_renderer.hpp"
