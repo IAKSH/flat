@@ -41,7 +41,7 @@ void Flat::Button::onRender()
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    ren.drawText(ni::flat::Color(1.0f,1.0f,1.0f,1.0f),ni::flat::Point(getPosX(),getPosY(),getPosZ() + 0.01f),ni::flat::Scale(1.0f),&font,&cam,std::u32string_view(str));
+    ren.drawText(ni::utils::Color(1.0f,1.0f,1.0f,1.0f),ni::utils::Point(getPosX(),getPosY(),getPosZ() + 0.01f),ni::utils::Scale(1.0f),&font,&cam,std::u32string_view(str));
 }
 
 void Flat::Button::onEvent(ni::core::Event& e)

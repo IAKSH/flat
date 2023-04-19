@@ -7,8 +7,10 @@
 #include "../utils/rectangle_vao.hpp"
 #include "../utils/camera.hpp"
 #include "../utils/any_same.hpp"
+#include "../utils/enchased.hpp"
+#include "../utils/color.hpp"
+#include "../utils/mass_point.hpp"
 #include "shader.hpp"
-#include "dtype.hpp"
 
 namespace ni::flat
 {
@@ -20,7 +22,8 @@ namespace ni::flat
         std::conditional_t<std::is_same_v<T, std::u32string_view>, std::true_type, ContainsU32string_view<Rest...>> {};
 
     template <typename T>
-    concept DrawTextArg = ni::utils::any_same<T,Color,Point,Scale,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
+    concept DrawTextArg = ni::utils::any_same<T,ni::utils::Color,ni::utils::Point,
+        ni::utils::Point,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
 
     class TextRenderer
     {
@@ -29,6 +32,9 @@ namespace ni::flat
         using CharTexture = ::ni::utils::CharTexture;
         using Camera = ::ni::utils::Camera2D;
         using GLBufferType = ::ni::utils::GLBufferType;
+        using Color = ::ni::utils::Color;
+        using Point = ::ni::utils::Point;
+        using Scale = ::ni::utils::Scale;
         template <GLBufferType T>
         using VertexBuffer = ::ni::utils::VertexBuffer<T>;
 

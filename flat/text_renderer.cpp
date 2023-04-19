@@ -91,32 +91,21 @@ void ni::flat::TextRenderer::_drawText()
 
 void ni::flat::TextRenderer::drawTextHelper(Color&& color)
 {
-	vertices[3] = color.getRed();
-	vertices[4] = color.getGreen();
-	vertices[5] = color.getBlue();
-	vertices[6] = color.getAlpha();
-	vertices[12] = color.getRed();
-	vertices[13] = color.getGreen();
-	vertices[14] = color.getBlue();
-	vertices[15] = color.getAlpha();
-	vertices[21] = color.getRed();
-	vertices[22] = color.getGreen();
-	vertices[23] = color.getBlue();
-	vertices[24] = color.getAlpha();
-	vertices[30] = color.getRed();
-	vertices[31] = color.getGreen();
-	vertices[32] = color.getBlue();
-	vertices[33] = color.getAlpha();
+	for(size_t i = 0;i < 4;i++)
+	{
+		vertices[3 + i * 9] = static_cast<ni::utils::Red>(color);
+		vertices[4 + i * 9] = static_cast<ni::utils::Green>(color);
+		vertices[5 + i * 9] = static_cast<ni::utils::Blue>(color);
+		vertices[6 + i * 9] = static_cast<ni::utils::Alpha>(color);
+	}
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Point&& point)
 {
-	x = point.getX();
-	y = point.getY();
-	vertices[2] = point.getZ();
-	vertices[11] = point.getZ();
-	vertices[20] = point.getZ();
-	vertices[29]  = point.getZ();
+	x = point.getPosX();
+	y = point.getPosY();
+	for(size_t i = 0;i < 4;i++)
+		vertices[2 + i * 9] = point.getPosZ();
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Scale&& scale)

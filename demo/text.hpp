@@ -37,8 +37,8 @@ namespace Flat
             }
 
             std::u32string_view currentStr{std::begin(str),std::begin(str) + index};
-            ren.drawText(currentStr,ni::flat::Point(getPosX(),getPosY(),getPosZ()),
-				ni::flat::Color(1.0f,1.0f,1.0f,1.0f),ni::flat::Scale(1.0f),&font);
+            ren.drawText(currentStr,ni::utils::Point(getPosX(),getPosY(),getPosZ()),
+				ni::utils::Color(1.0f,1.0f,1.0f,1.0f),ni::utils::Scale(1.0f),&font);
         }
     };
 }
