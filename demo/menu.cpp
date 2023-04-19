@@ -5,6 +5,8 @@
 #include <sstream>
 #include <string_view>
 
+#include <GLFW/glfw3.h>
+
 Flat::MenuLayer::MenuLayer()
     : Layer("menu")
 {
@@ -47,6 +49,12 @@ void Flat::MenuLayer::onAttach()
     quitButton.setPosX(-200.0f);
     quitButton.setPosY(-200.0f);
     quitButton.setPosZ(0.2f);
+
+    // reset v-sync
+    //glfwSwapInterval(3);
+
+    // button
+    quitButton.onAttach();
 }
 
 void Flat::MenuLayer::onDetach()
