@@ -11,7 +11,7 @@ Flat::Button::Button(const float& w,const float h,Shader& shader,TextRenderer& t
 void Flat::Button::onAttach()
 {
     for(int i = 0;i < 4;i++)
-        vao.set(i,ni::utils::Color(0.0f,0.0f,0.0f,0.1f));
+        vao.set(i,ni::utils::Color(1.0f,1.0f,1.0f,0.55f));
 
     if(!blackTex.getTextureID())
         blackTex.loadFromFile("images/black.png");
@@ -33,7 +33,7 @@ void Flat::Button::onRender()
 
     glm::mat4 trans(1.0f);
 	trans *= glm::translate(glm::mat4(1.0f),glm::vec3(getPosX(),getPosY(),getPosZ()));
-	trans *= glm::scale(glm::mat4(1.0f),glm::vec3(width,height,1.0f));
+	trans *= glm::scale(glm::mat4(1.0f),glm::vec3(width,height,0.9f));
 	trans *= glm::rotate(glm::mat4(1.0f),0.0f, glm::vec3(0.0f,0.0f,1.0f));
     shader["transform"] = UniformArg(trans);
 
@@ -41,7 +41,9 @@ void Flat::Button::onRender()
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    ren.drawText(ni::utils::Color(1.0f,1.0f,1.0f,1.0f),ni::utils::Point(getPosX(),getPosY(),getPosZ() + 0.01f),ni::utils::Scale(1.0f),&font,&cam,std::u32string_view(str));
+    ren.drawText(ni::utils::Color(1.0f,1.0f,1.0f,1.0f),
+        ni::utils::Point(getPosX() - width,getPosY() - height / 2.0f,getPosZ() + 0.01f),
+        ni::utils::Scale(1.0f),&font,&cam,std::u32string_view(str));
 }
 
 void Flat::Button::onEvent(ni::core::Event& e)
