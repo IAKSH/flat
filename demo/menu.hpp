@@ -73,7 +73,7 @@ namespace Flat
         RollingText info0{texRen,unifont16,MilliSeconds(150),U"这是我在使用C++（几乎）从零构建一个2D甚至3D游戏的实验，它可以说是一堆实验特性的集合。"};
         RollingText info1{texRen,unifont16,MilliSeconds(175),U"FLAT framework是engineNI的基础，也是实际上构成游戏的部分，它是一套能够重复利用的代码。"};
         Text fpsInfo{texRen,unifont16,U""};
-        Button quitButton{150.0f,35.0f,shader,texRen,cam,unifont48,U"按'Z'开始...",[](){
+        BlinkingButton startButton{150.0f,35.0f,shader,texRen,cam,unifont48,MilliSeconds(500),U"按'Z'开始...",[](){
             ni::utils::otherLogger()->warn("game start!");
             // TODO: ...
         }};

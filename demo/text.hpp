@@ -6,6 +6,7 @@
 #include "../utils/color.hpp"
 #include "../utils/enchased.hpp"
 #include "../utils/any_same.hpp"
+#include "../utils/camera.hpp"
 #include <cstdio>
 #include <string>
 #include <string_view>
@@ -21,6 +22,7 @@ namespace Flat
     using ni::utils::Color;
     using ni::utils::Scale;
     using ni::utils::Point;
+    using ni::utils::Camera2D;
     using ni::utils::any_same;
 
     template <typename T>
@@ -31,15 +33,22 @@ namespace Flat
     protected:
         TextRenderer* ren;
         Font* font;
+        Camera2D* cam;
         Color color;
         Scale scale;
         std::u32string_view str;
 
     public:
         Text(TextRenderer& ren,Font& font,std::u32string_view str)
-            : ren(&ren),font(&font),str(str)
+            : ren(&ren),font(&font),str(str),cam(nullptr)
         {
         }
+
+        Text(TextRenderer& ren,Font& font,Camera2D* cam,std::u32string_view str)
+            : ren(&ren),font(&font),str(str),cam(cam)
+        {
+        }
+
         Text(Text&) = delete;
         ~Text() = default;
 
@@ -104,7 +113,7 @@ namespace Flat
         virtual void onRender() override
         {
             ren->drawText(str,static_cast<Point>(*this),
-				color,scale,font);
+				color,scale,font,cam);
         }
 
         virtual void onEvent(ni::core::Event& e) override
@@ -139,7 +148,7 @@ namespace Flat
 
             std::u32string_view currentStr{std::begin(str),std::begin(str) + index};
             ren->drawText(currentStr,static_cast<Point>(*this),
-				color,scale,font);
+				color,scale,font,cam);
         }
     };
 }

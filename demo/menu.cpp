@@ -45,16 +45,16 @@ void Flat::MenuLayer::onAttach()
     fpsInfo.set(Color(1.0f,0.3f,0.1f,1.0f));
 
     // move quit button
-    quitButton.active();
-    quitButton.setPosX(-200.0f);
-    quitButton.setPosY(-200.0f);
-    quitButton.setPosZ(0.2f);
+    startButton.active();
+    startButton.setPosX(175.0f);
+    startButton.setPosY(50.0f);
+    startButton.setPosZ(0.2f);
 
     // reset v-sync
     //glfwSwapInterval(3);
 
     // button
-    quitButton.onAttach();
+    startButton.onAttach();
 }
 
 void Flat::MenuLayer::onDetach()
@@ -71,6 +71,9 @@ void Flat::MenuLayer::onUpdate()
     vao.set(1,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 2000.0f),0,0,0.8f));
     vao.set(2,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 4000.5f),0,0,0.75f));
     vao.set(3,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 10000.0f),0,0,0.4f));
+
+    // button
+    startButton.onUpdate();
 
     // update fps recoder
     fpsRecoder.update();
@@ -97,7 +100,7 @@ void Flat::MenuLayer::onRender()
     gameTitle.onRender();
     info0.onRender();
     info1.onRender();
-    quitButton.onRender();
+    startButton.onRender();
     fpsInfo.onRender();
     //texRen.drawText(ni::utils::to_u32string(1000.0f / fpsRecoder.getSpanAsMilliSeconds().count()),Point(0.0f,400.0f,0.9f),
 	//			Color(1.0f,1.0f,1.0f,1.0f),ni::utils::Scale(1.0f),&unifont16);
@@ -118,5 +121,5 @@ void Flat::MenuLayer::onEvent(Event& e)
         }
     }
 
-    quitButton.onEvent(e);
+    startButton.onEvent(e);
 }
