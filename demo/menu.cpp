@@ -1,4 +1,9 @@
 #include "menu.hpp"
+#include "../utils/unicode.hpp"
+#include "../utils/logger.hpp"
+#include <string>
+#include <sstream>
+#include <string_view>
 
 Flat::MenuLayer::MenuLayer()
     : Layer("menu")
@@ -34,6 +39,8 @@ void Flat::MenuLayer::onAttach()
     info0.setPosZ(0.1f);
     info1.setPosY(500.0f);
     info1.setPosZ(0.1f);
+    fpsInfo.set(Point(0.0f,475.0f,0.1f));
+    fpsInfo.set(Color(1.0f,0.3f,0.1f,1.0f));
 
     // move quit button
     quitButton.active();
@@ -49,10 +56,16 @@ void Flat::MenuLayer::onDetach()
 
 void Flat::MenuLayer::onUpdate()
 {
+    std::u32string buffer = ni::utils::to_u32string(1000.0f / fpsRecoder.getSpanAsMilliSeconds().count());
+    fpsInfo.set(buffer);
+
     vao.set(0,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 5000.0f),0,0,0.25f));
     vao.set(1,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 2000.0f),0,0,0.8f));
     vao.set(2,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 4000.5f),0,0,0.75f));
     vao.set(3,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 10000.0f),0,0,0.4f));
+
+    // update fps recoder
+    fpsRecoder.update();
 }
 
 void Flat::MenuLayer::onRender()
@@ -73,10 +86,13 @@ void Flat::MenuLayer::onRender()
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    gameTitle.tryToWrite(unifont16);
-    info0.tryToWrite(unifont16);
-    info1.tryToWrite(unifont16);
+    gameTitle.onRender();
+    info0.onRender();
+    info1.onRender();
     quitButton.onRender();
+    fpsInfo.onRender();
+    //texRen.drawText(ni::utils::to_u32string(1000.0f / fpsRecoder.getSpanAsMilliSeconds().count()),Point(0.0f,400.0f,0.9f),
+	//			Color(1.0f,1.0f,1.0f,1.0f),ni::utils::Scale(1.0f),&unifont16);
 }
 
 void Flat::MenuLayer::onEvent(Event& e)
