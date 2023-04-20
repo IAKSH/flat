@@ -3,9 +3,11 @@
 #include <AL/al.h>
 #include <AL/alc.h>
 
+#include "../utils/disable_copy.hpp"
+
 namespace ni::core
 {
-	class Mixer
+	class Mixer : public utils::DisableCopy
 	{
 	private:
 		ALCdevice* device;
@@ -15,7 +17,6 @@ namespace ni::core
 
 	public:
 		Mixer();
-		Mixer(Mixer&) = delete;
 		~Mixer();
 	};
 }

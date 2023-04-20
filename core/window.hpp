@@ -7,10 +7,11 @@
 #include <GLFW/glfw3.h>
 
 #include "event.hpp"
+#include "../utils/disable_copy.hpp"
 
 namespace ni::core
 {
-    class Window
+    class Window : public utils::DisableCopy
 	{
 	private:
 		GLFWwindow* win;
@@ -23,7 +24,6 @@ namespace ni::core
 
 	public:
 		Window(std::string_view name);
-		Window(Window&) = delete;
 		~Window();
 		GLFWwindow* getGLFWWindow();
 		void update();

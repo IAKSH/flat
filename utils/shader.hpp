@@ -2,11 +2,13 @@
 
 #include <string_view>
 
+#include "disable_copy.hpp"
+
 #include <glad/glad.h>
 
 namespace ni::utils
 {
-	class Shader
+	class Shader : public DisableCopy
 	{
 	private:
 		GLuint shaderID;
@@ -18,7 +20,6 @@ namespace ni::utils
 
 	public:
 		Shader() = default;
-		Shader(Shader&) = delete;
 		~Shader();
 		const GLuint& getShaderID() const
 		{

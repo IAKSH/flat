@@ -7,6 +7,7 @@
 #include "../utils/enchased.hpp"
 #include "../utils/any_same.hpp"
 #include "../utils/camera.hpp"
+#include "../utils/disable_copy.hpp"
 #include <cstdio>
 #include <string>
 #include <string_view>
@@ -28,7 +29,7 @@ namespace Flat
     template <typename T>
     concept TextAttrib = any_same<T,Color,Scale,Point,Font,TextRenderer,std::u32string_view,std::u32string>();
 
-    class Text : public GameObject
+    class Text : public GameObject, public ::ni::utils::DisableCopy
     {
     protected:
         TextRenderer* ren;
@@ -49,7 +50,6 @@ namespace Flat
         {
         }
 
-        Text(Text&) = delete;
         ~Text() = default;
 
         template <TextAttrib T>
@@ -135,7 +135,6 @@ namespace Flat
         {
         }
 
-        RollingText(RollingText&) = delete;
         ~RollingText() = default;
 
         virtual void onRender() override

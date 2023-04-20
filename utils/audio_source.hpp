@@ -1,13 +1,14 @@
 #pragma once
 
 #include "mass_point.hpp"
+#include "disable_copy.hpp"
 
 #include <AL/al.h>
 #include <AL/alc.h>
 
 namespace ni::utils
 {
-    class AudioSource
+    class AudioSource : public DisableCopy
     {
     private:
         ALuint sourceID;
@@ -16,7 +17,6 @@ namespace ni::utils
 
     public:
         AudioSource();
-        AudioSource(AudioSource&) = delete;
         ~AudioSource();
         const ALuint& getSourceID() { return sourceID; }
     };

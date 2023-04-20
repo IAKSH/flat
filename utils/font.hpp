@@ -7,6 +7,7 @@
 
 #include "texture.hpp"
 #include "shader.hpp"
+#include "disable_copy.hpp"
 
 #include <glad/glad.h>
 #include <ft2build.h>
@@ -39,7 +40,7 @@ namespace ni::utils
         const float& getScale() const { return scale; }
     };
 
-    class Font
+    class Font : public DisableCopy
     {
     private:
         FT_Face face;
@@ -50,7 +51,6 @@ namespace ni::utils
     public:
         Font(unsigned int size,std::string_view path);
         Font() : fontSize{48} {}
-        Font(Font&) = delete;
         ~Font();
         const ni::utils::CharTexture& getCharTexture(const char32_t& c);
         void freeCacheInRange(const char& low,const char& up);

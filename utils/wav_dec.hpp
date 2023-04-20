@@ -6,9 +6,11 @@
 #include <fstream>
 #include <string_view>
 
+#include "disable_copy.hpp"
+
 namespace ni::utils
 {
-    class WavDecoder : public AudioDecoder<WavDecoder>
+    class WavDecoder : public AudioDecoder<WavDecoder>, public DisableCopy
     {
     private:
         std::unique_ptr<unsigned char[]> pcm;
@@ -34,7 +36,6 @@ namespace ni::utils
 
     public:
         WavDecoder(std::string_view path);
-        WavDecoder(WavDecoder&) = delete;
         ~WavDecoder() = default;
 
         unsigned char* const imp_getPCM() { return pcm.get(); }

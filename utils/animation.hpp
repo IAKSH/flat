@@ -5,11 +5,12 @@
 #include <iterator>
 #include "texture.hpp"
 #include "timer.hpp"
+#include "disable_copy.hpp"
 
 namespace ni::utils
 {
     template <size_t texturesLen>
-    class Animation
+    class Animation : public DisableCopy
     {
     private:
         std::array<std::unique_ptr<ni::utils::Texture>,texturesLen> textures;
@@ -25,7 +26,6 @@ namespace ni::utils
             : interval{interval},textures{std::make_unique<ni::utils::Texture>(std::forward<Args>(args))...},ite{std::begin(textures)}
         {
         }
-        Animation(Animation&) = delete;
         ~Animation() = default;
         const ni::utils::Texture& getCurrentTexture() const { return **ite; }
         void rewind() {ite = std::begin(textures);}

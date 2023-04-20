@@ -10,6 +10,7 @@
 #include "../utils/enchased.hpp"
 #include "../utils/color.hpp"
 #include "../utils/mass_point.hpp"
+#include "../utils/disable_copy.hpp"
 #include "shader.hpp"
 
 namespace ni::flat
@@ -25,7 +26,7 @@ namespace ni::flat
     concept DrawTextArg = ni::utils::any_same<T,ni::utils::Color,ni::utils::Point,
         ni::utils::Point,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
 
-    class TextRenderer
+    class TextRenderer : public ::ni::utils::DisableCopy
     {
         using Font = ::ni::utils::Font;
         using Shader = ::ni::flat::Shader;
@@ -94,7 +95,6 @@ namespace ni::flat
 
     public:
         TextRenderer();
-        TextRenderer(TextRenderer&) = delete;
         ~TextRenderer() = default;
 
         void setViewWidth(const float& val) { viewWidth = val; }

@@ -4,6 +4,8 @@
 #include <thread>
 #include <functional>
 
+#include "disable_copy.hpp"
+
 namespace ni::utils
 {
 	using Seconds = std::chrono::seconds;
@@ -27,7 +29,7 @@ namespace ni::utils
 		NanoSeconds getSpanAsNanoSeconds();
 	};
 
-	class Timer
+	class Timer : public DisableCopy
 	{
 	private:
 		bool shoudPause;
@@ -39,7 +41,6 @@ namespace ni::utils
 	public:
 		Timer(const MilliSeconds& i, std::function<void(void)> callback);
 		Timer();
-		Timer(Timer&) = delete;
 		~Timer();
 		void setInterval(const MicroSeconds& i);
 		const MicroSeconds& getInterval();

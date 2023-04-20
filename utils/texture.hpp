@@ -2,6 +2,8 @@
 
 #include <string_view>
 
+#include "disable_copy.hpp"
+
 #include <glad/glad.h>
 
 namespace ni::utils
@@ -22,7 +24,7 @@ namespace ni::utils
 		void setY(const float& val) {y = val;}
 	};
 
-	class Texture
+	class Texture : public DisableCopy
 	{
 	private:
 		GLuint textureID;
@@ -32,7 +34,6 @@ namespace ni::utils
 
 	public:
 		Texture();
-		Texture(Texture&) = delete;
 		Texture(std::string_view path);
 		~Texture();
 		const GLuint& getTextureID() const { return textureID; }
