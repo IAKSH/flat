@@ -9,6 +9,8 @@ target_sources(demo_flat PRIVATE
     "menu.cpp"
     "button.hpp"
     "button.cpp"
+    #"gameplay.hpp"
+    #"gameplay.cpp"
 )
 target_link_libraries(demo_flat PUBLIC flat)
 

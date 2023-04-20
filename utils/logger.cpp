@@ -6,8 +6,6 @@
 namespace ni::utils
 {
     Logger coreLogger("Core");
-    Logger flatLogger("Flat");
-    Logger otherLogger("Other");
 }
 
 ni::utils::Logger::Logger(std::string_view name)

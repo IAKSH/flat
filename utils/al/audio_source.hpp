@@ -1,7 +1,7 @@
 #pragma once
 
-#include "mass_point.hpp"
-#include "disable_copy.hpp"
+#include "../disable_copy.hpp"
+#include "../"
 
 #include <AL/al.h>
 #include <AL/alc.h>
