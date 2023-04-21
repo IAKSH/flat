@@ -147,7 +147,7 @@ public:
 		});
 
 		// font test
-		unifont.loadTTF("fonts/unifont-15.0.01.ttf");
+		unifont.loadFromFile("fonts/unifont-15.0.01.ttf");
 
 		bird.onAttach();
 	}

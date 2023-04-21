@@ -1,8 +1,8 @@
 #pragma once
 
-#include <string_view>
-
+#include "template.hpp"
 #include <glad/glad.h>
+#include <string_view>
 
 namespace ni::utils
 {
@@ -22,7 +22,7 @@ namespace ni::utils
 		void setY(const float& val) {y = val;}
 	};
 
-	class Texture
+	class Texture : public DisableCopy
 	{
 	private:
 		GLuint textureID;
@@ -32,7 +32,6 @@ namespace ni::utils
 
 	public:
 		Texture();
-		Texture(Texture&) = delete;
 		Texture(std::string_view path);
 		~Texture();
 		const GLuint& getTextureID() const { return textureID; }

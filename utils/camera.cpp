@@ -1,5 +1,4 @@
 #include "camera.hpp"
-
 #include "GLFW/glfw3.h"
 
 ni::utils::Camera3D::Camera3D()

@@ -1,11 +1,9 @@
 #pragma once
 
+#include "logger.hpp"
+#include <glad/glad.h>
 #include <array>
 #include <exception>
-
-#include "logger.hpp"
-
-#include <glad/glad.h>
 
 namespace ni::utils
 {

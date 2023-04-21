@@ -1,3 +1,5 @@
+#include "font.hpp"
+#include "logger.hpp"
 #include <deque>
 #include <exception>
 #include <ios>
@@ -9,18 +11,16 @@
 #include <string_view>
 #include <fstream>
 
-#include "font.hpp"
-#include "logger.hpp"
-
 namespace ni::utils
 {
     static FT_Library ft;
     static bool freetypeLoaded { false };
 }
 
-ni::utils::Font::Font(std::string_view path)
+ni::utils::Font::Font(unsigned int size,std::string_view path)
+    : fontSize(size)
 {
-    loadTTF(path);
+    loadFromFile(path);
 }
 
 ni::utils::Font::~Font()
@@ -38,7 +38,7 @@ void ni::utils::Font::freeCacheInRange(const char& low,const char& up)
     });
 }
 
-void ni::utils::Font::loadTTF(std::string_view path)
+void ni::utils::Font::loadFromFile(std::string_view path)
 {
     if(!freetypeLoaded)
     {
@@ -57,8 +57,7 @@ void ni::utils::Font::loadTTF(std::string_view path)
         std::terminate();
     }
 
-    // font size = 48
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, fontSize);
 }
 
 const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
@@ -95,4 +94,11 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
 
         return texture;
     }
+}
+
+void ni::utils::Font::resize(unsigned int size)
+{
+    fontSize = size;
+    FT_Set_Pixel_Sizes(face, 0, size);
+    textureCache.clear();
 }

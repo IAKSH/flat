@@ -1,16 +1,16 @@
 #pragma once
 
-#include <deque>
-#include <memory>
-
 #include "layer.hpp"
 #include "window.hpp"
 #include "mixer.hpp"
 #include "event_application.hpp"
+#include "../utils/template.hpp"
+#include <deque>
+#include <memory>
 
 namespace ni::core
 {
-    class Application
+    class Application : public utils::DisableCopy
     {
     private:
         std::deque<std::unique_ptr<Layer>> layers;
@@ -26,7 +26,6 @@ namespace ni::core
 
     public:
         Application();
-        Application(Application&) = delete;
         ~Application();
 
         void pushLayer(std::unique_ptr<Layer> layer);

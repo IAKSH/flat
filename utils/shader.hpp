@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string_view>
-
+#include "template.hpp"
 #include <glad/glad.h>
+#include <string_view>
 
 namespace ni::utils
 {
-	class Shader
+	class Shader : public DisableCopy
 	{
 	private:
 		GLuint shaderID;
@@ -18,7 +18,6 @@ namespace ni::utils
 
 	public:
 		Shader() = default;
-		Shader(Shader&) = delete;
 		~Shader();
 		const GLuint& getShaderID() const
 		{

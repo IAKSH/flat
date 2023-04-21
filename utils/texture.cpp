@@ -1,10 +1,8 @@
 #include "texture.hpp"
-
 #include "logger.hpp"
-#include <exception>
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#include <exception>
 
 ni::utils::Texture::Texture()
 	: textureID(0)

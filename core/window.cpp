@@ -1,11 +1,10 @@
 #include "window.hpp"
-
-#include <exception>
-
 #include "../utils/logger.hpp"
 #include "event_keyboard.hpp"
 #include "event_window.hpp"
 #include "event_mouse.hpp"
+#include <exception>
+
 
 ni::core::Window::Window(std::string_view name)
     : winName(name)

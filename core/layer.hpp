@@ -1,12 +1,12 @@
 #pragma once
 
-#include <string>
-
 #include "event.hpp"
+#include "../utils/template.hpp"
+#include <string>
 
 namespace ni::core
 {
-	class Layer
+	class Layer : public utils::DisableCopy
 	{
 	private:
 		std::string layerName;
@@ -16,7 +16,6 @@ namespace ni::core
 			: layerName(name)
 		{
 		}
-		Layer(Layer&) = delete;
 		~Layer() = default;
 
 		std::string_view getName() { return layerName; }

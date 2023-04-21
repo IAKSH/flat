@@ -1,21 +1,30 @@
 #pragma once
 
 #include "../core/layer.hpp"
-#include "../utils/shader.hpp"
+#include "../core/event_keyboard.hpp"
+#include "../core/application.hpp"
 #include "../utils/camera.hpp"
 #include "../utils/font.hpp"
-#include "../utils/vao.hpp"
+#include "../utils/timer.hpp"
+#include "../utils/shader.hpp"
+#include "../utils/rectangle_vao.hpp"
 #include "../flat/text_renderer.hpp"
+#include "text.hpp"
+#include "button.hpp"
+#include <string_view>
 
 namespace Flat
 {
     using ni::core::Event;
-    using ni::utils::Shader;
     using ni::utils::Camera2D;
     using ni::utils::Font;
+    using ni::utils::Color;
     using ni::utils::Texture;
-    using ni::utils::VertexArrayObj;
     using ni::utils::GLBufferType;
+    using ni::utils::VertexBuffer;
+    using ni::utils::TimeRecorder;
+    using ni::flat::Shader;
+    using ni::flat::UniformArg;
     using ni::flat::TextRenderer;
 
     inline static const char* vshader =
@@ -46,29 +55,27 @@ namespace Flat
         "    FragColor = texColor * aColorOut;\n"
         "}\n\0";
 
-    inline static std::array<float,36> vertices
-    {
-		1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,  // top right
-		1.0f,  -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,  // bottom right
-		-1.0f, -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
-		-1.0f, 1.0f,  0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f   // top left
-	};
-
-	inline static std::array<unsigned int, 6> indices
-    {
-		0, 1, 3,  // first Triangle
-		1, 2, 3   // second Triangle
-	};
-
     class MenuLayer : public ni::core::Layer
     {
     private:
         Shader shader;
+        Font unifont48;
+        Font unifont16;
         TextRenderer texRen;
         Camera2D cam;
         Texture background;
         Texture selectIcon;
-        VertexArrayObj<ni::utils::GLBufferType::Static> vao;
+        TimeRecorder recoder;
+        TimeRecorder fpsRecoder;
+        VertexBuffer<ni::utils::GLBufferType::Dynamic> vao;
+        RollingText gameTitle{texRen,unifont16,MilliSeconds(100),U"Flat: a brief demo of engineNI's FLAT framework"};
+        RollingText info0{texRen,unifont16,MilliSeconds(150),U"这是我在使用C++（几乎）从零构建一个2D甚至3D游戏的实验，它可以说是一堆实验特性的集合。"};
+        RollingText info1{texRen,unifont16,MilliSeconds(175),U"FLAT framework是engineNI的基础，也是实际上构成游戏的部分，它是一套能够重复利用的代码。"};
+        Text fpsInfo{texRen,unifont16,U""};
+        BlinkingButton startButton{150.0f,35.0f,shader,texRen,cam,unifont48,MilliSeconds(500),U"按'Z'开始...",[](){
+            ni::utils::otherLogger()->warn("game start!");
+            // TODO: ...
+        }};
 
     public:
         MenuLayer();

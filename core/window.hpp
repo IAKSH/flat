@@ -1,16 +1,16 @@
 #pragma once
 
+#include "event.hpp"
+#include "../utils/template.hpp"
 #include <string>
 #include <functional>
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "event.hpp"
 
 namespace ni::core
 {
-    class Window
+    class Window : public utils::DisableCopy
 	{
 	private:
 		GLFWwindow* win;
@@ -23,7 +23,6 @@ namespace ni::core
 
 	public:
 		Window(std::string_view name);
-		Window(Window&) = delete;
 		~Window();
 		GLFWwindow* getGLFWWindow();
 		void update();

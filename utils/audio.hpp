@@ -1,14 +1,13 @@
 #pragma once
 
-#include <string>
-
+#include "template.hpp"
 #include <AL/al.h>
 #include <AL/alc.h>
-#include <string_view>
+#include <string>
 
 namespace ni::utils
 {
-	class Audio
+	class Audio : public DisableCopy
 	{
 	protected:
 		ALuint bufferID;
@@ -19,7 +18,6 @@ namespace ni::utils
 
 	public:
 		Audio();
-		Audio(Audio&) = delete;
 		Audio(std::string_view path);
 		~Audio();
 		const ALuint& getBufferID() const { return bufferID; }
@@ -36,7 +34,6 @@ namespace ni::utils
 
 	public:
 		SoundEffect() : Audio() {}
-		SoundEffect(SoundEffect&) = delete;
 		SoundEffect(std::string_view path) : Audio(path) {}
 		~SoundEffect() = default;
 	};

@@ -1,9 +1,7 @@
 #include "shader.hpp"
-
+#include "logger.hpp"
 #include <exception>
 #include <fstream>
-
-#include "logger.hpp"
 
 ni::utils::Shader::~Shader()
 {
