@@ -1,7 +1,6 @@
 #pragma once
 
 #include "opengl_window.hpp"
-#include "loggers.hpp"
 #include "layer.hpp"
 #include "mixer.hpp"
 #include "event_application.hpp"
@@ -21,64 +20,22 @@ namespace ni::core
         Mixer mixers;
         bool shoudQuit;
 
-        void configureWindow()
-        {
-            window = std::make_unique<OpenGLWindow>("unnamed");
-            window->setEventCallbackFunc(forwardEvent);
-        }
+        void configureWindow();
+		void initialize();
+		void release();
 
-		void initialize()
-        {
-            configureWindow();
-        }
-
-		void release()
-        {
-            AppShutdownEvent event;
-            forwardEvent(event);
-
-            for(auto& item : layers)
-                item->onDetach();
-        }
-
-		static void forwardEvent(Event& event)
-        {
-            for(auto& item : getInstance().layers)
-                item->onEvent(event);
-        }
+		static void forwardEvent(Event& event);
 
     public:
-        Application() : shoudQuit(false) {initialize();}
-        ~Application() {release();}
+        Application();
+        ~Application();
 
-        void pushLayer(std::unique_ptr<Layer> layer) {layers.push_back(std::move(layer));}
-        void pushOverlay(std::unique_ptr<Layer> layer) {/*TODO*/}
-        void exit() {shoudQuit = true;}
+        void pushLayer(std::unique_ptr<Layer> layer);
+        void pushOverlay(std::unique_ptr<Layer> layer);
+        void exit();
+		void run();
 
-		void run()
-        {
-            for(auto& item : layers)
-            item->onAttach();
-
-            while (!shoudQuit)
-            {
-                for(auto& item : layers)
-                {
-                    item->onUpdate();
-                    item->onRender();
-                }
-
-                glfwPollEvents();
-                glfwSwapBuffers(glfwGetCurrentContext());
-            }
-        }
-
-		static Application& getInstance()
-        {
-            static Application app;
-            return app;
-        }
-
+		static Application& getInstance();
 		friend void forwardEvent(Event& event);
     };
 }

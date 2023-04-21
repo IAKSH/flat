@@ -33,6 +33,7 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
     "core/layer.hpp"
     "core/application.hpp"
+    "core/application.cpp"
     "core/event_application.hpp"
     "core/event_keyboard.hpp"
     "core/event_mouse.hpp"
