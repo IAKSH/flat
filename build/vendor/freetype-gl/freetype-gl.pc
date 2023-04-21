@@ -1,9 +1,0 @@
-prefix=C:/Program Files (x86)/flat3
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include
-
-Name: freetype-gl
-Description: OpenGL text using one vertex buffer, one texture and FreeType
-Libs: -L${libdir} -lfreetype-gl
-Cflags: -I${includedir}
