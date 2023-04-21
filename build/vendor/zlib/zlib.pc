@@ -1,0 +1,13 @@
+prefix=C:/Program Files (x86)/flat3
+exec_prefix=C:/Program Files (x86)/flat3
+libdir=C:/Program Files (x86)/flat3/lib
+sharedlibdir=C:/Program Files (x86)/flat3/lib
+includedir=C:/Program Files (x86)/flat3/include
+
+Name: zlib
+Description: zlib compression library
+Version: 1.2.9
+
+Requires:
+Libs: -L${libdir} -L${sharedlibdir} -lz
+Cflags: -I${includedir}

@@ -1,0 +1,520 @@
+The system is: Windows - 10.0.22621 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/clang.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+
+The C compiler identification is Clang, found in "D:/Programming-Playground/flat2/build/CMakeFiles/3.25.0-rc1/CompilerIdC/a.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/clang++.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
+
+The CXX compiler identification is Clang, found in "D:/Programming-Playground/flat2/build/CMakeFiles/3.25.0-rc1/CompilerIdCXX/a.exe"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-e6vgoe
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_0a2f5 && [1/2] Building C object CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj
+clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)
+Target: x86_64-w64-windows-gnu
+Thread model: posix
+InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin
+ (in-process)
+ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/clang-16.exe" -cc1 -triple x86_64-w64-windows-gnu -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=none -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -mms-bitfields -funwind-tables=2 -target-cpu x86-64 -tune-cpu generic -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v -fcoverage-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-e6vgoe -resource-dir D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16 -dependency-file "CMakeFiles\\cmTC_0a2f5.dir\\CMakeCCompilerABI.c.obj.d" -MT CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj -sys-header-deps -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include -fdebug-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-e6vgoe -ferror-limit 19 -fno-use-cxa-atexit -fgnuc-version=4.2.1 -exception-model=seh -faddrsig -o CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj -x c D:/Programming-Tools/cmake-3.25.0-rc1-windows-x86_64/share/cmake-3.25/Modules/CMakeCCompilerABI.c
+clang -cc1 version 16.0.0 based upon LLVM 16.0.0 default target x86_64-w64-mingw32
+ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include"
+ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include
+ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include
+End of search list.
+[2/2] Linking C executable cmTC_0a2f5.exe
+clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)
+Target: x86_64-w64-windows-gnu
+Thread model: posix
+InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin
+ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ld.lld" -m i386pep -Bdynamic -o cmTC_0a2f5.exe D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj --out-implib libcmTC_0a2f5.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include]
+    add: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+  end of search list found
+  collapse include dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include]
+  collapse include dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+  implicit include dirs: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.lld\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-e6vgoe]
+  ignore line: []
+  ignore line: [Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_0a2f5 && [1/2] Building C object CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj]
+  ignore line: [clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)]
+  ignore line: [Target: x86_64-w64-windows-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin]
+  ignore line: [ (in-process)]
+  ignore line: [ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/clang-16.exe" -cc1 -triple x86_64-w64-windows-gnu -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=none -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -mms-bitfields -funwind-tables=2 -target-cpu x86-64 -tune-cpu generic -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v -fcoverage-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-e6vgoe -resource-dir D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16 -dependency-file "CMakeFiles\\cmTC_0a2f5.dir\\CMakeCCompilerABI.c.obj.d" -MT CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj -sys-header-deps -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include -fdebug-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-e6vgoe -ferror-limit 19 -fno-use-cxa-atexit -fgnuc-version=4.2.1 -exception-model=seh -faddrsig -o CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj -x c D:/Programming-Tools/cmake-3.25.0-rc1-windows-x86_64/share/cmake-3.25/Modules/CMakeCCompilerABI.c]
+  ignore line: [clang -cc1 version 16.0.0 based upon LLVM 16.0.0 default target x86_64-w64-mingw32]
+  ignore line: [ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include"]
+  ignore line: [ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include]
+  ignore line: [ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking C executable cmTC_0a2f5.exe]
+  ignore line: [clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)]
+  ignore line: [Target: x86_64-w64-windows-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin]
+  link line: [ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ld.lld" -m i386pep -Bdynamic -o cmTC_0a2f5.exe D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj --out-implib libcmTC_0a2f5.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ld.lld] ==> ignore
+    arg [-m] ==> ignore
+    arg [i386pep] ==> ignore
+    arg [-Bdynamic] ==> search dynamic
+    arg [-o] ==> ignore
+    arg [cmTC_0a2f5.exe] ==> ignore
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o] ==> obj [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o] ==> obj [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows]
+    arg [CMakeFiles/cmTC_0a2f5.dir/CMakeCCompilerABI.c.obj] ==> ignore
+    arg [--out-implib] ==> ignore
+    arg [libcmTC_0a2f5.dll.a] ==> ignore
+    arg [--major-image-version] ==> ignore
+    arg [0] ==> ignore
+    arg [--minor-image-version] ==> ignore
+    arg [0] ==> ignore
+    arg [-lmingw32] ==> lib [mingw32]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a] ==> lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+    arg [-lunwind] ==> lib [unwind]
+    arg [-lmoldname] ==> lib [moldname]
+    arg [-lmingwex] ==> lib [mingwex]
+    arg [-lmsvcrt] ==> lib [msvcrt]
+    arg [-ladvapi32] ==> lib [advapi32]
+    arg [-lshell32] ==> lib [shell32]
+    arg [-luser32] ==> lib [user32]
+    arg [-lkernel32] ==> lib [kernel32]
+    arg [-lmingw32] ==> lib [mingw32]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a] ==> lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+    arg [-lunwind] ==> lib [unwind]
+    arg [-lmoldname] ==> lib [moldname]
+    arg [-lmingwex] ==> lib [mingwex]
+    arg [-lmsvcrt] ==> lib [msvcrt]
+    arg [-lkernel32] ==> lib [kernel32]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o] ==> obj [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o]
+  remove lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+  remove lib [msvcrt]
+  remove lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+  remove lib [msvcrt]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows]
+  implicit libs: [mingw32;unwind;moldname;mingwex;advapi32;shell32;user32;kernel32;mingw32;unwind;moldname;mingwex;kernel32]
+  implicit objs: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o]
+  implicit dirs: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows]
+  implicit fwks: []
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xu0tod
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_76c19 && [1/2] Building CXX object CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj
+clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)
+Target: x86_64-w64-windows-gnu
+Thread model: posix
+InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin
+ (in-process)
+ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/clang-16.exe" -cc1 -triple x86_64-w64-windows-gnu -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=none -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -mms-bitfields -funwind-tables=2 -target-cpu x86-64 -tune-cpu generic -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v -fcoverage-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xu0tod -resource-dir D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16 -dependency-file "CMakeFiles\\cmTC_76c19.dir\\CMakeCXXCompilerABI.cpp.obj.d" -MT CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj -sys-header-deps -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include/c++/v1 -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1 -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include -fdeprecated-macro -fdebug-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xu0tod -ferror-limit 19 -fno-use-cxa-atexit -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -exception-model=seh -faddrsig -o CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj -x c++ D:/Programming-Tools/cmake-3.25.0-rc1-windows-x86_64/share/cmake-3.25/Modules/CMakeCXXCompilerABI.cpp
+clang -cc1 version 16.0.0 based upon LLVM 16.0.0 default target x86_64-w64-mingw32
+ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include/c++/v1"
+ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include"
+ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1
+ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include
+ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include
+End of search list.
+[2/2] Linking CXX executable cmTC_76c19.exe
+clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)
+Target: x86_64-w64-windows-gnu
+Thread model: posix
+InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin
+ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ld.lld" -m i386pep -Bdynamic -o cmTC_76c19.exe D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_76c19.dll.a --major-image-version 0 --minor-image-version 0 -lc++ -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1]
+    add: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include]
+    add: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+  end of search list found
+  collapse include dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1]
+  collapse include dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include]
+  collapse include dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+  implicit include dirs: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.lld\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xu0tod]
+  ignore line: []
+  ignore line: [Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_76c19 && [1/2] Building CXX object CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: [clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)]
+  ignore line: [Target: x86_64-w64-windows-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin]
+  ignore line: [ (in-process)]
+  ignore line: [ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/clang-16.exe" -cc1 -triple x86_64-w64-windows-gnu -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=none -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -mms-bitfields -funwind-tables=2 -target-cpu x86-64 -tune-cpu generic -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v -fcoverage-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xu0tod -resource-dir D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16 -dependency-file "CMakeFiles\\cmTC_76c19.dir\\CMakeCXXCompilerABI.cpp.obj.d" -MT CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj -sys-header-deps -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include/c++/v1 -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1 -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include -internal-isystem D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include -fdeprecated-macro -fdebug-compilation-dir=D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xu0tod -ferror-limit 19 -fno-use-cxa-atexit -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -exception-model=seh -faddrsig -o CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj -x c++ D:/Programming-Tools/cmake-3.25.0-rc1-windows-x86_64/share/cmake-3.25/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [clang -cc1 version 16.0.0 based upon LLVM 16.0.0 default target x86_64-w64-mingw32]
+  ignore line: [ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include/c++/v1"]
+  ignore line: [ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/include"]
+  ignore line: [ignoring nonexistent directory "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/usr/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/c++/v1]
+  ignore line: [ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include]
+  ignore line: [ D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking CXX executable cmTC_76c19.exe]
+  ignore line: [clang version 16.0.0 (https://github.com/llvm/llvm-project.git 08d094a0e457360ad8b94b017d2dc277e697ca76)]
+  ignore line: [Target: x86_64-w64-windows-gnu]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin]
+  link line: [ "D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ld.lld" -m i386pep -Bdynamic -o cmTC_76c19.exe D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib -LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj --out-implib libcmTC_76c19.dll.a --major-image-version 0 --minor-image-version 0 -lc++ -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32 -lmingw32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a -lunwind -lmoldname -lmingwex -lmsvcrt -lkernel32 D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ld.lld] ==> ignore
+    arg [-m] ==> ignore
+    arg [i386pep] ==> ignore
+    arg [-Bdynamic] ==> search dynamic
+    arg [-o] ==> ignore
+    arg [cmTC_76c19.exe] ==> ignore
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o] ==> obj [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o] ==> obj [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib]
+    arg [-LD:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows] ==> dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows]
+    arg [CMakeFiles/cmTC_76c19.dir/CMakeCXXCompilerABI.cpp.obj] ==> ignore
+    arg [--out-implib] ==> ignore
+    arg [libcmTC_76c19.dll.a] ==> ignore
+    arg [--major-image-version] ==> ignore
+    arg [0] ==> ignore
+    arg [--minor-image-version] ==> ignore
+    arg [0] ==> ignore
+    arg [-lc++] ==> lib [c++]
+    arg [-lmingw32] ==> lib [mingw32]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a] ==> lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+    arg [-lunwind] ==> lib [unwind]
+    arg [-lmoldname] ==> lib [moldname]
+    arg [-lmingwex] ==> lib [mingwex]
+    arg [-lmsvcrt] ==> lib [msvcrt]
+    arg [-ladvapi32] ==> lib [advapi32]
+    arg [-lshell32] ==> lib [shell32]
+    arg [-luser32] ==> lib [user32]
+    arg [-lkernel32] ==> lib [kernel32]
+    arg [-lmingw32] ==> lib [mingw32]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a] ==> lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+    arg [-lunwind] ==> lib [unwind]
+    arg [-lmoldname] ==> lib [moldname]
+    arg [-lmingwex] ==> lib [mingwex]
+    arg [-lmsvcrt] ==> lib [msvcrt]
+    arg [-lkernel32] ==> lib [kernel32]
+    arg [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o] ==> obj [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o]
+  remove lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+  remove lib [msvcrt]
+  remove lib [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows/libclang_rt.builtins-x86_64.a]
+  remove lib [msvcrt]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib]
+  collapse library dir [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows] ==> [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows]
+  implicit libs: [c++;mingw32;unwind;moldname;mingwex;advapi32;shell32;user32;kernel32;mingw32;unwind;moldname;mingwex;kernel32]
+  implicit objs: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crt2.o;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtbegin.o;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib/crtend.o]
+  implicit dirs: [D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/lib;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/x86_64-w64-mingw32/mingw/lib;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib;D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/lib/windows]
+  implicit fwks: []
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-d7q1p4
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_ebaf3 && [1/2] Building C object CMakeFiles/cmTC_ebaf3.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_ebaf3.exe
+
+
+
+Determining if the include file dinput.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-0vagfw
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_24e3d && [1/2] Building C object CMakeFiles/cmTC_24e3d.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_24e3d.exe
+
+
+
+Determining if the include file xinput.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-qim1zn
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_004eb && [1/2] Building C object CMakeFiles/cmTC_004eb.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_004eb.exe
+
+
+
+Performing C++ SOURCE FILE Test HAVE___RESTRICT succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xmlwlu
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_3a454 && [1/2] Building CXX object CMakeFiles/cmTC_3a454.dir/src.cxx.obj
+[2/2] Linking CXX executable cmTC_3a454.exe
+
+
+Source file was:
+int *__restrict foo;
+int main() { return 0; }
+
+Performing C SOURCE FILE Test HAVE_FNO_MATH_ERRNO succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-y1nwgf
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_fb971 && [1/2] Building C object CMakeFiles/cmTC_fb971.dir/src.c.obj
+[2/2] Linking C executable cmTC_fb971.exe
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test HAVE_MSSE2_SWITCH succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-e5eeuh
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_2dc7f && [1/2] Building C object CMakeFiles/cmTC_2dc7f.dir/src.c.obj
+[2/2] Linking C executable cmTC_2dc7f.exe
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test HAVE_MSSE3_SWITCH succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-wwwckq
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_c9f1e && [1/2] Building C object CMakeFiles/cmTC_c9f1e.dir/src.c.obj
+[2/2] Linking C executable cmTC_c9f1e.exe
+
+
+Source file was:
+int main(void) { return 0; }
+
+Performing C SOURCE FILE Test HAVE_MSSE4_1_SWITCH succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-n66h6o
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_964b7 && [1/2] Building C object CMakeFiles/cmTC_964b7.dir/src.c.obj
+[2/2] Linking C executable cmTC_964b7.exe
+
+
+Source file was:
+int main(void) { return 0; }
+
+Determining if the include file xmmintrin.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-2vkf18
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_e2d80 && [1/2] Building C object CMakeFiles/cmTC_e2d80.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_e2d80.exe
+
+
+
+Determining if the include file emmintrin.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-i3xlz0
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_4e6fc && [1/2] Building C object CMakeFiles/cmTC_4e6fc.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_4e6fc.exe
+
+
+
+Determining if the include file pmmintrin.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-drg64v
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_e9254 && [1/2] Building C object CMakeFiles/cmTC_e9254.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_e9254.exe
+
+
+
+Determining if the include file smmintrin.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-h837i3
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_494dc && [1/2] Building C object CMakeFiles/cmTC_494dc.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_494dc.exe
+
+
+
+Performing C SOURCE FILE Test HAVE_SSE_INTRINSICS succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-kj7184
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_c26cd && [1/2] Building C object CMakeFiles/cmTC_c26cd.dir/src.c.obj
+[2/2] Linking C executable cmTC_c26cd.exe
+
+
+Source file was:
+#include <emmintrin.h>
+                             int main() {_mm_pause(); return 0;}
+
+Determining if the include file malloc.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-2e0l0c
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_7d9df && [1/2] Building C object CMakeFiles/cmTC_7d9df.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_7d9df.exe
+
+
+
+Determining if the include file cpuid.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-zzns7y
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_948a1 && [1/2] Building C object CMakeFiles/cmTC_948a1.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_948a1.exe
+
+
+
+Determining if the include file intrin.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-6x61hj
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_1251d && [1/2] Building C object CMakeFiles/cmTC_1251d.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_1251d.exe
+
+
+
+Determining if the include file guiddef.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-mxd7dz
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_6fa3d && [1/2] Building C object CMakeFiles/cmTC_6fa3d.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_6fa3d.exe
+
+
+
+Determining if the function pow exists in the m passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-vgsqiv
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_d875d && [1/2] Building C object CMakeFiles/cmTC_d875d.dir/CheckFunctionExists.c.obj
+D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-vgsqiv/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'pow' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:1:31: note: expanded from macro 'CHECK_FUNCTION_EXISTS'
+#define CHECK_FUNCTION_EXISTS pow
+                              ^
+D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-vgsqiv/CheckFunctionExists.c:7:3: note: 'pow' is a builtin with type 'double (double, double)'
+<command line>:1:31: note: expanded from macro 'CHECK_FUNCTION_EXISTS'
+#define CHECK_FUNCTION_EXISTS pow
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_d875d.exe
+
+
+
+Performing C SOURCE FILE Test HAVE_GCC_GET_CPUID succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-gyrwnr
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_e0787 && [1/2] Building C object CMakeFiles/cmTC_e0787.dir/src.c.obj
+[2/2] Linking C executable cmTC_e0787.exe
+
+
+Source file was:
+#include <cpuid.h>
+        int main()
+        {
+            unsigned int eax, ebx, ecx, edx;
+            return __get_cpuid(0, &eax, &ebx, &ecx, &edx);
+        }
+
+Performing C SOURCE FILE Test HAVE_CPUID_INTRINSIC succeeded with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-wz28qx
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_ea74f && [1/2] Building C object CMakeFiles/cmTC_ea74f.dir/src.c.obj
+[2/2] Linking C executable cmTC_ea74f.exe
+
+
+Source file was:
+#include <intrin.h>
+        int main()
+        {
+            int regs[4];
+            __cpuid(regs, 0);
+            return regs[0];
+        }
+
+Determining if the _aligned_malloc exist passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-wuqwr6
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_ed0e4 && [1/2] Building C object CMakeFiles/cmTC_ed0e4.dir/CheckSymbolExists.c.obj
+[2/2] Linking C executable cmTC_ed0e4.exe
+
+
+File CheckSymbolExists.c:
+/* */
+#include <malloc.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef _aligned_malloc
+  return ((int*)(&_aligned_malloc))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the getopt exist passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-5c5c6n
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_1b463 && [1/2] Building C object CMakeFiles/cmTC_1b463.dir/CheckSymbolExists.c.obj
+[2/2] Linking C executable cmTC_1b463.exe
+
+
+File CheckSymbolExists.c:
+/* */
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef getopt
+  return ((int*)(&getopt))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if files windows.h;mmsystem.h exist passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-h8im43
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_80b94 && [1/2] Building C object CMakeFiles/cmTC_80b94.dir/HAVE_MMSYSTEM_H.c.obj
+[2/2] Linking C executable cmTC_80b94.exe
+
+
+
+Determining if the include file mmdeviceapi.h exists passed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-6huzh5
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_2f031 && [1/2] Building C object CMakeFiles/cmTC_2f031.dir/CheckIncludeFile.c.obj
+[2/2] Linking C executable cmTC_2f031.exe
+
+
+

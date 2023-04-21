@@ -1,0 +1,1480 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "bin/OpenAL32.dll"
+		},
+		{
+			"path" : "bin/libOpenAL32.dll.a"
+		},
+		{
+			"path" : "bin/OpenAL32.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"install",
+			"target_link_libraries",
+			"add_dependencies",
+			"target_compile_options",
+			"target_compile_definitions",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"vendor/openal-soft/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 1257,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 1369,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 1262,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 1320,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 1317,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 1315,
+				"parent" : 0
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 1299,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Winline"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wunused"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wshadow"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wconversion"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wcast-align"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wold-style-cast"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wnon-virtual-dtor"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Woverloaded-virtual"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fno-math-errno"
+				},
+				{
+					"fragment" : "-std=gnu++14"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 6,
+					"define" : "AL_ALEXT_PROTOTYPES"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "AL_BUILD_LIBRARY"
+				},
+				{
+					"define" : "OpenAL_EXPORTS"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "RESTRICT=__restrict"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "_WIN32"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "__USE_MINGW_ANSI_STDIO"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/build/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/alc"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/common"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				0,
+				2,
+				4,
+				6,
+				7,
+				9,
+				10,
+				12,
+				14,
+				16,
+				17,
+				19,
+				21,
+				24,
+				27,
+				29,
+				32,
+				35,
+				38,
+				40,
+				44,
+				45,
+				46,
+				47,
+				48,
+				49,
+				50,
+				51,
+				52,
+				53,
+				54,
+				55,
+				56,
+				57,
+				59,
+				60,
+				62,
+				64,
+				66,
+				69,
+				70,
+				74,
+				76,
+				77,
+				79,
+				81,
+				82,
+				86,
+				91,
+				93,
+				95,
+				97,
+				99
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Winline"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wunused"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wshadow"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wconversion"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wcast-align"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wold-style-cast"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wnon-virtual-dtor"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Woverloaded-virtual"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fno-math-errno"
+				},
+				{
+					"fragment" : "-std=gnu++14"
+				},
+				{
+					"fragment" : "-msse2"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 6,
+					"define" : "AL_ALEXT_PROTOTYPES"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "AL_BUILD_LIBRARY"
+				},
+				{
+					"define" : "OpenAL_EXPORTS"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "RESTRICT=__restrict"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "_WIN32"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "__USE_MINGW_ANSI_STDIO"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/build/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/alc"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/common"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				87,
+				88
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Winline"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wunused"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wshadow"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wconversion"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wcast-align"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wold-style-cast"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wnon-virtual-dtor"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Woverloaded-virtual"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fno-math-errno"
+				},
+				{
+					"fragment" : "-std=gnu++14"
+				},
+				{
+					"fragment" : "-msse3"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 6,
+					"define" : "AL_ALEXT_PROTOTYPES"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "AL_BUILD_LIBRARY"
+				},
+				{
+					"define" : "OpenAL_EXPORTS"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "RESTRICT=__restrict"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "_WIN32"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "__USE_MINGW_ANSI_STDIO"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/build/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/alc"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/common"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				89
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Winline"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wunused"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wextra"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wshadow"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wconversion"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wcast-align"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wpedantic"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wold-style-cast"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Wnon-virtual-dtor"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-Woverloaded-virtual"
+				},
+				{
+					"backtrace" : 5,
+					"fragment" : "-fno-math-errno"
+				},
+				{
+					"fragment" : "-std=gnu++14"
+				},
+				{
+					"fragment" : "-msse4.1"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 6,
+					"define" : "AL_ALEXT_PROTOTYPES"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "AL_BUILD_LIBRARY"
+				},
+				{
+					"define" : "OpenAL_EXPORTS"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "RESTRICT=__restrict"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "_WIN32"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "__USE_MINGW_ANSI_STDIO"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/build/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/alc"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/common"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "14"
+			},
+			"sourceIndexes" : 
+			[
+				90
+			]
+		},
+		{
+			"defines" : 
+			[
+				{
+					"backtrace" : 6,
+					"define" : "AL_ALEXT_PROTOTYPES"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "AL_BUILD_LIBRARY"
+				},
+				{
+					"define" : "OpenAL_EXPORTS"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "RESTRICT=__restrict"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "_WIN32"
+				},
+				{
+					"backtrace" : 6,
+					"define" : "__USE_MINGW_ANSI_STDIO"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/include"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/build/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/alc"
+				},
+				{
+					"backtrace" : 7,
+					"path" : "D:/Programming-Playground/flat2/vendor/openal-soft/common"
+				}
+			],
+			"language" : "RC",
+			"sourceIndexes" : 
+			[
+				102
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 3,
+			"id" : "common::@9fb624253fe3d73a19db"
+		},
+		{
+			"backtrace" : 4,
+			"id" : "build_version::@9fb624253fe3d73a19db"
+		}
+	],
+	"id" : "OpenAL::@9fb624253fe3d73a19db",
+	"install" : 
+	{
+		"destinations" : 
+		[
+			{
+				"backtrace" : 2,
+				"path" : "lib"
+			},
+			{
+				"backtrace" : 2,
+				"path" : "bin"
+			}
+		],
+		"prefix" : 
+		{
+			"path" : "C:/Program Files (x86)/flat3"
+		}
+	},
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "bin\\libcommon.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 3,
+				"fragment" : "-lm",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "OpenAL",
+	"nameOnDisk" : "OpenAL32.dll",
+	"paths" : 
+	{
+		"build" : "vendor/openal-soft",
+		"source" : "vendor/openal-soft"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0,
+				2,
+				4,
+				6,
+				7,
+				9,
+				10,
+				12,
+				14,
+				16,
+				17,
+				19,
+				21,
+				24,
+				27,
+				29,
+				32,
+				35,
+				38,
+				40,
+				44,
+				45,
+				46,
+				47,
+				48,
+				49,
+				50,
+				51,
+				52,
+				53,
+				54,
+				55,
+				56,
+				57,
+				59,
+				60,
+				62,
+				64,
+				66,
+				69,
+				70,
+				74,
+				76,
+				77,
+				79,
+				81,
+				82,
+				86,
+				87,
+				88,
+				89,
+				90,
+				91,
+				93,
+				95,
+				97,
+				99,
+				102
+			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				1,
+				3,
+				5,
+				8,
+				11,
+				13,
+				15,
+				18,
+				20,
+				22,
+				23,
+				25,
+				26,
+				28,
+				30,
+				31,
+				33,
+				34,
+				36,
+				37,
+				39,
+				41,
+				42,
+				43,
+				58,
+				61,
+				63,
+				65,
+				67,
+				68,
+				71,
+				72,
+				73,
+				75,
+				78,
+				80,
+				83,
+				84,
+				85,
+				92,
+				94,
+				96,
+				98,
+				100,
+				101,
+				103,
+				104,
+				105,
+				106
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				107
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/auxeffectslot.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/al/auxeffectslot.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/buffer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/al/buffer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/effect.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/al/effect.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/error.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/event.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/al/event.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/extension.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/filter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/al/filter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/listener.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/al/listener.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/source.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/al/source.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/al/state.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/alc.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/alcmain.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/alu.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/alu.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/alconfig.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/alconfig.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/alcontext.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/ambdec.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/ambdec.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/ambidefs.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/bformatdec.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/bformatdec.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/bs2b.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/bs2b.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/bsinc_defs.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/bsinc_tables.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/bsinc_tables.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/bufferline.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/buffer_storage.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/buffer_storage.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/compat.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/converter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/converter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/cpu_caps.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/cpu_caps.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/devformat.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/effects/base.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/autowah.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/chorus.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/compressor.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/convolution.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/dedicated.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/distortion.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/echo.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/equalizer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/fshifter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/modulator.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/null.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/pshifter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/reverb.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/effects/vmorpher.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/filters/biquad.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/filters/biquad.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/filters/nfc.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/filters/nfc.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/filters/splitter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/filters/splitter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/fmt_traits.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/fmt_traits.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/fpu_ctrl.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/fpu_ctrl.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/front_stablizer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/helpers.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/hrtf.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/hrtf.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/inprogext.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/logging.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/mastering.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/mastering.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/panning.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/ringbuffer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/ringbuffer.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/uhjfilter.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/uhjfilter.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/uiddefs.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/voice.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/voice.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/mixer/defs.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/mixer/hrtfbase.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/mixer/mixer_c.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "vendor/openal-soft/alc/mixer/mixer_sse.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "vendor/openal-soft/alc/mixer/mixer_sse2.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 2,
+			"path" : "vendor/openal-soft/alc/mixer/mixer_sse3.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 3,
+			"path" : "vendor/openal-soft/alc/mixer/mixer_sse41.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/backends/base.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/backends/base.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/backends/loopback.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/backends/loopback.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/backends/null.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/backends/null.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/backends/wasapi.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/backends/wasapi.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "vendor/openal-soft/alc/backends/wave.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/alc/backends/wave.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "build/vendor/openal-soft/hrtf_default.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 4,
+			"path" : "vendor/openal-soft/resources/openal32.rc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/include/AL/al.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/include/AL/alc.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/include/AL/alext.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "vendor/openal-soft/include/AL/efx.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/vendor/openal-soft/hrtf_default.h.rule",
+			"sourceGroupIndex" : 2
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}

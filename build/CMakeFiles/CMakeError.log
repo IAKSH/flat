@@ -1,0 +1,239 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-kj83z3
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_049e8 && [1/2] Building C object CMakeFiles/cmTC_049e8.dir/src.c.obj
+[2/2] Linking C executable cmTC_049e8.exe
+FAILED: cmTC_049e8.exe 
+cmd.exe /C "cd . && D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe   CMakeFiles/cmTC_049e8.dir/src.c.obj -o cmTC_049e8.exe -Wl,--out-implib,libcmTC_049e8.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+ld.lld: error: undefined symbol: pthread_create
+>>> referenced by CMakeFiles/cmTC_049e8.dir/src.c.obj:(main)
+
+ld.lld: error: undefined symbol: pthread_detach
+>>> referenced by CMakeFiles/cmTC_049e8.dir/src.c.obj:(main)
+
+ld.lld: error: undefined symbol: pthread_cancel
+>>> referenced by CMakeFiles/cmTC_049e8.dir/src.c.obj:(main)
+
+ld.lld: error: undefined symbol: pthread_join
+>>> referenced by CMakeFiles/cmTC_049e8.dir/src.c.obj:(main)
+
+ld.lld: error: undefined symbol: pthread_exit
+>>> referenced by CMakeFiles/cmTC_049e8.dir/src.c.obj:(main)
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+#include <pthread.h>
+
+static void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_cancel(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-x5h3p3
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_67ddf && [1/2] Building C object CMakeFiles/cmTC_67ddf.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_67ddf.exe
+FAILED: cmTC_67ddf.exe 
+cmd.exe /C "cd . && D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe -DCHECK_FUNCTION_EXISTS=pthread_create  CMakeFiles/cmTC_67ddf.dir/CheckFunctionExists.c.obj -o cmTC_67ddf.exe -Wl,--out-implib,libcmTC_67ddf.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lpthreads  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+lld: error: unable to find library -lpthreads
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+
+Performing C++ SOURCE FILE Test HAVE_LIBATOMIC failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-hnwb1m
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_792c6 && [1/2] Building CXX object CMakeFiles/cmTC_792c6.dir/src.cxx.obj
+[2/2] Linking CXX executable cmTC_792c6.exe
+FAILED: cmTC_792c6.exe 
+cmd.exe /C "cd . && D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang++.exe   CMakeFiles/cmTC_792c6.dir/src.cxx.obj -o cmTC_792c6.exe -Wl,--out-implib,libcmTC_792c6.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -latomic  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+lld: error: unable to find library -latomic
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+#include <atomic>
+std::atomic<int> foo{0};
+int main() { return foo.fetch_add(2); }
+
+Determining if the function __android_log_print exists in the log failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-r8dz09
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_9f9c1 && [1/2] Building C object CMakeFiles/cmTC_9f9c1.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_9f9c1.exe
+FAILED: cmTC_9f9c1.exe 
+cmd.exe /C "cd . && D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe -DCHECK_FUNCTION_EXISTS=__android_log_print  CMakeFiles/cmTC_9f9c1.dir/CheckFunctionExists.c.obj -o cmTC_9f9c1.exe -Wl,--out-implib,libcmTC_9f9c1.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -llog  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+ld.lld: error: undefined symbol: __android_log_print
+>>> referenced by CMakeFiles/cmTC_9f9c1.dir/CheckFunctionExists.c.obj:(main)
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+
+Performing C SOURCE FILE Test HAVE_MFPU_NEON_SWITCH failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-4l67m5
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_a7733 && [1/2] Building C object CMakeFiles/cmTC_a7733.dir/src.c.obj
+FAILED: CMakeFiles/cmTC_a7733.dir/src.c.obj 
+D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe -DHAVE_MFPU_NEON_SWITCH  -Werror   -mfpu=neon -std=gnu11 -MD -MT CMakeFiles/cmTC_a7733.dir/src.c.obj -MF CMakeFiles\cmTC_a7733.dir\src.c.obj.d -o CMakeFiles/cmTC_a7733.dir/src.c.obj -c D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-4l67m5/src.c
+clang-16: error: argument unused during compilation: '-mfpu=neon' [-Werror,-Wunused-command-line-argument]
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+int main(void) { return 0; }
+
+Determining if the include file arm_neon.h exists failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xrjelr
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_9dffc && [1/2] Building C object CMakeFiles/cmTC_9dffc.dir/CheckIncludeFile.c.obj
+FAILED: CMakeFiles/cmTC_9dffc.dir/CheckIncludeFile.c.obj 
+D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe   -std=gnu11 -MD -MT CMakeFiles/cmTC_9dffc.dir/CheckIncludeFile.c.obj -MF CMakeFiles\cmTC_9dffc.dir\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_9dffc.dir/CheckIncludeFile.c.obj -c D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xrjelr/CheckIncludeFile.c
+In file included from D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xrjelr/CheckIncludeFile.c:1:
+D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/lib/clang/16/include/arm_neon.h:28:2: error: "NEON intrinsics not available with the soft-float ABI. Please use -mfloat-abi=softfp or -mfloat-abi=hard"
+#error "NEON intrinsics not available with the soft-float ABI. Please use -mfloat-abi=softfp or -mfloat-abi=hard"
+ ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+
+Determining if the function clock_gettime exists in the rt failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-9egg5o
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_48451 && [1/2] Building C object CMakeFiles/cmTC_48451.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_48451.exe
+FAILED: cmTC_48451.exe 
+cmd.exe /C "cd . && D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe -DCHECK_FUNCTION_EXISTS=clock_gettime  CMakeFiles/cmTC_48451.dir/CheckFunctionExists.c.obj -o cmTC_48451.exe -Wl,--out-implib,libcmTC_48451.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lrt  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+lld: error: unable to find library -lrt
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+
+Determining if the include file dlfcn.h exists failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xifzqc
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_91bd4 && [1/2] Building C object CMakeFiles/cmTC_91bd4.dir/CheckIncludeFile.c.obj
+FAILED: CMakeFiles/cmTC_91bd4.dir/CheckIncludeFile.c.obj 
+D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe   -std=gnu11 -MD -MT CMakeFiles/cmTC_91bd4.dir/CheckIncludeFile.c.obj -MF CMakeFiles\cmTC_91bd4.dir\CheckIncludeFile.c.obj.d -o CMakeFiles/cmTC_91bd4.dir/CheckIncludeFile.c.obj -c D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xifzqc/CheckIncludeFile.c
+D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-xifzqc/CheckIncludeFile.c:1:10: fatal error: 'dlfcn.h' file not found
+#include <dlfcn.h>
+         ^~~~~~~~~
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+
+Determining if the function dlopen exists in the dl failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-agthm0
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_9ad5a && [1/2] Building C object CMakeFiles/cmTC_9ad5a.dir/CheckFunctionExists.c.obj
+[2/2] Linking C executable cmTC_9ad5a.exe
+FAILED: cmTC_9ad5a.exe 
+cmd.exe /C "cd . && D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe -DCHECK_FUNCTION_EXISTS=dlopen  CMakeFiles/cmTC_9ad5a.dir/CheckFunctionExists.c.obj -o cmTC_9ad5a.exe -Wl,--out-implib,libcmTC_9ad5a.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -ldl  -lm  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+lld: error: unable to find library -ldl
+clang-16: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.
+
+
+
+Performing C++ SOURCE FILE Test HAVE_STD_ALIGNED_ALLOC failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-w8uyuu
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_8ab0c && [1/2] Building CXX object CMakeFiles/cmTC_8ab0c.dir/src.cxx.obj
+FAILED: CMakeFiles/cmTC_8ab0c.dir/src.cxx.obj 
+D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang++.exe -DHAVE_STD_ALIGNED_ALLOC  -std=gnu++14 -MD -MT CMakeFiles/cmTC_8ab0c.dir/src.cxx.obj -MF CMakeFiles\cmTC_8ab0c.dir\src.cxx.obj.d -o CMakeFiles/cmTC_8ab0c.dir/src.cxx.obj -c D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-w8uyuu/src.cxx
+D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-w8uyuu/src.cxx:4:15: error: no member named 'aligned_alloc' in namespace 'std'; did you mean '_aligned_malloc'?
+    void *ptr{std::aligned_alloc(alignof(int), sizeof(int))};
+              ^~~~~~~~~~~~~~~~~~
+              _aligned_malloc
+D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/include/stdlib.h:541:25: note: '_aligned_malloc' declared here
+  _CRTIMP void *__cdecl _aligned_malloc(size_t _Size,size_t _Alignment);
+                        ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+Source file was:
+#include <cstdlib>
+int main()
+{
+    void *ptr{std::aligned_alloc(alignof(int), sizeof(int))};
+    std::free(ptr);
+    return 0;
+}
+
+Determining if the posix_memalign exist failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-v6hb8w
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_26a05 && [1/2] Building C object CMakeFiles/cmTC_26a05.dir/CheckSymbolExists.c.obj
+FAILED: CMakeFiles/cmTC_26a05.dir/CheckSymbolExists.c.obj 
+D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe    -MD -MT CMakeFiles/cmTC_26a05.dir/CheckSymbolExists.c.obj -MF CMakeFiles\cmTC_26a05.dir\CheckSymbolExists.c.obj.d -o CMakeFiles/cmTC_26a05.dir/CheckSymbolExists.c.obj -c D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-v6hb8w/CheckSymbolExists.c
+D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-v6hb8w/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'posix_memalign'
+  return ((int*)(&posix_memalign))[argc];
+                  ^
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef posix_memalign
+  return ((int*)(&posix_memalign))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the proc_pidpath exist failed with the following output:
+Change Dir: D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-cxo0hp
+
+Run Build Command(s):D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/ninja.exe cmTC_4d78c && [1/2] Building C object CMakeFiles/cmTC_4d78c.dir/CheckSymbolExists.c.obj
+FAILED: CMakeFiles/cmTC_4d78c.dir/CheckSymbolExists.c.obj 
+D:\Programming-Tools\llvm-mingw-20230320-ucrt-x86_64\bin\clang.exe    -MD -MT CMakeFiles/cmTC_4d78c.dir/CheckSymbolExists.c.obj -MF CMakeFiles\cmTC_4d78c.dir\CheckSymbolExists.c.obj.d -o CMakeFiles/cmTC_4d78c.dir/CheckSymbolExists.c.obj -c D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-cxo0hp/CheckSymbolExists.c
+D:/Programming-Playground/flat2/build/CMakeFiles/CMakeScratch/TryCompile-cxo0hp/CheckSymbolExists.c:2:10: fatal error: 'libproc.h' file not found
+#include <libproc.h>
+         ^~~~~~~~~~~
+1 error generated.
+ninja: build stopped: subcommand failed.
+
+
+File CheckSymbolExists.c:
+/* */
+#include <libproc.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef proc_pidpath
+  return ((int*)(&proc_pidpath))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}

@@ -1,0 +1,837 @@
+[
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -o CMakeFiles\\flat.dir\\vendor\\glad\\src\\glad.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glad\\src\\glad.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glad\\src\\glad.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\vendor\\imgui\\imgui.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\vendor\\imgui\\imgui_draw.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui_draw.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui_draw.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\vendor\\imgui\\imgui_tables.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui_tables.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui_tables.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\vendor\\imgui\\imgui_widgets.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui_widgets.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\imgui\\imgui_widgets.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\vendor\\imgui\\backends\\imgui_impl_opengl3.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\imgui\\backends\\imgui_impl_opengl3.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\imgui\\backends\\imgui_impl_opengl3.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\vendor\\imgui\\backends\\imgui_impl_glfw.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\imgui\\backends\\imgui_impl_glfw.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\imgui\\backends\\imgui_impl_glfw.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\core\\application.cpp.obj -c D:\\Programming-Playground\\flat2\\core\\application.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\core\\application.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\core\\mixer.cpp.obj -c D:\\Programming-Playground\\flat2\\core\\mixer.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\core\\mixer.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\core\\window.cpp.obj -c D:\\Programming-Playground\\flat2\\core\\window.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\core\\window.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\audio.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\audio.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\audio.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\logger.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\logger.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\logger.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\shader.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\shader.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\shader.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\texture.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\texture.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\texture.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\timer.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\timer.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\timer.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\camera.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\camera.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\camera.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\audio_source.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\audio_source.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\audio_source.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\font.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\font.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\font.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\utils\\wav_dec.cpp.obj -c D:\\Programming-Playground\\flat2\\utils\\wav_dec.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\utils\\wav_dec.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\flat\\gjk.cpp.obj -c D:\\Programming-Playground\\flat2\\flat\\gjk.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\flat\\gjk.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat.dir\\flat\\text_renderer.cpp.obj -c D:\\Programming-Playground\\flat2\\flat\\text_renderer.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\flat\\text_renderer.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o CMakeFiles\\flat_test.dir\\main.cpp.obj -c D:\\Programming-Playground\\flat2\\main.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\main.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\context.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\context.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\context.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\init.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\init.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\init.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\input.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\input.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\input.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\monitor.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\monitor.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\monitor.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\platform.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\platform.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\platform.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\vulkan.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\vulkan.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\vulkan.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\window.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\window.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\window.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\egl_context.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\egl_context.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\egl_context.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\osmesa_context.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\osmesa_context.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\osmesa_context.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\null_init.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_init.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_init.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\null_monitor.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_monitor.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_monitor.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\null_window.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_window.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_window.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\null_joystick.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_joystick.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\null_joystick.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_module.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_module.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_module.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_time.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_time.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_time.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_thread.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_thread.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_thread.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_init.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_init.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_init.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_joystick.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_joystick.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_joystick.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_monitor.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_monitor.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_monitor.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\win32_window.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_window.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\win32_window.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DUNICODE -DWINVER=0x0501 -D_GLFW_WIN32 -D_UNICODE -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/glfw/src -ID:/Programming-Playground/flat2/build/vendor/glfw/src -g -Wall -std=c99 -o vendor\\glfw\\src\\CMakeFiles\\glfw.dir\\wgl_context.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\wgl_context.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\glfw\\src\\wgl_context.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\alcomplex.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alcomplex.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alcomplex.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\alexcpt.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alexcpt.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alexcpt.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\alfstream.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alfstream.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alfstream.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\almalloc.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\almalloc.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\almalloc.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\alstring.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alstring.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\alstring.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\dynload.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\dynload.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\dynload.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\polyphase_resampler.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\polyphase_resampler.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\polyphase_resampler.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\strutils.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\strutils.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\strutils.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\common.dir\\common\\threads.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\threads.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\common\\threads.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\auxeffectslot.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\auxeffectslot.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\auxeffectslot.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\buffer.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\buffer.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\buffer.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\effect.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\effect.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\effect.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\error.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\error.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\error.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\event.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\event.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\event.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\extension.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\extension.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\extension.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\filter.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\filter.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\filter.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\listener.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\listener.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\listener.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\source.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\source.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\source.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\al\\state.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\state.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\al\\state.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\alc.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\alc.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\alc.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\alu.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\alu.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\alu.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\alconfig.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\alconfig.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\alconfig.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\ambdec.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\ambdec.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\ambdec.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\bformatdec.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\bformatdec.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\bformatdec.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\bs2b.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\bs2b.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\bs2b.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\bsinc_tables.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\bsinc_tables.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\bsinc_tables.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\buffer_storage.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\buffer_storage.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\buffer_storage.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\converter.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\converter.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\converter.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\cpu_caps.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\cpu_caps.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\cpu_caps.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\autowah.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\autowah.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\autowah.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\chorus.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\chorus.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\chorus.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\compressor.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\compressor.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\compressor.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\convolution.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\convolution.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\convolution.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\dedicated.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\dedicated.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\dedicated.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\distortion.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\distortion.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\distortion.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\echo.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\echo.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\echo.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\equalizer.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\equalizer.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\equalizer.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\fshifter.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\fshifter.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\fshifter.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\modulator.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\modulator.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\modulator.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\null.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\null.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\null.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\pshifter.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\pshifter.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\pshifter.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\reverb.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\reverb.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\reverb.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\effects\\vmorpher.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\vmorpher.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\effects\\vmorpher.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\filters\\biquad.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\filters\\biquad.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\filters\\biquad.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\filters\\nfc.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\filters\\nfc.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\filters\\nfc.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\filters\\splitter.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\filters\\splitter.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\filters\\splitter.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\fmt_traits.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\fmt_traits.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\fmt_traits.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\fpu_ctrl.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\fpu_ctrl.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\fpu_ctrl.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\helpers.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\helpers.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\helpers.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\hrtf.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\hrtf.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\hrtf.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\mastering.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mastering.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mastering.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\panning.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\panning.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\panning.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\ringbuffer.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\ringbuffer.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\ringbuffer.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\uhjfilter.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\uhjfilter.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\uhjfilter.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\uiddefs.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\uiddefs.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\uiddefs.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\voice.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\voice.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\voice.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\mixer\\mixer_c.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_c.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_c.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -msse2 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\mixer\\mixer_sse.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -msse2 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\mixer\\mixer_sse2.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse2.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse2.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -msse3 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\mixer\\mixer_sse3.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse3.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse3.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -msse4.1 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\mixer\\mixer_sse41.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse41.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\mixer\\mixer_sse41.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\backends\\base.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\base.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\base.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\backends\\loopback.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\loopback.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\loopback.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\backends\\null.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\null.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\null.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\backends\\wasapi.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\wasapi.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\wasapi.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft -ID:/Programming-Playground/flat2/vendor/openal-soft/alc -ID:/Programming-Playground/flat2/vendor/openal-soft/common -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -Wold-style-cast -Wnon-virtual-dtor -Woverloaded-virtual -fno-math-errno -std=gnu++14 -o vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\alc\\backends\\wave.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\wave.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\alc\\backends\\wave.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\windres.exe -O coff -DAL_ALEXT_PROTOTYPES -DAL_BUILD_LIBRARY -DOpenAL_EXPORTS -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -I D:/Programming-Playground/flat2/vendor/openal-soft/include -I D:/Programming-Playground/flat2/build/vendor/openal-soft -I D:/Programming-Playground/flat2/vendor/openal-soft -I D:/Programming-Playground/flat2/vendor/openal-soft/alc -I D:/Programming-Playground/flat2/vendor/openal-soft/common D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\resources\\openal32.rc vendor\\openal-soft\\CMakeFiles\\OpenAL.dir\\resources\\openal32.rc.obj",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\resources\\openal32.rc"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -ID:/Programming-Playground/flat2/vendor/openal-soft/common -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -fno-math-errno -std=gnu11 -o vendor\\openal-soft\\CMakeFiles\\openal-info.dir\\utils\\openal-info.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\utils\\openal-info.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\utils\\openal-info.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/common -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -fno-math-errno -std=gnu11 -o vendor\\openal-soft\\CMakeFiles\\ex-common.dir\\examples\\common\\alhelpers.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\examples\\common\\alhelpers.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\examples\\common\\alhelpers.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/common -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -fno-math-errno -std=gnu11 -o vendor\\openal-soft\\CMakeFiles\\altonegen.dir\\examples\\altonegen.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\examples\\altonegen.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\examples\\altonegen.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DRESTRICT=__restrict -D_WIN32 -D__USE_MINGW_ANSI_STDIO -ID:/Programming-Playground/flat2/vendor/openal-soft/common -ID:/Programming-Playground/flat2/vendor/openal-soft/include -g -Winline -Wunused -Wall -Wextra -Wshadow -Wconversion -Wcast-align -Wpedantic -fno-math-errno -std=gnu11 -o vendor\\openal-soft\\CMakeFiles\\alrecord.dir\\examples\\alrecord.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\examples\\alrecord.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\openal-soft\\examples\\alrecord.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -ID:/Programming-Playground/flat2/vendor/spdlog/include -g -std=c++11 -o vendor\\spdlog\\CMakeFiles\\spdlog.dir\\src\\spdlog.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\spdlog.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\spdlog.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -ID:/Programming-Playground/flat2/vendor/spdlog/include -g -std=c++11 -o vendor\\spdlog\\CMakeFiles\\spdlog.dir\\src\\stdout_sinks.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\stdout_sinks.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\stdout_sinks.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -ID:/Programming-Playground/flat2/vendor/spdlog/include -g -std=c++11 -o vendor\\spdlog\\CMakeFiles\\spdlog.dir\\src\\color_sinks.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\color_sinks.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\color_sinks.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -ID:/Programming-Playground/flat2/vendor/spdlog/include -g -std=c++11 -o vendor\\spdlog\\CMakeFiles\\spdlog.dir\\src\\file_sinks.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\file_sinks.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\file_sinks.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -ID:/Programming-Playground/flat2/vendor/spdlog/include -g -std=c++11 -o vendor\\spdlog\\CMakeFiles\\spdlog.dir\\src\\async.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\async.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\async.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -ID:/Programming-Playground/flat2/vendor/spdlog/include -g -std=c++11 -o vendor\\spdlog\\CMakeFiles\\spdlog.dir\\src\\cfg.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\cfg.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\cfg.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -DSPDLOG_COMPILED_LIB -ID:/Programming-Playground/flat2/vendor/spdlog/include -g -std=c++11 -o vendor\\spdlog\\CMakeFiles\\spdlog.dir\\src\\bundled_fmtlib_format.cpp.obj -c D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\bundled_fmtlib_format.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\spdlog\\src\\bundled_fmtlib_format.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\autofit\\autofit.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\autofit\\autofit.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\autofit\\autofit.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftbase.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbase.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbase.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftbbox.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbbox.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbbox.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftbdf.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbdf.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbdf.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftbitmap.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbitmap.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftbitmap.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftcid.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftcid.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftcid.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftfstype.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftfstype.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftfstype.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftgasp.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftgasp.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftgasp.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftglyph.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftglyph.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftglyph.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftgxval.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftgxval.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftgxval.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftinit.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftinit.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftinit.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftmm.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftmm.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftmm.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftotval.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftotval.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftotval.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftpatent.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftpatent.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftpatent.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftpfr.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftpfr.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftpfr.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftstroke.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftstroke.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftstroke.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftsynth.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftsynth.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftsynth.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\fttype1.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\fttype1.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\fttype1.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftwinfnt.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftwinfnt.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftwinfnt.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\bdf\\bdf.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\bdf\\bdf.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\bdf\\bdf.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\bzip2\\ftbzip2.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\bzip2\\ftbzip2.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\bzip2\\ftbzip2.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\cache\\ftcache.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\cache\\ftcache.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\cache\\ftcache.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\cff\\cff.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\cff\\cff.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\cff\\cff.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\cid\\type1cid.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\cid\\type1cid.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\cid\\type1cid.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\gzip\\ftgzip.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\gzip\\ftgzip.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\gzip\\ftgzip.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\lzw\\ftlzw.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\lzw\\ftlzw.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\lzw\\ftlzw.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\pcf\\pcf.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\pcf\\pcf.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\pcf\\pcf.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\pfr\\pfr.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\pfr\\pfr.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\pfr\\pfr.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\psaux\\psaux.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\psaux\\psaux.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\psaux\\psaux.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\pshinter\\pshinter.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\pshinter\\pshinter.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\pshinter\\pshinter.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\psnames\\psnames.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\psnames\\psnames.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\psnames\\psnames.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\raster\\raster.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\raster\\raster.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\raster\\raster.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\sdf\\sdf.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\sdf\\sdf.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\sdf\\sdf.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\sfnt\\sfnt.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\sfnt\\sfnt.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\sfnt\\sfnt.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\smooth\\smooth.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\smooth\\smooth.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\smooth\\smooth.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\svg\\svg.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\svg\\svg.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\svg\\svg.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\truetype\\truetype.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\truetype\\truetype.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\truetype\\truetype.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\type1\\type1.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\type1\\type1.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\type1\\type1.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\type42\\type42.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\type42\\type42.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\type42\\type42.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\winfonts\\winfnt.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\winfonts\\winfnt.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\winfonts\\winfnt.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\builds\\windows\\ftsystem.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\builds\\windows\\ftsystem.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\builds\\windows\\ftsystem.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang.exe -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -ID:/Programming-Playground/flat2/build/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config -g -fvisibility=hidden -o vendor\\freetype\\CMakeFiles\\freetype.dir\\builds\\windows\\ftdebug.c.obj -c D:\\Programming-Playground\\flat2\\vendor\\freetype\\builds\\windows\\ftdebug.c",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\builds\\windows\\ftdebug.c"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\windres.exe -O coff -DFT2_BUILD_LIBRARY -D_CRT_NONSTDC_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -I D:/Programming-Playground/flat2/build/vendor/freetype/include -I D:/Programming-Playground/flat2/vendor/freetype/include -I D:/Programming-Playground/flat2/build/vendor/freetype/include/freetype/config D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftver.rc vendor\\freetype\\CMakeFiles\\freetype.dir\\src\\base\\ftver.rc.obj",
+  "file": "D:\\Programming-Playground\\flat2\\vendor\\freetype\\src\\base\\ftver.rc"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o demo\\CMakeFiles\\demo_flat.dir\\main.cpp.obj -c D:\\Programming-Playground\\flat2\\demo\\main.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\demo\\main.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o demo\\CMakeFiles\\demo_flat.dir\\menu.cpp.obj -c D:\\Programming-Playground\\flat2\\demo\\menu.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\demo\\menu.cpp"
+},
+{
+  "directory": "D:/Programming-Playground/flat2/build",
+  "command": "D:\\Programming-Tools\\llvm-mingw-20230320-ucrt-x86_64\\bin\\clang++.exe -ID:/Programming-Playground/flat2/vendor/glad/include -ID:/Programming-Playground/flat2/vendor/glfw/include -ID:/Programming-Playground/flat2/vendor/spdlog/include -ID:/Programming-Playground/flat2/vendor/freetype/include -ID:/Programming-Playground/flat2/vendor/glm -ID:/Programming-Playground/flat2/vendor/imgui -ID:/Programming-Playground/flat2/vendor/minimp3 -ID:/Programming-Playground/flat2/vendor/stb -ID:/Programming-Playground/flat2/vendor/openal-soft/include -ID:/Programming-Playground/flat2/build/vendor/freetype/include -g -std=gnu++20 -o demo\\CMakeFiles\\demo_flat.dir\\button.cpp.obj -c D:\\Programming-Playground\\flat2\\demo\\button.cpp",
+  "file": "D:\\Programming-Playground\\flat2\\demo\\button.cpp"
+}
+]

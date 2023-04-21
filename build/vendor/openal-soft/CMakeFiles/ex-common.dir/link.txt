@@ -1,0 +1,2 @@
+D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/llvm-ar.exe qc ../../bin/libex-common.a "CMakeFiles/ex-common.dir/examples/common/alhelpers.c.obj"
+D:/Programming-Tools/llvm-mingw-20230320-ucrt-x86_64/bin/llvm-ranlib.exe ../../bin/libex-common.a
