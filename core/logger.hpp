@@ -7,7 +7,7 @@
 #include <memory>
 #include <string>
 
-namespace ni::utils
+namespace ni::core
 {
     class Logger : public DisableCopy
     {

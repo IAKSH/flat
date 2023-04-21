@@ -2,13 +2,13 @@
 #include <exception>
 #include <iostream>
 
-ni::utils::Logger::Logger(std::string_view name)
+ni::core::Logger::Logger(std::string_view name)
     : logrName{name}
 {
     initialize();
 }
 
-void ni::utils::Logger::initialize()
+void ni::core::Logger::initialize()
 {
     try
     {
