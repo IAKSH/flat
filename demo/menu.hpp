@@ -73,7 +73,7 @@ namespace Flat
         RollingText info1{texRen,unifont16,MilliSeconds(175),U"FLAT framework是engineNI的基础，也是实际上构成游戏的部分，它是一套能够重复利用的代码。"};
         Text fpsInfo{texRen,unifont16,U""};
         BlinkingButton startButton{150.0f,35.0f,shader,texRen,cam,unifont48,MilliSeconds(500),U"按'Z'开始...",[](){
-            ni::utils::otherLogger()->warn("game start!");
+            ni::core::otherLogger->warn("game start!");
             // TODO: ...
         }};
 

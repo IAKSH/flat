@@ -44,6 +44,8 @@ target_sources(flat PRIVATE
     "core/window.cpp"
     "core/logger.hpp"
     "core/logger.cpp"
+    "core/loggers.hpp"
+    "core/loggers.cpp"
     "core/template.hpp"
     "utils/audio.hpp"
     "utils/audio.cpp"

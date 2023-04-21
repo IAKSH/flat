@@ -2,7 +2,7 @@
 
 #include "texture.hpp"
 #include "shader.hpp"
-#include "template.hpp"  
+#include "../core/template.hpp"  
 #include <glad/glad.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -38,7 +38,7 @@ namespace ni::utils
         const float& getScale() const { return scale; }
     };
 
-    class Font : public DisableCopy
+    class Font : public core::DisableCopy
     {
     private:
         FT_Face face;

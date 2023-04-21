@@ -1,13 +1,13 @@
 #pragma once
 
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <string>
 
 namespace ni::utils
 {
-	class Audio : public DisableCopy
+	class Audio : public core::DisableCopy
 	{
 	protected:
 		ALuint bufferID;

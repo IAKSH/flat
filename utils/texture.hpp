@@ -1,6 +1,6 @@
 #pragma once
 
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <glad/glad.h>
 #include <string_view>
 
@@ -22,7 +22,7 @@ namespace ni::utils
 		void setY(const float& val) {y = val;}
 	};
 
-	class Texture : public DisableCopy
+	class Texture : public core::DisableCopy
 	{
 	private:
 		GLuint textureID;

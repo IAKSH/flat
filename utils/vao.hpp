@@ -1,6 +1,6 @@
 #pragma once
 
-#include "logger.hpp"
+#include "../core/loggers.hpp"
 #include <glad/glad.h>
 #include <array>
 #include <exception>
@@ -29,7 +29,7 @@ namespace ni::utils
         {
             if(vao)
             {
-                ni::utils::coreLogger()->critical("OpenGL Vertex Array Object re-allocated (vao = {})",vao);
+                core::utilsLogger->critical("OpenGL Vertex Array Object re-allocated (vao = {})",vao);
                 std::terminate();
             }
 
@@ -87,7 +87,7 @@ namespace ni::utils
 
             if(vao)
             {
-                ni::utils::coreLogger()->critical("OpenGL Vertex Array Object re-allocated (vao = {})",vao);
+                core::utilsLogger->critical("OpenGL Vertex Array Object re-allocated (vao = {})",vao);
                 std::terminate();
             }
 

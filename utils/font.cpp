@@ -1,5 +1,5 @@
 #include "font.hpp"
-#include "logger.hpp"
+#include "../core/loggers.hpp"
 #include <deque>
 #include <exception>
 #include <ios>
@@ -44,16 +44,16 @@ void ni::utils::Font::loadFromFile(std::string_view path)
     {
         if (FT_Init_FreeType(&ft))
         {
-            ni::utils::coreLogger()->critical("could not initialize freetype library");
+            core::utilsLogger->critical("could not initialize freetype library");
             std::terminate();
         }
-        ni::utils::coreLogger()->trace("freetype library loaded");
+        core::utilsLogger->trace("freetype library loaded");
     }
 
-    ni::utils::coreLogger()->trace("loading ttf from {}",path);
+    core::utilsLogger->trace("loading ttf from {}",path);
     if (FT_New_Face(ft, path.data(), 0, &face))
     {
-        ni::utils::coreLogger()->critical("could not load ttf from {}",path);
+        core::utilsLogger->critical("could not load ttf from {}",path);
         std::terminate();
     }
 
@@ -67,13 +67,13 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         return **ite;
     else
     {
-        ni::utils::coreLogger()->trace("create texture of 0x{:X} from ttf",static_cast<unsigned int>(c));
+        core::utilsLogger->trace("create texture of 0x{:X} from ttf",static_cast<unsigned int>(c));
 
         // Load bitmap from TTF and save it to cache
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         if (FT_Load_Char(face,c,FT_LOAD_RENDER))
         {
-            ni::utils::coreLogger()->critical("can't load 0x{:X} from ttf",static_cast<unsigned int>(c));
+            core::utilsLogger->critical("can't load 0x{:X} from ttf",static_cast<unsigned int>(c));
             std::terminate();
         }
 

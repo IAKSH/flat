@@ -1,13 +1,13 @@
 #pragma once
 
 #include "mass_point.hpp"
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <AL/al.h>
 #include <AL/alc.h>
 
 namespace ni::utils
 {
-    class AudioSource : public DisableCopy
+    class AudioSource : public core::DisableCopy
     {
     private:
         ALuint sourceID;

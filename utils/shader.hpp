@@ -1,12 +1,12 @@
 #pragma once
 
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <glad/glad.h>
 #include <string_view>
 
 namespace ni::utils
 {
-	class Shader : public DisableCopy
+	class Shader : public core::DisableCopy
 	{
 	private:
 		GLuint shaderID;

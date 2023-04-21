@@ -1,14 +1,14 @@
 #pragma once
 
 #include "audio_dec.hpp"
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <memory>
 #include <fstream>
 #include <string_view>
 
 namespace ni::utils
 {
-    class WavDecoder : public AudioDecoder<WavDecoder>, public DisableCopy
+    class WavDecoder : public AudioDecoder<WavDecoder>, public core::DisableCopy
     {
     private:
         std::unique_ptr<unsigned char[]> pcm;

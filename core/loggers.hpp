@@ -4,5 +4,7 @@
 
 namespace ni::core
 {
-    inline static Logger coreLogger("Core");
+    extern Logger coreLogger;
+    extern Logger utilsLogger;
+    extern Logger otherLogger;
 }

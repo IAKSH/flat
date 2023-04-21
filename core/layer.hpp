@@ -1,12 +1,12 @@
 #pragma once
 
 #include "event.hpp"
-#include "../utils/template.hpp"
+#include "template.hpp"
 #include <string>
 
 namespace ni::core
 {
-	class Layer : public utils::DisableCopy
+	class Layer : public DisableCopy
 	{
 	private:
 		std::string layerName;

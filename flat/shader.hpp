@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../utils/shader.hpp"
-#include "../utils/logger.hpp"
-#include "../utils/template.hpp"
+#include "../core/loggers.hpp"
+#include "../core/template.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -15,7 +15,7 @@
 namespace ni::flat
 {
     template <typename T>
-    concept UniformArgType = ni::utils::any_same<T,float,int,glm::vec2,glm::vec3,glm::vec4,glm::mat4>();
+    concept UniformArgType = ni::core::anySame<T,float,int,glm::vec2,glm::vec3,glm::vec4,glm::mat4>();
 
     template <UniformArgType T>
     class UniformArg
@@ -80,7 +80,7 @@ namespace ni::flat
 
                 if(size != 1 || type != aimType)
                 {
-                    ni::utils::otherLogger()->critical("uniform cast failed");
+                    ni::core::utilsLogger->critical("uniform cast failed");
                     std::terminate();
                 }
 

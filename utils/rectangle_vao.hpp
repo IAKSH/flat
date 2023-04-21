@@ -2,10 +2,10 @@
 
 #include "vao.hpp"
 #include "color.hpp"
-#include "logger.hpp"
+#include "../core/logger.hpp"
 #include "texture.hpp"
 #include "mass_point.hpp"
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <array>
 #include <type_traits>
 #include <variant>
@@ -27,7 +27,7 @@ namespace ni::utils
     };
 
     template <typename T>
-    concept VerticesComponent = any_same<T,Point,TextureCoord,Color,Red,Green,Blue,Alpha>();
+    concept VerticesComponent = core::anySame<T,Point,TextureCoord,Color,Red,Green,Blue,Alpha>();
 
     template <GLBufferType Type>
     class VertexBuffer : public VertexArrayObj<Type>
@@ -72,7 +72,7 @@ namespace ni::utils
         {
             if(i >= vertices.size())
             {
-                ni::utils::coreLogger()->critical(
+                core::utilsLogger->critical(
                     "VertexBuffer set(..) out of range: vertices.size() = {} but i = {}",vertices.size(),i);
                 std::terminate();
             }
@@ -116,7 +116,7 @@ namespace ni::utils
         {
             if(i >= vertices.size())
             {
-                ni::utils::coreLogger()->critical(
+                core::utilsLogger->critical(
                     "VertexBuffer get(..) out of range: vertices.size() = {} but i = {}",vertices.size(),i);
                 std::terminate();
             }

@@ -1,7 +1,7 @@
 #include "audio.hpp"
-#include "logger.hpp"
+#include "../core/loggers.hpp"
 #include "wav_dec.hpp"
-#include "../utils/template.hpp"
+#include "../core/template.hpp"
 #include <cstdint>
 #include <exception>
 #include <fstream>
@@ -26,7 +26,7 @@ ni::utils::Audio::~Audio()
 {
 	if (bufferID)
 	{
-		utils::coreLogger()->trace("deleting audio buffer with id = {}", bufferID);
+		core::utilsLogger->trace("deleting audio buffer with id = {}", bufferID);
 		alDeleteBuffers(1, &bufferID);
 	}
 }
@@ -45,7 +45,7 @@ void ni::utils::Audio::loadFromFile(std::string_view path)
 		loadFlacFromFile(path);
 	else
 	{
-		ni::utils::coreLogger()->critical("unknow extension type: {} ({})",extension,path);
+		ni::core::utilsLogger->critical("unknow extension type: {} ({})",extension,path);
 		std::terminate();
 	}
 }
@@ -53,7 +53,7 @@ void ni::utils::Audio::loadFromFile(std::string_view path)
 void ni::utils::Audio::loadMp3FromFile(std::string_view path)
 {
 	// TODO
-	ni::utils::coreLogger()->critical("mp3 audio is not supported yet");
+	ni::core::utilsLogger->critical("mp3 audio is not supported yet");
 	std::terminate();
 }
 
@@ -68,7 +68,7 @@ void ni::utils::Audio::loadWavFromFile(std::string_view path)
         format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO8:AL_FORMAT_STEREO8);
     else
     {
-        ni::utils::coreLogger()->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
+        ni::core::utilsLogger->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
         std::terminate();
     }
 
@@ -79,21 +79,21 @@ void ni::utils::Audio::loadWavFromFile(std::string_view path)
 void ni::utils::Audio::loadOggFromFile(std::string_view path)
 {
 	// TODO
-	ni::utils::coreLogger()->critical("ogg audio is not supported yet");
+	ni::core::utilsLogger->critical("ogg audio is not supported yet");
 	std::terminate();
 }
 
 void ni::utils::Audio::loadFlacFromFile(std::string_view path)
 {
 	// TODO
-	ni::utils::coreLogger()->critical("flac audio is not supported yet");
+	ni::core::utilsLogger->critical("flac audio is not supported yet");
 	std::terminate();
 }
 
 void ni::utils::SoundEffect::loadMp3FromFile(std::string_view path)
 {
 	// TODO
-	ni::utils::coreLogger()->critical("mp3 audio is not supported yet");
+	ni::core::utilsLogger->critical("mp3 audio is not supported yet");
 	std::terminate();
 }
 
@@ -108,13 +108,13 @@ void ni::utils::SoundEffect::loadWavFromFile(std::string_view path)
         format = (decoder.getChannelCount() == 1 ? AL_FORMAT_MONO8:AL_FORMAT_STEREO8);
     else
     {
-        ni::utils::coreLogger()->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
+        ni::core::utilsLogger->critical("unsupported bytes per second ({} bits), WAV decoder only handles 8- and 16-bit", decoder.getBytesPerSec());
         std::terminate();
     }
 
 	auto handleFunc = [&decoder,this](auto type)
 	{
-		static_assert(any_same<decltype(type),uint16_t,uint8_t>(),"wrong type");
+		static_assert(core::anySame<decltype(type),uint16_t,uint8_t>(),"wrong type");
 		struct PCMBlock
 		{
 			decltype(type) left;
@@ -143,13 +143,13 @@ void ni::utils::SoundEffect::loadWavFromFile(std::string_view path)
 void ni::utils::SoundEffect::loadOggFromFile(std::string_view path)
 {
 	// TODO
-	ni::utils::coreLogger()->critical("ogg audio is not supported yet");
+	ni::core::utilsLogger->critical("ogg audio is not supported yet");
 	std::terminate();
 }
 
 void ni::utils::SoundEffect::loadFlacFromFile(std::string_view path)
 {
 	// TODO
-	ni::utils::coreLogger()->critical("flac audio is not supported yet");
+	ni::core::utilsLogger->critical("flac audio is not supported yet");
 	std::terminate();
 }

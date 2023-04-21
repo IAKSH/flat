@@ -1,5 +1,5 @@
 #include "application.hpp"
-#include "../utils/logger.hpp"
+#include "loggers.hpp"
 #include <memory>
 #include <exception>
 
@@ -25,7 +25,7 @@ void ni::core::Application::bindInstance()
         instance = this;
     else
 	{
-        utils::coreLogger()->critical("application instance conflict");
+        coreLogger->critical("application instance conflict");
 		std::terminate();
 	}
 }

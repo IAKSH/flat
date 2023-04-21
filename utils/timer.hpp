@@ -1,6 +1,6 @@
 #pragma once
 
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <chrono>
 #include <thread>
 #include <functional>
@@ -28,7 +28,7 @@ namespace ni::utils
 		NanoSeconds getSpanAsNanoSeconds();
 	};
 
-	class Timer : public DisableCopy
+	class Timer : public core::DisableCopy
 	{
 	private:
 		bool shoudPause;

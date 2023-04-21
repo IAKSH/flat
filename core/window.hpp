@@ -1,7 +1,7 @@
 #pragma once
 
 #include "event.hpp"
-#include "../utils/template.hpp"
+#include "template.hpp"
 #include <string>
 #include <functional>
 #include <glad/glad.h>
@@ -10,7 +10,7 @@
 
 namespace ni::core
 {
-    class Window : public utils::DisableCopy
+    class Window : public DisableCopy
 	{
 	private:
 		GLFWwindow* win;

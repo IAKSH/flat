@@ -4,13 +4,13 @@
 #include "window.hpp"
 #include "mixer.hpp"
 #include "event_application.hpp"
-#include "../utils/template.hpp"
+#include "template.hpp"
 #include <deque>
 #include <memory>
 
 namespace ni::core
 {
-    class Application : public utils::DisableCopy
+    class Application : public DisableCopy
     {
     private:
         std::deque<std::unique_ptr<Layer>> layers;

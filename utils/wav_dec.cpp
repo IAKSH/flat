@@ -1,5 +1,5 @@
 #include "wav_dec.hpp"
-#include "logger.hpp"
+#include "../core/loggers.hpp"
 #include <algorithm>
 #include <exception>
 #include <memory>
@@ -15,7 +15,7 @@ ni::utils::WavDecoder::WavDecoder(std::string_view path)
     }
     catch(const std::exception& e)
     {
-        ni::utils::coreLogger()->critical("exception catched in WavDecoder: {}",e.what());
+        core::utilsLogger->critical("exception catched in WavDecoder: {}",e.what());
     }
     std::terminate();
 }

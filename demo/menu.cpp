@@ -1,6 +1,6 @@
 
 #include "menu.hpp"
-#include "../utils/logger.hpp"
+#include "../core/loggers.hpp"
 #include "../utils/format.hpp"
 #include <string>
 #include <sstream>

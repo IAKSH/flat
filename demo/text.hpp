@@ -6,7 +6,7 @@
 #include "../utils/color.hpp"
 #include "../utils/enchased.hpp"
 #include "../utils/camera.hpp"
-#include "../utils/template.hpp"
+#include "../core/template.hpp"
 #include <cstdio>
 #include <string>
 #include <string_view>
@@ -23,12 +23,12 @@ namespace Flat
     using ni::utils::Scale;
     using ni::utils::Point;
     using ni::utils::Camera2D;
-    using ni::utils::any_same;
+    using ni::core::anySame;
 
     template <typename T>
-    concept TextAttrib = any_same<T,Color,Scale,Point,Font,TextRenderer,std::u32string_view,std::u32string>();
+    concept TextAttrib = anySame<T,Color,Scale,Point,Font,TextRenderer,std::u32string_view,std::u32string>();
 
-    class Text : public GameObject, public ::ni::utils::DisableCopy
+    class Text : public GameObject, public ::ni::core::DisableCopy
     {
     protected:
         TextRenderer* ren;

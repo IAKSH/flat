@@ -1,5 +1,5 @@
 #include "mixer.hpp"
-#include "../utils/logger.hpp"
+#include "loggers.hpp"
 #include <exception>
 
 ni::core::Mixer::Mixer()
@@ -21,7 +21,7 @@ void ni::core::Mixer::initialize()
 	ALenum error = alGetError();
 	if (error != AL_NO_ERROR)
 	{
-		utils::coreLogger()->critical("OpenAL error: {}", alGetString(error));
+		coreLogger->critical("OpenAL error: {}", alGetString(error));
 		std::terminate();
 	}
 

@@ -6,7 +6,7 @@
 #include "../utils/enchased.hpp"
 #include "../utils/color.hpp"
 #include "../utils/mass_point.hpp"
-#include "../utils/template.hpp"
+#include "../core/template.hpp"
 #include "shader.hpp"
 #include <string>
 #include <string_view>
@@ -21,10 +21,10 @@ namespace ni::flat
         std::conditional_t<std::is_same_v<T, std::u32string_view>, std::true_type, ContainsU32string_view<Rest...>> {};
 
     template <typename T>
-    concept DrawTextArg = ni::utils::any_same<T,ni::utils::Color,ni::utils::Point,
+    concept DrawTextArg = ::ni::core::anySame<T,ni::utils::Color,ni::utils::Point,
         ni::utils::Point,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
 
-    class TextRenderer : public ::ni::utils::DisableCopy
+    class TextRenderer : public ::ni::core::DisableCopy
     {
         using Font = ::ni::utils::Font;
         using Shader = ::ni::flat::Shader;

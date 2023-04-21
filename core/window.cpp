@@ -1,5 +1,5 @@
 #include "window.hpp"
-#include "../utils/logger.hpp"
+#include "loggers.hpp"
 #include "event_keyboard.hpp"
 #include "event_window.hpp"
 #include "event_mouse.hpp"
@@ -9,11 +9,11 @@
 ni::core::Window::Window(std::string_view name)
     : winName(name)
 {
-    utils::coreLogger()->trace("creating window \"{}\"", name.data());
+    coreLogger->trace("creating window \"{}\"", name.data());
 
     if (!backendsInitialized)
     {
-        utils::coreLogger()->trace("Window backends uninitialized, initializing");
+        coreLogger->trace("Window backends uninitialized, initializing");
         initialize();
         backendsInitialized = true;
     }
@@ -29,7 +29,7 @@ ni::core::Window::~Window()
 GLFWwindow* ni::core::Window::getGLFWWindow()
 {
 	if (!win)
-        utils::coreLogger()->critical("trying to get an null GLFWWindow named {}", winName);
+        coreLogger->critical("trying to get an null GLFWWindow named {}", winName);
 	return win;
 }
 
@@ -126,7 +126,7 @@ void ni::core::Window::initialize()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     glfwSetErrorCallback([](int error, const char* description) {
-        utils::coreLogger()->critical("GLFW Error {}: {}", error, description);
+        coreLogger->critical("GLFW Error {}: {}", error, description);
         std::terminate();
         });
 
@@ -134,14 +134,14 @@ void ni::core::Window::initialize()
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        utils::coreLogger()->critical("Failed to initialize GLAD");
+        coreLogger->critical("Failed to initialize GLAD");
         std::terminate();
     }
 
-    utils::coreLogger()->info("OpenGL Info:");
-    utils::coreLogger()->info("  Vendor: {}", (const char*)glGetString(GL_VENDOR));
-    utils::coreLogger()->info("  Renderer: {}", (const char*)glGetString(GL_RENDERER));
-    utils::coreLogger()->info("  Version: {}", (const char*)glGetString(GL_VERSION));
+    coreLogger->info("OpenGL Info:");
+    coreLogger->info("  Vendor: {}", (const char*)glGetString(GL_VENDOR));
+    coreLogger->info("  Renderer: {}", (const char*)glGetString(GL_RENDERER));
+    coreLogger->info("  Version: {}", (const char*)glGetString(GL_VERSION));
 
     glfwSetWindowUserPointer(win, this);
     glfwSetWindowSizeCallback(win, [](GLFWwindow* window, int width, int height) 

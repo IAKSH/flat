@@ -42,7 +42,7 @@ void ni::flat::TextRenderer::_drawText()
 {
 	if(!font)
 	{
-		ni::utils::flatLogger()->critical("no font given to TextRenderer");
+		ni::core::otherLogger->critical("no font given to TextRenderer");
 		std::terminate();
 	}
 
