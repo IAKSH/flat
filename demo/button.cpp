@@ -1,5 +1,4 @@
 #include "button.hpp"
-
 #include "../core/event_keyboard.hpp"
 #include <string_view>
 

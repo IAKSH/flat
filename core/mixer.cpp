@@ -1,8 +1,6 @@
 #include "mixer.hpp"
-
-#include <exception>
-
 #include "../utils/logger.hpp"
+#include <exception>
 
 ni::core::Mixer::Mixer()
 {

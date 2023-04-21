@@ -11,4 +11,11 @@ namespace ni::utils
         else
             return (std::same_as<std::remove_reference_t<T>, Args> || ...) || any_same<Args...>();
     }
+
+    struct DisableCopy
+    {
+        DisableCopy() = default;
+        DisableCopy(DisableCopy&) = delete;
+        ~DisableCopy() = default;
+    };
 }

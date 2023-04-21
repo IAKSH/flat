@@ -1,13 +1,12 @@
 #pragma once
 
-#include <deque>
-#include <memory>
-
 #include "layer.hpp"
 #include "window.hpp"
 #include "mixer.hpp"
 #include "event_application.hpp"
-#include "../utils/disable_copy.hpp"
+#include "../utils/template.hpp"
+#include <deque>
+#include <memory>
 
 namespace ni::core
 {

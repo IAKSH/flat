@@ -1,10 +1,8 @@
 #pragma once
 
-#include <string_view>
-
-#include "disable_copy.hpp"
-
+#include "template.hpp"
 #include <glad/glad.h>
+#include <string_view>
 
 namespace ni::utils
 {

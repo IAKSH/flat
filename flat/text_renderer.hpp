@@ -1,17 +1,15 @@
 #pragma once
 
-#include <string>
-#include <string_view>
-
 #include "../utils/font.hpp"
 #include "../utils/rectangle_vao.hpp"
 #include "../utils/camera.hpp"
-#include "../utils/any_same.hpp"
 #include "../utils/enchased.hpp"
 #include "../utils/color.hpp"
 #include "../utils/mass_point.hpp"
-#include "../utils/disable_copy.hpp"
+#include "../utils/template.hpp"
 #include "shader.hpp"
+#include <string>
+#include <string_view>
 
 namespace ni::flat
 {

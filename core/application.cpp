@@ -1,9 +1,7 @@
 #include "application.hpp"
-
+#include "../utils/logger.hpp"
 #include <memory>
 #include <exception>
-
-#include "../utils/logger.hpp"
 
 namespace ni::core
 {

@@ -1,3 +1,5 @@
+#include "font.hpp"
+#include "logger.hpp"
 #include <deque>
 #include <exception>
 #include <ios>
@@ -8,9 +10,6 @@
 #include <string>
 #include <string_view>
 #include <fstream>
-
-#include "font.hpp"
-#include "logger.hpp"
 
 namespace ni::utils
 {

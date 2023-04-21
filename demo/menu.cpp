@@ -1,10 +1,10 @@
+
 #include "menu.hpp"
-#include "../utils/unicode.hpp"
 #include "../utils/logger.hpp"
+#include "../utils/format.hpp"
 #include <string>
 #include <sstream>
 #include <string_view>
-
 #include <GLFW/glfw3.h>
 
 Flat::MenuLayer::MenuLayer()

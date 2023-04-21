@@ -1,10 +1,9 @@
 #pragma once
 
+#include "template.hpp"
 #include <chrono>
 #include <thread>
 #include <functional>
-
-#include "disable_copy.hpp"
 
 namespace ni::utils
 {

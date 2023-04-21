@@ -1,5 +1,4 @@
 #include "logger.hpp"
-
 #include <exception>
 #include <iostream>
 

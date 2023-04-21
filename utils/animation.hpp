@@ -1,11 +1,11 @@
 #pragma once
 
+#include "texture.hpp"
+#include "timer.hpp"
+#include "template.hpp"
 #include <array>
 #include <memory>
 #include <iterator>
-#include "texture.hpp"
-#include "timer.hpp"
-#include "disable_copy.hpp"
 
 namespace ni::utils
 {

@@ -1,19 +1,16 @@
 #pragma once
 
-
+#include "../utils/shader.hpp"
+#include "../utils/logger.hpp"
+#include "../utils/template.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <exception>
 #include <memory>
 #include <functional>
 #include <type_traits>
 #include <string_view>
-
-#include "../utils/shader.hpp"
-#include "../utils/logger.hpp"
-#include "../utils/any_same.hpp"
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace ni::flat
 {

@@ -1,5 +1,7 @@
 #include "audio.hpp"
-
+#include "logger.hpp"
+#include "wav_dec.hpp"
+#include "../utils/template.hpp"
 #include <cstdint>
 #include <exception>
 #include <fstream>
@@ -7,10 +9,6 @@
 #include <memory>
 #include <string_view>
 #include <type_traits>
-
-#include "logger.hpp"
-#include "wav_dec.hpp"
-#include "any_same.hpp"
 
 ni::utils::Audio::Audio()
 	: bufferID(0)

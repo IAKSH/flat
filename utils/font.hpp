@@ -1,17 +1,15 @@
 #pragma once
 
+#include "texture.hpp"
+#include "shader.hpp"
+#include "template.hpp"  
+#include <glad/glad.h>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 #include <array>
 #include <deque>
 #include <memory>
 #include <string_view>
-
-#include "texture.hpp"
-#include "shader.hpp"
-#include "disable_copy.hpp"
-
-#include <glad/glad.h>
-#include <ft2build.h>
-#include FT_FREETYPE_H  
 
 namespace ni::utils
 {

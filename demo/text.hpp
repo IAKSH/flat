@@ -5,9 +5,8 @@
 #include "../utils/gameobj.hpp"
 #include "../utils/color.hpp"
 #include "../utils/enchased.hpp"
-#include "../utils/any_same.hpp"
 #include "../utils/camera.hpp"
-#include "../utils/disable_copy.hpp"
+#include "../utils/template.hpp"
 #include <cstdio>
 #include <string>
 #include <string_view>

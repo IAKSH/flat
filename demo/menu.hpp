@@ -9,7 +9,6 @@
 #include "../utils/shader.hpp"
 #include "../utils/rectangle_vao.hpp"
 #include "../flat/text_renderer.hpp"
-
 #include "text.hpp"
 #include "button.hpp"
 #include <string_view>

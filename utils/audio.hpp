@@ -1,11 +1,9 @@
 #pragma once
 
-#include "disable_copy.hpp"
-
-#include <string>
-
+#include "template.hpp"
 #include <AL/al.h>
 #include <AL/alc.h>
+#include <string>
 
 namespace ni::utils
 {

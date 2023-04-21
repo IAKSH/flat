@@ -1,13 +1,11 @@
 #pragma once
 
-#include <memory>
-#include <string>
-
-#include "disable_copy.hpp"
-
+#include "template.hpp"
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include <memory>
+#include <string>
 
 namespace ni::utils
 {

@@ -1,9 +1,8 @@
 #pragma once
 
-#include <string>
-
 #include "event.hpp"
-#include "../utils/disable_copy.hpp"
+#include "../utils/template.hpp"
+#include <string>
 
 namespace ni::core
 {

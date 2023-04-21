@@ -5,8 +5,7 @@
 #include "logger.hpp"
 #include "texture.hpp"
 #include "mass_point.hpp"
-#include "any_same.hpp"
-
+#include "template.hpp"
 #include <array>
 #include <type_traits>
 #include <variant>

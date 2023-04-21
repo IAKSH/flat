@@ -1,12 +1,10 @@
 #include "text_renderer.hpp"
 #include "../core/window.hpp"
 #include "GLFW/glfw3.h"
-#include "glm/fwd.hpp"
-
-#include <exception>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <exception>
 #include <string_view>
 
 ni::flat::TextRenderer::TextRenderer()

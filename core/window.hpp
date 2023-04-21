@@ -1,13 +1,12 @@
 #pragma once
 
+#include "event.hpp"
+#include "../utils/template.hpp"
 #include <string>
 #include <functional>
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "event.hpp"
-#include "../utils/disable_copy.hpp"
 
 namespace ni::core
 {
