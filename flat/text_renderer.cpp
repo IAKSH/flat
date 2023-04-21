@@ -1,5 +1,5 @@
 #include "text_renderer.hpp"
-#include "../core/window.hpp"
+#include "../core/application.hpp"
 #include "GLFW/glfw3.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -33,7 +33,7 @@ void ni::flat::TextRenderer::initialize()
 	vertices[34] = 0.0f;
 	vertices[35] = 1.0f;
 
-	auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
+	auto win = reinterpret_cast<core::WindowBackends*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
 	viewWidth = win->getWidth();
 	viewHeight = win->getHeight();
 }

@@ -113,7 +113,7 @@ void Flat::MenuLayer::onEvent(Event& e)
     	switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode())
     	{
     		case ni::core::KeyCode::ESCAPE:
-    			ni::core::Application::getInstance()->exit();
+    			ni::core::Application::getInstance().exit();
     			break;
 
             default:

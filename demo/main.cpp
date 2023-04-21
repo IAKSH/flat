@@ -2,7 +2,6 @@
 
 int main()
 {
-    ni::core::Application app;
-	app.pushLayer(std::make_unique<Flat::MenuLayer>());
-	app.run();
+	ni::core::Application::getInstance().pushLayer(std::make_unique<Flat::MenuLayer>());
+	ni::core::Application::getInstance().run();
 }
