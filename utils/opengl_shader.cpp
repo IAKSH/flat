@@ -1,5 +1,3 @@
-#pragma once
-
 #include "opengl_shader.hpp"
 
 ni::utils::ShaderProgram::ShaderProgram(std::string_view vshader,std::string_view fshader)
