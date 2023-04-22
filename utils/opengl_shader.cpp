@@ -1,16 +1,16 @@
 #include "opengl_shader.hpp"
 
-ni::utils::ShaderProgram::ShaderProgram(std::string_view vshader,std::string_view fshader)
+ni::utils::opengl::ShaderProgram::ShaderProgram(std::string_view vshader,std::string_view fshader)
 {
     loadFromGLSL(vshader,fshader);
 }
 
-ni::utils::ShaderProgram::~ShaderProgram()
+ni::utils::opengl::ShaderProgram::~ShaderProgram()
 {
     glDeleteProgram(programID);
 }
 
-GLuint ni::utils::ShaderProgram::compileVertexShader(std::string_view code)
+GLuint ni::utils::opengl::ShaderProgram::compileVertexShader(std::string_view code)
 {
     const char* source = code.data();
     uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -20,7 +20,7 @@ GLuint ni::utils::ShaderProgram::compileVertexShader(std::string_view code)
     return vertexShader;
 }
 
-GLuint ni::utils::ShaderProgram::compileFragmentShader(std::string_view code)
+GLuint ni::utils::opengl::ShaderProgram::compileFragmentShader(std::string_view code)
 {
     const char* source = code.data();
     uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -30,7 +30,7 @@ GLuint ni::utils::ShaderProgram::compileFragmentShader(std::string_view code)
     return fragmentShader;
 }
 
-GLuint ni::utils::ShaderProgram::linkShaderProgram(const GLuint& vshaderID,const GLuint& fshaderID)
+GLuint ni::utils::opengl::ShaderProgram::linkShaderProgram(const GLuint& vshaderID,const GLuint& fshaderID)
 {
     GLuint shaderProgramID = glCreateProgram();
     glAttachShader(shaderProgramID, vshaderID);
@@ -40,7 +40,7 @@ GLuint ni::utils::ShaderProgram::linkShaderProgram(const GLuint& vshaderID,const
     return shaderProgramID;
 }
 
-GLuint ni::utils::ShaderProgram::tryGetUniformLocation(std::string_view uniform)
+GLuint ni::utils::opengl::ShaderProgram::tryGetUniformLocation(std::string_view uniform)
 {
     GLuint location = glGetUniformLocation(programID,uniform.data());
     //if(!location)
@@ -52,7 +52,7 @@ GLuint ni::utils::ShaderProgram::tryGetUniformLocation(std::string_view uniform)
     return location;
 }
 
-void ni::utils::ShaderProgram::checkVertexShader(GLuint vshaderID)
+void ni::utils::opengl::ShaderProgram::checkVertexShader(GLuint vshaderID)
 {
     int success;
     char infoLog[512];
@@ -65,7 +65,7 @@ void ni::utils::ShaderProgram::checkVertexShader(GLuint vshaderID)
     }
 }
 
-void ni::utils::ShaderProgram::checkFragmentShader(GLuint fshaderID)
+void ni::utils::opengl::ShaderProgram::checkFragmentShader(GLuint fshaderID)
 {
     int success;
     char infoLog[512];
@@ -78,7 +78,7 @@ void ni::utils::ShaderProgram::checkFragmentShader(GLuint fshaderID)
     }
 }
 
-void ni::utils::ShaderProgram::loadFromGLSL(std::string_view vshader,std::string_view fshader)
+void ni::utils::opengl::ShaderProgram::loadFromGLSL(std::string_view vshader,std::string_view fshader)
 {
     GLuint vshaderID = compileVertexShader(vshader);
     checkVertexShader(vshaderID);

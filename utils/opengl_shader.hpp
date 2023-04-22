@@ -9,7 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glad/glad.h>
 
-namespace ni::utils
+namespace ni::utils::opengl
 {
     template <typename T>
     concept UniformType = ni::core::anySame<T,float,int,glm::vec2,glm::vec3,glm::vec4,glm::mat4>();

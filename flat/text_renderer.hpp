@@ -27,7 +27,7 @@ namespace ni::flat
     class TextRenderer : public ::ni::core::DisableCopy
     {
         using Font = ::ni::utils::Font;
-        using ShaderProgram = ::ni::utils::ShaderProgram;
+        using ShaderProgram = ::ni::utils::opengl::ShaderProgram;
         using CharTexture = ::ni::utils::CharTexture;
         using Camera = ::ni::utils::Camera2D;
         using GLBufferType = ::ni::utils::GLBufferType;

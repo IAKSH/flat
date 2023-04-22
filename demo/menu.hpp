@@ -23,7 +23,7 @@ namespace Flat
     using ni::utils::GLBufferType;
     using ni::utils::VertexBuffer;
     using ni::utils::TimeRecorder;
-    using ni::utils::ShaderProgram;
+    using ni::utils::opengl::ShaderProgram;
     using ni::flat::TextRenderer;
 
     inline static const char* vshader =

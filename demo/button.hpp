@@ -19,7 +19,7 @@ namespace Flat
     using ni::utils::Camera2D;
     using ni::utils::TimeRecorder;
     using ni::utils::MilliSeconds;
-    using ni::utils::ShaderProgram;
+    using ni::utils::opengl::ShaderProgram;
     using ni::flat::TextRenderer;
 
     class Button : public ni::utils::GameObject
