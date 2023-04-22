@@ -6,7 +6,7 @@
 #include "../utils/camera.hpp"
 #include "../utils/font.hpp"
 #include "../utils/timer.hpp"
-#include "../utils/shader.hpp"
+#include "../utils/opengl_shader.hpp"
 #include "../utils/rectangle_vao.hpp"
 #include "../flat/text_renderer.hpp"
 #include "text.hpp"
@@ -23,8 +23,7 @@ namespace Flat
     using ni::utils::GLBufferType;
     using ni::utils::VertexBuffer;
     using ni::utils::TimeRecorder;
-    using ni::flat::Shader;
-    using ni::flat::UniformArg;
+    using ni::utils::ShaderProgram;
     using ni::flat::TextRenderer;
 
     inline static const char* vshader =
@@ -58,7 +57,7 @@ namespace Flat
     class MenuLayer : public ni::core::Layer
     {
     private:
-        Shader shader;
+        ShaderProgram shader;
         Font unifont48;
         Font unifont16;
         TextRenderer texRen;

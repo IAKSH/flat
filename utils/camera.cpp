@@ -71,7 +71,7 @@ void ni::utils::Camera3D::update()
 	up = glm::normalize(glm::cross(right, front));
 }
 
-glm::mat4 const ni::utils::Camera2D::getTranslateMatrix() const
+glm::mat4 ni::utils::Camera2D::getTranslateMatrix() const
 {
 	GLFWwindow* win = glfwGetCurrentContext();
 	int w, h;

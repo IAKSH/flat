@@ -7,7 +7,7 @@
 #include "../utils/color.hpp"
 #include "../utils/mass_point.hpp"
 #include "../core/template.hpp"
-#include "shader.hpp"
+#include "../utils/opengl_shader.hpp"
 #include <string>
 #include <string_view>
 
@@ -27,7 +27,7 @@ namespace ni::flat
     class TextRenderer : public ::ni::core::DisableCopy
     {
         using Font = ::ni::utils::Font;
-        using Shader = ::ni::flat::Shader;
+        using ShaderProgram = ::ni::utils::ShaderProgram;
         using CharTexture = ::ni::utils::CharTexture;
         using Camera = ::ni::utils::Camera2D;
         using GLBufferType = ::ni::utils::GLBufferType;
@@ -42,12 +42,12 @@ namespace ni::flat
         float viewWidth,viewHeight;
         Font* font;
         Camera* cam;
-        Shader shader;
+        ShaderProgram shader;
         VertexBuffer<GLBufferType::Dynamic> vao;
         std::u32string str;
         std::array<float,36> vertices;
         std::array<unsigned int, 6> indices;
-        const char* const vshaderSource =
+        static constexpr std::string_view const vshaderSource =
             "#version 330 core\n"
             "layout (location = 0) in vec3 aPos;\n"
             "layout (location = 1) in vec4 aColor;\n"
@@ -63,7 +63,7 @@ namespace ni::flat
             "    aColorOut = aColor;\n"
             "    aTexCoordOut = vec2(aTexCoord.x, 1.0 - aTexCoord.y);\n"
             "}\0";
-        const char* const fshaderSource =
+        static constexpr std::string_view const fshaderSource =
             "#version 330 core\n"
             "uniform sampler2D texture0;\n"
             "in vec2 aTexCoordOut;\n"

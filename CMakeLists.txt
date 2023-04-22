@@ -50,8 +50,8 @@ target_sources(flat PRIVATE
     "core/opengl_window.cpp"
     "utils/audio.hpp"
     "utils/audio.cpp"
-    "utils/shader.hpp"
-    "utils/shader.cpp"
+    "utils/opengl_shader.hpp"
+    "utils/opengl_shader.cpp"
     "utils/texture.hpp"
     "utils/texture.cpp"
     "utils/timer.hpp"
@@ -76,7 +76,6 @@ target_sources(flat PRIVATE
     "flat/gjk.cpp"
     "flat/text_renderer.hpp"
     "flat/text_renderer.cpp"
-    "flat/shader.hpp"
 )
 
 add_executable(flat_test "main.cpp" "demo_obj.hpp" "text.hpp")

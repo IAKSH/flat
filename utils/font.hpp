@@ -1,7 +1,6 @@
 #pragma once
 
 #include "texture.hpp"
-#include "shader.hpp"
 #include "../core/template.hpp"  
 #include <glad/glad.h>
 #include <ft2build.h>

@@ -8,15 +8,14 @@
 #include <string_view>
 
 ni::flat::TextRenderer::TextRenderer()
-	: font{nullptr},cam{nullptr},x{0.0f},y{0.0f},scale{1.0f}
+	: font{nullptr},cam{nullptr},x{0.0f},y{0.0f},scale{1.0f},shader(vshaderSource,fshaderSource)
 {
     initialize();
 }
 
 void ni::flat::TextRenderer::initialize()
 {
-	shader.loadFromGLSL(vshaderSource,fshaderSource);
-    glUniform1i(glGetUniformLocation(shader.getShaderID(), "text"), 0);
+	shader.setUniform("text",0);
 
     indices =
     {
@@ -65,14 +64,14 @@ void ni::flat::TextRenderer::_drawText()
 		vertices[27] = xpos;
 		vertices[28] = ypos + h;
 
-    	glUseProgram(shader.getShaderID());
+    	shader.use();
 
 		if(cam)
-			shader["camTrans"] = UniformArg(cam->getTranslateMatrix());
+			shader.setUniform("camTrans",cam->getTranslateMatrix());
 		else 
 		{
 			glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, viewWidth, 0.0f, viewHeight, -1.0f, 1.0f);
-			shader["camTrans"] = UniformArg(projection);
+			shader.setUniform("camTrans",projection);
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());

@@ -8,15 +8,14 @@
 #include <GLFW/glfw3.h>
 
 Flat::MenuLayer::MenuLayer()
-    : Layer("menu")
+    : Layer("menu"),shader(vshader,fshader)
 {
 }
 
 void Flat::MenuLayer::onAttach()
 {
     // load shader
-    shader.loadFromGLSL(vshader,fshader);
-    glUniform1i(glGetUniformLocation(shader, "texture0"), 0);
+    shader.activeTexture("texture0",0);
 
     // load textures
     background.loadFromFile("images/wire.png");
@@ -84,14 +83,14 @@ void Flat::MenuLayer::onRender()
     glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shader);
+    shader.use();
 
     glm::mat4 trans(1.0f);
 	trans *= glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 	trans *= glm::scale(glm::mat4(1.0f), glm::vec3(400.0f, 300.0f, 1.0f));
 	trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-    shader["transform"] = UniformArg(trans);
-    shader["camTrans"] = UniformArg(cam.getTranslateMatrix());
+    shader.setUniform("transform",trans);
+    shader.setUniform("camTrans",cam.getTranslateMatrix());
 
     glBindTexture(GL_TEXTURE_2D,background.getTextureID());
     glBindVertexArray(vao.getVAO());
