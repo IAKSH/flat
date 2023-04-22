@@ -2,9 +2,9 @@
 #include "../utils/gameobj.hpp"
 #include "../utils/texture.hpp"
 #include "../utils/timer.hpp"
-#include "../utils/rectangle_vao.hpp"
 #include "../flat/text_renderer.hpp"
 #include "../utils/opengl_shader.hpp"
+#include "../utils/opengl_vao.hpp"
 #include "text.hpp"
 #include <functional>
 #include <string>
@@ -12,14 +12,14 @@
 
 namespace Flat
 {
-    using ni::utils::VertexBuffer;
-    using ni::utils::GLBufferType;
     using ni::utils::Texture;
     using ni::utils::Font;
     using ni::utils::Camera2D;
     using ni::utils::TimeRecorder;
     using ni::utils::MilliSeconds;
     using ni::utils::opengl::ShaderProgram;
+    using ni::utils::opengl::GLBufferType;
+    using ni::utils::opengl::RectVertexArray;
     using ni::flat::TextRenderer;
 
     class Button : public ni::utils::GameObject
@@ -31,7 +31,7 @@ namespace Flat
         TextRenderer& ren;
         Camera2D& cam;
         Font& font;
-        VertexBuffer<GLBufferType::Static> vao;
+        RectVertexArray<GLBufferType::Static> vao;
         std::function<void(void)> callback;
         Text text{ren,font,U""};
         inline static Texture blackTex;

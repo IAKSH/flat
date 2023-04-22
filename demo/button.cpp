@@ -1,5 +1,6 @@
 #include "button.hpp"
 #include "../core/event_keyboard.hpp"
+#include <array>
 #include <string_view>
 
 Flat::Button::Button(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera2D& cam,Font& font,std::u32string_view str,std::function<void(void)> callback)
@@ -11,7 +12,7 @@ Flat::Button::Button(const float& w,const float h,ShaderProgram& shader,TextRend
 void Flat::Button::onAttach()
 {
     for(int i = 0;i < 4;i++)
-        vao.set(i,ni::utils::Color(03.0f,0.3f,0.1f,0.55f));
+        vao.setColor(i,std::array<float,4>{03.0f,0.3f,0.1f,0.55f});
 
     if(!blackTex.getTextureID())
         blackTex.loadFromFile("images/black.png");

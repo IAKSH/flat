@@ -7,7 +7,7 @@
 #include "../utils/font.hpp"
 #include "../utils/timer.hpp"
 #include "../utils/opengl_shader.hpp"
-#include "../utils/rectangle_vao.hpp"
+#include "../utils/opengl_vao.hpp"
 #include "../flat/text_renderer.hpp"
 #include "text.hpp"
 #include "button.hpp"
@@ -20,8 +20,8 @@ namespace Flat
     using ni::utils::Font;
     using ni::utils::Color;
     using ni::utils::Texture;
-    using ni::utils::GLBufferType;
-    using ni::utils::VertexBuffer;
+    using ni::utils::opengl::GLBufferType;
+    using ni::utils::opengl::RectVertexArray;
     using ni::utils::TimeRecorder;
     using ni::utils::opengl::ShaderProgram;
     using ni::flat::TextRenderer;
@@ -66,7 +66,7 @@ namespace Flat
         Texture selectIcon;
         TimeRecorder recoder;
         TimeRecorder fpsRecoder;
-        VertexBuffer<ni::utils::GLBufferType::Dynamic> vao;
+        RectVertexArray<GLBufferType::Dynamic> vao;
         RollingText gameTitle{texRen,unifont16,MilliSeconds(100),U"Flat: a brief demo of engineNI's FLAT framework"};
         RollingText info0{texRen,unifont16,MilliSeconds(150),U"这是我在使用C++（几乎）从零构建一个2D甚至3D游戏的实验，它可以说是一堆实验特性的集合。"};
         RollingText info1{texRen,unifont16,MilliSeconds(175),U"FLAT framework是engineNI的基础，也是实际上构成游戏的部分，它是一套能够重复利用的代码。"};

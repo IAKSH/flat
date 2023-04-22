@@ -66,10 +66,10 @@ void Flat::MenuLayer::onUpdate()
     std::u32string buffer = ni::utils::to_u32string(1000.0f / fpsRecoder.getSpanAsMilliSeconds().count());
     fpsInfo.set(buffer);
 
-    vao.set(0,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 5000.0f),0,0,0.25f));
-    vao.set(1,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 2000.0f),0,0,0.8f));
-    vao.set(2,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 4000.5f),0,0,0.75f));
-    vao.set(3,ni::utils::Color(sin(recoder.getSpanAsMilliSeconds().count()  / 10000.0f),0,0,0.4f));
+    vao.setColor(0,std::array<float,4>{sin(recoder.getSpanAsMilliSeconds().count()  / 5000.0f),0.0f,0.0f,0.25f});
+    vao.setColor(1,std::array<float,4>{sin(recoder.getSpanAsMilliSeconds().count()  / 2000.0f),0.0f,0.0f,0.8f});
+    vao.setColor(2,std::array<float,4>{sin(recoder.getSpanAsMilliSeconds().count()  / 4000.5f),0.0f,0.0f,0.75f});
+    vao.setColor(3,std::array<float,4>{sin(recoder.getSpanAsMilliSeconds().count()  / 10000.0f),0.0f,0.0f,0.4f});
 
     // button
     startButton.onUpdate();

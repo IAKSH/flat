@@ -1,13 +1,13 @@
 #pragma once
 
 #include "../utils/font.hpp"
-#include "../utils/rectangle_vao.hpp"
 #include "../utils/camera.hpp"
 #include "../utils/enchased.hpp"
 #include "../utils/color.hpp"
 #include "../utils/mass_point.hpp"
 #include "../core/template.hpp"
 #include "../utils/opengl_shader.hpp"
+#include "../utils/opengl_vao.hpp"
 #include <string>
 #include <string_view>
 
@@ -30,12 +30,12 @@ namespace ni::flat
         using ShaderProgram = ::ni::utils::opengl::ShaderProgram;
         using CharTexture = ::ni::utils::CharTexture;
         using Camera = ::ni::utils::Camera2D;
-        using GLBufferType = ::ni::utils::GLBufferType;
+        using GLBufferType = ::ni::utils::opengl::GLBufferType;
         using Color = ::ni::utils::Color;
         using Point = ::ni::utils::Point;
         using Scale = ::ni::utils::Scale;
         template <GLBufferType T>
-        using VertexBuffer = ::ni::utils::VertexBuffer<T>;
+        using RectVertexArray = ::ni::utils::opengl::RectVertexArray<T>;
 
     private:
         float x,y,scale;
@@ -43,7 +43,7 @@ namespace ni::flat
         Font* font;
         Camera* cam;
         ShaderProgram shader;
-        VertexBuffer<GLBufferType::Dynamic> vao;
+        RectVertexArray<GLBufferType::Dynamic> vao;
         std::u32string str;
         std::array<float,36> vertices;
         std::array<unsigned int, 6> indices;
