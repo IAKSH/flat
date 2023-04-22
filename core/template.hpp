@@ -4,7 +4,8 @@
 
 namespace ni::core
 {
-    template <typename T, typename... Args> constexpr bool anySame()
+    template <typename T, typename... Args>
+    constexpr bool anySame()
     {
         if constexpr (sizeof...(Args) == 0)
             return false;
