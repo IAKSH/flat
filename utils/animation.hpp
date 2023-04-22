@@ -2,7 +2,7 @@
 
 #include "texture.hpp"
 #include "timer.hpp"
-#include "template.hpp"
+#include "../core/template.hpp"
 #include <array>
 #include <memory>
 #include <iterator>
@@ -10,7 +10,7 @@
 namespace ni::utils
 {
     template <size_t texturesLen>
-    class Animation : public DisableCopy
+    class Animation : public core::DisableCopy
     {
     private:
         std::array<std::unique_ptr<ni::utils::Texture>,texturesLen> textures;
