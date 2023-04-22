@@ -1,9 +1,17 @@
 #pragma once
 
 #include <concepts>
+#include <type_traits>
 
 namespace ni::core
 {
+    template <typename T,typename U>
+    constexpr bool isSame()
+    {
+        using Type = std::remove_cvref_t<T>;
+        return std::is_same<Type,U>();
+    }
+
     template <typename T, typename... Args>
     constexpr bool anySame()
     {
