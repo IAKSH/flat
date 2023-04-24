@@ -18,11 +18,11 @@ namespace Flat
     using ni::core::Event;
     using ni::utils::Camera2D;
     using ni::utils::Font;
-    using ni::utils::Color;
     using ni::utils::opengl::GLBufferType;
     using ni::utils::opengl::RectVertexArray;
     using ni::utils::TimeRecorder;
     using ni::utils::opengl::ShaderProgram;
+    using ni::flat::Color;
     using ni::flat::TextRenderer;
     using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
 

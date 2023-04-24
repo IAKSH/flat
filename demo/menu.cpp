@@ -38,20 +38,20 @@ void Flat::MenuLayer::onAttach()
 	glActiveTexture(GL_TEXTURE0);
 
     // move game title
-    gameTitle.setPosY(550.0f);
-    gameTitle.setPosZ(0.1f);
-    info0.setPosY(525.0f);
-    info0.setPosZ(0.1f);
-    info1.setPosY(500.0f);
-    info1.setPosZ(0.1f);
+    gameTitle.setPositionY(550.0f);
+    gameTitle.setPositionZ(0.1f);
+    info0.setPositionY(525.0f);
+    info0.setPositionZ(0.1f);
+    info1.setPositionY(500.0f);
+    info1.setPositionZ(0.1f);
     fpsInfo.set(Point(0.0f,475.0f,0.1f));
     fpsInfo.set(Color(1.0f,0.3f,0.1f,1.0f));
 
     // move quit button
     startButton.active();
-    startButton.setPosX(175.0f);
-    startButton.setPosY(50.0f);
-    startButton.setPosZ(0.2f);
+    startButton.setPositionX(175.0f);
+    startButton.setPositionY(50.0f);
+    startButton.setPositionZ(0.2f);
 
     // reset v-sync
     //glfwSwapInterval(3);

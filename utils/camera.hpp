@@ -1,13 +1,13 @@
 #pragma once
 
-#include "mass_point.hpp"
+#include "physics.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace ni::utils
 {
-    class Camera2D : public MassPoint
+    class Camera2D : public Point
     {
     public:
         Camera2D() = default;

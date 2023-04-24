@@ -3,8 +3,6 @@
 #include "../flat/text_renderer.hpp"
 #include "../utils/timer.hpp"
 #include "../utils/gameobj.hpp"
-#include "../utils/color.hpp"
-#include "../utils/enchased.hpp"
 #include "../utils/camera.hpp"
 #include "../core/template.hpp"
 #include <cstdio>
@@ -19,8 +17,8 @@ namespace Flat
     using ni::utils::MilliSeconds;
     using ni::utils::Font;
     using ni::utils::GameObject;
-    using ni::utils::Color;
-    using ni::utils::Scale;
+    using ni::flat::Color;
+    using ni::flat::Scale;
     using ni::utils::Point;
     using ni::utils::Camera2D;
     using ni::core::anySame;
@@ -60,9 +58,9 @@ namespace Flat
             else if constexpr(std::is_same_v<U,Point>)
             {
                 const Point& p = t;
-                setPosX(p.getPosX());
-                setPosY(p.getPosY());
-                setPosZ(p.getPosZ());
+                setPositionX(p.getPositionX());
+                setPositionY(p.getPositionY());
+                setPositionZ(p.getPositionZ());
             }
             else if constexpr(std::is_same_v<U,Scale>)
                 scale = t;
@@ -111,7 +109,7 @@ namespace Flat
 
         virtual void onRender() override
         {
-            ren->drawText(str,static_cast<Point>(*this),
+            ren->drawText(str,static_cast<Point&>(*this),
 				color,scale,font,cam);
         }
 
@@ -145,8 +143,7 @@ namespace Flat
             }
 
             std::u32string_view currentStr{std::begin(str),std::begin(str) + index};
-            ren->drawText(currentStr,static_cast<Point>(*this),
-				color,scale,font,cam);
+            ren->drawText(currentStr,static_cast<Point&>(*this),color,scale,font,cam);
         }
     };
 }

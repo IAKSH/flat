@@ -1,10 +1,10 @@
 #pragma once
 
+#include "color.hpp"
+#include "scale.hpp"
 #include "../utils/font.hpp"
 #include "../utils/camera.hpp"
-#include "../utils/enchased.hpp"
-#include "../utils/color.hpp"
-#include "../utils/mass_point.hpp"
+#include "../utils/physics.hpp"
 #include "../core/template.hpp"
 #include "../utils/opengl_shader.hpp"
 #include "../utils/opengl_vao.hpp"
@@ -21,7 +21,7 @@ namespace ni::flat
         std::conditional_t<std::is_same_v<T, std::u32string_view>, std::true_type, ContainsU32string_view<Rest...>> {};
 
     template <typename T>
-    concept DrawTextArg = ::ni::core::anySame<T,ni::utils::Color,ni::utils::Point,
+    concept DrawTextArg = ::ni::core::anySame<T,Color,ni::utils::Point,
         ni::utils::Point,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
 
     class TextRenderer : public ::ni::core::DisableCopy
@@ -31,9 +31,7 @@ namespace ni::flat
         using CharTexture = ::ni::utils::CharTexture;
         using Camera = ::ni::utils::Camera2D;
         using GLBufferType = ::ni::utils::opengl::GLBufferType;
-        using Color = ::ni::utils::Color;
         using Point = ::ni::utils::Point;
-        using Scale = ::ni::utils::Scale;
         template <GLBufferType T>
         using RectVertexArray = ::ni::utils::opengl::RectVertexArray<T>;
 

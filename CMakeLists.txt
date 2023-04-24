@@ -60,7 +60,6 @@ target_sources(flat PRIVATE
     "utils/timer.cpp"
     "utils/camera.hpp"
     "utils/camera.cpp"
-    "utils/mass_point.hpp"
     "utils/audio_source.hpp"
     "utils/audio_source.cpp"
     "utils/animation.hpp"
@@ -69,13 +68,15 @@ target_sources(flat PRIVATE
     "utils/wav_dec.hpp"
     "utils/wav_dec.cpp"
     "utils/audio_dec.hpp"
-    "utils/color.hpp"
-    "utils/enchased.hpp"
     "utils/format.hpp"
+    "utils/physics.hpp"
     "flat/collision_detect.hpp"
     "flat/gjk.cpp"
     "flat/text_renderer.hpp"
     "flat/text_renderer.cpp"
+    "flat/color.hpp"
+    "flat/scale.hpp"
+    "flat/enchased.hpp"
 )
 
 add_executable(flat_test "main.cpp" "demo_obj.hpp" "text.hpp")

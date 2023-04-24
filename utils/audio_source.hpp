@@ -1,6 +1,6 @@
 #pragma once
 
-#include "mass_point.hpp"
+#include "physics.hpp"
 #include "../core/template.hpp"
 #include <AL/al.h>
 #include <AL/alc.h>

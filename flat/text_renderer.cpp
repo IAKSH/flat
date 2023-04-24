@@ -90,24 +90,24 @@ void ni::flat::TextRenderer::drawTextHelper(Color&& color)
 {
 	for(size_t i = 0;i < 4;i++)
 	{
-		vertices[3 + i * 9] = static_cast<ni::utils::Red>(color);
-		vertices[4 + i * 9] = static_cast<ni::utils::Green>(color);
-		vertices[5 + i * 9] = static_cast<ni::utils::Blue>(color);
-		vertices[6 + i * 9] = static_cast<ni::utils::Alpha>(color);
+		vertices[3 + i * 9] = color.getRed();
+		vertices[4 + i * 9] = color.getGreen();
+		vertices[5 + i * 9] = color.getBlue();
+		vertices[6 + i * 9] = color.getAlpha();
 	}
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Point&& point)
 {
-	x = point.getPosX();
-	y = point.getPosY();
+	x = point.getPositionX();
+	y = point.getPositionY();
 	for(size_t i = 0;i < 4;i++)
-		vertices[2 + i * 9] = point.getPosZ();
+		vertices[2 + i * 9] = point.getPositionZ();
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Scale&& scale)
 {
-	this->scale = scale;
+	this->scale = scale.get();
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Font* font)

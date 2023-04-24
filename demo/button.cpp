@@ -30,7 +30,7 @@ void Flat::Button::onDetach()
 
 void Flat::Button::onUpdate()
 {
-    text.set(Point(getPosX() - width,getPosY() - height / 4.0f,getPosZ() + 0.01f));
+    text.set(Point(getPositionX() - width,getPositionY() - height / 4.0f,getPositionZ() + 0.01f));
 }
 
 void Flat::Button::onRender()
@@ -38,7 +38,7 @@ void Flat::Button::onRender()
     shader.use();
 
     glm::mat4 trans(1.0f);
-	trans *= glm::translate(glm::mat4(1.0f),glm::vec3(getPosX() - 400.0f,getPosY() - 300.0f,getPosZ()));
+	trans *= glm::translate(glm::mat4(1.0f),glm::vec3(getPositionX() - 400.0f,getPositionY() - 300.0f,getPositionZ()));
 	trans *= glm::scale(glm::mat4(1.0f),glm::vec3(width,height,0.9f));
 	trans *= glm::rotate(glm::mat4(1.0f),0.0f, glm::vec3(0.0f,0.0f,1.0f));
     shader.setUniform("camTrans",cam.getTranslateMatrix());
@@ -68,16 +68,12 @@ Flat::BlinkingButton::BlinkingButton(const float& w,const float h,ShaderProgram&
 
 void Flat::BlinkingButton::onUpdate()
 {
-    text.set(Point(getPosX() - width,getPosY() - height / 2.0f,getPosZ() + 0.01f));
+    text.set(Point(getPositionX() - width,getPositionY() - height / 2.0f,getPositionZ() + 0.01f));
     if(recoder.getSpanAsMilliSeconds() >= interval)
     {
         Color& color = text.get<Color&>();
-        auto& red = static_cast<ni::utils::Red&>(color);
-        auto& green = static_cast<ni::utils::Green&>(color);
-        auto& blue = static_cast<ni::utils::Blue&>(color);
-        auto& aplha = static_cast<ni::utils::Alpha&>(color);
+        color.getAlpha() == 0.0f ? color.setAlpha(0.5f) : color.setAlpha(0.0f);
 
-        aplha = aplha == 0.0f ? 0.55f:0.0f;
         recoder.update();
     }
 }

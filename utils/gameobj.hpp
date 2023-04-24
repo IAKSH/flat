@@ -1,11 +1,11 @@
 #pragma once
 
-#include "mass_point.hpp"
+#include "physics.hpp"
 #include "../core/event.hpp"
 
 namespace ni::utils
 {
-    class GameObject : public ni::utils::MassPoint
+    class GameObject : public Point
     {
     public:
         virtual void onAttach() = 0;
