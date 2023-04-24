@@ -88,7 +88,7 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        auto ptr = std::make_unique<CharTexture>(c,face->glyph->bitmap.width,face->glyph->bitmap.rows,face->glyph->bitmap_left,face->glyph->bitmap_top,face->glyph->advance.x,textureID);
+        auto ptr = std::make_unique<CharTexture>(face->glyph->bitmap.buffer,c,face->glyph->bitmap.width,face->glyph->bitmap.rows,face->glyph->bitmap_left,face->glyph->bitmap_top,face->glyph->advance.x);
         ni::utils::CharTexture& texture = *ptr;
         textureCache.push_back(std::move(ptr));
 

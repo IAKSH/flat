@@ -1,6 +1,6 @@
 #pragma once
 
-#include "texture.hpp"
+#include "opengl_texture.hpp"
 #include "timer.hpp"
 #include "../core/template.hpp"
 #include <array>
@@ -9,6 +9,8 @@
 
 namespace ni::utils
 {
+    using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
+
     template <size_t texturesLen>
     class Animation : public core::DisableCopy
     {

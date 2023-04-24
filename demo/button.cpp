@@ -14,8 +14,11 @@ void Flat::Button::onAttach()
     for(int i = 0;i < 4;i++)
         vao.setColor(i,std::array<float,4>{03.0f,0.3f,0.1f,0.55f});
 
-    if(!blackTex.getTextureID())
-        blackTex.loadFromFile("images/black.png");
+    if(!blackTex)
+    {
+        ni::utils::Image img("images/black.png");
+        blackTex = std::make_unique<Texture>(img.getData(),0,0,img.getWidth(),img.getHeight());
+    }
 
     text.set(Color(1.0f,1.0f,1.0f,0.5f));
 }
@@ -41,7 +44,7 @@ void Flat::Button::onRender()
     shader.setUniform("camTrans",cam.getTranslateMatrix());
     shader.setUniform("transform",trans);
 
-    glBindTexture(GL_TEXTURE_2D,blackTex.getTextureID());
+    glBindTexture(GL_TEXTURE_2D,blackTex->getTextureID());
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

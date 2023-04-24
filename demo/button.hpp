@@ -1,18 +1,19 @@
 #pragma once
 #include "../utils/gameobj.hpp"
-#include "../utils/texture.hpp"
 #include "../utils/timer.hpp"
 #include "../flat/text_renderer.hpp"
+#include "../utils/opengl_texture.hpp"
 #include "../utils/opengl_shader.hpp"
 #include "../utils/opengl_vao.hpp"
+#include "../utils/image.hpp"
 #include "text.hpp"
 #include <functional>
+#include <memory>
 #include <string>
 #include <string_view>
 
 namespace Flat
 {
-    using ni::utils::Texture;
     using ni::utils::Font;
     using ni::utils::Camera2D;
     using ni::utils::TimeRecorder;
@@ -21,6 +22,8 @@ namespace Flat
     using ni::utils::opengl::GLBufferType;
     using ni::utils::opengl::RectVertexArray;
     using ni::flat::TextRenderer;
+
+    using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
 
     class Button : public ni::utils::GameObject
     {
@@ -34,7 +37,7 @@ namespace Flat
         RectVertexArray<GLBufferType::Static> vao;
         std::function<void(void)> callback;
         Text text{ren,font,U""};
-        inline static Texture blackTex;
+        inline static std::unique_ptr<Texture> blackTex;
 
     public:
         Button(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera2D& cam,Font& font,std::u32string_view str,std::function<void(void)> callback);

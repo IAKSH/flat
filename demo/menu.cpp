@@ -2,6 +2,8 @@
 #include "menu.hpp"
 #include "../core/loggers.hpp"
 #include "../utils/format.hpp"
+#include "../utils/image.hpp"
+#include <memory>
 #include <string>
 #include <sstream>
 #include <string_view>
@@ -18,8 +20,10 @@ void Flat::MenuLayer::onAttach()
     shader.activeTexture("texture0",0);
 
     // load textures
-    background.loadFromFile("images/wire.png");
-    selectIcon.loadFromFile("images/bird0_0.png");
+    ni::utils::Image wire("images/wire.png");
+    ni::utils::Image bird("images/bird0_0.png");
+    background = std::make_unique<Texture>(wire.getData(),0,0,wire.getWidth(),wire.getHeight());
+    selectIcon = std::make_unique<Texture>(bird.getData(),0,0,bird.getWidth(),bird.getHeight());
 
     // load font
     unifont48.loadFromFile("fonts/unifont-15.0.01.ttf");
@@ -92,7 +96,7 @@ void Flat::MenuLayer::onRender()
     shader.setUniform("transform",trans);
     shader.setUniform("camTrans",cam.getTranslateMatrix());
 
-    glBindTexture(GL_TEXTURE_2D,background.getTextureID());
+    glBindTexture(GL_TEXTURE_2D,background->getTextureID());
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

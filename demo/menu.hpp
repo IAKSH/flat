@@ -19,12 +19,12 @@ namespace Flat
     using ni::utils::Camera2D;
     using ni::utils::Font;
     using ni::utils::Color;
-    using ni::utils::Texture;
     using ni::utils::opengl::GLBufferType;
     using ni::utils::opengl::RectVertexArray;
     using ni::utils::TimeRecorder;
     using ni::utils::opengl::ShaderProgram;
     using ni::flat::TextRenderer;
+    using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
 
     inline static const char* vshader =
         "#version 330 core\n"
@@ -62,8 +62,8 @@ namespace Flat
         Font unifont16;
         TextRenderer texRen;
         Camera2D cam;
-        Texture background;
-        Texture selectIcon;
+        std::unique_ptr<Texture> background;
+        std::unique_ptr<Texture> selectIcon;
         TimeRecorder recoder;
         TimeRecorder fpsRecoder;
         RectVertexArray<GLBufferType::Dynamic> vao;
