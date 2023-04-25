@@ -67,7 +67,7 @@ void ni::flat::TextRenderer::_drawText()
     	shader.use();
 
 		if(cam)
-			shader.setUniform("camTrans",cam->getTranslateMatrix());
+			shader.setUniform("camTrans",cam->getViewMatrix());
 		else 
 		{
 			glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, viewWidth, 0.0f, viewHeight, -1.0f, 1.0f);

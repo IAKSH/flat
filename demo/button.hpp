@@ -15,7 +15,6 @@
 namespace Flat
 {
     using ni::utils::Font;
-    using ni::utils::Camera2D;
     using ni::utils::TimeRecorder;
     using ni::utils::MilliSeconds;
     using ni::utils::opengl::ShaderProgram;
@@ -24,6 +23,7 @@ namespace Flat
     using ni::flat::TextRenderer;
 
     using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
+    using Camera = ni::utils::opengl::FPSCamera;
 
     class Button : public ni::utils::GameObject
     {
@@ -32,7 +32,7 @@ namespace Flat
         bool actived;
         ShaderProgram& shader;
         TextRenderer& ren;
-        Camera2D& cam;
+        Camera& cam;
         Font& font;
         RectVertexArray<GLBufferType::Static> vao;
         std::function<void(void)> callback;
@@ -40,7 +40,7 @@ namespace Flat
         inline static std::unique_ptr<Texture> blackTex;
 
     public:
-        Button(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera2D& cam,Font& font,std::u32string_view str,std::function<void(void)> callback);
+        Button(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera& cam,Font& font,std::u32string_view str,std::function<void(void)> callback);
         ~Button() = default;
         virtual void onAttach() override;
         virtual void onDetach() override;
@@ -59,7 +59,7 @@ namespace Flat
         MilliSeconds interval;
 
     public:
-        BlinkingButton(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera2D& cam,Font& font,const MilliSeconds& interval,std::u32string_view str,std::function<void(void)> callback);
+        BlinkingButton(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera& cam,Font& font,const MilliSeconds& interval,std::u32string_view str,std::function<void(void)> callback);
         ~BlinkingButton() = default;
         void onUpdate() override;
     };

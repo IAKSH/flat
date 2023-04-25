@@ -3,7 +3,7 @@
 #include <array>
 #include <string_view>
 
-Flat::Button::Button(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera2D& cam,Font& font,std::u32string_view str,std::function<void(void)> callback)
+Flat::Button::Button(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera& cam,Font& font,std::u32string_view str,std::function<void(void)> callback)
     : width(w),height(h),shader(shader),ren(texRen),font(font),cam(cam),callback(callback)
 {
     text.set(str);
@@ -41,7 +41,7 @@ void Flat::Button::onRender()
 	trans *= glm::translate(glm::mat4(1.0f),glm::vec3(getPositionX() - 400.0f,getPositionY() - 300.0f,getPositionZ()));
 	trans *= glm::scale(glm::mat4(1.0f),glm::vec3(width,height,0.9f));
 	trans *= glm::rotate(glm::mat4(1.0f),0.0f, glm::vec3(0.0f,0.0f,1.0f));
-    shader.setUniform("camTrans",cam.getTranslateMatrix());
+    shader.setUniform("camTrans",cam.getViewMatrix());
     shader.setUniform("transform",trans);
 
     glBindTexture(GL_TEXTURE_2D,blackTex->getTextureID());
@@ -61,7 +61,7 @@ void Flat::Button::onEvent(ni::core::Event& e)
     }
 }
 
-Flat::BlinkingButton::BlinkingButton(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera2D& cam,Font& font,const MilliSeconds& interval,std::u32string_view str,std::function<void(void)> callback)
+Flat::BlinkingButton::BlinkingButton(const float& w,const float h,ShaderProgram& shader,TextRenderer& texRen,Camera& cam,Font& font,const MilliSeconds& interval,std::u32string_view str,std::function<void(void)> callback)
     : Button(w,h,shader,texRen,cam,font,str,callback),interval(interval)
 {
 }

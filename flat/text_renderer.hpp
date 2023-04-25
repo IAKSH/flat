@@ -3,10 +3,10 @@
 #include "color.hpp"
 #include "scale.hpp"
 #include "../utils/font.hpp"
-#include "../utils/camera.hpp"
 #include "../utils/physics.hpp"
 #include "../core/template.hpp"
 #include "../utils/opengl_shader.hpp"
+#include "../utils/opengl_camera.hpp"
 #include "../utils/opengl_vao.hpp"
 #include <string>
 #include <string_view>
@@ -22,14 +22,14 @@ namespace ni::flat
 
     template <typename T>
     concept DrawTextArg = ::ni::core::anySame<T,Color,ni::utils::Point,
-        ni::utils::Point,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
+        ni::utils::Point,std::u32string_view,utils::Font*,ni::utils::opengl::FPSCamera>() ;
 
     class TextRenderer : public ::ni::core::DisableCopy
     {
         using Font = ::ni::utils::Font;
         using ShaderProgram = ::ni::utils::opengl::ShaderProgram;
         using CharTexture = ::ni::utils::CharTexture;
-        using Camera = ::ni::utils::Camera2D;
+        using Camera = ::ni::utils::opengl::FPSCamera;
         using GLBufferType = ::ni::utils::opengl::GLBufferType;
         using Point = ::ni::utils::Point;
         template <GLBufferType T>

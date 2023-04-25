@@ -3,11 +3,14 @@
 #include "../core/loggers.hpp"
 #include "../utils/format.hpp"
 #include "../utils/image.hpp"
+#include <imgui.h>
+#include <backends/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
+#include <GLFW/glfw3.h>
 #include <memory>
 #include <string>
 #include <sstream>
 #include <string_view>
-#include <GLFW/glfw3.h>
 
 Flat::MenuLayer::MenuLayer()
     : Layer("menu"),shader(vshader,fshader)
@@ -16,6 +19,10 @@ Flat::MenuLayer::MenuLayer()
 
 void Flat::MenuLayer::onAttach()
 {
+    // config camera
+    cam.setPositionY(1.0f);
+    cam.setFov(60.0f);
+
     // load shader
     shader.activeTexture("texture0",0);
 
@@ -36,6 +43,14 @@ void Flat::MenuLayer::onAttach()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glActiveTexture(GL_TEXTURE0);
+
+    // imgui init
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui::StyleColorsDark();
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
     // move game title
     gameTitle.setPositionY(550.0f);
@@ -80,6 +95,10 @@ void Flat::MenuLayer::onUpdate()
 
     // update fps recoder
     fpsRecoder.update();
+
+    // camera update
+    cam.rotate(camRotateSpeedUp,camRotateSpeedRight);
+    cam.move(camMoveSpeedUp,camMoveSpeedRight,0.0f);
 }
 
 void Flat::MenuLayer::onRender()
@@ -94,11 +113,28 @@ void Flat::MenuLayer::onRender()
 	trans *= glm::scale(glm::mat4(1.0f), glm::vec3(400.0f, 300.0f, 1.0f));
 	trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
     shader.setUniform("transform",trans);
-    shader.setUniform("camTrans",cam.getTranslateMatrix());
+    shader.setUniform("camTrans",cam.getViewMatrix());
 
     glBindTexture(GL_TEXTURE_2D,background->getTextureID());
     glBindVertexArray(vao.getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    // imgui test
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+	ImGui::Begin("ImGui Test");
+	ImGui::Text("glfwGetTime(): %lf", glfwGetTime());
+	//ImGui::Text("FPS: %f", 1000000.0f / recorder.getSpanAsMicroSeconds().count());
+	ImGui::Text("cam.x: %f", cam.getPositionX());
+	ImGui::Text("cam.y: %f", cam.getPositionY());
+	ImGui::Text("cam.z: %f", cam.getPositionZ());
+    ImGui::Text("cam.yaw: %f", cam.getYaw());
+	ImGui::Text("cam.pitch: %f", cam.getPitch());
+	ImGui::End();
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 
     gameTitle.onRender();
     info0.onRender();
@@ -118,6 +154,66 @@ void Flat::MenuLayer::onEvent(Event& e)
     		case ni::core::KeyCode::ESCAPE:
     			ni::core::Application::getInstance().exit();
     			break;
+
+            case ni::core::KeyCode::UP:
+                camRotateSpeedUp = 0.1f;
+                break;
+
+            case ni::core::KeyCode::DOWN:
+                camRotateSpeedUp = -0.1f;
+                break;
+
+            case ni::core::KeyCode::LEFT:
+                camRotateSpeedRight = -0.1f;
+                break;
+
+            case ni::core::KeyCode::RIGHT:
+                camRotateSpeedRight = 0.1f;
+                break;
+
+            case ni::core::KeyCode::W:
+                camMoveSpeedUp = 0.1f;
+                break;
+
+            case ni::core::KeyCode::S:
+                camMoveSpeedUp = -0.1f;
+                break;
+
+            case ni::core::KeyCode::A:
+                camMoveSpeedRight = -0.1f;
+                break;
+
+            case ni::core::KeyCode::D:
+                camMoveSpeedRight = 0.1f;
+                break;
+
+            default:
+                break;
+        }
+    }
+    else if(e.getType() == ni::core::EventType::KeyRelease)
+    {
+        switch (static_cast<ni::core::KeyPressEvent&>(e).getKeyCode())
+        {
+            case ni::core::KeyCode::UP:
+            case ni::core::KeyCode::DOWN:
+                camRotateSpeedUp = 0.0f;
+                break;
+
+            case ni::core::KeyCode::LEFT:
+            case ni::core::KeyCode::RIGHT:
+                camRotateSpeedRight = 0.0f;
+                break;
+
+            case ni::core::KeyCode::W:
+            case ni::core::KeyCode::S:
+                camMoveSpeedUp = 0.0f;
+                break;
+
+            case ni::core::KeyCode::A:
+            case ni::core::KeyCode::D:
+                camMoveSpeedRight = 0.0f;
+                break;
 
             default:
                 break;

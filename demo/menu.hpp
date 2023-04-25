@@ -3,10 +3,10 @@
 #include "../core/layer.hpp"
 #include "../core/event_keyboard.hpp"
 #include "../core/application.hpp"
-#include "../utils/camera.hpp"
 #include "../utils/font.hpp"
 #include "../utils/timer.hpp"
 #include "../utils/opengl_shader.hpp"
+#include "../utils/opengl_camera.hpp"
 #include "../utils/opengl_vao.hpp"
 #include "../flat/text_renderer.hpp"
 #include "text.hpp"
@@ -16,7 +16,6 @@
 namespace Flat
 {
     using ni::core::Event;
-    using ni::utils::Camera2D;
     using ni::utils::Font;
     using ni::utils::opengl::GLBufferType;
     using ni::utils::opengl::RectVertexArray;
@@ -25,6 +24,7 @@ namespace Flat
     using ni::flat::Color;
     using ni::flat::TextRenderer;
     using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
+    using Camera = ni::utils::opengl::FPSCamera;
 
     inline static const char* vshader =
         "#version 330 core\n"
@@ -61,7 +61,11 @@ namespace Flat
         Font unifont48;
         Font unifont16;
         TextRenderer texRen;
-        Camera2D cam;
+        Camera cam;
+        float camRotateSpeedUp {0.0f};
+        float camRotateSpeedRight {0.0f};
+        float camMoveSpeedUp {0.0f};
+        float camMoveSpeedRight {0.0f};
         std::unique_ptr<Texture> background;
         std::unique_ptr<Texture> selectIcon;
         TimeRecorder recoder;

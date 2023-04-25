@@ -3,7 +3,7 @@
 #include "../flat/text_renderer.hpp"
 #include "../utils/timer.hpp"
 #include "../utils/gameobj.hpp"
-#include "../utils/camera.hpp"
+#include "../utils/opengl_camera.hpp"
 #include "../core/template.hpp"
 #include <cstdio>
 #include <string>
@@ -20,8 +20,9 @@ namespace Flat
     using ni::flat::Color;
     using ni::flat::Scale;
     using ni::utils::Point;
-    using ni::utils::Camera2D;
     using ni::core::anySame;
+
+    using Camera = ni::utils::opengl::FPSCamera;
 
     template <typename T>
     concept TextAttrib = anySame<T,Color,Scale,Point,Font,TextRenderer,std::u32string_view,std::u32string>();
@@ -31,7 +32,7 @@ namespace Flat
     protected:
         TextRenderer* ren;
         Font* font;
-        Camera2D* cam;
+        Camera* cam;
         Color color;
         Scale scale;
         std::u32string_view str;
@@ -42,7 +43,7 @@ namespace Flat
         {
         }
 
-        Text(TextRenderer& ren,Font& font,Camera2D* cam,std::u32string_view str)
+        Text(TextRenderer& ren,Font& font,Camera* cam,std::u32string_view str)
             : ren(&ren),font(&font),str(str),cam(cam)
         {
         }
