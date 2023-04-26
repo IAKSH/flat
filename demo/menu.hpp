@@ -64,6 +64,7 @@ namespace Flat
         Camera cam;
         float camRotateSpeedUp {0.0f};
         float camRotateSpeedRight {0.0f};
+        float camRollSpeed {0.0f};
         float camMoveSpeedUp {0.0f};
         float camMoveSpeedRight {0.0f};
         std::unique_ptr<Texture> background;

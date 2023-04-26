@@ -20,7 +20,7 @@ Flat::MenuLayer::MenuLayer()
 void Flat::MenuLayer::onAttach()
 {
     // config camera
-    cam.setPositionY(1.0f);
+    cam.setPositionZ(600.0f);
     cam.setFov(60.0f);
 
     // load shader
@@ -97,8 +97,8 @@ void Flat::MenuLayer::onUpdate()
     fpsRecoder.update();
 
     // camera update
-    cam.rotate(camRotateSpeedUp,camRotateSpeedRight);
-    cam.move(camMoveSpeedUp,camMoveSpeedRight,0.0f);
+    cam.rotate(camRotateSpeedUp * 4,camRotateSpeedRight * 4,camRollSpeed * 2.0f);
+    cam.move(camMoveSpeedUp * 8,camMoveSpeedRight * 8,0.0f);
 }
 
 void Flat::MenuLayer::onRender()
@@ -131,6 +131,7 @@ void Flat::MenuLayer::onRender()
 	ImGui::Text("cam.z: %f", cam.getPositionZ());
     ImGui::Text("cam.yaw: %f", cam.getYaw());
 	ImGui::Text("cam.pitch: %f", cam.getPitch());
+    ImGui::Text("cam.roll: %f", cam.getRoll());
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -171,6 +172,14 @@ void Flat::MenuLayer::onEvent(Event& e)
                 camRotateSpeedRight = 0.1f;
                 break;
 
+            case ni::core::KeyCode::Q:
+                camRollSpeed = 0.1f;
+                break;
+
+            case ni::core::KeyCode::E:
+                camRollSpeed = -0.1f;
+                break;
+
             case ni::core::KeyCode::W:
                 camMoveSpeedUp = 0.1f;
                 break;
@@ -203,6 +212,11 @@ void Flat::MenuLayer::onEvent(Event& e)
             case ni::core::KeyCode::LEFT:
             case ni::core::KeyCode::RIGHT:
                 camRotateSpeedRight = 0.0f;
+                break;
+
+            case ni::core::KeyCode::Q:
+            case ni::core::KeyCode::E:
+                camRollSpeed = 0.0f;
                 break;
 
             case ni::core::KeyCode::W:

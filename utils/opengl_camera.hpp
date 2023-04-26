@@ -38,6 +38,7 @@ namespace ni::utils::opengl
         const float& getPositionZ() {return position[2];}
         const float& getYaw() {return glm::eulerAngles(orientation)[0];}
         const float& getPitch() {return glm::eulerAngles(orientation)[1];}
+        const float& getRoll() {return glm::eulerAngles(orientation)[2];}
         const float& getZoom() {return zoom;}
         const float& getFOV() {return fov;}
         glm::mat4 getViewMatrix() const;
@@ -51,6 +52,6 @@ namespace ni::utils::opengl
         void setFov(const float& val);
 
         void move(const float& dFront,const float& dRight,const float& dHeight);
-        void rotate(const float& dx,const float& dy);
+        void rotate(const float& dUp,const float& dRight,const float& dRoll);
     };
 }

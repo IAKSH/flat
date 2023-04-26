@@ -1,11 +1,12 @@
 #include "opengl_camera.hpp"
+#include "glm/ext/quaternion_geometric.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 ni::utils::opengl::FPSCamera::FPSCamera()
     : position(glm::vec3(0.0f, 0.0f, 0.0f)), orientation(glm::vec3(0.0f, 0.0f, -1.0f)),
       right(glm::vec3(1.0f, 0.0f, 0.0f)), up(glm::vec3(0.0f, 1.0f, 0.0f)),
       fov(45.0f), zoom(1.0f),
       screenWidth(800), screenHeight(600)
-      //recordedPitch(0.0f),recordedYaw(-90.0f),
 {
     updateCameraVectors();
 }
@@ -13,7 +14,6 @@ ni::utils::opengl::FPSCamera::FPSCamera()
 ni::utils::opengl::FPSCamera::FPSCamera(const float& w,const float& h)
     : screenWidth(w),screenHeight(h),position(0.0f,0.0f,0.0f),up(0.0f,1.0f,0.0f),orientation(glm::vec3(0.0f, 0.0f, -1.0f)),fov(45.0f),
       right(glm::vec3(1.0f, 0.0f, 0.0f)),zoom(1.0f)
-      //recordedPitch(0.0f),recordedYaw(-90.0f)
 {
     updateCameraVectors();
 }
@@ -44,16 +44,16 @@ void ni::utils::opengl::FPSCamera::move(const float& dFront,const float& dRight,
     position += dFront * glm::rotate(orientation, glm::vec3(0.0f, 0.0f, -1.0f)) + dRight * right + dHeight * up;
 }
 
-void ni::utils::opengl::FPSCamera::rotate(const float& dx,const float& dy)
+void ni::utils::opengl::FPSCamera::rotate(const float& dUp,const float& dRight,const float& dRoll)
 {
-    // 计算yaw和pitch对应的四元数
-    glm::quat yaw_quat = glm::angleAxis(glm::radians(dx), up);
-    glm::quat pitch_quat = glm::angleAxis(glm::radians(dy), right);
-    
-    // 直接更新yaw和pitch对应的四元数，而不是记录它们的值
-    orientation = yaw_quat * pitch_quat * orientation;
-    
+    glm::quat yawQuat = glm::angleAxis(glm::radians(dUp), right);
+    glm::quat pitchQuat = glm::angleAxis(glm::radians(dRight), up);
+    orientation = yawQuat * pitchQuat * orientation;
     updateCameraVectors();
+
+    //glm::quat rollQuat = glm::angleAxis(glm::radians(dRoll), glm::normalize(glm::rotate(orientation, glm::vec3(0.0f, 0.0f, -1.0f))));
+    //orientation = rollQuat * orientation;
+    //updateCameraVectors();
 }
 
 glm::mat4 ni::utils::opengl::FPSCamera::getViewMatrix() const
