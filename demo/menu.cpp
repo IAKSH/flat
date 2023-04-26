@@ -13,7 +13,7 @@
 #include <string_view>
 
 Flat::MenuLayer::MenuLayer()
-    : Layer("menu"),shader(vshader,fshader)
+    : Layer("menu"),shader(vshader,fshader),cam(800.0f,600.0f)
 {
 }
 
@@ -113,7 +113,7 @@ void Flat::MenuLayer::onRender()
 	trans *= glm::scale(glm::mat4(1.0f), glm::vec3(400.0f, 300.0f, 1.0f));
 	trans *= glm::rotate(glm::mat4(1.0f), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
     shader.setUniform("transform",trans);
-    shader.setUniform("camTrans",cam.getViewMatrix());
+    shader.setUniform("camTrans",cam.getMatrix());
 
     glBindTexture(GL_TEXTURE_2D,background->getTextureID());
     glBindVertexArray(vao.getVAO());

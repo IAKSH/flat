@@ -22,7 +22,7 @@ namespace Flat
     using ni::utils::Point;
     using ni::core::anySame;
 
-    using Camera = ni::utils::opengl::QuatCame;
+    using Camera = ni::utils::opengl::Camera;
 
     template <typename T>
     concept TextAttrib = anySame<T,Color,Scale,Point,Font,TextRenderer,std::u32string_view,std::u32string>();

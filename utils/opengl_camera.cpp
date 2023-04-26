@@ -56,10 +56,69 @@ void ni::utils::opengl::QuatCame::rotate(const float& dUp,const float& dRight,co
     //updateCameraVectors();
 }
 
-glm::mat4 ni::utils::opengl::QuatCame::getViewMatrix() const
+glm::mat4 ni::utils::opengl::QuatCame::getMatrix() const
 {
     glm::vec3 target = position + glm::rotate(orientation, glm::vec3(0.0f, 0.0f, -1.0f));
     //rojection = glm::perspective(glm::radians(FOVdeg), (float)width / height, nearPlane, farPlane);
 
     return glm::perspective(glm::radians(fov), (float)screenWidth / screenHeight, 0.1f, 2000.0f) * glm::lookAt(position, target, up);
+}
+
+ni::utils::opengl::EulerCamera::EulerCamera(const float& w,const float& h)
+    : viewWidth(w), viewHeight(h),
+    right(0.0f,1.0f,0.0f),up(0.0f,0.0f,1.0f),
+    pitch(-90.0f),yaw(0.0f),roll(0.0f),
+    fov(45.0f)
+{
+    updateVectors();
+}
+
+void ni::utils::opengl::EulerCamera::updateVectors()
+{
+    // calculate the new Front vector
+    glm::vec3 newFront;
+    newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    newFront.y = sin(glm::radians(pitch));
+    newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    front = glm::normalize(newFront);
+    // also re-calculate the Right and Up vector
+    right = glm::normalize(glm::cross(front, glm::vec3(0.0f,0.0f,1.0f)));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    up    = glm::normalize(glm::cross(right, front));
+}
+
+void ni::utils::opengl::EulerCamera::setFov(const float& val)
+{
+    if(val < 1.0f)
+    {
+        ni::core::utilsLogger->error("camera's fov can't be less than 1.0f (trying to set as {})",val);
+        fov = 1.0f;
+    }
+    else
+        fov = val;
+}
+
+void ni::utils::opengl::EulerCamera::move(const float& dFront,const float& dRight,const float& dHeight)
+{
+    position += front * dFront;
+    position += right * dRight;
+    position += up * dHeight;
+}
+
+void ni::utils::opengl::EulerCamera::rotate(const float& dUp,const float& dRight,const float& dRoll)
+{
+    yaw += dRight;
+    pitch += dUp;
+    roll += dRoll;
+
+    if (pitch < 0.1f)
+        pitch = 0.1f;
+    else if (pitch > 179.9f)
+        pitch = 179.9f;
+
+    updateVectors();
+}
+
+glm::mat4 ni::utils::opengl::EulerCamera::getMatrix() const
+{
+    return glm::perspective(glm::radians(fov), (float)viewWidth / viewHeight, 0.1f, 2000.0f) * glm::lookAt(position, position + front, up);
 }

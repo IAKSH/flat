@@ -41,7 +41,7 @@ namespace ni::utils::opengl
         const float& getRoll() {return glm::eulerAngles(orientation)[2];}
         const float& getZoom() {return zoom;}
         const float& getFOV() {return fov;}
-        glm::mat4 getViewMatrix() const;
+        glm::mat4 getMatrix() const;
 
         void setPositionX(const float& val) {position[0] = val;}
         void setPositionY(const float& val) {position[1] = val;}
@@ -54,4 +54,42 @@ namespace ni::utils::opengl
         void move(const float& dFront,const float& dRight,const float& dHeight);
         void rotate(const float& dUp,const float& dRight,const float& dRoll);
     };
+
+    class EulerCamera
+    {
+    private:
+        glm::vec3 position;
+        glm::vec3 front;
+        glm::vec3 right;
+        glm::vec3 up;
+        float pitch,yaw,roll;
+        float fov;
+        const int viewWidth,viewHeight;
+        void updateVectors();
+
+    public:
+        EulerCamera(const float& w,const float& h);
+        ~EulerCamera() = default;
+        const float& getPositionX() {return position[0];}
+        const float& getPositionY() {return position[1];}
+        const float& getPositionZ() {return position[2];}
+        const float& getYaw() {return yaw;}
+        const float& getPitch() {return pitch;}
+        const float& getRoll() {return roll;}
+        const float& getFOV() {return fov;}
+        glm::mat4 getMatrix() const;
+
+        void setPositionX(const float& val) {position[0] = val;}
+        void setPositionY(const float& val) {position[1] = val;}
+        void setPositionZ(const float& val) {position[2] = val;}
+        void setYaw(const float& val) {yaw = val;}
+        void setPitch(const float& val) {pitch = val;}
+        void setRoll(const float& val) {roll = val;}
+        void setFov(const float& val);
+
+        void move(const float& dFront,const float& dRight,const float& dHeight);
+        void rotate(const float& dUp,const float& dRight,const float& dRoll);
+    };
+
+    using Camera = QuatCame;
 }

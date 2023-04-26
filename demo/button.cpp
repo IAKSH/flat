@@ -41,7 +41,7 @@ void Flat::Button::onRender()
 	trans *= glm::translate(glm::mat4(1.0f),glm::vec3(getPositionX() - 400.0f,getPositionY() - 300.0f,getPositionZ()));
 	trans *= glm::scale(glm::mat4(1.0f),glm::vec3(width,height,0.9f));
 	trans *= glm::rotate(glm::mat4(1.0f),0.0f, glm::vec3(0.0f,0.0f,1.0f));
-    shader.setUniform("camTrans",cam.getViewMatrix());
+    shader.setUniform("camTrans",cam.getMatrix());
     shader.setUniform("transform",trans);
 
     glBindTexture(GL_TEXTURE_2D,blackTex->getTextureID());

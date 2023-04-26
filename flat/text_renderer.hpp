@@ -22,14 +22,14 @@ namespace ni::flat
 
     template <typename T>
     concept DrawTextArg = ::ni::core::anySame<T,Color,ni::utils::Point,
-        ni::utils::Point,std::u32string_view,utils::Font*,ni::utils::opengl::QuatCame>() ;
+        ni::utils::Point,std::u32string_view,utils::Font*,ni::utils::opengl::Camera>() ;
 
     class TextRenderer : public ::ni::core::DisableCopy
     {
         using Font = ::ni::utils::Font;
         using ShaderProgram = ::ni::utils::opengl::ShaderProgram;
         using CharTexture = ::ni::utils::CharTexture;
-        using Camera = ::ni::utils::opengl::QuatCame;
+        using Camera = ::ni::utils::opengl::Camera;
         using GLBufferType = ::ni::utils::opengl::GLBufferType;
         using Point = ::ni::utils::Point;
         template <GLBufferType T>
