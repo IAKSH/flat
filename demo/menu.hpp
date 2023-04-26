@@ -24,7 +24,7 @@ namespace Flat
     using ni::flat::Color;
     using ni::flat::TextRenderer;
     using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
-    using Camera = ni::utils::opengl::FPSCamera;
+    using Camera = ni::utils::opengl::QuatCame;
 
     inline static const char* vshader =
         "#version 330 core\n"

@@ -12,7 +12,7 @@
 
 namespace ni::utils::opengl
 {
-    class FPSCamera
+    class QuatCame
     {
     private:
         glm::vec3 position;
@@ -29,9 +29,9 @@ namespace ni::utils::opengl
         void updateCameraVectors();
 
     public:
-        FPSCamera();
-        FPSCamera(const float& w,const float& h);
-        ~FPSCamera() = default;
+        QuatCame();
+        QuatCame(const float& w,const float& h);
+        ~QuatCame() = default;
 
         const float& getPositionX() {return position[0];}
         const float& getPositionY() {return position[1];}

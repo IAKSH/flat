@@ -23,7 +23,7 @@ namespace Flat
     using ni::flat::TextRenderer;
 
     using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
-    using Camera = ni::utils::opengl::FPSCamera;
+    using Camera = ni::utils::opengl::QuatCame;
 
     class Button : public ni::utils::GameObject
     {

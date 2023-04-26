@@ -2,7 +2,7 @@
 #include "glm/ext/quaternion_geometric.hpp"
 #include "glm/gtx/quaternion.hpp"
 
-ni::utils::opengl::FPSCamera::FPSCamera()
+ni::utils::opengl::QuatCame::QuatCame()
     : position(glm::vec3(0.0f, 0.0f, 0.0f)), orientation(glm::vec3(0.0f, 0.0f, -1.0f)),
       right(glm::vec3(1.0f, 0.0f, 0.0f)), up(glm::vec3(0.0f, 1.0f, 0.0f)),
       fov(45.0f), zoom(1.0f),
@@ -11,14 +11,14 @@ ni::utils::opengl::FPSCamera::FPSCamera()
     updateCameraVectors();
 }
 
-ni::utils::opengl::FPSCamera::FPSCamera(const float& w,const float& h)
+ni::utils::opengl::QuatCame::QuatCame(const float& w,const float& h)
     : screenWidth(w),screenHeight(h),position(0.0f,0.0f,0.0f),up(0.0f,1.0f,0.0f),orientation(glm::vec3(0.0f, 0.0f, -1.0f)),fov(45.0f),
       right(glm::vec3(1.0f, 0.0f, 0.0f)),zoom(1.0f)
 {
     updateCameraVectors();
 }
 
-void ni::utils::opengl::FPSCamera::updateCameraVectors()
+void ni::utils::opengl::QuatCame::updateCameraVectors()
 {
     // 计算当前的方向向量
     glm::vec3 direction = glm::normalize(glm::rotate(orientation, glm::vec3(0.0f, 0.0f, -1.0f)));
@@ -28,7 +28,7 @@ void ni::utils::opengl::FPSCamera::updateCameraVectors()
     up = glm::normalize(glm::cross(right, direction));
 }
 
-void ni::utils::opengl::FPSCamera::setFov(const float& val)
+void ni::utils::opengl::QuatCame::setFov(const float& val)
 {
     if(val < 1.0f)
     {
@@ -39,12 +39,12 @@ void ni::utils::opengl::FPSCamera::setFov(const float& val)
         fov = val;
 }
 
-void ni::utils::opengl::FPSCamera::move(const float& dFront,const float& dRight,const float& dHeight)
+void ni::utils::opengl::QuatCame::move(const float& dFront,const float& dRight,const float& dHeight)
 {
     position += dFront * glm::rotate(orientation, glm::vec3(0.0f, 0.0f, -1.0f)) + dRight * right + dHeight * up;
 }
 
-void ni::utils::opengl::FPSCamera::rotate(const float& dUp,const float& dRight,const float& dRoll)
+void ni::utils::opengl::QuatCame::rotate(const float& dUp,const float& dRight,const float& dRoll)
 {
     glm::quat yawQuat = glm::angleAxis(glm::radians(dUp), right);
     glm::quat pitchQuat = glm::angleAxis(glm::radians(dRight), up);
@@ -56,7 +56,7 @@ void ni::utils::opengl::FPSCamera::rotate(const float& dUp,const float& dRight,c
     //updateCameraVectors();
 }
 
-glm::mat4 ni::utils::opengl::FPSCamera::getViewMatrix() const
+glm::mat4 ni::utils::opengl::QuatCame::getViewMatrix() const
 {
     glm::vec3 target = position + glm::rotate(orientation, glm::vec3(0.0f, 0.0f, -1.0f));
     //rojection = glm::perspective(glm::radians(FOVdeg), (float)width / height, nearPlane, farPlane);
