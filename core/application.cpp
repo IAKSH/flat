@@ -14,7 +14,7 @@ ni::core::Application::~Application()
 
 void ni::core::Application::configureWindow()
 {
-    window = std::make_unique<OpenGLWindow>("unnamed");
+    window = std::make_unique<opengl::Window>("unnamed");
     window->setEventCallbackFunc(forwardEvent);
 }
 

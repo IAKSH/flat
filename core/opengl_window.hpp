@@ -2,9 +2,9 @@
 
 #include "window.hpp"
 
-namespace ni::core
+namespace ni::core::opengl
 {
-    class OpenGLWindow : public Window<OpenGLWindow>
+    class Window : public core::Window<Window>
 	{
 	private:
 		GLFWwindow* win;
@@ -16,8 +16,8 @@ namespace ni::core
 		inline static bool backendsInitialized{ false };
 
 	public:
-		OpenGLWindow(std::string_view name);
-		~OpenGLWindow();
+		Window(std::string_view name);
+		~Window();
 		GLFWwindow* getGLFWWindow();
 
 		void imp_update();

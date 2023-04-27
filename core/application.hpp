@@ -10,7 +10,7 @@
 
 namespace ni::core
 {
-    using WindowBackends = Window<OpenGLWindow>;
+    using WindowBackends = Window<opengl::Window>;
 
     class Application : public DisableCopy
     {

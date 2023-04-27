@@ -6,7 +6,7 @@
 #include <exception>
 
 
-ni::core::OpenGLWindow::OpenGLWindow(std::string_view name)
+ni::core::opengl::Window::Window(std::string_view name)
     : winName(name)
 {
     coreLogger->trace("creating window \"{}\"", name.data());
@@ -21,19 +21,19 @@ ni::core::OpenGLWindow::OpenGLWindow(std::string_view name)
         initializeWithoutBackends();
 }
 
-ni::core::OpenGLWindow::~OpenGLWindow()
+ni::core::opengl::Window::~Window()
 {
 	release();
 }
 
-GLFWwindow* ni::core::OpenGLWindow::getGLFWWindow()
+GLFWwindow* ni::core::opengl::Window::getGLFWWindow()
 {
 	if (!win)
         coreLogger->critical("trying to get an null GLFWWindow named {}", winName);
 	return win;
 }
 
-void ni::core::OpenGLWindow::imp_update()
+void ni::core::opengl::Window::imp_update()
 {
     glfwPollEvents();
     glfwSwapBuffers(win);
@@ -41,84 +41,84 @@ void ni::core::OpenGLWindow::imp_update()
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void ni::core::OpenGLWindow::imp_onEvent(Event& e)
+void ni::core::opengl::Window::imp_onEvent(Event& e)
 {
     if(eventCallback)
         eventCallback(e);
 }
 
-void ni::core::OpenGLWindow::imp_setPositionX(const int& x)
+void ni::core::opengl::Window::imp_setPositionX(const int& x)
 {
     int ori;
     glfwGetWindowPos(win, nullptr, &ori);
     glfwSetWindowPos(win, x, ori);
 }
 
-void ni::core::OpenGLWindow::imp_setPositionY(const int& y)
+void ni::core::opengl::Window::imp_setPositionY(const int& y)
 {
     int ori;
     glfwGetWindowPos(win, &ori, nullptr);
     glfwSetWindowPos(win, ori, y);
 }
 
-void ni::core::OpenGLWindow::imp_setWidth(const int& w)
+void ni::core::opengl::Window::imp_setWidth(const int& w)
 {
     int ori;
     glfwGetWindowSize(win, nullptr, &ori);
     glfwSetWindowSize(win, w, ori);
 }
 
-void ni::core::OpenGLWindow::imp_setHeight(const int& h)
+void ni::core::opengl::Window::imp_setHeight(const int& h)
 {
     int ori;
     glfwGetWindowSize(win, &ori, nullptr);
     glfwSetWindowSize(win, ori, h);
 }
 
-void ni::core::OpenGLWindow::imp_setTitle(std::string_view title)
+void ni::core::opengl::Window::imp_setTitle(std::string_view title)
 {
     glfwSetWindowTitle(win, title.data());
 }
 
-void ni::core::OpenGLWindow::imp_setEventCallbackFunc(const std::function<void(Event&)>& func)
+void ni::core::opengl::Window::imp_setEventCallbackFunc(const std::function<void(Event&)>& func)
 {
     eventCallback = func;
 }
 
-int ni::core::OpenGLWindow::imp_getPositionX()
+int ni::core::opengl::Window::imp_getPositionX()
 {
     int x;
     glfwGetWindowPos(win, &x, nullptr);
     return x;
 }
 
-int ni::core::OpenGLWindow::imp_getPositionY()
+int ni::core::opengl::Window::imp_getPositionY()
 {
     int y;
     glfwGetWindowPos(win, nullptr, &y);
     return y;
 }
 
-int ni::core::OpenGLWindow::imp_getWidth()
+int ni::core::opengl::Window::imp_getWidth()
 {
     int w;
     glfwGetWindowSize(win, &w, nullptr);
     return w;
 }
 
-int ni::core::OpenGLWindow::imp_getHeight()
+int ni::core::opengl::Window::imp_getHeight()
 {
     int h;
     glfwGetWindowSize(win, nullptr, &h);
     return h;
 }
 
-std::string_view ni::core::OpenGLWindow::imp_getName()
+std::string_view ni::core::opengl::Window::imp_getName()
 {
     return winName;
 }
 
-void ni::core::OpenGLWindow::initialize()
+void ni::core::opengl::Window::initialize()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -146,7 +146,7 @@ void ni::core::OpenGLWindow::initialize()
     glfwSetWindowUserPointer(win, this);
     glfwSetWindowSizeCallback(win, [](GLFWwindow* window, int width, int height) 
         {
-            OpenGLWindow* win = (OpenGLWindow*)glfwGetWindowUserPointer(window);
+            Window* win = (Window*)glfwGetWindowUserPointer(window);
 
             WindowResizeEvent event(win->imp_getName());
             win->imp_onEvent(event);
@@ -154,14 +154,14 @@ void ni::core::OpenGLWindow::initialize()
 
     glfwSetWindowCloseCallback(win, [](GLFWwindow* window)
         {
-            OpenGLWindow* win = (OpenGLWindow*)glfwGetWindowUserPointer(window);
+            Window* win = (Window*)glfwGetWindowUserPointer(window);
             WindowCloseEvent event(win->imp_getName());
             win->imp_onEvent(event);
         });
 
     glfwSetKeyCallback(win, [](GLFWwindow* window, int key, int scancode, int action, int mods)
         {
-            OpenGLWindow* win = (OpenGLWindow*)glfwGetWindowUserPointer(window);
+            Window* win = (Window*)glfwGetWindowUserPointer(window);
 
             switch (action)
             {
@@ -183,7 +183,7 @@ void ni::core::OpenGLWindow::initialize()
 
     glfwSetMouseButtonCallback(win, [](GLFWwindow* window, int button, int action, int mods)
         {
-            OpenGLWindow* win = (OpenGLWindow*)glfwGetWindowUserPointer(window);
+            Window* win = (Window*)glfwGetWindowUserPointer(window);
 
             switch (action)
             {
@@ -204,27 +204,27 @@ void ni::core::OpenGLWindow::initialize()
 
     glfwSetScrollCallback(win, [](GLFWwindow* window, double xOffset, double yOffset)
         {
-            OpenGLWindow* win = (OpenGLWindow*)glfwGetWindowUserPointer(window);
+            Window* win = (Window*)glfwGetWindowUserPointer(window);
             MouseScrollEvent event(static_cast<float>(xOffset),static_cast<float>(yOffset));
             win->imp_onEvent(event);
         });
 
     glfwSetCursorPosCallback(win, [](GLFWwindow* window, double xPos, double yPos)
         {
-            OpenGLWindow* win = (OpenGLWindow*)glfwGetWindowUserPointer(window);
+            Window* win = (Window*)glfwGetWindowUserPointer(window);
             MouseMoveEvent event((float)xPos, (float)yPos);
             win->imp_onEvent(event);
         });
 }
 
-void ni::core::OpenGLWindow::initializeWithoutBackends()
+void ni::core::opengl::Window::initializeWithoutBackends()
 {
     win = glfwCreateWindow(800, 600, winName.data(), nullptr, nullptr);
     glfwMakeContextCurrent(win);
     glfwSetFramebufferSizeCallback(win, [](GLFWwindow* window, int width, int height) {glViewport(0, 0, width, height); });
 }
 
-void ni::core::OpenGLWindow::release()
+void ni::core::opengl::Window::release()
 {
 	glfwDestroyWindow(win);
 }
