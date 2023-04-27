@@ -5,12 +5,16 @@
 #include "../core/application.hpp"
 #include "../utils/font.hpp"
 #include "../utils/timer.hpp"
+#include "../utils/sample.hpp"
 #include "../utils/opengl_shader.hpp"
 #include "../utils/opengl_camera.hpp"
 #include "../utils/opengl_vao.hpp"
+#include "../utils/openal_buffer.hpp"
+#include "../utils/openal_source.hpp"
 #include "../flat/text_renderer.hpp"
 #include "text.hpp"
 #include "button.hpp"
+#include <memory>
 #include <string_view>
 
 namespace Flat
@@ -19,8 +23,12 @@ namespace Flat
     using ni::utils::Font;
     using ni::utils::opengl::GLBufferType;
     using ni::utils::opengl::RectVertexArray;
-    using ni::utils::TimeRecorder;
     using ni::utils::opengl::ShaderProgram;
+    using ni::utils::openal::Buffer;
+    using ni::utils::openal::PCMFormat;
+    using ni::utils::openal::Source;
+    using ni::utils::Sample;
+    using ni::utils::TimeRecorder;
     using ni::flat::Color;
     using ni::flat::TextRenderer;
     using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
@@ -69,6 +77,8 @@ namespace Flat
         float camMoveSpeedRight {0.0f};
         std::unique_ptr<Texture> background;
         std::unique_ptr<Texture> selectIcon;
+        std::unique_ptr<Buffer<PCMFormat::MONO16>> bgm;
+        Source bgmSource;
         TimeRecorder recoder;
         TimeRecorder fpsRecoder;
         RectVertexArray<GLBufferType::Dynamic> vao;

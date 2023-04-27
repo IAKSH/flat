@@ -3,6 +3,7 @@
 #include "../core/loggers.hpp"
 #include "../utils/format.hpp"
 #include "../utils/image.hpp"
+#include "AL/al.h"
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
@@ -37,6 +38,12 @@ void Flat::MenuLayer::onAttach()
     unifont48.resize(48);
     unifont16.loadFromFile("fonts/unifont-15.0.01.ttf");
     unifont16.resize(16);
+
+    // load bgm
+    Sample bgmSample("sounds/single.wav");
+    bgm = std::make_unique<Buffer<PCMFormat::MONO16>>(bgmSample.getPCM(),bgmSample.getSampleRate(),bgmSample.getPCMLen());
+    alSourcei(bgmSource.getSourceID(),AL_BUFFER,bgm->getBufferID());
+    alSourcePlay(bgmSource.getSourceID());
 
     // OpenGL
     glEnable(GL_DEPTH_TEST);
