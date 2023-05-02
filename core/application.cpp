@@ -1,5 +1,6 @@
 #include "application.hpp"
 #include "loggers.hpp"
+#include <memory>
 
 ni::core::Application::Application()
     : shoudQuit(false) 
@@ -18,9 +19,15 @@ void ni::core::Application::configureWindow()
     window->setEventCallbackFunc(forwardEvent);
 }
 
+void ni::core::Application::configureMixer()
+{
+    mixer = std::make_unique<openal::Mixer>();
+}
+
 void ni::core::Application::initialize()
 {
     configureWindow();
+    configureMixer();
 }
 
 void ni::core::Application::release()

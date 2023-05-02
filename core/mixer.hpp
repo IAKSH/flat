@@ -6,16 +6,8 @@
 
 namespace ni::core
 {
-	class Mixer : public DisableCopy
+	template <typename Diverse>
+	struct Mixer : public DisableCopy
 	{
-	private:
-		ALCdevice* device;
-		ALCcontext* context;
-		void initialize();
-		void release();
-
-	public:
-		Mixer();
-		~Mixer();
 	};
 }

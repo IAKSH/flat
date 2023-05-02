@@ -1,8 +1,8 @@
 #pragma once
 
 #include "opengl_window.hpp"
+#include "openal_mixer.hpp"
 #include "layer.hpp"
-#include "mixer.hpp"
 #include "event_application.hpp"
 #include "template.hpp"
 #include <deque>
@@ -11,16 +11,18 @@
 namespace ni::core
 {
     using WindowBackends = Window<opengl::Window>;
+    using MixerBackends = Mixer<openal::Mixer>;
 
     class Application : public DisableCopy
     {
     private:
         std::deque<std::unique_ptr<Layer>> layers;
         std::unique_ptr<WindowBackends> window;
-        Mixer mixers;
+        std::unique_ptr<MixerBackends> mixer;
         bool shoudQuit;
 
         void configureWindow();
+        void configureMixer();
 		void initialize();
 		void release();
 
