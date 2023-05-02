@@ -34,6 +34,8 @@ namespace ni::core
 
         void pushLayer(std::unique_ptr<Layer> layer);
         void pushOverlay(std::unique_ptr<Layer> layer);
+        MixerBackends& getMixer() {return *mixer;}
+        WindowBackends& getWindow() {return *window;}
         void exit();
 		void run();
 

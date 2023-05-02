@@ -48,5 +48,7 @@ namespace ni::core::openal
         Mixer();
         ~Mixer();
         Listener& getListener() {return listener;}
+        ALCdevice* getDevice() {return device;}
+        ALCcontext* getContext() {return context;}
     };
 }
