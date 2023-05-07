@@ -5,7 +5,7 @@
 
 namespace ni::utils
 {
-    class GameObject : public Point
+    class [[deprecated("abandoned after the commit 0ca8f18")]] GameObject : public Point
     {
     public:
         virtual void onAttach() = 0;
