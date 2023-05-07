@@ -42,7 +42,7 @@ void ni::utils::Rotatable::rotate(float dUp,float dRight,float dRoll)
     glm::vec3 vecUp(up[0],up[1],up[2]);
 
     glm::quat yawQuat = glm::angleAxis(glm::radians(dUp), vecRight);
-    glm::quat pitchQuat = glm::angleAxis(glm::radians(dRight), vecUp);
+    glm::quat pitchQuat = glm::angleAxis(glm::radians(-dRight), vecUp);
     quat = yawQuat * pitchQuat * quat;
 
     orientation = {quat[0],quat[1],quat[2],quat[3]};
