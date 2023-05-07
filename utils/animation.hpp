@@ -12,7 +12,7 @@ namespace ni::utils
     using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
 
     template <size_t texturesLen>
-    class Animation : public core::DisableCopy
+    class [[deprecated("abandoned since commit 489d6aa")]] Animation : public core::DisableCopy
     {
     private:
         std::array<std::unique_ptr<ni::utils::Texture>,texturesLen> textures;
