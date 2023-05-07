@@ -1,11 +1,11 @@
 #pragma once
 
-#include "mass_point.hpp"
+#include "physics.hpp"
 #include "../core/event.hpp"
 
 namespace ni::utils
 {
-    class GameObject : public ni::utils::MassPoint
+    class [[deprecated("abandoned after the commit 0ca8f18")]] GameObject : public Point
     {
     public:
         virtual void onAttach() = 0;

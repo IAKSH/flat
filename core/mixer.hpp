@@ -1,21 +1,13 @@
 #pragma once
 
+#include "template.hpp"
 #include <AL/al.h>
 #include <AL/alc.h>
 
 namespace ni::core
 {
-	class Mixer
+	template <typename Diverse>
+	struct Mixer : public DisableCopy
 	{
-	private:
-		ALCdevice* device;
-		ALCcontext* context;
-		void initialize();
-		void release();
-
-	public:
-		Mixer();
-		Mixer(Mixer&) = delete;
-		~Mixer();
 	};
 }

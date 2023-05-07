@@ -1,40 +1,45 @@
 #pragma once
 
+#include "opengl_window.hpp"
+#include "openal_mixer.hpp"
+#include "layer.hpp"
+#include "event_application.hpp"
+#include "template.hpp"
 #include <deque>
 #include <memory>
 
-#include "layer.hpp"
-#include "window.hpp"
-#include "mixer.hpp"
-#include "event_application.hpp"
-
 namespace ni::core
 {
-    class Application
+    using WindowBackends = Window<opengl::Window>;
+    using MixerBackends = Mixer<openal::Mixer>;
+
+    class Application : public DisableCopy
     {
     private:
         std::deque<std::unique_ptr<Layer>> layers;
-        std::deque<std::unique_ptr<Window>> windows;
-        std::deque<std::unique_ptr<Mixer>> mixers;
+        std::unique_ptr<WindowBackends> window;
+        std::unique_ptr<MixerBackends> mixer;
         bool shoudQuit;
-        void bindInstance();
-		void addMainWindow();
-		void addMainMixer();
+
+        void configureWindow();
+        void configureMixer();
 		void initialize();
 		void release();
+
 		static void forwardEvent(Event& event);
 
     public:
         Application();
-        Application(Application&) = delete;
         ~Application();
 
         void pushLayer(std::unique_ptr<Layer> layer);
         void pushOverlay(std::unique_ptr<Layer> layer);
+        MixerBackends& getMixer() {return *mixer;}
+        WindowBackends& getWindow() {return *window;}
+        void exit();
 		void run();
-		void exit();
 
-		static Application* getInstance();
+		static Application& getInstance();
 		friend void forwardEvent(Event& event);
     };
 }

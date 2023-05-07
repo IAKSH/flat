@@ -1,23 +1,21 @@
 #include "text_renderer.hpp"
-#include "../core/window.hpp"
+#include "../core/application.hpp"
 #include "GLFW/glfw3.h"
-#include "glm/fwd.hpp"
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <exception>
 #include <string_view>
 
 ni::flat::TextRenderer::TextRenderer()
-	: font{nullptr},cam{nullptr},x{0.0f},y{0.0f},scale{1.0f}
+	: font{nullptr},cam{nullptr},x{0.0f},y{0.0f},scale{1.0f},shader(vshaderSource,fshaderSource)
 {
     initialize();
 }
 
 void ni::flat::TextRenderer::initialize()
 {
-	shader.loadFromGLSL(vshaderSource,fshaderSource);
-    glUniform1i(glGetUniformLocation(shader.getShaderID(), "text"), 0);
+	shader.setUniform("text",0);
 
     indices =
     {
@@ -34,17 +32,18 @@ void ni::flat::TextRenderer::initialize()
 	vertices[34] = 0.0f;
 	vertices[35] = 1.0f;
 
-	auto win = reinterpret_cast<core::Window*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
+	auto win = reinterpret_cast<core::WindowBackends*>(glfwGetWindowUserPointer(glfwGetCurrentContext()));
 	viewWidth = win->getWidth();
 	viewHeight = win->getHeight();
 }
 
 void ni::flat::TextRenderer::_drawText()
 {
-	// TODO: check required data
-
-	if(vao.getVAO() == 0)
-			vao.create(utils::GLBufferType::Dynamic,vertices,indices);
+	if(!font)
+	{
+		ni::core::otherLogger->critical("no font given to TextRenderer");
+		std::terminate();
+	}
 
 	float _x = x;
 
@@ -65,14 +64,14 @@ void ni::flat::TextRenderer::_drawText()
 		vertices[27] = xpos;
 		vertices[28] = ypos + h;
 
-    	glUseProgram(shader.getShaderID());
+    	shader.use();
 
 		if(cam)
-			shader["camTrans"] = UniformArg(cam->getTranslateMatrix());
+			shader.setUniform("camTrans",cam->getMatrix());
 		else 
 		{
 			glm::mat4 projection = glm::mat4(1.0f) * glm::ortho(0.0f, viewWidth, 0.0f, viewHeight, -1.0f, 1.0f);
-			shader["camTrans"] = UniformArg(projection);
+			shader.setUniform("camTrans",projection);
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getVBO());
@@ -89,37 +88,26 @@ void ni::flat::TextRenderer::_drawText()
 
 void ni::flat::TextRenderer::drawTextHelper(Color&& color)
 {
-	vertices[3] = color.getRed();
-	vertices[4] = color.getGreen();
-	vertices[5] = color.getBlue();
-	vertices[6] = color.getAlpha();
-	vertices[12] = color.getRed();
-	vertices[13] = color.getGreen();
-	vertices[14] = color.getBlue();
-	vertices[15] = color.getAlpha();
-	vertices[21] = color.getRed();
-	vertices[22] = color.getGreen();
-	vertices[23] = color.getBlue();
-	vertices[24] = color.getAlpha();
-	vertices[30] = color.getRed();
-	vertices[31] = color.getGreen();
-	vertices[32] = color.getBlue();
-	vertices[33] = color.getAlpha();
+	for(size_t i = 0;i < 4;i++)
+	{
+		vertices[3 + i * 9] = color.getRed();
+		vertices[4 + i * 9] = color.getGreen();
+		vertices[5 + i * 9] = color.getBlue();
+		vertices[6 + i * 9] = color.getAlpha();
+	}
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Point&& point)
 {
-	x = point.getX();
-	y = point.getY();
-	vertices[2] = point.getZ();
-	vertices[11] = point.getZ();
-	vertices[20] = point.getZ();
-	vertices[29]  = point.getZ();
+	x = point.getPositionX();
+	y = point.getPositionY();
+	for(size_t i = 0;i < 4;i++)
+		vertices[2 + i * 9] = point.getPositionZ();
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Scale&& scale)
 {
-	this->scale = scale;
+	this->scale = scale.get();
 }
 
 void ni::flat::TextRenderer::drawTextHelper(Font* font)

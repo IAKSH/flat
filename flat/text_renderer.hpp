@@ -1,14 +1,15 @@
 #pragma once
 
+#include "color.hpp"
+#include "scale.hpp"
+#include "../utils/font.hpp"
+#include "../utils/physics.hpp"
+#include "../core/template.hpp"
+#include "../utils/opengl_shader.hpp"
+#include "../utils/opengl_camera.hpp"
+#include "../utils/opengl_vao.hpp"
 #include <string>
 #include <string_view>
-
-#include "../utils/font.hpp"
-#include "../utils/vao.hpp"
-#include "../utils/camera.hpp"
-#include "../utils/any_same.hpp"
-#include "shader.hpp"
-#include "dtype.hpp"
 
 namespace ni::flat
 {
@@ -20,27 +21,31 @@ namespace ni::flat
         std::conditional_t<std::is_same_v<T, std::u32string_view>, std::true_type, ContainsU32string_view<Rest...>> {};
 
     template <typename T>
-    concept DrawTextArg = ni::utils::any_same<T,Color,Point,Scale,std::u32string_view,utils::Font*,utils::Camera2D*>() ;
+    concept DrawTextArg = ::ni::core::anySame<T,Color,ni::utils::Point,
+        ni::utils::Point,std::u32string_view,utils::Font*,ni::utils::opengl::Camera>() ;
 
-    class TextRenderer
+    class TextRenderer : public ::ni::core::DisableCopy
     {
         using Font = ::ni::utils::Font;
-        using Shader = ::ni::flat::Shader;
-        using VertexBuffer = ::ni::utils::VertexArrayObj;
+        using ShaderProgram = ::ni::utils::opengl::ShaderProgram;
         using CharTexture = ::ni::utils::CharTexture;
-        using Camera = ::ni::utils::Camera2D;
+        using Camera = ::ni::utils::opengl::Camera;
+        using GLBufferType = ::ni::utils::opengl::GLBufferType;
+        using Point = ::ni::utils::Point;
+        template <GLBufferType T>
+        using RectVertexArray = ::ni::utils::opengl::RectVertexArray<T>;
 
     private:
         float x,y,scale;
         float viewWidth,viewHeight;
         Font* font;
         Camera* cam;
-        Shader shader;
-        VertexBuffer vao;
+        ShaderProgram shader;
+        RectVertexArray<GLBufferType::Dynamic> vao;
         std::u32string str;
         std::array<float,36> vertices;
         std::array<unsigned int, 6> indices;
-        const char* const vshaderSource =
+        static constexpr std::string_view const vshaderSource =
             "#version 330 core\n"
             "layout (location = 0) in vec3 aPos;\n"
             "layout (location = 1) in vec4 aColor;\n"
@@ -56,7 +61,7 @@ namespace ni::flat
             "    aColorOut = aColor;\n"
             "    aTexCoordOut = vec2(aTexCoord.x, 1.0 - aTexCoord.y);\n"
             "}\0";
-        const char* const fshaderSource =
+        static constexpr std::string_view const fshaderSource =
             "#version 330 core\n"
             "uniform sampler2D texture0;\n"
             "in vec2 aTexCoordOut;\n"
@@ -86,7 +91,6 @@ namespace ni::flat
 
     public:
         TextRenderer();
-        TextRenderer(TextRenderer&) = delete;
         ~TextRenderer() = default;
 
         void setViewWidth(const float& val) { viewWidth = val; }

@@ -1,9 +1,8 @@
 #pragma once
 
+#include "event.hpp"
 #include <string>
 #include <string_view>
-
-#include "event.hpp"
 
 namespace ni::core
 {

@@ -1,16 +1,9 @@
 #include "application.hpp"
-
+#include "loggers.hpp"
 #include <memory>
 
-#include "../utils/logger.hpp"
-
-namespace ni::core
-{
-    static Application* instance {nullptr};
-}
-
 ni::core::Application::Application()
-    : shoudQuit{false}
+    : shoudQuit(false) 
 {
     initialize();
 }
@@ -20,33 +13,21 @@ ni::core::Application::~Application()
     release();
 }
 
-void ni::core::Application::bindInstance()
+void ni::core::Application::configureWindow()
 {
-    if(!instance)
-        instance = this;
-    else
-	{
-        utils::coreLogger()->critical("application instance conflict");
-		abort();
-	}
+    window = std::make_unique<opengl::Window>("unnamed");
+    window->setEventCallbackFunc(forwardEvent);
 }
 
-void ni::core::Application::addMainWindow()
+void ni::core::Application::configureMixer()
 {
-    windows.push_back(std::make_unique<Window>("MainWindow"));
-    windows[0]->setEventCallbackFunc(forwardEvent);
-}
-
-void ni::core::Application::addMainMixer()
-{
-    mixers.push_back(std::make_unique<Mixer>());
+    mixer = std::make_unique<openal::Mixer>();
 }
 
 void ni::core::Application::initialize()
 {
-    addMainWindow();
-    addMainMixer();
-    bindInstance();
+    configureWindow();
+    configureMixer();
 }
 
 void ni::core::Application::release()
@@ -55,17 +36,12 @@ void ni::core::Application::release()
     forwardEvent(event);
 
     for(auto& item : layers)
-        item->onDetach();
-}
-
-ni::core::Application* ni::core::Application::getInstance()
-{
-    return instance;
+    item->onDetach();
 }
 
 void ni::core::Application::forwardEvent(Event& event)
 {
-    for(auto& item : getInstance()->layers)
+    for(auto& item : getInstance().layers)
         item->onEvent(event);
 }
 
@@ -77,6 +53,11 @@ void ni::core::Application::pushLayer(std::unique_ptr<Layer> layer)
 void ni::core::Application::pushOverlay(std::unique_ptr<Layer> layer)
 {
     // TODO
+}
+
+void ni::core::Application::exit()
+{
+    shoudQuit = true;
 }
 
 void ni::core::Application::run()
@@ -97,7 +78,8 @@ void ni::core::Application::run()
     }
 }
 
-void ni::core::Application::exit()
+ni::core::Application& ni::core::Application::getInstance()
 {
-    shoudQuit = true;
+    static Application app;
+    return app;
 }

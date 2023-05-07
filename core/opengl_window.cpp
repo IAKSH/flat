@@ -1,18 +1,19 @@
-#include "window.hpp"
-
-#include "../utils/logger.hpp"
+#include "opengl_window.hpp"
+#include "loggers.hpp"
 #include "event_keyboard.hpp"
 #include "event_window.hpp"
 #include "event_mouse.hpp"
+#include <exception>
 
-ni::core::Window::Window(std::string_view name)
+
+ni::core::opengl::Window::Window(std::string_view name)
     : winName(name)
 {
-    utils::coreLogger()->trace("creating window \"{}\"", name.data());
+    coreLogger->trace("creating window \"{}\"", name.data());
 
     if (!backendsInitialized)
     {
-        utils::coreLogger()->trace("Window backends uninitialized, initializing");
+        coreLogger->trace("Window backends uninitialized, initializing");
         initialize();
         backendsInitialized = true;
     }
@@ -20,19 +21,19 @@ ni::core::Window::Window(std::string_view name)
         initializeWithoutBackends();
 }
 
-ni::core::Window::~Window()
+ni::core::opengl::Window::~Window()
 {
 	release();
 }
 
-GLFWwindow* ni::core::Window::getGLFWWindow()
+GLFWwindow* ni::core::opengl::Window::getGLFWWindow()
 {
 	if (!win)
-        utils::coreLogger()->critical("trying to get an null GLFWWindow named {}", winName);
+        coreLogger->critical("trying to get an null GLFWWindow named {}", winName);
 	return win;
 }
 
-void ni::core::Window::update()
+void ni::core::opengl::Window::imp_update()
 {
     glfwPollEvents();
     glfwSwapBuffers(win);
@@ -40,84 +41,84 @@ void ni::core::Window::update()
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void ni::core::Window::onEvent(Event& e)
+void ni::core::opengl::Window::imp_onEvent(Event& e)
 {
     if(eventCallback)
         eventCallback(e);
 }
 
-void ni::core::Window::setPositionX(int x)
+void ni::core::opengl::Window::imp_setPositionX(const int& x)
 {
     int ori;
     glfwGetWindowPos(win, nullptr, &ori);
     glfwSetWindowPos(win, x, ori);
 }
 
-void ni::core::Window::setPositionY(int y)
+void ni::core::opengl::Window::imp_setPositionY(const int& y)
 {
     int ori;
     glfwGetWindowPos(win, &ori, nullptr);
     glfwSetWindowPos(win, ori, y);
 }
 
-void ni::core::Window::setWidth(int w)
+void ni::core::opengl::Window::imp_setWidth(const int& w)
 {
     int ori;
     glfwGetWindowSize(win, nullptr, &ori);
     glfwSetWindowSize(win, w, ori);
 }
 
-void ni::core::Window::setHeight(int h)
+void ni::core::opengl::Window::imp_setHeight(const int& h)
 {
     int ori;
     glfwGetWindowSize(win, &ori, nullptr);
     glfwSetWindowSize(win, ori, h);
 }
 
-void ni::core::Window::setTitle(std::string_view title)
+void ni::core::opengl::Window::imp_setTitle(std::string_view title)
 {
     glfwSetWindowTitle(win, title.data());
 }
 
-void ni::core::Window::setEventCallbackFunc(const std::function<void(Event&)>& func)
+void ni::core::opengl::Window::imp_setEventCallbackFunc(const std::function<void(Event&)>& func)
 {
     eventCallback = func;
 }
 
-int ni::core::Window::getPositionX()
+int ni::core::opengl::Window::imp_getPositionX()
 {
     int x;
     glfwGetWindowPos(win, &x, nullptr);
     return x;
 }
 
-int ni::core::Window::getPositionY()
+int ni::core::opengl::Window::imp_getPositionY()
 {
     int y;
     glfwGetWindowPos(win, nullptr, &y);
     return y;
 }
 
-int ni::core::Window::getWidth()
+int ni::core::opengl::Window::imp_getWidth()
 {
     int w;
     glfwGetWindowSize(win, &w, nullptr);
     return w;
 }
 
-int ni::core::Window::getHeight()
+int ni::core::opengl::Window::imp_getHeight()
 {
     int h;
     glfwGetWindowSize(win, nullptr, &h);
     return h;
 }
 
-std::string_view ni::core::Window::getName()
+std::string_view ni::core::opengl::Window::imp_getName()
 {
     return winName;
 }
 
-void ni::core::Window::initialize()
+void ni::core::opengl::Window::initialize()
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -125,37 +126,37 @@ void ni::core::Window::initialize()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     glfwSetErrorCallback([](int error, const char* description) {
-        utils::coreLogger()->critical("GLFW Error {}: {}", error, description);
-        abort();
+        coreLogger->critical("GLFW Error {}: {}", error, description);
+        std::terminate();
         });
 
     initializeWithoutBackends();
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        utils::coreLogger()->critical("Failed to initialize GLAD");
-        abort();
+        coreLogger->critical("Failed to initialize GLAD");
+        std::terminate();
     }
 
-    utils::coreLogger()->info("OpenGL Info:");
-    utils::coreLogger()->info("  Vendor: {}", (const char*)glGetString(GL_VENDOR));
-    utils::coreLogger()->info("  Renderer: {}", (const char*)glGetString(GL_RENDERER));
-    utils::coreLogger()->info("  Version: {}", (const char*)glGetString(GL_VERSION));
+    coreLogger->info("OpenGL Info:");
+    coreLogger->info("  Vendor: {}", (const char*)glGetString(GL_VENDOR));
+    coreLogger->info("  Renderer: {}", (const char*)glGetString(GL_RENDERER));
+    coreLogger->info("  Version: {}", (const char*)glGetString(GL_VERSION));
 
     glfwSetWindowUserPointer(win, this);
     glfwSetWindowSizeCallback(win, [](GLFWwindow* window, int width, int height) 
         {
             Window* win = (Window*)glfwGetWindowUserPointer(window);
 
-            WindowResizeEvent event(win->getName());
-            win->onEvent(event);
+            WindowResizeEvent event(win->imp_getName());
+            win->imp_onEvent(event);
         });
 
     glfwSetWindowCloseCallback(win, [](GLFWwindow* window)
         {
             Window* win = (Window*)glfwGetWindowUserPointer(window);
-            WindowCloseEvent event(win->getName());
-            win->onEvent(event);
+            WindowCloseEvent event(win->imp_getName());
+            win->imp_onEvent(event);
         });
 
     glfwSetKeyCallback(win, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -168,13 +169,13 @@ void ni::core::Window::initialize()
             case GLFW_PRESS:
             {
                 KeyPressEvent event(static_cast<KeyCode>(key));
-                win->onEvent(event);
+                win->imp_onEvent(event);
                 break;
             }
             case GLFW_RELEASE:
             {
                 KeyReleaseEvent event(static_cast<KeyCode>(key));
-                win->onEvent(event);
+                win->imp_onEvent(event);
                 break;
             }
             }
@@ -189,13 +190,13 @@ void ni::core::Window::initialize()
             case GLFW_PRESS:
             {
                 MousePressEvent event(button);
-                win->onEvent(event);
+                win->imp_onEvent(event);
                 break;
             }
             case GLFW_RELEASE:
             {
                 MouseReleaseEvent event(button);
-                win->onEvent(event);
+                win->imp_onEvent(event);
                 break;
             }
             }
@@ -205,25 +206,25 @@ void ni::core::Window::initialize()
         {
             Window* win = (Window*)glfwGetWindowUserPointer(window);
             MouseScrollEvent event(static_cast<float>(xOffset),static_cast<float>(yOffset));
-            win->onEvent(event);
+            win->imp_onEvent(event);
         });
 
     glfwSetCursorPosCallback(win, [](GLFWwindow* window, double xPos, double yPos)
         {
             Window* win = (Window*)glfwGetWindowUserPointer(window);
             MouseMoveEvent event((float)xPos, (float)yPos);
-            win->onEvent(event);
+            win->imp_onEvent(event);
         });
 }
 
-void ni::core::Window::initializeWithoutBackends()
+void ni::core::opengl::Window::initializeWithoutBackends()
 {
     win = glfwCreateWindow(800, 600, winName.data(), nullptr, nullptr);
     glfwMakeContextCurrent(win);
     glfwSetFramebufferSizeCallback(win, [](GLFWwindow* window, int width, int height) {glViewport(0, 0, width, height); });
 }
 
-void ni::core::Window::release()
+void ni::core::opengl::Window::release()
 {
 	glfwDestroyWindow(win);
 }

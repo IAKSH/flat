@@ -1,5 +1,4 @@
 #include "collision_detect.hpp"
-
 #include <array>
 #include <cfloat>
 

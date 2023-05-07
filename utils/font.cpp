@@ -1,3 +1,5 @@
+#include "font.hpp"
+#include "../core/loggers.hpp"
 #include <deque>
 #include <exception>
 #include <ios>
@@ -9,18 +11,16 @@
 #include <string_view>
 #include <fstream>
 
-#include "font.hpp"
-#include "logger.hpp"
-
 namespace ni::utils
 {
     static FT_Library ft;
     static bool freetypeLoaded { false };
 }
 
-ni::utils::Font::Font(std::string_view path)
+ni::utils::Font::Font(unsigned int size,std::string_view path)
+    : fontSize(size)
 {
-    loadTTF(path);
+    loadFromFile(path);
 }
 
 ni::utils::Font::~Font()
@@ -38,27 +38,26 @@ void ni::utils::Font::freeCacheInRange(const char& low,const char& up)
     });
 }
 
-void ni::utils::Font::loadTTF(std::string_view path)
+void ni::utils::Font::loadFromFile(std::string_view path)
 {
     if(!freetypeLoaded)
     {
         if (FT_Init_FreeType(&ft))
         {
-            ni::utils::coreLogger()->critical("could not initialize freetype library");
-            abort();
+            core::utilsLogger->critical("could not initialize freetype library");
+            std::terminate();
         }
-        ni::utils::coreLogger()->trace("freetype library loaded");
+        core::utilsLogger->trace("freetype library loaded");
     }
 
-    ni::utils::coreLogger()->trace("loading ttf from {}",path);
+    core::utilsLogger->trace("loading ttf from {}",path);
     if (FT_New_Face(ft, path.data(), 0, &face))
     {
-        ni::utils::coreLogger()->critical("could not load ttf from {}",path);
-        abort();
+        core::utilsLogger->critical("could not load ttf from {}",path);
+        std::terminate();
     }
 
-    // font size = 48
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, fontSize);
 }
 
 const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
@@ -68,14 +67,14 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         return **ite;
     else
     {
-        ni::utils::coreLogger()->trace("create texture of 0x{:X} from ttf",static_cast<unsigned int>(c));
+        core::utilsLogger->trace("create texture of 0x{:X} from ttf",static_cast<unsigned int>(c));
 
         // Load bitmap from TTF and save it to cache
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         if (FT_Load_Char(face,c,FT_LOAD_RENDER))
         {
-            ni::utils::coreLogger()->critical("can't load 0x{:X} from ttf",static_cast<unsigned int>(c));
-            abort();
+            core::utilsLogger->critical("can't load 0x{:X} from ttf",static_cast<unsigned int>(c));
+            std::terminate();
         }
 
         GLuint textureID;
@@ -89,10 +88,17 @@ const ni::utils::CharTexture& ni::utils::Font::getCharTexture(const char32_t& c)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        auto ptr = std::make_unique<CharTexture>(c,face->glyph->bitmap.width,face->glyph->bitmap.rows,face->glyph->bitmap_left,face->glyph->bitmap_top,face->glyph->advance.x,textureID);
+        auto ptr = std::make_unique<CharTexture>(face->glyph->bitmap.buffer,c,face->glyph->bitmap.width,face->glyph->bitmap.rows,face->glyph->bitmap_left,face->glyph->bitmap_top,face->glyph->advance.x);
         ni::utils::CharTexture& texture = *ptr;
         textureCache.push_back(std::move(ptr));
 
         return texture;
     }
+}
+
+void ni::utils::Font::resize(unsigned int size)
+{
+    fontSize = size;
+    FT_Set_Pixel_Sizes(face, 0, size);
+    textureCache.clear();
 }

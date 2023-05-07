@@ -1,15 +1,18 @@
 #pragma once
 
+#include "opengl_texture.hpp"
+#include "timer.hpp"
+#include "../core/template.hpp"
 #include <array>
 #include <memory>
 #include <iterator>
-#include "texture.hpp"
-#include "timer.hpp"
 
 namespace ni::utils
 {
+    using Texture = ni::utils::opengl::Texture<ni::utils::opengl::ColorChannelType::RGBA,ni::utils::opengl::ColorChannelType::RGBA>;
+
     template <size_t texturesLen>
-    class Animation
+    class Animation : public core::DisableCopy
     {
     private:
         std::array<std::unique_ptr<ni::utils::Texture>,texturesLen> textures;
@@ -25,7 +28,6 @@ namespace ni::utils
             : interval{interval},textures{std::make_unique<ni::utils::Texture>(std::forward<Args>(args))...},ite{std::begin(textures)}
         {
         }
-        Animation(Animation&) = delete;
         ~Animation() = default;
         const ni::utils::Texture& getCurrentTexture() const { return **ite; }
         void rewind() {ite = std::begin(textures);}
