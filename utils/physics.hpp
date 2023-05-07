@@ -1,15 +1,6 @@
 #pragma once
 
 #include <array>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/ext/quaternion_trigonometric.hpp"
-#include "glm/fwd.hpp"
-#include "glm/geometric.hpp"
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/gtx/quaternion.hpp>
 
 namespace ni::utils
 {
@@ -32,9 +23,9 @@ namespace ni::utils
     class Rotatable : public Point
     {
     private:
-        glm::quat orientation;
-        glm::vec3 right{1.0f,0.0f,0.0f};
-        glm::vec3 up{0.0f,1.0f,0.0f};
+        std::array<float,4> orientation;
+        std::array<float,3> right;
+        std::array<float,3> up;
         void updateVectors();
 
     public:
@@ -43,9 +34,9 @@ namespace ni::utils
         float getYaw() const;
         float getPitch() const;
         float getRoll() const;
-        const glm::quat& getOrientation() const {return orientation;}
-        const glm::vec3& getRight() const {return right;}
-        const glm::vec3& getUp() const {return up;}
+        const auto& getOrientation() const {return orientation;}
+        const auto& getRight() const {return right;}
+        const auto& getUp() const {return up;}
         void setQuat(const std::array<float,4>& arr) {}
         void rotate(float dUp,float dRight,float dRoll);
         void moveWithDirection(float dFront,float dRight,float dHeight);
