@@ -12,47 +12,24 @@
 
 namespace ni::utils::opengl
 {
-    class QuatCame
+    class QuatCamera : public Rotatable
     {
     private:
-        glm::vec3 position;
-        glm::quat orientation; // 使用四元数存储方向向量
-        glm::vec3 right;
-        glm::vec3 up;
-
         float fov;
         float zoom;
-
         int screenWidth;
         int screenHeight;
 
-        void updateCameraVectors();
-
     public:
-        QuatCame();
-        QuatCame(const float& w,const float& h);
-        ~QuatCame() = default;
+        QuatCamera();
+        QuatCamera(const float& w,const float& h);
+        ~QuatCamera() = default;
 
-        const float& getPositionX() {return position[0];}
-        const float& getPositionY() {return position[1];}
-        const float& getPositionZ() {return position[2];}
-        const float& getYaw() {return glm::eulerAngles(orientation)[0];}
-        const float& getPitch() {return glm::eulerAngles(orientation)[1];}
-        const float& getRoll() {return glm::eulerAngles(orientation)[2];}
         const float& getZoom() {return zoom;}
         const float& getFOV() {return fov;}
         glm::mat4 getMatrix() const;
-
-        void setPositionX(const float& val) {position[0] = val;}
-        void setPositionY(const float& val) {position[1] = val;}
-        void setPositionZ(const float& val) {position[2] = val;}
-        //void setYaw(const float& val) {recordedYaw = val;}
-        //void setPitch(const float& val) {recordedPitch = val;}
         void setZoom(const float& val);
         void setFov(const float& val);
-
-        void move(const float& dFront,const float& dRight,const float& dHeight);
-        void rotate(const float& dUp,const float& dRight,const float& dRoll);
     };
 
     class EulerCamera
@@ -91,5 +68,5 @@ namespace ni::utils::opengl
         void rotate(const float& dUp,const float& dRight,const float& dRoll);
     };
 
-    using Camera = QuatCame;
+    using Camera = QuatCamera;
 }
