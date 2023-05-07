@@ -71,6 +71,7 @@ target_sources(flat PRIVATE
     "utils/font.cpp"
     "utils/format.hpp"
     "utils/physics.hpp"
+    "utils/physics.cpp"
     "flat/collision_detect.hpp"
     "flat/gjk.cpp"
     "flat/text_renderer.hpp"
