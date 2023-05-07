@@ -105,7 +105,7 @@ void Flat::MenuLayer::onUpdate()
 
     // camera update
     cam.rotate(camRotateSpeedUp * 4,camRotateSpeedRight * 4,camRollSpeed * 2.0f);
-    cam.move(camMoveSpeedUp * 8,camMoveSpeedRight * 8,0.0f);
+    cam.moveWithDirection(camMoveSpeedUp * 8,camMoveSpeedRight * 8,0.0f);
 }
 
 void Flat::MenuLayer::onRender()
