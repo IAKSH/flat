@@ -30,6 +30,30 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/imgui_widgets.cpp
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_opengl3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/application.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/filter.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/layer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/object.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_scope.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_source.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_camera.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_scope.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_shader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_texture.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_vao.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/audio_buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/audio_loadder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/WAV/wav_loadder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Config/config_buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Config/config_loadder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Config/JSON/json_loadder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/image_buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/image_loadder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/Bitmap/bitmap_loadder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/PNG/png_loadder.hpp
 )
 
 add_executable(flat_test "test.cpp")
