@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Misc/disable_copy.hpp"
-#include "../../Misc/any_same.hpp"
+#include "../../Misc/ctti.hpp"
 #include "../../Misc/logger.hpp"
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>

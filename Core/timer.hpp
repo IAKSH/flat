@@ -53,7 +53,7 @@ namespace flat
     };
 
     template <typename T>
-    concept TimeUnitType = misc::ctti::any_same<T,Seconds,MilliSeconds,MicroSeconds,NanoSeconds>();
+    concept TimeUnitType = misc::any_same<T,Seconds,MilliSeconds,MicroSeconds,NanoSeconds>();
 
     using CallbackFunc = std::function<void()>;
 
