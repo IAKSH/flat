@@ -52,6 +52,8 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_texture.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_vao.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/ctti.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/rtti.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/keycode.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/disable_copy.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.cpp

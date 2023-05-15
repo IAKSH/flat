@@ -7,9 +7,9 @@ namespace flat::misc::rtti
     template <typename T>
     struct TypeID
     {
-        static std::string get()
+        static long long get()
         {
-            static std::string id = std::to_string(reinterpret_cast<long long>(&id));
+            static long long id = reinterpret_cast<long long>(&id);
             return id;
         }
     };
@@ -17,27 +17,30 @@ namespace flat::misc::rtti
     /*
         how to use:
 
-        struct Base
+        struct A
         {
-            static std::string_view get_rtti_id()
+            long long get_rtti_id()
             {
-                static std::string id = TypeID<Base>::get();
+                static long long id = TypeID<A>::get();
                 return id;
             }
         };
 
-        struct Derived : public Base
+        struct B
         {
-            static std::string_view get_rtti_id()
+            long long get_rtti_id()
             {
-                static std::string id = TypeID<Derived>::get();
+                static long long id = TypeID<B>::get();
                 return id;
             }
         };
 
         then compare directly:
-        std::cout << Base().get_rtti_id() == Derived().get_trri_id() << std::endl;
+        std::cout << A().get_rtti_id() == B().get_trri_id() << std::endl;
 
-        this RTTI impl won't take vtable into consideration, so it should be faster then typeid()
+        this RTTI impl won't go through vtable, it will run faster than typeid()
+        however when using this impl on a virtual inherted system, it will be slower than typeid()
+        this is because function get_rtti_id() must be virtual so you won't call the wrong version of this function
+        this brings the same cost that typeid() do
     */
 }
