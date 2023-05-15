@@ -1,5 +1,6 @@
 #include "collision_detect.hpp"
 #include <array>
+#include <cmath>
 #include <cfloat>
 
 namespace ni::flat
