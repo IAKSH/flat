@@ -39,8 +39,10 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_buffer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_scope.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_source.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_source.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_camera.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_camera.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_scope.hpp

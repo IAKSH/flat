@@ -26,6 +26,28 @@ namespace flat
         void set_position_z(float val) {xyz[2] = val;}
     };
 
+    class Velocitor
+    {
+    private:
+        std::array<float,3> xyz;
+
+    public:
+        Velocitor()
+            : xyz{0.0f,0.0f,0.0f}
+        {}
+
+        Velocitor(float x,float y,float z)
+            : xyz{x,y,z}
+        {}
+
+        float get_velocity_x() const {return xyz[0];}
+        float get_velocity_y() const {return xyz[1];}
+        float get_velocity_z() const {return xyz[2];}
+        void set_velocity_x(float val) {xyz[0] = val;}
+        void set_velocity_y(float val) {xyz[1] = val;}
+        void set_velocity_z(float val) {xyz[2] = val;}
+    };
+
     class Rotatable : public Point
     {
     private:
