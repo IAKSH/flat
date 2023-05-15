@@ -44,6 +44,10 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_shader.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_texture.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_vao.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/any_same.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/disable_copy.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.cpp
     ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/audio_buffer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/audio_loadder.hpp
     ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/WAV/wav_loadder.hpp
