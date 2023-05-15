@@ -30,11 +30,11 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/imgui_widgets.cpp
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_opengl3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/application.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/filter.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/layer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/Base/object.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/application.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/filter.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/layer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/object.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/timer.hpp
@@ -51,7 +51,7 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_shader.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_texture.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_vao.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Misc/any_same.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/ctti.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/disable_copy.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.cpp
