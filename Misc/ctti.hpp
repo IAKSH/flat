@@ -3,7 +3,7 @@
 #include <concepts>
 #include <type_traits>
 
-namespace flat::misc
+namespace flat::misc::ctti
 {
     // Check type equality while compiling (ignore const and reference)
     template <typename T,typename U>

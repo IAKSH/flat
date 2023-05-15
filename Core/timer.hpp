@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Misc/disable_copy.hpp"
-#include "../../Misc/any_same.hpp"
+#include "../../Misc/ctti.hpp"
 #include <functional>
 #include <chrono>
 #include <thread>
@@ -53,7 +53,7 @@ namespace flat
     };
 
     template <typename T>
-    concept TimeUnitType = misc::any_same<T,Seconds,MilliSeconds,MicroSeconds,NanoSeconds>();
+    concept TimeUnitType = misc::ctti::any_same<T,Seconds,MilliSeconds,MicroSeconds,NanoSeconds>();
 
     using CallbackFunc = std::function<void()>;
 
