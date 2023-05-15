@@ -35,13 +35,17 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/Base/filter.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/Base/layer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/Base/object.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/physics.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/physics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_buffer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_scope.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_source.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_camera.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_camera.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_scope.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_shader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_shader.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_texture.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_vao.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/any_same.hpp
