@@ -37,6 +37,7 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/Base/object.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/timer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_buffer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.cpp
