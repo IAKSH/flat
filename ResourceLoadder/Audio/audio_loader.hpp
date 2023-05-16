@@ -5,5 +5,5 @@ namespace flat::res
     class AudioLoadder
     {
         
-    }
+    };
 }
