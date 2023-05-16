@@ -3,7 +3,7 @@
 
 namespace flat::misc
 {
-    Logger main_logger("Main");
+    Logger main_logger("Flat");
 }
 
 flat::misc::Logger::Logger(std::string_view name)
