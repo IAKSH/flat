@@ -59,19 +59,6 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Misc/disable_copy.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Audio/audio_buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Audio/audio_loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Audio/WAV/wav_loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Config/config_buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Config/config_loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Config/JSON/json_Loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/image_buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/image_loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/Bitmap/bitmap_Loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/PNG/png_loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Font/font_buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Font/font_loader.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Font/TTF/ttf_Loader.hpp
 )
 
 add_executable(flat_test "test.cpp")
