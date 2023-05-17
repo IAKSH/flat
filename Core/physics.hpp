@@ -10,20 +10,15 @@ namespace flat
         std::array<float,3> xyz;
 
     public:
-        Point()
-            : xyz{0.0f,0.0f,0.0f}
-        {}
+        Point();
+        Point(float x,float y,float z);
 
-        Point(float x,float y,float z)
-            : xyz{x,y,z}
-        {}
-
-        float get_position_x() const {return xyz[0];}
-        float get_position_y() const {return xyz[1];}
-        float get_position_z() const {return xyz[2];}
-        void set_position_x(float val) {xyz[0] = val;}
-        void set_position_y(float val) {xyz[1] = val;}
-        void set_position_z(float val) {xyz[2] = val;}
+        float get_position_x() const;
+        float get_position_y() const;
+        float get_position_z() const;
+        void set_position_x(float val);
+        void set_position_y(float val);
+        void set_position_z(float val);
     };
 
     class Velocitor
@@ -32,20 +27,15 @@ namespace flat
         std::array<float,3> xyz;
 
     public:
-        Velocitor()
-            : xyz{0.0f,0.0f,0.0f}
-        {}
+        Velocitor();
+        Velocitor(float x,float y,float z);
 
-        Velocitor(float x,float y,float z)
-            : xyz{x,y,z}
-        {}
-
-        float get_velocity_x() const {return xyz[0];}
-        float get_velocity_y() const {return xyz[1];}
-        float get_velocity_z() const {return xyz[2];}
-        void set_velocity_x(float val) {xyz[0] = val;}
-        void set_velocity_y(float val) {xyz[1] = val;}
-        void set_velocity_z(float val) {xyz[2] = val;}
+        float get_velocity_x() const;
+        float get_velocity_y() const;
+        float get_velocity_z() const;
+        void set_velocity_x(float val);
+        void set_velocity_y(float val);
+        void set_velocity_z(float val);
     };
 
     class Rotatable : public Point
@@ -79,7 +69,7 @@ namespace flat
         float height;
 
     public:
-        Rectangle(float x,float y,float w,float h);
+        Rectangle(float x,float y,float z,float w,float h);
         Rectangle();
         ~Rectangle();
         
@@ -95,7 +85,7 @@ namespace flat
         float radius;
 
     public:
-        Ball(float x,float y,float r);
+        Ball(float x,float y,float z,float r);
         Ball();
         ~Ball();
 
