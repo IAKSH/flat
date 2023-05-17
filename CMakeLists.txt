@@ -32,8 +32,7 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/application.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/application.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/filter.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/pipe.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/layer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/object.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.hpp
@@ -58,16 +57,16 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Misc/disable_copy.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/audio_buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/audio_loadder.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Audio/WAV/wav_loadder.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Config/config_buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Config/config_loadder.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Config/JSON/json_loadder.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/image_buffer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/image_loadder.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/Bitmap/bitmap_loadder.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoadder/Image/PNG/png_loadder.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Audio/audio_buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Audio/audio_loader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Audio/WAV/wav_loader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Config/config_buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Config/config_loader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Config/JSON/json_Loader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/image_buffer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/image_loader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/Bitmap/bitmap_Loader.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/ResourceLoader/Image/PNG/png_loader.hpp
 )
 
 add_executable(flat_test "test.cpp")

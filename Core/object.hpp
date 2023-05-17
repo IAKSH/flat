@@ -21,7 +21,7 @@ namespace flat
 
     };
 
-    class SoundEffect : public Object
+    class SoundFX : public Object
     {
 
     };
@@ -36,12 +36,22 @@ namespace flat
 
     };
 
+    class Font : public Object
+    {
+
+    };
+
     class Texture : public Object
     {
 
     };
 
-    class Font : public Object
+    class CharTexture : public Texture
+    {
+
+    };
+
+    class Frame : public Object
     {
 
     };
