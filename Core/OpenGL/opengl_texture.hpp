@@ -13,8 +13,10 @@ namespace flat::opengl
         Red_Only,Blue_Only,Green_Only,Alpha_Obly,RGB,RGBA
     };
 
+    struct BasicTexture {};
+
     template <ColorChannel image_channel,ColorChannel texture_channel>
-    class Texture : misc::DisableCopy
+    class Texture : public BasicTexture, misc::DisableCopy
     {
     private:
         GLuint texture_id;

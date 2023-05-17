@@ -12,15 +12,29 @@ namespace flat
         opengl::ShaderProgram shader;
 
     public:
-        RenderPipe();
+        RenderPipe(std::string_view vshader,std::string_view fshader);
         ~RenderPipe();
 
-        std::unique_ptr<Frame> ren_texture(const Texture& texture);
-        std::unique_ptr<Frame> ren_frame(const Frame& frame);
+        std::unique_ptr<Frame> ren_texture(const Texture& texture) const;
+        std::unique_ptr<Frame> ren_frame(const Frame& frame) const;
     };
 
     class MixPipe
     {
 
     };
+
+    // TODO:
+    const std::string_view default_vertex_shader 
+    {
+        ""
+    };
+
+    // TODO:
+    const std::string_view default_fragment_shader
+    {
+        ""
+    };
+
+    extern opengl::ShaderProgram default_shader;
 }

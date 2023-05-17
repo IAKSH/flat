@@ -3,11 +3,18 @@
 #include "OpenAL/openal_buffer.hpp"
 #include "OpenAL/openal_source.hpp"
 #include "OpenAL/openal_scope.hpp"
+#include "OpenGL/opengl_texture.hpp"
+#include "OpenGL/opengl_fbo.hpp"
+#include "OpenGL/opengl_vao.hpp"
+#include "physics.hpp"
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include <string>
 #include <memory>
 
 namespace flat
 {
-    class Object
+    class Object : public Rotatable, public Velocitor
     {
     private:
         inline static unsigned long long object_count = 0;
@@ -19,6 +26,17 @@ namespace flat
     public:
         virtual ~Object() = default;
         long long get_id() const;
+    };
+
+    class RenableObject : public Object
+    {
+    private:
+        opengl::RectangleVertexArray<opengl::BufferType::Dynamic> rect;
+
+    public:
+        RenableObject();
+        ~RenableObject();
+        // TODO: 提供修改vertices data的API（坐标/颜色/纹理坐标）
     };
 
     class Sound : public Object
@@ -66,29 +84,32 @@ namespace flat
         std::unique_ptr<Music> gen_music();
     };
 
-    class Frame : public Object
+    class Frame : public RenableObject
     {
     private:
+        opengl::FrameBuffer fbo;
 
     public:
-        Frame();
+        Frame(int w,int h);
         ~Frame();
 
-        void flush();
+        void flush_to_screen();
     };
 
     // Texture --(RenderPipe)--> Frame
     // Frame.get_texture() --(RenderPipe)--> new Frame
     // Frame.flush_to_screen(): display on screen using default shader
-    class Texture : public Object
+    class Texture : public RenableObject
     {
     private:
+        std::unique_ptr<opengl::BasicTexture> texture;
 
     public:
-        Texture();
+        Texture(const unsigned char* const data,int x,int y,int w,int h,int channels);
         ~Texture();
 
-        void flush();
+        void flush_to_screen();
+        // TODO: 应当提供更多的在GPU中处理图像的API
     };
 
     class CharTexture : public Texture
@@ -100,22 +121,35 @@ namespace flat
     {
     private:
         std::unique_ptr<unsigned char[]> bitmap_data;
+        int channels;
         int width;
         int height;
 
     public:
-        Image(std::unique_ptr<unsigned char[]> data,int w,int h);
+        Image(std::string_view path);
+        Image(std::unique_ptr<unsigned char[]> data,int w,int h,int c);
         ~Image();
-        std::unique_ptr<Texture> gen_texture();
+        std::unique_ptr<Texture> gen_texture(int x,int y,int w,int h);
+        // TODO: 应当提供更多的在CPU中处理图像的API
     };
 
-    // TODO
     class Font : public Object
     {
     private:
+        FT_Face face;
+        unsigned int font_size;
 
     public:
-        Font();
+        Font(std::string_view path);
         ~Font();
+        unsigned int get_font_size() const;
+        void set_font_size(unsigned int val);
+        std::unique_ptr<Texture> gen_char_texture(char32_t c);
+    };
+
+    // audio mixer & renderer's camera, all in one
+    class Camera : public Object
+    {
+
     };
 }

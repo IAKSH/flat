@@ -143,4 +143,30 @@ namespace flat::opengl
             update();
         }
     };
+
+    template <BufferType type>
+    class RectangleVertexArray : public VertexArray<36,6,type>
+    {
+    private:
+        inline static constexpr std::array<unsigned int,6> rect_indices
+        {
+            0,1,3,
+            1,2,3
+        };
+
+        inline static constexpr std::array<float,36> rect_vertices
+        {
+            1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,  // top right
+            1.0f,  -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,  // bottom right
+            -1.0f, -1.0f, 0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,  // bottom left
+            -1.0f, 1.0f,  0.0f,1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f   // top left
+        };
+
+    public:
+        RectangleVertexArray() : VertexArray<36, 6, type>(rect_vertices,rect_indices)
+        {
+        }
+
+        ~RectangleVertexArray() = default;
+    };
 }

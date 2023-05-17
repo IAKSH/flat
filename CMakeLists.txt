@@ -35,9 +35,20 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/pipe.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/layer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/object.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/font.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/image.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/sample.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/physics.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/timer.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/texture.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/sound.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/sample.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/pipe.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/music.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/frame.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/font.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/camera.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_buffer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.cpp

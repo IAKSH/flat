@@ -1,16 +1,21 @@
 #include <iostream>
 #include <memory>
 #include "Core/application.hpp"
+#include "Core/object.hpp"
+
+std::unique_ptr<flat::Image> my_image;
 
 struct TestLayer : public flat::Layer
 {
     TestLayer()
         : flat::Layer("Test Layer")
-    {}
+    {
+    }
 
     virtual void on_attach() override
     {
         std::cout << "hello!\n";
+        my_image = std::make_unique<flat::Image>("red.png");
     }
 
     virtual void on_detach() override
