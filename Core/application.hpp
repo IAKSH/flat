@@ -68,7 +68,7 @@ namespace flat
         Mixer mixer;
         bool should_quit;
 
-        void forward_event(const Event& event);
+        static void forward_event(const Event& event);
 
     public:
         Application();

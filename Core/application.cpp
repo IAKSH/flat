@@ -227,7 +227,9 @@ ALCcontext* flat::Mixer::get_context()
 
 flat::Application::Application()
     : should_quit(false),window("Unnamed")
-{}
+{
+    window.set_event_callback(forward_event);
+}
 
 flat::Application::~Application()
 {
