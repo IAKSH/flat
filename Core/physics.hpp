@@ -71,4 +71,42 @@ namespace flat
         void rotate(float d_up,float d_right,float d_roll);
         void move_with_direction(float d_front,float d_right,float d_height);
     };
+
+    class Rectangle : public Rotatable, public Velocitor
+    {
+    private:
+        float width;
+        float height;
+
+    public:
+        Rectangle(float x,float y,float w,float h);
+        Rectangle();
+        ~Rectangle();
+        
+        float get_width() const;
+        float get_height() const;
+        void set_width(float val);
+        void set_height(float val);
+    };
+
+    class Ball : public Rotatable, public Velocitor
+    {
+    private:
+        float radius;
+
+    public:
+        Ball(float x,float y,float r);
+        Ball();
+        ~Ball();
+
+        float get_radius() const;
+        void set_radius(float val);
+    };
+
+    template <typename T,typename U>
+    bool collision_check(const T& t,const U& u)
+    {
+        // need concept
+        // TODO: ...
+    };
 }
