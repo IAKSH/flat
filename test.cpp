@@ -36,11 +36,9 @@ struct TestLayer : public flat::Layer
 
     virtual void on_event(const flat::Event& event) override
     {
-        std::cout << "event: " << typeid(event).name() << '\n';
-
-        if(auto ptr = dynamic_cast<const flat::KeyPressEvent*>(&event);ptr != nullptr)
+        if(event.get_type() == flat::EventType::KeyPress)
         {
-            if(ptr->get_keycode() == flat::misc::KeyCode::ESCAPE)
+            if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::ESCAPE)
                 flat::Application::get_instance().exit();
         }
     }
@@ -83,11 +81,7 @@ struct TestDrawLayer : public flat::Layer
 
     virtual void on_event(const flat::Event& event) override
     {
-        if(auto ptr = dynamic_cast<const flat::KeyPressEvent*>(&event);ptr != nullptr)
-        {
-            if(ptr->get_keycode() == flat::misc::KeyCode::ESCAPE)
-                flat::Application::get_instance().exit();
-        }
+         std::cout << "event type: " << static_cast<int>(event.get_type()) << '\n';
     }
 };
 

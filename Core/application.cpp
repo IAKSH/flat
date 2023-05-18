@@ -166,14 +166,14 @@ void flat::Window::initialize_backends()
         switch(action)
         {
         case GLFW_PRESS:
-            if(button == 0) win->process_event(MouseLeftPressEvent());
-            else if(button == 1) win->process_event(MouseRightPressEvent());
-            else if(button == 2) win->process_event(MouseMiddlePressEvent());
+            if(button == 0) win->process_event(MousePressEvent(button));
+            else if(button == 1) win->process_event(MousePressEvent(button));
+            else if(button == 2) win->process_event(MousePressEvent(button));
             break;
         case GLFW_RELEASE:
-            if(button == 0) win->process_event(MouseLeftReleaseEvent());
-            else if(button == 1) win->process_event(MouseRightReleaseEvent());
-            else if(button == 2) win->process_event(MouseMiddleReleaseEvent());
+            if(button == 0) win->process_event(MouseReleaseEvent(button));
+            else if(button == 1) win->process_event(MouseReleaseEvent(button));
+            else if(button == 2) win->process_event(MouseReleaseEvent(button));
             break;
         }
     });

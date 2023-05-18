@@ -6,19 +6,31 @@
 
 namespace flat
 {
-    // base event
-    struct Event : misc::DisableCopy
+    enum class EventType
     {
+        KeyPress,KeyRelease,MousePress,MouseRelease,MouseMove,MouseScroll,
+        WindowClose,WindowResize,WindowFocus,WindowLostFocus,WindowMove
+    };
+
+    // base event
+    class Event : misc::DisableCopy
+    {
+    private:
+        const EventType type;
+    public:
+        Event(EventType type) : type(type) {}
         virtual ~Event() = default;
+        EventType get_type() const {return type;}
     };
 
     // keyboard event
-    struct KeyboardEvent : public Event
+    class KeyboardEvent : public Event
     {
     private:
         misc::KeyCode keycode;
     protected:
         void set_keycode(misc::KeyCode code) {keycode = code;}
+        KeyboardEvent(EventType type) : Event(type) {}
     public:
         virtual ~KeyboardEvent() override = default;
         misc::KeyCode get_keycode() const {return keycode;}
@@ -26,74 +38,46 @@ namespace flat
 
     struct KeyPressEvent : KeyboardEvent
     {
-        KeyPressEvent(misc::KeyCode keycode) {set_keycode(keycode);}
+        KeyPressEvent(misc::KeyCode keycode) : KeyboardEvent(EventType::KeyPress) {set_keycode(keycode);}
         virtual ~KeyPressEvent() override = default;
     };
 
     struct KeyReleaseEvent : public KeyboardEvent
     {
-        KeyReleaseEvent(misc::KeyCode keycode) {set_keycode(keycode);}
+        KeyReleaseEvent(misc::KeyCode keycode) : KeyboardEvent(EventType::KeyRelease) {set_keycode(keycode);}
         virtual ~KeyReleaseEvent() override = default;
     };
 
     // mouse event
-    struct MouseEvent : public Event
+    class MouseButtonEvent : public Event
     {
-        virtual ~MouseEvent() override = default;
-    };
-
-    struct MouseButtonEvent : public MouseEvent
-    {
+    private:
+        int keycode;
+    protected:
+        MouseButtonEvent(int keycode,EventType type) : keycode(keycode),Event(type) {}
+    public:
         virtual ~MouseButtonEvent() override = default;
     };
 
     struct MousePressEvent : public MouseButtonEvent
     {
-        virtual ~MousePressEvent() override = default;
+        MousePressEvent(int keycode) : MouseButtonEvent(keycode,EventType::MousePress) {}
+        virtual ~MousePressEvent () override = default;
     };
 
     struct MouseReleaseEvent : public MouseButtonEvent
     {
-        virtual ~MouseReleaseEvent() override = default;
+        MouseReleaseEvent(int keycode) : MouseButtonEvent(keycode,EventType::MouseRelease) {}
+        virtual ~MouseReleaseEvent () override = default;
     };
 
-    struct MouseLeftPressEvent : public MousePressEvent
-    {
-        virtual ~MouseLeftPressEvent () override = default;
-    };
-
-    struct MouseLeftReleaseEvent : public MouseReleaseEvent
-    {
-        virtual ~MouseLeftReleaseEvent() override = default;
-    };
-
-    struct MouseRightPressEvent : public MousePressEvent
-    {
-        virtual ~MouseRightPressEvent () override = default;
-    };
-
-    struct MouseRightReleaseEvent : public MouseReleaseEvent
-    {
-        virtual ~MouseRightReleaseEvent() override = default;
-    };
-
-    struct MouseMiddlePressEvent : public MousePressEvent
-    {
-        virtual ~MouseMiddlePressEvent () override = default;
-    };
-
-    struct MouseMiddleReleaseEvent : public MouseReleaseEvent
-    {
-        virtual ~MouseMiddleReleaseEvent() override = default;
-    };
-
-    struct MouseMoveEvent : public MouseEvent
+    struct MouseMoveEvent : Event
     {
     private:
         int position_x,position_y;
     public:
         MouseMoveEvent(int x,int y)
-            : position_x(x),position_y(y)
+            : position_x(x),position_y(y),Event(EventType::MouseMove)
         {}
 
         virtual ~MouseMoveEvent() override = default;
@@ -101,13 +85,13 @@ namespace flat
         int get_position_y() const {return position_y;}
     };
 
-    class MouseScrollEvent : public MouseEvent
+    class MouseScrollEvent : public Event
     {
     private:
         int scroll_x,scroll_y;
     public:
         MouseScrollEvent(int x,int y)
-            : scroll_x(x),scroll_y(y)
+            : scroll_x(x),scroll_y(y),Event(EventType::MouseScroll)
         {}
 
         virtual ~MouseScrollEvent() override = default;
@@ -116,33 +100,33 @@ namespace flat
     };
 
     // window event
-    struct WindowEvent : public Event
+    struct WindowCloseEvent : public Event
     {
-        virtual ~WindowEvent() override = default;
-    };
-
-    struct WindowCloseEvent : public WindowEvent
-    {
+        WindowCloseEvent() : Event(EventType::WindowClose) {}
         virtual ~WindowCloseEvent() override = default;
     };
 
-    struct WindowFocusEvent : public WindowEvent
+    struct WindowFocusEvent : public Event
     {
+        WindowFocusEvent() : Event(EventType::WindowFocus) {}
         virtual ~WindowFocusEvent() override = default;
     };
 
-    struct WindowLostFocusEvent : public WindowEvent
+    struct WindowLostFocusEvent : public Event
     {
+        WindowLostFocusEvent() : Event(EventType::WindowLostFocus) {}
         virtual ~WindowLostFocusEvent() override = default;
     };
 
-    struct WindowResizeEvent : public WindowEvent
+    struct WindowResizeEvent : public Event
     {
+        WindowResizeEvent() : Event(EventType::WindowResize) {}
         virtual ~WindowResizeEvent() override = default;
     };
 
-    struct WindowMoveEvent : public WindowEvent
+    struct WindowMoveEvent : public Event
     {
+        WindowMoveEvent() : Event(EventType::WindowMove) {}
         virtual ~WindowMoveEvent() override = default;
     };
 }
