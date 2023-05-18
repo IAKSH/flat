@@ -69,6 +69,8 @@ namespace flat
         bool should_quit;
 
         static void forward_event(const Event& event);
+        void create_default_shader();
+        void create_default_camera();
 
     public:
         Application();

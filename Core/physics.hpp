@@ -38,7 +38,7 @@ namespace flat
         virtual void set_velocity_z(float val);
     };
 
-    class Rotatable : public Point
+    class Rotatable : virtual public Point
     {
     private:
         std::array<float,4> orientation;

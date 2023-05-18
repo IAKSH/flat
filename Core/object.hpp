@@ -20,7 +20,7 @@
 
 namespace flat
 {
-    class Object : public Rotatable, public Velocitor, misc::DisableCopy
+    class Object : virtual public Rotatable, virtual public Velocitor, misc::DisableCopy
     {
     private:
         inline static unsigned long long object_count = 0;
@@ -35,7 +35,7 @@ namespace flat
     };
 
     // audio mixer & renderer's camera, all in one
-    class Camera : virtual public Object,virtual public opengl::Camera,virtual public openal::Listener
+    class Camera : public Object, public opengl::Camera, public openal::Listener
     {
     public:
         Camera(int w,int h);

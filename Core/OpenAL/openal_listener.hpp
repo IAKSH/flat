@@ -6,13 +6,13 @@
 
 namespace flat::openal
 {
-    class Listener : public flat::Rotatable, public flat::Velocitor, misc::DisableCopy
+    class Listener : virtual public flat::Rotatable, virtual public flat::Velocitor, misc::DisableCopy
     {
     public:
         Listener();
         ~Listener();
 
         // TODO:
-        void update();
+        void update_listener();
     };
 }

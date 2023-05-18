@@ -4,6 +4,7 @@
 #include "Core/object.hpp"
 
 std::unique_ptr<flat::Image> my_image;
+std::unique_ptr<flat::Camera> camera;
 
 struct TestLayer : public flat::Layer
 {
@@ -15,7 +16,47 @@ struct TestLayer : public flat::Layer
     virtual void on_attach() override
     {
         std::cout << "hello!\n";
+    }
+
+    virtual void on_detach() override
+    {
+        std::cout << "bye!\n";
+    }
+
+    virtual void on_update() override
+    {
+
+    }
+
+    virtual void on_render() override
+    {
+
+    }
+
+    virtual void on_event(const flat::Event& event) override
+    {
+        if(auto ptr = dynamic_cast<const flat::KeyPressEvent*>(&event);ptr != nullptr)
+        {
+            if(ptr->get_keycode() == flat::misc::KeyCode::ESCAPE)
+                flat::Application::get_instance().exit();
+        }
+    }
+};
+
+struct TestDrawLayer : public flat::Layer
+{
+    TestDrawLayer()
+        : flat::Layer("Test Draw Layer")
+    {
+    }
+
+    virtual void on_attach() override
+    {
+        std::cout << "test draw!\n";
+        camera = std::make_unique<flat::Camera>(800,600);
+
         my_image = std::make_unique<flat::Image>("red.png");
+        my_image->gen_texture(0,0,500,500)->flat::RenableObject::flush_to_screen();
     }
 
     virtual void on_detach() override
@@ -47,5 +88,6 @@ int main()
 {
     std::cout << "hello world!\n";
     flat::Application::get_instance().push_layer(std::make_unique<TestLayer>());
+    flat::Application::get_instance().push_layer(std::make_unique<TestDrawLayer>());
     flat::Application::get_instance().run();
 }

@@ -12,7 +12,7 @@
 
 namespace flat::opengl
 {
-    class Camera : public flat::Rotatable
+    class Camera : virtual public flat::Rotatable
     {
     private:
         float fov,zoom;

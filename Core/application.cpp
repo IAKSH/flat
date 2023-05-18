@@ -1,7 +1,5 @@
 #include "application.hpp"
-#include "AL/al.h"
-#include "AL/alc.h"
-#include "GLFW/glfw3.h"
+#include "pipe.hpp"
 #include <exception>
 #include <memory>
 
@@ -229,12 +227,25 @@ flat::Application::Application()
     : should_quit(false),window("Unnamed")
 {
     window.set_event_callback(forward_event);
+    create_default_shader();
+    create_default_camera();
 }
 
 flat::Application::~Application()
 {
     for(auto& item : layers)
         item->on_detach();
+}
+
+void flat::Application::create_default_camera()
+{
+    // TODO: temp code
+    default_camera = std::make_unique<Camera>(800,600);
+}
+
+void flat::Application::create_default_shader()
+{
+    default_shader = std::make_unique<opengl::ShaderProgram>(default_vertex_shader,default_fragment_shader);
 }
 
 void flat::Application::forward_event(const Event& event)
