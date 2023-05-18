@@ -12,6 +12,7 @@ namespace flat::openal
         Listener();
         ~Listener();
 
-        // TODO
+        // TODO:
+        void update();
     };
 }

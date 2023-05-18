@@ -7,7 +7,7 @@ flat::opengl::ShaderProgram::ShaderProgram(std::string_view vshader,std::string_
     check_vertex_shader(vshader_id);
     GLuint fshader_id = compile_fragment_shader(fshader);
     check_fragment_shader(fshader_id);
-    program_id = link_shader_program(vshader_id, fshader_id);
+    link_shader_program(vshader_id, fshader_id);
 
     glDeleteShader(vshader_id);
     glDeleteShader(fshader_id);
@@ -36,6 +36,14 @@ GLuint flat::opengl::ShaderProgram::compile_fragment_shader(std::string_view cod
     glCompileShader(fragment_shader);
 
     return fragment_shader;
+}
+
+void flat::opengl::ShaderProgram::link_shader_program(GLuint vshader_id,GLuint fshader_id)
+{
+    program_id = glCreateProgram();
+    glAttachShader(program_id,vshader_id);
+    glAttachShader(program_id,fshader_id);
+    glLinkProgram(program_id);
 }
 
 GLuint flat::opengl::ShaderProgram::get_uniform_location(std::string_view uniform)

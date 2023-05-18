@@ -25,16 +25,16 @@ namespace flat
     };
 
     // TODO:
-    const std::string_view default_vertex_shader 
+    constexpr std::string_view default_vertex_shader 
     {
         ""
     };
 
     // TODO:
-    const std::string_view default_fragment_shader
+    constexpr std::string_view default_fragment_shader
     {
         ""
     };
 
-    extern opengl::ShaderProgram default_shader;
+    extern std::unique_ptr<opengl::ShaderProgram> default_shader;
 }

@@ -118,6 +118,11 @@ float flat::Rotatable::get_roll() const
     return glm::eulerAngles(quat)[2];
 }
 
+void flat::Rotatable::set_quat(const std::array<float,4>& arr)
+{
+    orientation = arr;
+}
+
 void flat::Rotatable::rotate(float d_up,float d_right,float d_roll)
 {
     glm::quat quat(orientation[0],orientation[1],orientation[2],orientation[3]);

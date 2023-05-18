@@ -22,8 +22,8 @@ namespace flat::opengl
 
         GLuint compile_vertex_shader(std::string_view code);
         GLuint compile_fragment_shader(std::string_view code);
-        GLuint link_shader_program(GLuint vshader_id,GLuint fshader_id);
         GLuint get_uniform_location(std::string_view uniform);
+        void link_shader_program(GLuint vshader_id,GLuint fshader_id);
         void check_vertex_shader(GLuint vshader_id);
         void check_fragment_shader(GLuint fshader_id);
 

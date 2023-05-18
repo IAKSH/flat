@@ -3,18 +3,24 @@
 #include "OpenAL/openal_buffer.hpp"
 #include "OpenAL/openal_source.hpp"
 #include "OpenAL/openal_scope.hpp"
+#include "OpenAL/openal_listener.hpp"
 #include "OpenGL/opengl_texture.hpp"
+#include "OpenGL/opengl_camera.hpp"
 #include "OpenGL/opengl_fbo.hpp"
 #include "OpenGL/opengl_vao.hpp"
+#include "../../Misc/disable_copy.hpp"
+#include "../../Misc/abstract_base.hpp"
 #include "physics.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <string>
 #include <memory>
 
+// 该文件需要进行拆分
+
 namespace flat
 {
-    class Object : public Rotatable, public Velocitor
+    class Object : public Rotatable, public Velocitor, misc::DisableCopy
     {
     private:
         inline static unsigned long long object_count = 0;
@@ -28,14 +34,37 @@ namespace flat
         long long get_id() const;
     };
 
+    // audio mixer & renderer's camera, all in one
+    class Camera : virtual public Object,virtual public opengl::Camera,virtual public openal::Listener
+    {
+    public:
+        Camera(int w,int h);
+        ~Camera();
+        // override all setters to call listener's update func
+        virtual void set_position_x(float val) override;
+        virtual void set_position_y(float val) override;
+        virtual void set_position_z(float val) override;
+        virtual void set_velocity_x(float val) override;
+        virtual void set_velocity_y(float val) override;
+        virtual void set_velocity_z(float val) override;
+        virtual void set_quat(const std::array<float,4>& arr) override;
+        virtual void rotate(float d_up,float d_right,float d_roll) override;
+        virtual void move_with_direction(float d_front,float d_right,float d_height) override;
+    };
+
     class RenableObject : public Object
     {
     private:
         opengl::RectangleVertexArray<opengl::BufferType::Dynamic> rect;
 
+    protected:
+        const opengl::RectangleVertexArray<opengl::BufferType::Dynamic>& get_rect_vao() const;
+
     public:
         RenableObject();
         ~RenableObject();
+        void flush_to_screen();
+        virtual void flush_to_screen(const flat::Camera& camera) = 0;
         // TODO: 提供修改vertices data的API（坐标/颜色/纹理坐标）
     };
 
@@ -92,8 +121,8 @@ namespace flat
     public:
         Frame(int w,int h);
         ~Frame();
-
-        void flush_to_screen();
+        const opengl::FrameBuffer& get_fbo() const;
+        virtual void flush_to_screen(const Camera& camera) override;
     };
 
     // Texture --(RenderPipe)--> Frame
@@ -107,8 +136,8 @@ namespace flat
     public:
         Texture(const unsigned char* const data,int x,int y,int w,int h,int channels);
         ~Texture();
-
-        void flush_to_screen();
+        const opengl::BasicTexture& get_texture() const;
+        virtual void flush_to_screen(const Camera& camera) override;
         // TODO: 应当提供更多的在GPU中处理图像的API
     };
 
@@ -147,9 +176,5 @@ namespace flat
         std::unique_ptr<Texture> gen_char_texture(char32_t c);
     };
 
-    // audio mixer & renderer's camera, all in one
-    class Camera : public Object
-    {
-
-    };
+    extern std::unique_ptr<Camera> default_camera;
 }

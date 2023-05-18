@@ -49,6 +49,7 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/frame.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/font.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/camera.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/renable.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_buffer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenAL/openal_listener.cpp
@@ -63,11 +64,12 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_texture.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_vao.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_fbo.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_fbo.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_fbo.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/ctti.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/rtti.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/keycode.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/disable_copy.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/abstract_base.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.cpp
 )

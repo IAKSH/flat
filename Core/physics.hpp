@@ -13,12 +13,12 @@ namespace flat
         Point();
         Point(float x,float y,float z);
 
-        float get_position_x() const;
-        float get_position_y() const;
-        float get_position_z() const;
-        void set_position_x(float val);
-        void set_position_y(float val);
-        void set_position_z(float val);
+        virtual float get_position_x() const;
+        virtual float get_position_y() const;
+        virtual float get_position_z() const;
+        virtual void set_position_x(float val);
+        virtual void set_position_y(float val);
+        virtual void set_position_z(float val);
     };
 
     class Velocitor
@@ -30,12 +30,12 @@ namespace flat
         Velocitor();
         Velocitor(float x,float y,float z);
 
-        float get_velocity_x() const;
-        float get_velocity_y() const;
-        float get_velocity_z() const;
-        void set_velocity_x(float val);
-        void set_velocity_y(float val);
-        void set_velocity_z(float val);
+        virtual float get_velocity_x() const;
+        virtual float get_velocity_y() const;
+        virtual float get_velocity_z() const;
+        virtual void set_velocity_x(float val);
+        virtual void set_velocity_y(float val);
+        virtual void set_velocity_z(float val);
     };
 
     class Rotatable : public Point
@@ -45,21 +45,21 @@ namespace flat
         std::array<float,3> right;
         std::array<float,3> up;
         
-        void update_vectors();
+        virtual void update_vectors();
 
     public:
         Rotatable();
         ~Rotatable();
         
-        float get_yaw() const;
-        float get_pitch() const;
-        float get_roll() const;
-        const auto& get_orientation() const {return orientation;}
-        const auto& get_right() const {return right;}
-        const auto& get_up() const {return up;}
-        void set_quat(const std::array<float,4>& arr);
-        void rotate(float d_up,float d_right,float d_roll);
-        void move_with_direction(float d_front,float d_right,float d_height);
+        virtual float get_yaw() const;
+        virtual float get_pitch() const;
+        virtual float get_roll() const;
+        virtual const std::array<float,4>& get_orientation() const {return orientation;}
+        virtual const std::array<float,3>& get_right() const {return right;}
+        virtual const std::array<float,3>& get_up() const {return up;}
+        virtual void set_quat(const std::array<float,4>& arr);
+        virtual void rotate(float d_up,float d_right,float d_roll);
+        virtual void move_with_direction(float d_front,float d_right,float d_height);
     };
 
     class Rectangle : public Rotatable, public Velocitor
@@ -73,10 +73,10 @@ namespace flat
         Rectangle();
         ~Rectangle();
         
-        float get_width() const;
-        float get_height() const;
-        void set_width(float val);
-        void set_height(float val);
+        virtual float get_width() const;
+        virtual float get_height() const;
+        virtual void set_width(float val);
+        virtual void set_height(float val);
     };
 
     class Ball : public Rotatable, public Velocitor
@@ -89,8 +89,8 @@ namespace flat
         Ball();
         ~Ball();
 
-        float get_radius() const;
-        void set_radius(float val);
+        virtual float get_radius() const;
+        virtual void set_radius(float val);
     };
 
     template <typename T,typename U>

@@ -19,6 +19,6 @@ namespace flat::misc
         if constexpr(sizeof...(Args) == 0)
             return false;
         else
-            return (is_same<T,Args> || ...) || is_same<Args...>();
+            return (std::same_as<std::remove_reference_t<T>, Args> || ...) || any_same<Args...>();
     }
 }

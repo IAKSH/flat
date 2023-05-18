@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Misc/disable_copy.hpp"
+#include "../../Misc/abstract_base.hpp"
 #include "opengl_scope.hpp"
 #include <glad/glad.h>
 #include <exception>
@@ -13,18 +14,36 @@ namespace flat::opengl
         Red_Only,Blue_Only,Green_Only,Alpha_Obly,RGB,RGBA
     };
 
-    struct BasicTexture {};
+    class BasicTexture
+    {
+    protected:
+        GLuint texture_id;
+        const unsigned int origin_x,origin_y,width,height;
+        
+        BasicTexture(const unsigned char* const data,unsigned int x,unsigned int y,unsigned int w,unsigned int h)
+            : origin_x(x),origin_y(y),width(w),height(h)
+        {
+        }
+
+    public:
+        ~BasicTexture()
+        {
+            glDeleteTextures(1,&texture_id);
+        }
+
+        const GLuint& get_texture_id() {return texture_id;}
+        unsigned int get_origin_x() {return origin_x;}
+        unsigned int get_origin_y() {return origin_y;}
+        unsigned int get_width() {return width;}
+        unsigned int get_height() {return height;}
+    };
 
     template <ColorChannel image_channel,ColorChannel texture_channel>
     class Texture : public BasicTexture, misc::DisableCopy
     {
-    private:
-        GLuint texture_id;
-        const unsigned int origin_x,origin_y,width,height;
-
     public:
         Texture(const unsigned char* const data,unsigned int x,unsigned int y,unsigned int w,unsigned int h)
-            : origin_x(x),origin_y(y),width(w),height(h)
+            : BasicTexture(data,x,y,w,h)
         {
             Scope scope;
 
@@ -85,15 +104,6 @@ namespace flat::opengl
             glGenerateMipmap(GL_TEXTURE_2D);
         }
 
-        ~Texture()
-        {
-            glDeleteTextures(1,&texture_id);
-        }
-
-        const GLuint& get_texture_id() {return texture_id;}
-        unsigned int get_origin_x() {return origin_x;}
-        unsigned int get_origin_y() {return origin_y;}
-        unsigned int get_width() {return width;}
-        unsigned int get_height() {return height;}
+        ~Texture() = default;
     };
 }

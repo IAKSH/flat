@@ -3,7 +3,7 @@
 
 namespace flat
 {
-    opengl::ShaderProgram default_shader(default_vertex_shader,default_fragment_shader);
+    std::unique_ptr<opengl::ShaderProgram> default_shader;
 }
 
 flat::RenderPipe::RenderPipe(std::string_view vshader,std::string_view fshader)
