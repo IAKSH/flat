@@ -8,7 +8,12 @@ flat::Frame::Frame(int w,int h)
 
 flat::Frame::~Frame() = default;
 
-void flat::Frame::flush_to_screen(const Camera& camera)
+const flat::opengl::FrameBuffer& flat::Frame::get() const
+{
+    return fbo;
+}
+
+void flat::Frame::flush_to_screen(const Camera& camera) const
 {
     opengl::Scope scope;
     default_shader->use();

@@ -57,14 +57,12 @@ namespace flat
     private:
         opengl::RectangleVertexArray<opengl::BufferType::Dynamic> rect;
 
-    protected:
-        const opengl::RectangleVertexArray<opengl::BufferType::Dynamic>& get_rect_vao() const;
-
     public:
         RenableObject();
         ~RenableObject();
-        void flush_to_screen();
-        virtual void flush_to_screen(const flat::Camera& camera) = 0;
+        void flush_to_screen() const;
+        virtual void flush_to_screen(const flat::Camera& camera) const = 0;
+        const opengl::RectangleVertexArray<opengl::BufferType::Dynamic>& get_rect_vao() const;
         // TODO: 提供修改vertices data的API（坐标/颜色/纹理坐标）
     };
 
@@ -121,8 +119,8 @@ namespace flat
     public:
         Frame(int w,int h);
         ~Frame();
-        const opengl::FrameBuffer& get_fbo() const;
-        virtual void flush_to_screen(const Camera& camera) override;
+        const opengl::FrameBuffer& get() const;
+        virtual void flush_to_screen(const Camera& camera) const override;
     };
 
     // Texture --(RenderPipe)--> Frame
@@ -136,8 +134,8 @@ namespace flat
     public:
         Texture(const unsigned char* const data,int x,int y,int w,int h,int channels);
         ~Texture();
-        const opengl::BasicTexture& get_texture() const;
-        virtual void flush_to_screen(const Camera& camera) override;
+        const opengl::BasicTexture& get() const;
+        virtual void flush_to_screen(const Camera& camera) const override;
         // TODO: 应当提供更多的在GPU中处理图像的API
     };
 

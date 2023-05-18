@@ -39,17 +39,17 @@ flat::opengl::FrameBuffer::~FrameBuffer()
     glDeleteFramebuffers(1,&fbo);
 }
 
-void flat::opengl::FrameBuffer::use()
+void flat::opengl::FrameBuffer::use() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER,fbo);
 }
 
-void flat::opengl::FrameBuffer::use_as_out()
+void flat::opengl::FrameBuffer::use_as_out() const
 {
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
 }
 
-void flat::opengl::FrameBuffer::use_as_read()
+void flat::opengl::FrameBuffer::use_as_read() const
 {
     glBindFramebuffer(GL_READ_FRAMEBUFFER,fbo);
 }

@@ -2,10 +2,12 @@
 #include <memory>
 #include "Core/application.hpp"
 #include "Core/object.hpp"
+#include "Core/pipe.hpp"
 
 std::unique_ptr<flat::Image> my_image;
 std::unique_ptr<flat::Texture> my_texture;
 std::unique_ptr<flat::Camera> camera;
+std::unique_ptr<flat::RenderPipe> pip;
 
 struct TestLayer : public flat::Layer
 {
@@ -60,6 +62,8 @@ struct TestDrawLayer : public flat::Layer
 
         my_image = std::make_unique<flat::Image>("red.png");
         my_texture = my_image->gen_texture(0,0,1024,576);
+
+        pip = std::make_unique<flat::RenderPipe>(flat::default_vertex_shader,flat::default_fragment_shader);
     }
 
     virtual void on_detach() override
@@ -77,8 +81,8 @@ struct TestDrawLayer : public flat::Layer
     {
         glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        my_texture->flat::RenableObject::flush_to_screen();
-        //my_texture->flush_to_screen(*camera);
+        //my_texture->flat::RenableObject::flush_to_screen();
+        pip->ren_texture(*my_texture)->flat::RenableObject::flush_to_screen();
     }
 
     virtual void on_event(const flat::Event& event) override

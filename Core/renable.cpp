@@ -6,7 +6,7 @@ flat::RenableObject::RenableObject() = default;
 flat::RenableObject::~RenableObject() = default;
 
 // flush using default camera
-void flat::RenableObject::flush_to_screen()
+void flat::RenableObject::flush_to_screen() const
 {
     flush_to_screen(*default_camera);
 }

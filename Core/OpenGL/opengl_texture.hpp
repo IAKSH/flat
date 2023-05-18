@@ -31,11 +31,11 @@ namespace flat::opengl
             glDeleteTextures(1,&texture_id);
         }
 
-        const GLuint& get_texture_id() {return texture_id;}
-        unsigned int get_origin_x() {return origin_x;}
-        unsigned int get_origin_y() {return origin_y;}
-        unsigned int get_width() {return width;}
-        unsigned int get_height() {return height;}
+        const GLuint& get_texture_id() const {return texture_id;}
+        unsigned int get_origin_x() const {return origin_x;}
+        unsigned int get_origin_y() const {return origin_y;}
+        unsigned int get_width() const {return width;}
+        unsigned int get_height() const {return height;}
     };
 
     template <ColorChannel image_channel,ColorChannel texture_channel>

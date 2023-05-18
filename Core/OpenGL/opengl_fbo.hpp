@@ -18,9 +18,9 @@ namespace flat::opengl
     public:
         FrameBuffer(int w,int h);
         ~FrameBuffer();
-        void use();
-        void use_as_out();
-        void use_as_read();
+        void use() const;
+        void use_as_out() const;
+        void use_as_read() const;
         unsigned int get_fbo_id() const;
         unsigned int get_texture_id() const;
     };

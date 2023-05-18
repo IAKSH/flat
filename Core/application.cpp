@@ -279,6 +279,16 @@ void flat::Application::push_overlay(std::unique_ptr<Layer> layer)
     misc::main_logger->warn("push_overlay() can't match any layer with name \"{}\"",layer->get_name());
 }
 
+flat::Window& flat::Application::get_window()
+{
+    return window;
+}
+
+flat::Mixer& flat::Application::get_mixer()
+{
+    return mixer;
+}
+
 void flat::Application::exit()
 {
     should_quit = true;
