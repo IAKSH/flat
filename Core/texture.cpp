@@ -42,7 +42,7 @@ void flat::Texture::flush_to_screen(const Camera& camera)
     trans *= glm::rotate(glm::mat4(1.0f),0.0f,glm::vec3(0.0f,0.0f,1.0f));
 
     default_shader->set_uniform("transform",trans);
-    default_shader->set_uniform("cam_transform",camera.get_matrix());
+    default_shader->set_uniform("camTrans",camera.get_matrix());
 
     glBindTexture(GL_TEXTURE_2D,texture->get_texture_id());
 

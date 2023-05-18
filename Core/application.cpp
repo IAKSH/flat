@@ -246,6 +246,7 @@ void flat::Application::create_default_camera()
 void flat::Application::create_default_shader()
 {
     default_shader = std::make_unique<opengl::ShaderProgram>(default_vertex_shader,default_fragment_shader);
+    default_shader->active_texture("texture0",0);
 }
 
 void flat::Application::forward_event(const Event& event)

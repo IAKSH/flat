@@ -4,6 +4,7 @@
 #include "Core/object.hpp"
 
 std::unique_ptr<flat::Image> my_image;
+std::unique_ptr<flat::Texture> my_texture;
 std::unique_ptr<flat::Camera> camera;
 
 struct TestLayer : public flat::Layer
@@ -56,7 +57,7 @@ struct TestDrawLayer : public flat::Layer
         camera = std::make_unique<flat::Camera>(800,600);
 
         my_image = std::make_unique<flat::Image>("red.png");
-        my_image->gen_texture(0,0,500,500)->flat::RenableObject::flush_to_screen();
+        my_texture = my_image->gen_texture(0,0,500,500);
     }
 
     virtual void on_detach() override
@@ -71,7 +72,10 @@ struct TestDrawLayer : public flat::Layer
 
     virtual void on_render() override
     {
-
+        glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        //my_texture->flat::RenableObject::flush_to_screen();
+        my_texture->flush_to_screen(*camera);
     }
 
     virtual void on_event(const flat::Event& event) override
