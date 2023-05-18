@@ -37,7 +37,6 @@ void flat::Texture::flush_to_screen(const Camera& camera)
     opengl::Scope scope;
     default_shader->use();
     
-    // temp code, may cause problem
     glm::mat4 trans(1.0f);
     trans *= glm::translate(glm::mat4(1.0f),glm::vec3(get_position_x(),get_position_y(),get_position_z()));
     trans *= glm::scale(glm::mat4(1.0f),glm::vec3(0.5f,0.5f,1.0f));

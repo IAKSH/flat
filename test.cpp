@@ -40,6 +40,8 @@ struct TestLayer : public flat::Layer
         {
             if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::ESCAPE)
                 flat::Application::get_instance().exit();
+            else if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::Z)
+                my_texture->rotate(1.5f,0.5f,1.0f);
         }
     }
 };
