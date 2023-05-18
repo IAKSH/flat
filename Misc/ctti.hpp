@@ -9,7 +9,7 @@ namespace flat::misc
     template <typename T,typename U>
     constexpr bool is_same()
     {
-        using Type = std::remove_cvref<T>;
+        using Type = std::remove_cvref_t<T>;
         return std::is_same<Type,U>();
     }
 
