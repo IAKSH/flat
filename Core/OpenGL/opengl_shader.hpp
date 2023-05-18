@@ -47,7 +47,7 @@ namespace flat::opengl
         }
 
         template <UniformType T>
-        void set_uniform(std::string_view uniform,T&& t)
+        void set_uniform(std::string_view uniform,const T& t)
         {
             GLuint location = get_uniform_location(uniform);
 
@@ -63,6 +63,11 @@ namespace flat::opengl
                 glUniform4fv(location,glm::value_ptr(t));
             else if constexpr(misc::is_same<T,glm::mat4>())
                 glUniformMatrix4fv(location,1,GL_FALSE,glm::value_ptr(t));
+            else
+            {
+                misc::main_logger->critical("Template switch failed");
+                std::terminate();
+            }
         }
 
         template <UniformType T>

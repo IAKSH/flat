@@ -241,6 +241,7 @@ void flat::Application::create_default_camera()
 {
     // TODO: temp code
     default_camera = std::make_unique<Camera>(800,600);
+    default_camera->set_position_z(1.0f);
 }
 
 void flat::Application::create_default_shader()

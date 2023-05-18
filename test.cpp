@@ -36,6 +36,8 @@ struct TestLayer : public flat::Layer
 
     virtual void on_event(const flat::Event& event) override
     {
+        std::cout << "event: " << typeid(event).name() << '\n';
+
         if(auto ptr = dynamic_cast<const flat::KeyPressEvent*>(&event);ptr != nullptr)
         {
             if(ptr->get_keycode() == flat::misc::KeyCode::ESCAPE)
@@ -57,7 +59,7 @@ struct TestDrawLayer : public flat::Layer
         camera = std::make_unique<flat::Camera>(800,600);
 
         my_image = std::make_unique<flat::Image>("red.png");
-        my_texture = my_image->gen_texture(0,0,500,500);
+        my_texture = my_image->gen_texture(0,0,1024,576);
     }
 
     virtual void on_detach() override
@@ -67,15 +69,16 @@ struct TestDrawLayer : public flat::Layer
 
     virtual void on_update() override
     {
-
+        my_texture->set_position_x(my_texture->get_position_x() + sin(glfwGetTime()) * 0.0025f);
+        my_texture->set_position_y(my_texture->get_position_y() + cos(glfwGetTime()) * 0.001f);
     }
 
     virtual void on_render() override
     {
         glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //my_texture->flat::RenableObject::flush_to_screen();
-        my_texture->flush_to_screen(*camera);
+        my_texture->flat::RenableObject::flush_to_screen();
+        //my_texture->flush_to_screen(*camera);
     }
 
     virtual void on_event(const flat::Event& event) override
