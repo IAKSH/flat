@@ -11,86 +11,86 @@
 #include <glm/gtx/quaternion.hpp>
 
 flat::Point::Point()
-    : xyz{0.0f,0.0f,0.0f}
+    : x(0),y(0),z(0)
 {
 }
 
 flat::Point::Point(float x,float y,float z)
-    : xyz{x,y,z}
+    : x(x),y(y),z(z)
 {
 }
 
 float flat::Point::get_position_x() const
 {
-    return xyz[0];
+    return x;
 }
 
 float flat::Point::get_position_y() const
 {
-    return xyz[1];
+    return y;
 }
 
 float flat::Point::get_position_z() const
 {
-    return xyz[2];
+    return z;
 }
 
 void flat::Point::set_position_x(float val)
 {
-    xyz[0] = val;
+    x = val;
 }
 
 void flat::Point::set_position_y(float val)
 {
-    xyz[1] = val;
+    y = val;
 }
 
 void flat::Point::set_position_z(float val)
 {
-    xyz[2] = val;
+    z = val;
 }
 
 flat::Velocitor::Velocitor()
-    : xyz{0.0f,0.0f,0.0f}
+    : x(0),y(0),z(0)
 {
 }
 
 flat::Velocitor::Velocitor(float x,float y,float z)
-    : xyz{x,y,z}
+    : x(x),y(y),z(z)
 {
 }
 
 float flat::Velocitor::get_velocity_x() const
 {
-    return xyz[0];
+    return x;
 }
 
 float flat::Velocitor::get_velocity_y() const
 {
-    return xyz[1];
+    return y;
 }
 
 float flat::Velocitor::get_velocity_z() const
 {
-    return xyz[2];
+    return z;
 }
 
 void flat::Velocitor::set_velocity_x(float val)
 {
-    xyz[0] = val;
+    x = val;
 }
 
 void flat::Velocitor::set_velocity_y(float val)
 {
-    xyz[1] = val;
+    y = val;
 }
 
 void flat::Velocitor::set_velocity_z(float val)
 {
-    xyz[2] = val;
+    z = val;
 }
 
-flat::Rotatable::Rotatable()
+flat::Rotator::Rotator()
     : right{1.0f,0.0f,0.0f},up{0.0f,1.0f,0.0f}
 {
     glm::quat quat(glm::vec3(0.0f,0.0f,-1.0f));
@@ -98,32 +98,32 @@ flat::Rotatable::Rotatable()
     update_vectors();
 }
 
-flat::Rotatable::~Rotatable() = default;
+flat::Rotator::~Rotator() = default;
 
-float flat::Rotatable::get_yaw() const
+float flat::Rotator::get_rotate_yaw() const
 {
     glm::quat quat(orientation[0],orientation[1],orientation[2],orientation[3]);
     return glm::eulerAngles(quat)[0];
 }
 
-float flat::Rotatable::get_pitch() const
+float flat::Rotator::get_rotate_pitch() const
 {
     glm::quat quat(orientation[0],orientation[1],orientation[2],orientation[3]);
     return glm::eulerAngles(quat)[1];
 }
 
-float flat::Rotatable::get_roll() const
+float flat::Rotator::get_rotate_roll() const
 {
     glm::quat quat(orientation[0],orientation[1],orientation[2],orientation[3]);
     return glm::eulerAngles(quat)[2];
 }
 
-void flat::Rotatable::set_quat(const std::array<float,4>& arr)
+void flat::Rotator::set_quat(const std::array<float,4>& arr)
 {
     orientation = arr;
 }
 
-void flat::Rotatable::rotate(float d_up,float d_right,float d_roll)
+void flat::Rotator::rotate(float d_up,float d_right,float d_roll)
 {
     glm::quat quat(orientation[0],orientation[1],orientation[2],orientation[3]);
     glm::vec3 vec_right(right[0],right[1],right[2]);
@@ -140,7 +140,7 @@ void flat::Rotatable::rotate(float d_up,float d_right,float d_roll)
     update_vectors();
 }
 
-void flat::Rotatable::update_vectors()
+void flat::Rotator::update_vectors()
 {
     glm::quat quat(orientation[0],orientation[1],orientation[2],orientation[3]);
     glm::vec3 vec_right(right[0],right[1],right[2]);
@@ -155,49 +155,49 @@ void flat::Rotatable::update_vectors()
     up = {vec_up[0],vec_up[1],vec_up[2]};
 }
 
-void flat::Rotatable::move_with_direction(float d_front,float d_right,float d_height)
+void flat::Rotator::move(float d_front,float d_right,float d_height)
 {
     glm::quat quat(orientation[0],orientation[1],orientation[2],orientation[3]);
     glm::vec3 vec_right(right[0],right[1],right[2]);
     glm::vec3 vec_up(up[0],up[1],up[2]);
-    glm::vec3 position(get_position_x(),get_position_y(),get_position_z());
+    glm::vec3 position(point.get_position_x(),point.get_position_y(),point.get_position_z());
 
     position += d_front * glm::rotate(quat, glm::vec3(0.0f, 0.0f, -1.0f)) + d_right * vec_right + d_height * vec_up;
 
-    set_position_x(position[0]);
-    set_position_y(position[1]);
-    set_position_z(position[2]);
+    point.set_position_x(position[0]);
+    point.set_position_y(position[1]);
+    point.set_position_z(position[2]);
 }
 
-flat::Rectangle::Rectangle(float x,float y,float z,float w,float h)
+flat::Square::Square(float x,float y,float z,float w,float h)
     : width(w),height(h)
 {
-    set_position_x(x);
-    set_position_y(y);
-    set_position_z(z);
+    rotator.set_position_x(x);
+    rotator.set_position_y(y);
+    rotator.set_position_z(z);
 }
 
-flat::Rectangle::Rectangle()
-    : Rectangle(0.0f,0.0f,0.0f,1.0f,1.0f)
+flat::Square::Square()
+    : Square(0.0f,0.0f,0.0f,1.0f,1.0f)
 { 
 }
 
-float flat::Rectangle::get_width() const
+float flat::Square::get_square_width() const
 {
     return width;
 }
 
-float flat::Rectangle::get_height() const
+float flat::Square::get_square_height() const
 {
     return height;
 }
 
-void flat::Rectangle::set_width(float val)
+void flat::Square::set_square_width(float val)
 {
     width = val;
 }
 
-void flat::Rectangle::set_height(float val)
+void flat::Square::set_square_height(float val)
 {
     height = val;
 }

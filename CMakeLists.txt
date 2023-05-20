@@ -34,7 +34,6 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/application.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/pipe.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/layer.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Core/object.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/font.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/image.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/sample.cpp
@@ -65,6 +64,10 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_vao.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_fbo.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Core/OpenGL/opengl_fbo.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Objects/obj_base.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Objects/obj_camera.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Objects/obj_drawable.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core/Objects/obj_drawable.cpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/ctti.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/rtti.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/keycode.hpp
@@ -72,6 +75,14 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/Misc/abstract_base.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Misc/logger.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_audio.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_events.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_graphics.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_physics.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_obj_base.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_obj_camera.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_obj_drawable.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Misc/Concepts/con_obj_sound.hpp
 )
 
 add_executable(flat_test "test.cpp")
