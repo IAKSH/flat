@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Misc/disable_copy.hpp"
-#include "../../Misc/keycode.hpp"
-#include "../../Misc/rtti.hpp"
+#include "../../misc/disable_copy.hpp"
+#include "../../misc/keycode.hpp"
+#include "../../misc/rtti.hpp"
 
 namespace flat
 {

@@ -2,8 +2,8 @@
 
 #include "event.hpp"
 #include "layer.hpp"
-#include "../../Misc/disable_copy.hpp"
-#include "../../Misc/logger.hpp"
+#include "../../misc/disable_copy.hpp"
+#include "../../misc/logger.hpp"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <AL/al.h>

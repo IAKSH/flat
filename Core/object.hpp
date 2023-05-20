@@ -8,8 +8,8 @@
 #include "OpenGL/opengl_camera.hpp"
 #include "OpenGL/opengl_fbo.hpp"
 #include "OpenGL/opengl_vao.hpp"
-#include "../../Misc/disable_copy.hpp"
-#include "../../Misc/abstract_base.hpp"
+#include "../../misc/disable_copy.hpp"
+#include "../../misc/abstract_base.hpp"
 #include "physics.hpp"
 #include <ft2build.h>
 #include FT_FREETYPE_H

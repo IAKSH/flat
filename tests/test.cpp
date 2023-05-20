@@ -60,7 +60,7 @@ struct TestDrawLayer : public flat::Layer
         std::cout << "test draw!\n";
         camera = std::make_unique<flat::Camera>(800,600);
 
-        my_image = std::make_unique<flat::Image>("red.png");
+        my_image = std::make_unique<flat::Image>("E:\\Programming-Playground\\flat2\\red.png");
         my_texture = my_image->gen_texture(0,0,1024,576);
 
         pip = std::make_unique<flat::RenderPipe>(flat::default_vertex_shader,flat::default_fragment_shader);
@@ -81,8 +81,8 @@ struct TestDrawLayer : public flat::Layer
     {
         glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //my_texture->flat::RenableObject::flush_to_screen();
-        pip->ren_texture(*my_texture)->flat::RenableObject::flush_to_screen();
+        my_texture->flat::RenableObject::flush_to_screen();
+        //pip->ren_texture(*my_texture)->flat::RenableObject::flush_to_screen();
     }
 
     virtual void on_event(const flat::Event& event) override

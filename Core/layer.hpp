@@ -1,7 +1,7 @@
 #pragma once
 
 #include "event.hpp"
-#include "../../Misc/disable_copy.hpp"
+#include "../../misc/disable_copy.hpp"
 #include <string>
 
 namespace flat

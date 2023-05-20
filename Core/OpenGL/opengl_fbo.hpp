@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Misc/disable_copy.hpp"
-#include "../../Misc/logger.hpp"
+#include "../../misc/disable_copy.hpp"
+#include "../../misc/logger.hpp"
 #include "opengl_texture.hpp"
 #include "opengl_scope.hpp"
 #include <glad/glad.h>

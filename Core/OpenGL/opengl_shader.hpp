@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Misc/disable_copy.hpp"
-#include "../../Misc/ctti.hpp"
-#include "../../Misc/logger.hpp"
+#include "../../misc/disable_copy.hpp"
+#include "../../misc/ctti.hpp"
+#include "../../misc/logger.hpp"
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../physics.hpp"
-#include "../../Misc/logger.hpp"
+#include "../../misc/logger.hpp"
 #include <glm/fwd.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
