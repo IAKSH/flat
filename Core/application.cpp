@@ -33,10 +33,10 @@ void flat::Window::update()
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void flat::Window::process_event(Event&& e)
+void flat::Window::process_event(const Event& e)
 {
     if(event_callback)
-        event_callback(std::move(e));
+        event_callback(e);
 }
 
 void flat::Window::set_position_x(int x)
@@ -70,6 +70,11 @@ void flat::Window::set_height(int h)
 void flat::Window::set_title(std::string_view title)
 {
     glfwSetWindowTitle(window,title.data());
+}
+
+void flat::Window::set_event_callback(EventCallBackFunc func)
+{
+    event_callback = func;
 }
 
 int flat::Window::get_position_x()
@@ -148,10 +153,10 @@ void flat::Window::initialize_backends()
         {
         case GLFW_REPEAT:
         case GLFW_PRESS:
-            win->process_event(KeyButtomEvent(static_cast<KeyButtonCode>(key),KeyButtonStatus::Press));
+            win->process_event(KeyPressEvent(static_cast<misc::KeyCode>(key)));
             break;
         case GLFW_RELEASE:
-            win->process_event(KeyButtomEvent(static_cast<KeyButtonCode>(key),KeyButtonStatus::Release));
+            win->process_event(KeyReleaseEvent(static_cast<misc::KeyCode>(key)));
             break;
         }
     });
@@ -161,14 +166,14 @@ void flat::Window::initialize_backends()
         switch(action)
         {
         case GLFW_PRESS:
-            if(button == 0) win->process_event(MouseButtonEvent(static_cast<MouseButtonCode>(button),MouseButtonStatus::Press));
-            else if(button == 1) win->process_event(MouseButtonEvent(static_cast<MouseButtonCode>(button),MouseButtonStatus::Press));
-            else if(button == 2) win->process_event(MouseButtonEvent(static_cast<MouseButtonCode>(button),MouseButtonStatus::Press));
+            if(button == 0) win->process_event(MousePressEvent(button));
+            else if(button == 1) win->process_event(MousePressEvent(button));
+            else if(button == 2) win->process_event(MousePressEvent(button));
             break;
         case GLFW_RELEASE:
-            if(button == 0) win->process_event(MouseButtonEvent(static_cast<MouseButtonCode>(button),MouseButtonStatus::Release));
-            else if(button == 1) win->process_event(MouseButtonEvent(static_cast<MouseButtonCode>(button),MouseButtonStatus::Release));
-            else if(button == 2) win->process_event(MouseButtonEvent(static_cast<MouseButtonCode>(button),MouseButtonStatus::Release));
+            if(button == 0) win->process_event(MouseReleaseEvent(button));
+            else if(button == 1) win->process_event(MouseReleaseEvent(button));
+            else if(button == 2) win->process_event(MouseReleaseEvent(button));
             break;
         }
     });
@@ -225,6 +230,7 @@ ALCcontext* flat::Mixer::get_context()
 flat::Application::Application()
     : should_quit(false),window("Unnamed")
 {
+    window.set_event_callback(forward_event);
     create_default_shader();
     create_default_camera();
 }
@@ -246,6 +252,12 @@ void flat::Application::create_default_shader()
 {
     default_shader = std::make_unique<opengl::ShaderProgram>(default_vertex_shader,default_fragment_shader);
     default_shader->active_texture("texture0",0);
+}
+
+void flat::Application::forward_event(const Event& event)
+{
+    for(auto& item : get_instance().layers)
+        item->on_event(event);
 }
 
 void flat::Application::push_layer(std::unique_ptr<Layer> layer)

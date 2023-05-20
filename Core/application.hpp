@@ -18,7 +18,7 @@ namespace flat
 {
     class Window : misc::DisableCopy
     {
-        using EventCallBackFunc = std::function<void(Event&&)>;
+        using EventCallBackFunc = std::function<void(const Event&)>;
 
     private:
         GLFWwindow* window;
@@ -33,7 +33,7 @@ namespace flat
         ~Window();
         GLFWwindow* get_glfw_window();
         void update();
-        void process_event(Event&& e);
+        void process_event(const Event& e);
         void set_position_x(int x);
         void set_position_y(int y);
         void set_height(int h);

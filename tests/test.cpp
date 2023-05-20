@@ -36,15 +36,15 @@ struct TestLayer : public flat::Layer
 
     }
 
-    virtual void on_event(flat::Event&& event) override
+    virtual void on_event(const flat::Event& event) override
     {
-        //if(event.get_type() == flat::EventType::KeyPress)
-        //{
-        //    if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::ESCAPE)
-        //        flat::Application::get_instance().exit();
-        //    else if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::Z)
-        //        my_texture->rotate(1.5f,0.5f,1.0f);
-        //}
+        if(event.get_type() == flat::EventType::KeyPress)
+        {
+            if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::ESCAPE)
+                flat::Application::get_instance().exit();
+            else if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::Z)
+                my_texture->rotate(1.5f,0.5f,1.0f);
+        }
     }
 };
 
@@ -85,9 +85,9 @@ struct TestDrawLayer : public flat::Layer
         //pip->ren_texture(*my_texture)->flat::RenableObject::flush_to_screen();
     }
 
-    virtual void on_event(flat::Event&& event) override
+    virtual void on_event(const flat::Event& event) override
     {
-        std::cout << "event type: " << typeid(event).name() << '\n';
+         std::cout << "event type: " << static_cast<int>(event.get_type()) << '\n';
     }
 };
 

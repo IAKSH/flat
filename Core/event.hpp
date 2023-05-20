@@ -1,124 +1,132 @@
 #pragma once
 
 #include "../../misc/disable_copy.hpp"
-#include "concepts.hpp"
+#include "../../misc/keycode.hpp"
+#include "../../misc/rtti.hpp"
 
 namespace flat
 {
-    class Event
+    enum class EventType
     {
-    protected:
-        Event() = default;
-    public:
-        virtual ~Event() = default;
+        KeyPress,KeyRelease,MousePress,MouseRelease,MouseMove,MouseScroll,
+        WindowClose,WindowResize,WindowFocus,WindowLostFocus,WindowMove
     };
 
-    class KeyButtomEvent : public Event
+    // base event
+    class Event : misc::DisableCopy
     {
     private:
-        KeyButtonCode code;
-        KeyButtonStatus status;
-
+        const EventType type;
     public:
-        KeyButtomEvent(KeyButtonCode code,KeyButtonStatus status) : code(code),status(status) {}
-        virtual ~KeyButtomEvent() override = default;
-
-        auto get_event_typemark() const {return CoreEventTypeMark::KeyButton;}
-        auto get_key_button_code() const {return code;}
-        auto get_key_button_status() const {return status;}
+        Event(EventType type) : type(type) {}
+        virtual ~Event() = default;
+        EventType get_type() const {return type;}
     };
 
+    // keyboard event
+    class KeyboardEvent : public Event
+    {
+    private:
+        misc::KeyCode keycode;
+    protected:
+        void set_keycode(misc::KeyCode code) {keycode = code;}
+        KeyboardEvent(EventType type) : Event(type) {}
+    public:
+        virtual ~KeyboardEvent() override = default;
+        misc::KeyCode get_keycode() const {return keycode;}
+    };
+
+    struct KeyPressEvent : KeyboardEvent
+    {
+        KeyPressEvent(misc::KeyCode keycode) : KeyboardEvent(EventType::KeyPress) {set_keycode(keycode);}
+        virtual ~KeyPressEvent() override = default;
+    };
+
+    struct KeyReleaseEvent : public KeyboardEvent
+    {
+        KeyReleaseEvent(misc::KeyCode keycode) : KeyboardEvent(EventType::KeyRelease) {set_keycode(keycode);}
+        virtual ~KeyReleaseEvent() override = default;
+    };
+
+    // mouse event
     class MouseButtonEvent : public Event
     {
     private:
-        MouseButtonCode code;
-        MouseButtonStatus status;
-
+        int keycode;
+    protected:
+        MouseButtonEvent(int keycode,EventType type) : keycode(keycode),Event(type) {}
     public:
-        MouseButtonEvent(MouseButtonCode code,MouseButtonStatus status) : code(code),status(status) {}
         virtual ~MouseButtonEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::MouseButton;}
-        auto get_mouse_button_code() const {return code;}
-        auto get_mouse_button_status() const {return status;}
     };
 
-    class MouseMoveEvent : public Event
+    struct MousePressEvent : public MouseButtonEvent
+    {
+        MousePressEvent(int keycode) : MouseButtonEvent(keycode,EventType::MousePress) {}
+        virtual ~MousePressEvent () override = default;
+    };
+
+    struct MouseReleaseEvent : public MouseButtonEvent
+    {
+        MouseReleaseEvent(int keycode) : MouseButtonEvent(keycode,EventType::MouseRelease) {}
+        virtual ~MouseReleaseEvent () override = default;
+    };
+
+    struct MouseMoveEvent : Event
     {
     private:
-        double x;
-        double y;
-
+        int position_x,position_y;
     public:
-        MouseMoveEvent(double x,double y) : x(x),y(y) {}
+        MouseMoveEvent(int x,int y)
+            : position_x(x),position_y(y),Event(EventType::MouseMove)
+        {}
+
         virtual ~MouseMoveEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::MouseMove;}
-        auto get_mouse_movement() const {return std::array<double,2>{x,y};}
-        auto get_mouse_movement_x() const {return x;}
-        auto get_mouse_movement_y() const {return y;}
+        int get_position_x() const {return position_x;}
+        int get_position_y() const {return position_y;}
     };
 
     class MouseScrollEvent : public Event
     {
     private:
-        double x;
-        double y;
-
+        int scroll_x,scroll_y;
     public:
-        MouseScrollEvent(double x,double y) : x(x),y(y) {}
+        MouseScrollEvent(int x,int y)
+            : scroll_x(x),scroll_y(y),Event(EventType::MouseScroll)
+        {}
+
         virtual ~MouseScrollEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::MouseScroll;}
-        auto get_mouse_scroll() const {return std::array<double,2>{x,y};}
-        auto get_mouse_scroll_x() const {return x;}
-        auto get_mouse_scroll_y() const {return y;}
+        int get_scroll_x() const {return scroll_x;}
+        int get_scroll_y() const {return scroll_y;}
     };
 
-    class WindowCloseEvent : public Event
+    // window event
+    struct WindowCloseEvent : public Event
     {
-    public:
-        WindowCloseEvent() = default;
+        WindowCloseEvent() : Event(EventType::WindowClose) {}
         virtual ~WindowCloseEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::WindowClose;}
     };
 
-    class WindowResizeEvent : public Event
+    struct WindowFocusEvent : public Event
     {
-    public:
-        WindowResizeEvent() = default;
-        virtual ~WindowResizeEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::WindowResize;}
-    };
-
-    class WindowMoveEvent : public Event
-    {
-    public:
-        WindowMoveEvent() = default;
-        virtual ~WindowMoveEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::WindowMove;}
-    };
-
-    class WindowFocusEvent : public Event
-    {
-    public:
-        WindowFocusEvent() = default;
+        WindowFocusEvent() : Event(EventType::WindowFocus) {}
         virtual ~WindowFocusEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::WindowFocus;}
     };
 
-    class WindowLostFocusEvent : public Event
+    struct WindowLostFocusEvent : public Event
     {
-    public:
-        WindowLostFocusEvent() = default;
+        WindowLostFocusEvent() : Event(EventType::WindowLostFocus) {}
         virtual ~WindowLostFocusEvent() override = default;
-        auto get_event_typemark() const {return CoreEventTypeMark::WindowLostFocus;}
     };
 
-    static_assert(WithEventTypeMark<KeyButtomEvent> && WithKeyButtonCode<KeyButtomEvent> && WithKeyStatus<KeyButtomEvent>);
-    static_assert(WithEventTypeMark<MouseButtonEvent> && WithMouseButtonCode<MouseButtonEvent> && WithMouseButtonStatus<MouseButtonEvent>);
-    static_assert(WithEventTypeMark<MouseMoveEvent> && WithMouseMoveInfo<MouseMoveEvent>);
-    static_assert(WithEventTypeMark<MouseScrollEvent> && WithMouseScrollInfo<MouseScrollEvent>);
-    static_assert(WithEventTypeMark<WindowCloseEvent>);
-    static_assert(WithEventTypeMark<WindowResizeEvent>);
-    static_assert(WithEventTypeMark<WindowMoveEvent>);
-    static_assert(WithEventTypeMark<WindowFocusEvent>);
-    static_assert(WithEventTypeMark<WindowLostFocusEvent>);
+    struct WindowResizeEvent : public Event
+    {
+        WindowResizeEvent() : Event(EventType::WindowResize) {}
+        virtual ~WindowResizeEvent() override = default;
+    };
+
+    struct WindowMoveEvent : public Event
+    {
+        WindowMoveEvent() : Event(EventType::WindowMove) {}
+        virtual ~WindowMoveEvent() override = default;
+    };
 }
