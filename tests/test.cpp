@@ -1,8 +1,8 @@
 #include <iostream>
 #include <memory>
-#include "Core/application.hpp"
-#include "Core/object.hpp"
-#include "Core/pipe.hpp"
+#include "../core/application.hpp"
+#include "../core/object.hpp"
+#include "../core/pipe.hpp"
 
 std::unique_ptr<flat::Image> my_image;
 std::unique_ptr<flat::Texture> my_texture;
