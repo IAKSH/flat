@@ -36,6 +36,7 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/imgui_widgets.cpp
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_opengl3.cpp
     ${CMAKE_CURRENT_LIST_DIR}/vendor/imgui/backends/imgui_impl_glfw.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/core/concepts.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/application.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/application.cpp
     ${CMAKE_CURRENT_LIST_DIR}/core/pipe.hpp
