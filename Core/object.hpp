@@ -11,7 +11,9 @@
 #include "../../misc/disable_copy.hpp"
 #include "../../misc/abstract_base.hpp"
 #include "physics.hpp"
+#include <exception>
 #include <ft2build.h>
+#include <type_traits>
 #include FT_FREETYPE_H
 #include <string>
 #include <memory>
@@ -20,55 +22,170 @@
 
 namespace flat
 {
-    class Object : virtual public Rotatable, virtual public Velocitor, misc::DisableCopy
+    //template <PhysicsModel Model>
+    //class Object
+    //{
+    //private:
+    //    Model model;
+    //    inline static unsigned long long object_count = 0;
+    //    long long id;
+//
+    //protected:
+    //    void generate_id();
+//
+    //public:
+    //    virtual ~Object() = default;
+    //    long long get_id() const;
+    //};
+
+    class ID
     {
     private:
-        inline static unsigned long long object_count = 0;
-        long long id;
-
-    protected:
-        void generate_id();
+        inline static unsigned long long count {0};
+        unsigned long long id;
 
     public:
-        virtual ~Object() = default;
-        long long get_id() const;
+        ID() : id(++count) {}
+        ~ID() = default;
+        auto get() const {return id;}
     };
+
+    // temp code
+    template <typename T>
+    concept Object = PhysicsModel<T> && requires(T t)
+    {
+        {t.get_id()} -> std::same_as<unsigned long long>;
+    };
+
+    //template <Object T>
+    //std::array<float,3>&& get_position(const T& t)
+    //{
+    //    return (t.model.get_position_x(),t.model.get_position_y(),t.model.get_position_z());
+    //}
+//
+    //template <Object T>
+    //void set_position(const T& t,const std::array<float,3>& arr)
+    //{
+    //    t.model.set_position_x(arr[0]);
+    //    t.model.set_position_x(arr[1]);
+    //    t.model.set_position_x(arr[2]);
+    //}
+//
+    //template <Object T>
+    //std::array<float,3>&& get_velocity(const T& t)
+    //{
+    //    return (t.model.get_velocity_x(),t.model.get_velocity_y(),t.model.get_velocity_z());
+    //}
+//
+    //template <Object T>
+    //void set_velocity(const T& t,const std::array<float,3>& arr)
+    //{
+    //    t.model.set_velocity_x(arr[0]);
+    //    t.model.set_velocity_x(arr[1]);
+    //    t.model.set_velocity_x(arr[2]);
+    //}
+//
+    //template <Object T>
+    //void set_height(const T& t,float h)
+    //{
+    //    t.model.set_sqaure_height(h);
+    //}
+//
+    //template <Object T>
+    //void set_width(const T& t,float w)
+    //{
+    //    t.model.set_square_width(w);
+    //}
+//
+    //template <Object T>
+    //float get_height(const T& t)
+    //{
+    //    return t.model.get_sqaure_height();
+    //}
+//
+    //template <Object T>
+    //float get_width(const T& t)
+    //{
+    //    return t.model.set_square_width();
+    //}
 
     // audio mixer & renderer's camera, all in one
-    class Camera : public Object, public opengl::Camera, public openal::Listener
-    {
-    public:
-        Camera(int w,int h);
-        ~Camera();
-        // override all setters to call listener's update func
-        virtual void set_position_x(float val) override;
-        virtual void set_position_y(float val) override;
-        virtual void set_position_z(float val) override;
-        virtual void set_velocity_x(float val) override;
-        virtual void set_velocity_y(float val) override;
-        virtual void set_velocity_z(float val) override;
-        virtual void set_quat(const std::array<float,4>& arr) override;
-        virtual void rotate(float d_up,float d_right,float d_roll) override;
-        virtual void move_with_direction(float d_front,float d_right,float d_height) override;
-    };
-
-    class RenableObject : public Object
+    class Camera
     {
     private:
-        opengl::RectangleVertexArray<opengl::BufferType::Dynamic> rect;
-
+        ID id;
+        Rotator rotator;
+        std::array<float,3> position;
+        std::array<float,3> velocity;
+        float radius;
+    
     public:
-        RenableObject();
-        ~RenableObject();
-        void flush_to_screen() const;
-        virtual void flush_to_screen(const flat::Camera& camera) const = 0;
-        const opengl::RectangleVertexArray<opengl::BufferType::Dynamic>& get_rect_vao() const;
-        // TODO: 提供修改vertices data的API（坐标/颜色/纹理坐标）
+        Camera(int view_width,int view_height) {}
+        ~Camera() = default;
+
+        float get_ball_radius() const {return radius;}
+        void set_ball_radius(float val) {radius = val;}
+        auto get_id() const {return id.get();}
+        const auto& get_position() const {return position;}
+        const auto& get_velocity() const {return velocity;}
+        const auto& get_orientation_quat() const {return rotator.get_orientation_quat();}
+        const auto& get_right_vec() const {return rotator.get_right_vec();}
+        const auto& get_up_vec() const {return rotator.get_up_vec();}
+        void set_position(const std::array<float,3>& arr) {position = arr;}
+        void set_velocity(const std::array<float,3>& arr) {velocity = arr;}
+        void set_orientation_quat(const std::array<float,4>& arr) {rotator.set_orientation_quat(arr);}
+        void set_right_vec(const std::array<float,3>& arr) {rotator.set_right_vec(arr);}
+        void set_up_vec(const std::array<float,3>& arr) {rotator.set_up_vec(arr);}
+    
+        //template <typename T>
+        //friend std::array<float,3>&& get_position(const T& t);
+
+        //template <Object T>
+        //friend void set_position(const T& t,const std::array<float,3>& arr);
+
+        //template <Object T>
+        //friend std::array<float,3>&& get_velocity(const T& t);
+
+        //template <Object T>
+        //friend void set_velocity(const T& t,const std::array<float,3>& arr);
+
+        //template <Object T>
+        //friend void set_height(const T& t,float h);
+
+        //template <Object T>
+        //friend void set_width(const T& t,float w);
+
+        //template <Object T>
+        //friend float get_height(const T& t);
+
+        //template <Object T>
+        //friend float get_width(const T& t);
     };
 
-    class Sound : public Object
+    static_assert(Object<Camera>);
+    
+
+    //class RenableObject
+    //{
+    //private:
+    //    ID id;
+    //    Square model;
+    //    opengl::RectangleVertexArray<opengl::BufferType::Dynamic> rect;
+
+    //public:
+    //    RenableObject();
+    //    ~RenableObject();
+    //    void flush_to_screen() const;
+    //    virtual void flush_to_screen(const flat::Camera& camera) const = 0;
+    //    const opengl::RectangleVertexArray<opengl::BufferType::Dynamic>& get_rect_vao() const;
+    //    // TODO: 提供修改vertices data的API（坐标/颜色/纹理坐标）
+    //};
+
+    class Sound
     {
     private:
+        ID id;
+        Ball Ball;
         openal::Buffer<openal::Format::MONO16> buffer;
 
     public:
@@ -80,9 +197,11 @@ namespace flat
         void restart();
     };
 
-    class Music : public Object
+    class Music
     {
     private:
+        ID id;
+        Ball model;
         openal::Buffer<openal::Format::STEREO16> buffer;
 
     public:
@@ -94,9 +213,11 @@ namespace flat
         void restart();
     };
 
-    class Sample : public Object
+    class Sample
     {
     private:
+        ID id;
+        Ball model;
         std::unique_ptr<unsigned char[]> pcm_data;
         size_t pcm_len;
         int channels;
