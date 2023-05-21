@@ -8,27 +8,30 @@ flat::Frame::Frame(int w,int h)
 
 flat::Frame::~Frame() = default;
 
-const flat::opengl::FrameBuffer& flat::Frame::get() const
+void flat::Frame::flush() const
 {
-    return fbo;
-}
+    // TODO: ...
+};
 
-void flat::Frame::flush_to_screen(const Camera& camera) const
+void flat::Frame::flush(const Camera& camera) const
 {
     opengl::Scope scope;
     default_shader->use();
+
+    const auto& orien = rotator.get_orientation_quat();
     
     glm::mat4 trans(1.0f);
-    trans *= glm::translate(glm::mat4(1.0f),glm::vec3(get_position_x(),get_position_y(),get_position_z()));
+    trans *= glm::translate(glm::mat4(1.0f),glm::vec3(position[0],position[1],position[2]));
     trans *= glm::scale(glm::mat4(1.0f),glm::vec3(0.5f,0.5f,1.0f));
-    trans *= glm::toMat4(glm::quat(get_orientation()[0],get_orientation()[1],get_orientation()[2],get_orientation()[3]));
+    trans *= glm::toMat4(glm::quat(orien[0],orien[1],orien[2],orien[3]));
 
     default_shader->set_uniform("transform",trans);
-    default_shader->set_uniform("camTrans",camera.get_matrix());
+    default_shader->set_uniform("camTrans",get_camera_matrix(camera));
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D,fbo.get_texture_id());
 
-    glBindVertexArray(get_rect_vao().getVAO());
+    // TODO: ...
+    //glBindVertexArray(get_rect_vao().getVAO());
     glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 }

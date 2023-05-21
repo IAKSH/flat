@@ -95,7 +95,7 @@ namespace flat
     requires(WithOrientationQuat<T>
         && WithRightVec<T>
         && WithUpVec<T>)
-    void update_rotate_vector(const T& t)
+    void update_rotate_vector(T& t)
     {
         auto orientation = t.get_orientation_quat();
         auto right = t.get_right_vec();

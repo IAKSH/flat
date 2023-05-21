@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Misc/disable_copy.hpp"
+#include "../../misc/disable_copy.hpp"
 #include "../physics.hpp"
 #include <array>
 

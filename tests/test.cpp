@@ -18,7 +18,7 @@ int main()
         std::cout << "test draw!\n";
         camera = std::make_unique<flat::Camera>(800,600);
         my_image = std::make_unique<flat::Image>("E:\\Programming-Playground\\flat2\\red.png");
-        my_texture = my_image->gen_texture(0,0,1024,576);
+        //my_texture = my_image->gen_texture(0,0,1024,576);
         pip = std::make_unique<flat::RenderPipe>(flat::default_vertex_shader,flat::default_fragment_shader);
     });
 
@@ -26,15 +26,15 @@ int main()
 
     my_test_layer->set_update_func([]()
     {
-        my_texture->set_position_x(my_texture->get_position_x() + sin(glfwGetTime()) * 0.0025f);
-        my_texture->set_position_y(my_texture->get_position_y() + cos(glfwGetTime()) * 0.001f);
+        //my_texture->set_position_x(my_texture->get_position_x() + sin(glfwGetTime()) * 0.0025f);
+        //my_texture->set_position_y(my_texture->get_position_y() + cos(glfwGetTime()) * 0.001f);
     });
 
     my_test_layer->set_render_func([]()
     {
         glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        my_texture->flat::RenableObject::flush_to_screen();
+        //my_texture->flat::RenableObject::flush_to_screen();
         //pip->ren_texture(*my_texture)->flat::RenableObject::flush_to_screen();
     });
 
@@ -44,8 +44,8 @@ int main()
         {
             if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::ESCAPE)
                 flat::Application::get_instance().exit();
-            else if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::Z)
-                my_texture->rotate(0.5f,0.5f,0.5f);
+            //else if(reinterpret_cast<const flat::KeyPressEvent*>(&event)->get_keycode() == flat::misc::KeyCode::Z)
+            //    my_texture->rotate(0.5f,0.5f,0.5f);
         }
     });
 

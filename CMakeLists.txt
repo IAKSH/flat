@@ -55,7 +55,6 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/core/frame.cpp
     ${CMAKE_CURRENT_LIST_DIR}/core/font.cpp
     ${CMAKE_CURRENT_LIST_DIR}/core/camera.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/core/renable.cpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenAL/openal_buffer.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenAL/openal_listener.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenAL/openal_listener.cpp

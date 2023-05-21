@@ -54,7 +54,7 @@ namespace flat
         int view_width,view_height;
     
     public:
-        Camera(int view_width,int view_height) {}
+        Camera(int view_width,int view_height) : view_width(view_height),view_height(view_height) {}
         ~Camera() = default;
 
         float get_ball_radius() const {return radius;}
@@ -71,21 +71,27 @@ namespace flat
         void set_right_vec(const std::array<float,3>& arr) {rotator.set_right_vec(arr);}
         void set_up_vec(const std::array<float,3>& arr) {rotator.set_up_vec(arr);}
 
-        float get_zoom() {return zoom;}
-        float get_fov() {return fov;}
+        float get_zoom() const {return zoom;}
+        float get_fov() const {return fov;}
+        int get_view_width() const {return view_width;}
+        int get_view_height() const {return view_height;}
         void set_zoom(float val);
         void set_fov(float val);
+        void set_view_width(int vw) {view_width = vw;}
+        void set_view_height(int vh) {view_height = vh;}
     };
 
-    static_assert(Object<Camera>);
-
     template <typename T>
-    concept AnyCamera = Object<T> && requires(T t,float zoom,float fov)
+    concept AnyCamera = Object<T> && requires(T t,float zoom,float fov,int view_height,int view_width)
     {
         {t.get_zoom()} -> std::same_as<float>;
         {t.get_fov()} -> std::same_as<float>;
         {t.set_zoom(zoom)} -> std::same_as<void>;
         {t.set_fov(fov)} -> std::same_as<void>;
+        {t.get_view_width()} -> std::same_as<int>;
+        {t.get_view_height()} -> std::same_as<int>;
+        {t.set_view_width(view_width)} -> std::same_as<void>;
+        {t.set_view_height(view_height)} -> std::same_as<void>;
     };
 
     static_assert(AnyCamera<Camera>);
@@ -93,7 +99,16 @@ namespace flat
     template <AnyCamera T>
     glm::mat4 get_camera_matrix(const T& cam)
     {
-        // TODO: ...
+        const auto& pos {cam.get_position()};
+        const auto& vec {cam.get_up_vec()};
+        const auto& orien {cam.get_orientation_quat()};
+
+        glm::vec3 position(pos[0],pos[1],pos[2]);
+        glm::vec3 vec_up(vec[0],vec[1],vec[2]);
+        glm::quat quat(orien[0],orien[1],orien[2],orien[3]);
+
+        glm::vec3 target = position + glm::rotate(quat, glm::vec3(0.0f, 0.0f, -1.0f));
+        return glm::perspective(glm::radians(cam.get_fov()), static_cast<float>(cam.get_view_width()) / cam.get_view_height(), 0.1f, 2000.0f) * glm::lookAt(position, target, vec_up);
     };
 
     template <typename T>
