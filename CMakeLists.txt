@@ -62,8 +62,6 @@ target_sources(flat PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenAL/openal_scope.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenAL/openal_source.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenAL/openal_source.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/core/OpenGL/opengl_camera.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/core/OpenGL/opengl_camera.cpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenGL/opengl_scope.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenGL/opengl_shader.hpp
     ${CMAKE_CURRENT_LIST_DIR}/core/OpenGL/opengl_shader.cpp

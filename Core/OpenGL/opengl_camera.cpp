@@ -1,5 +1,7 @@
 #include "opengl_camera.hpp"
 
+// This file was abandoned
+
 flat::opengl::Camera::Camera()
     : fov(45.0f),zoom(1.0f),view_width(800),view_height(600)
 {}

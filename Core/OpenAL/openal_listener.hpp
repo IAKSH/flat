@@ -6,7 +6,7 @@
 
 namespace flat::openal
 {
-    class Listener : virtual public flat::Rotatable, virtual public flat::Velocitor, misc::DisableCopy
+    class Listener
     {
     public:
         Listener();
