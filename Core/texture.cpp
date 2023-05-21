@@ -8,7 +8,7 @@
 #include <exception>
 #include <memory>
 
-flat::Texture::Texture(const unsigned char* const data,int x,int y,int w,int h,int channels)
+flat::Texture::Texture(const unsigned char* const data,int channels,int x,int y,int w,int h)
 {
     if(channels == 1)
     {

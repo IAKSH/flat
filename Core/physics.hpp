@@ -118,7 +118,7 @@ namespace flat
     requires(WithOrientationQuat<T>
         && WithRightVec<T>
         && WithUpVec<T>)
-    void rotate(const T& t,float d_up,float d_right,float d_roll)
+    void rotate(T& t,float d_up,float d_right,float d_roll)
     {
         auto orientation = t.get_orientation_quat();
         auto right = t.get_right_vec();

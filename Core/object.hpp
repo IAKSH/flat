@@ -308,7 +308,7 @@ namespace flat
         std::unique_ptr<opengl::BasicTexture> texture;
 
     public:
-        Texture(const unsigned char* const data,int x,int y,int w,int h,int channels);
+        Texture(const unsigned char* const data,int channels,int x,int y,int w,int h);
         ~Texture();
         void flush() const;
         void flush(const Camera& cam) const;
@@ -392,6 +392,13 @@ namespace flat
     };
 
     static_assert(ImageDataSource<Image>);
+
+    template <ImageDataSource T,Renable U>
+    std::unique_ptr<U> gen_renable(const T& t,int x,int y,int w,int h)
+    {
+        return std::make_unique<U>(t.get_bitmap_data(),t.get_bitmap_channels(),x,y,w,h);
+    }
+
 
     // TODO: 应当提供更多的在CPU中处理图像的API
 
