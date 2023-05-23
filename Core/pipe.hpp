@@ -57,6 +57,4 @@ namespace flat
         "    FragColor = texColor * aColorOut;\n"
         "}\n\0"
     };
-
-    extern std::unique_ptr<opengl::ShaderProgram> default_shader;
 }

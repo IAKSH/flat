@@ -5,6 +5,7 @@
 #include "OpenAL/openal_scope.hpp"
 #include "OpenAL/openal_listener.hpp"
 #include "OpenGL/opengl_texture.hpp"
+#include "OpenGL/opengl_shader.hpp"
 #include "OpenGL/opengl_fbo.hpp"
 #include "OpenGL/opengl_vao.hpp"
 #include "../../misc/disable_copy.hpp"
@@ -21,6 +22,8 @@
 
 namespace flat
 {
+    extern std::unique_ptr<opengl::ShaderProgram> default_shader;
+
     class ID
     {
     private:
@@ -114,9 +117,41 @@ namespace flat
     template <typename T>
     concept Renable = Object<T> && requires(T t,const Camera& cam)
     {
-        {t.flush()} -> std::same_as<void>;
-        {t.flush(cam)} -> std::same_as<void>;
+        true;
+        //{t.flush()} -> std::same_as<void>;
+        //{t.flush(cam)} -> std::same_as<void>;
         // TODO: 提供修改vertices data的API（坐标/颜色/纹理坐标）
+    };
+
+    template <Renable T>
+    void flush(const T& renable)
+    {
+        opengl::Scope scope;
+        default_shader->use();
+        
+        glm::mat4 trans(1.0f);
+        trans *= glm::translate(glm::mat4(1.0f),glm::vec3(renable.get_position()[0],renable.get_position()[1],renable.get_position()[2]));
+        trans *= glm::scale(glm::mat4(1.0f),glm::vec3(1.0f,1.0f,1.0f));
+        trans *= glm::toMat4(glm::quat(renable.get_orientation_quat()[0],renable.get_orientation_quat()[1],renable.get_orientation_quat()[2],renable.get_orientation_quat()[3]));
+    
+        default_shader->set_uniform("transform",trans);
+        default_shader->set_uniform("camTrans",glm::mat4(1.0f));
+    
+        glActiveTexture(GL_TEXTURE0);
+        // for test only
+        glBindTexture(GL_TEXTURE_2D,1);
+
+        // for test only
+        opengl::RectangleVertexArray<opengl::BufferType::Static> vertex_array;
+        glBindVertexArray(vertex_array.getVAO());
+        
+        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+    };
+
+    template <Renable T,AnyCamera U>
+    void flush(const T& renable,const U& cam)
+    {
+        // TODO: ...
     };
 
     template <typename T>
@@ -271,8 +306,6 @@ namespace flat
     public:
         Frame(int w,int h);
         ~Frame();
-        void flush() const;
-        void flush(const Camera& cam) const;
 
         float get_square_width() const {return width;}
         float get_square_height() const {return height;}
@@ -310,8 +343,6 @@ namespace flat
     public:
         Texture(const unsigned char* const data,int channels,int x,int y,int w,int h);
         ~Texture();
-        void flush() const;
-        void flush(const Camera& cam) const;
 
         float get_square_width() const {return width;}
         float get_square_height() const {return height;}

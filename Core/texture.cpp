@@ -37,27 +37,22 @@ flat::Texture::~Texture() = default;
 //    return *texture;
 //}
 
-void flat::Texture::flush() const
-{
-
-}
-
-void flat::Texture::flush(const Camera& camera) const
-{
-    //opengl::Scope scope;
-    //default_shader->use();
-    //
-    //glm::mat4 trans(1.0f);
-    //trans *= glm::translate(glm::mat4(1.0f),glm::vec3(get_position_x(),get_position_y(),get_position_z()));
-    //trans *= glm::scale(glm::mat4(1.0f),glm::vec3(1.0f,1.0f,1.0f));
-    //trans *= glm::toMat4(glm::quat(get_orientation()[0],get_orientation()[1],get_orientation()[2],get_orientation()[3]));
-
-    //default_shader->set_uniform("transform",trans);
-    //default_shader->set_uniform("camTrans",camera.get_matrix());
-
-    //glActiveTexture(GL_TEXTURE0);
-    //glBindTexture(GL_TEXTURE_2D,texture->get_texture_id());
-
-    //glBindVertexArray(get_rect_vao().getVAO());
-    //glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
-}
+//void flat::Texture::flush(const Camera& camera) const
+//{
+//    opengl::Scope scope;
+//    default_shader->use();
+//    
+//    glm::mat4 trans(1.0f);
+//    trans *= glm::translate(glm::mat4(1.0f),glm::vec3(get_position_x(),get_position_y(),get_position_z()));
+//    trans *= glm::scale(glm::mat4(1.0f),glm::vec3(1.0f,1.0f,1.0f));
+//    trans *= glm::toMat4(glm::quat(get_orientation()[0],get_orientation()[1],get_orientation()[2],get_orientation()[3]));
+//
+//    default_shader->set_uniform("transform",trans);
+//    default_shader->set_uniform("camTrans",camera.get_matrix());
+//
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_2D,texture->get_texture_id());
+//
+//    glBindVertexArray(get_rect_vao().getVAO());
+//    glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+//}

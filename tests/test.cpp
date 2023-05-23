@@ -35,7 +35,7 @@ int main()
     {
         glClearColor(0.1f, 0.1f, 0.1f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        my_texture->flush();
+        flat::flush(*my_texture);
         //pip->ren_texture(*my_texture)->flat::RenableObject::flush_to_screen();
     });
 

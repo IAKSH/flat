@@ -14,40 +14,6 @@
 
 namespace flat
 {
-    //class Point
-    //{
-    //private:
-    //    std::array<float,3> xyz;
-
-    //public:
-    //    Point() : xyz{0.0f,0.0f,0.0f} {}
-    //    Point(float x,float y,float z) : xyz{x,y,z} {}
-
-    //    float get_position_x() const {return xyz[0];}
-    //    float get_position_y() const {return xyz[1];}
-    //    float get_position_z() const {return xyz[2];}
-    //    void set_position_x(float val) {xyz[0] = val;}
-    //    void set_position_y(float val) {xyz[1] = val;}
-    //    void set_position_z(float val) {xyz[2] = val;}
-    //};
-
-    //class Velocitor
-    //{
-    //private:
-    //    std::array<float,3> xyz;
-
-    //public:
-    //    Velocitor() : xyz{0.0f,0.0f,0.0f} {}
-    //    Velocitor(float x,float y,float z) : xyz{x,y,z} {}
-
-    //    float get_velocity_x() const {return xyz[0];}
-    //    float get_velocity_y() const {return xyz[1];}
-    //    float get_velocity_z() const {return xyz[2];}
-    //    void set_velocity_x(float val) {xyz[0] = val;}
-    //    void set_velocity_y(float val) {xyz[1] = val;}
-    //    void set_velocity_z(float val) {xyz[2] = val;}
-    //};
-
     class Rotator
     {
     private:
@@ -176,83 +142,6 @@ namespace flat
         t.set_position_z(position[2]);
     }
 
-    //class Square
-    //{
-    //private:
-    //    Point point;
-    //    Rotator rotator;
-    //    Velocitor velocitor;
-    //    float width;
-    //    float height;
-//
-    //public:
-    //    Square(float x,float y,float z,float w,float h) : width(w),height(h),point(x,y,z) {}
-    //    Square() : Square(0.0f,0.0f,0.0f,1.0f,1.0f) {}
-    //    ~Square() = default;
-    //    
-    //    float get_width() const {return width;}
-    //    float get_height() const {return height;}
-    //    void set_width(float val) {width = val;}
-    //    void set_height(float val) {height = val;}
-    //    float get_position_x() const {return point.get_position_x();}
-    //    float get_position_y() const {return point.get_position_y();}
-    //    float get_position_z() const {return point.get_position_z();}
-    //    float get_velocity_x() const {return velocitor.get_velocity_x();}
-    //    float get_velocity_y() const {return velocitor.get_velocity_y();}
-    //    float get_velocity_z() const {return velocitor.get_velocity_z();}
-    //    const auto& get_orientation_quat() const {return rotator.get_orientation_quat();}
-    //    const auto& get_right_vec() const {return rotator.get_right_vec();}
-    //    const auto& get_up_vec() const {return rotator.get_up_vec();}
-    //    void set_position_x(float val) {point.set_position_x(val);}
-    //    void set_position_y(float val) {point.set_position_y(val);}
-    //    void set_position_z(float val) {point.set_position_z(val);}
-    //    void set_velocity_x(float val) {velocitor.set_velocity_x(val);}
-    //    void set_velocity_y(float val) {velocitor.set_velocity_y(val);}
-    //    void set_velocity_z(float val) {velocitor.set_velocity_z(val);}
-    //    void set_orientation_quat(const std::array<float,4>& arr) {rotator.set_orientation_quat(arr);}
-    //    void set_right_vec(const std::array<float,3>& arr) {rotator.set_right_vec(arr);}
-    //    void set_up_vec(const std::array<float,3>& arr) {rotator.set_up_vec(arr);}
-    //};
-
-    //static_assert(PhysicsModel<Square>);
-
-    //class Ball
-    //{
-    //private:
-    //    Point point;
-    //    Rotator rotator;
-    //    Velocitor velocitor;
-    //    float radius;
-//
-    //public:
-    //    Ball(float x,float y,float z,float r) : radius(r),point(x,y,z) {};
-    //    Ball() : Ball(0.0f,0.0f,0.0f,1.0f) {}
-    //    ~Ball();
-//
-    //    float get_radius() const {return radius;}
-    //    void set_radius(float val) {radius = val;}
-    //    float get_position_x() const {return point.get_position_x();}
-    //    float get_position_y() const {return point.get_position_y();}
-    //    float get_position_z() const {return point.get_position_z();}
-    //    float get_velocity_x() const {return velocitor.get_velocity_x();}
-    //    float get_velocity_y() const {return velocitor.get_velocity_y();}
-    //    float get_velocity_z() const {return velocitor.get_velocity_z();}
-    //    const auto& get_orientation_quat() const {return rotator.get_orientation_quat();}
-    //    const auto& get_right_vec() const {return rotator.get_right_vec();}
-    //    const auto& get_up_vec() const {return rotator.get_up_vec();}
-    //    void set_position_x(float val) {point.set_position_x(val);}
-    //    void set_position_y(float val) {point.set_position_y(val);}
-    //    void set_position_z(float val) {point.set_position_z(val);}
-    //    void set_velocity_x(float val) {velocitor.set_velocity_x(val);}
-    //    void set_velocity_y(float val) {velocitor.set_velocity_y(val);}
-    //    void set_velocity_z(float val) {velocitor.set_velocity_z(val);}
-    //    void set_orientation_quat(const std::array<float,4>& arr) {rotator.set_orientation_quat(arr);}
-    //    void set_right_vec(const std::array<float,3>& arr) {rotator.set_right_vec(arr);}
-    //    void set_up_vec(const std::array<float,3>& arr) {rotator.set_up_vec(arr);}
-    //};
-
-    // static_assert(PhysicsModel<Ball>);
-
     template <typename T>
     concept Square = WithOrientationQuat<T>
         && WithRightVec<T>
@@ -274,7 +163,6 @@ namespace flat
         && WithPosition<T>
         && requires(T t,float r)
     {
-
         {t.get_ball_radius()} -> std::same_as<float>;
         {t.set_ball_radius(r)} -> std::same_as<void>;
     };
