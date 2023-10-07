@@ -17,11 +17,11 @@ namespace quick3d::gl
         GLuint tex_id;
         
         void create_fbo_and_rbo(GLint width,GLint height) noexcept;
-        void bind_texture_to_fbo() const noexcept;
         void delete_fbo_and_rbo() noexcept;
     
     public:
-        Framebuffer(GLuint tex_id,GLint width,GLint height) noexcept(false);
+        Framebuffer(GLint width, GLint height) noexcept(false);
+        Framebuffer(GLenum texture_type, GLuint tex_id, GLint width, GLint height) noexcept(false);
 
         template <typename T>
         requires requires(T t)
@@ -47,5 +47,7 @@ namespace quick3d::gl
         GLint get_height() const noexcept;
         GLuint get_fbo_id() const noexcept;
         GLuint get_binding_tex_id() const noexcept;
+
+        void bind_texture_to_fbo(GLenum texture_type, GLuint id) noexcept;
     };
 }

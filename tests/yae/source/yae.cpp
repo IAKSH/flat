@@ -6,11 +6,12 @@
 #include <quick_gl/camera.hpp>
 #include <quick_gl/vertex.hpp>
 #include <quick_gl/cubemap.hpp>
+#include <quick_gl/texture_render.hpp>
 #include <quick_gl/debug.hpp>
 
 #define MODEL_PATH "D:/Programming-Playground/distort/test/model/yae_obj/yae.obj"
-#define SCR_WIDTH 800
-#define SCR_HEIGHT 600
+#define SCR_WIDTH 1920
+#define SCR_HEIGHT 1080
 
 using namespace quick3d::gl;
 
@@ -171,8 +172,11 @@ int main() noexcept
 
         check_ogl_error();
 
+        TextureRenderer ren(2048, 2048);
         for(int i = 0;i < 6;i++)
-            skybox_cubemap.generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,Image(skybox_texture_pathes[i],false));
+            // TODO: TextureRenderer异常，Debugger看见管线里一个shader都没有
+            ren.draw_to_cubemap(skybox_cubemap, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, Image(skybox_texture_pathes[i], false));
+            //skybox_cubemap.generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,Image(skybox_texture_pathes[i],false));
 
         check_ogl_error();
             
