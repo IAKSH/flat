@@ -1,3 +1,5 @@
 add_subdirectory(helloworld)
 add_subdirectory(yae)
 add_subdirectory(oal_test)
+add_subdirectory(outer_glsl)
+add_subdirectory(light)

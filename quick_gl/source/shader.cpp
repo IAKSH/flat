@@ -1,19 +1,40 @@
 #include <fstream>
-#include <sstream>
 #include <iostream>
 #include <quick_gl/shader.hpp>
 
-quick3d::gl::Program::Program(GLSLString vs,GLSLString fs) noexcept(false)
+quick3d::gl::GLSLReader::GLSLReader(std::string_view path) noexcept(false)
+    : path(path)
+{
+    read_all_glsl();
+}
+
+void quick3d::gl::GLSLReader::read_all_glsl() noexcept(false)
+{
+    std::ifstream file(path.data());
+    if (!file.is_open())
+        throw std::runtime_error(std::format("can't open glsl file from {}", path));
+
+    stream << file.rdbuf();
+}
+
+std::string quick3d::gl::GLSLReader::get_glsl() const noexcept
+{
+    return stream.str();
+}
+
+std::string_view quick3d::gl::GLSLReader::get_path() const noexcept
+{
+    return path;
+}
+
+quick3d::gl::Program::Program(std::string_view vs, std::string_view fs) noexcept(false)
 {
     create_program(vs,fs);
 }
 
-quick3d::gl::Program::Program(std::string_view path_to_vs,std::string_view path_to_fs) noexcept(false)
+quick3d::gl::Program::Program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false)
 {
-    create_program(
-        read_glsl_from_file(path_to_vs),
-        read_glsl_from_file(path_to_fs)
-        );
+    create_program(vs.get_glsl(), fs.get_glsl());
 }
 
 quick3d::gl::Program::~Program() noexcept
@@ -24,17 +45,6 @@ quick3d::gl::Program::~Program() noexcept
 GLuint quick3d::gl::Program::get_program_id() const noexcept
 {
     return program_id;
-}
-
-std::string&& quick3d::gl::Program::read_glsl_from_file(std::string_view path) noexcept(false)
-{
-    std::ifstream file(path.data());
-    if (!file.is_open())
-        throw std::runtime_error(std::format("can't open glsl file from {}",path));
-
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    return buffer.str();
 }
 
 GLint quick3d::gl::Program::get_uniform_location(std::string_view uniform) noexcept(false)

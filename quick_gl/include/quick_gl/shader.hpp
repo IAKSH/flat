@@ -1,7 +1,9 @@
 #pragma once
 
 #include <format>
+#include <sstream>
 #include <stdexcept>
+#include <filesystem>
 #include <string_view>
 #include <glad/glad.h>
 #include <glm/vec2.hpp>
@@ -31,7 +33,21 @@ namespace quick3d::gl
     template <typename T>
     concept Uniform = any_same<T,int,float,glm::vec2,glm::vec3,glm::vec4,glm::mat4>();
 
-    using GLSLString = std::string;
+	class GLSLReader
+	{
+	private:
+		std::stringstream stream;
+		std::string_view path;
+		void read_all_glsl() noexcept(false);
+
+	public:
+		GLSLReader(std::string_view path) noexcept(false);
+		GLSLReader(GLSLReader&) = delete;
+		~GLSLReader() = default;
+
+		std::string get_glsl() const noexcept;
+		std::string_view get_path() const noexcept;
+	};
 
     class Program
     {
@@ -45,14 +61,11 @@ namespace quick3d::gl
         bool check_shader(GLuint shader_id) const noexcept;
 
         void create_program(std::string_view vs,std::string_view fs);
-
-        std::string&& read_glsl_from_file(std::string_view path) noexcept(false);
-
 		GLint get_uniform_location(std::string_view uniform) noexcept(false);
 
     public:
-        Program(GLSLString vs,GLSLString fs) noexcept(false);
-        Program(std::string_view path_to_vs,std::string_view path_to_fs) noexcept(false);
+        Program(std::string_view vs, std::string_view fs) noexcept(false);
+		Program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false);
         Program(Program&) = delete;
         ~Program() noexcept;
 

@@ -59,7 +59,7 @@ quick3d::gl::TextureRenderer::TextureRenderer(GLint w,GLint h) noexcept(false)
 
 void quick3d::gl::TextureRenderer::setup_program() noexcept(false)
 {
-	program = std::make_unique<Program>((GLSLString(vertex_shader_glsl)), (GLSLString(fragment_shader_glsl)));
+    program = std::make_unique<Program>(vertex_shader_glsl, fragment_shader_glsl);
 }
 
 void quick3d::gl::TextureRenderer::setup_vao() noexcept

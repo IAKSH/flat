@@ -22,6 +22,49 @@
 
 using namespace quick3d;
 
+constexpr std::string_view model_vertex_strange_glsl{
+    R"(
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoords;
+
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+float rand(vec2 co)
+{
+    return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+vec3 randomVertexOffset(vec3 vertexPosition, vec3 vertexNormal, float delta)
+{
+    vec3 randomVector = normalize(vec3(rand(vec2(gl_VertexID, 0.0)), 
+                                       rand(vec2(gl_VertexID, 1.0)), 
+                                       rand(vec2(gl_VertexID, 2.0))));
+
+    vec3 offsetPosition = vertexPosition + delta * randomVector;
+
+    return offsetPosition;
+}
+
+void main()
+{
+    TexCoords = aTexCoords;
+    vec3 offsetPosition = randomVertexOffset(aPos, aNormal, 0.1);
+    gl_Position = projection * view * model * vec4(offsetPosition, 1.0);
+}
+
+//void main()
+//{
+//    TexCoords = aTexCoords;    
+//    gl_Position = projection * view * model * vec4(aPos, 1.0);
+//}
+    )"};
+
 constexpr std::string_view model_vertex_glsl{
     R"(
 #version 330 core
@@ -152,7 +195,7 @@ int main() noexcept
 
         gl::check_ogl_error();
 
-        gl::Program skybox_program((gl::GLSLString(skybox_vertex_glsl)), (gl::GLSLString(skybox_fragment_glsl)));
+        gl::Program skybox_program(skybox_vertex_glsl, skybox_fragment_glsl);
 
         gl::check_ogl_error();
 
@@ -192,7 +235,7 @@ int main() noexcept
 
         gl::check_ogl_error();
             
-        gl::Program model_program((gl::GLSLString(model_vertex_glsl)), (gl::GLSLString(model_fragment_glsl)));
+        gl::Program model_program(model_vertex_glsl, model_fragment_glsl);
         gl::Model model(MODEL_PATH);
         gl::FPSCamera camera(SCR_WIDTH, SCR_HEIGHT);
 
