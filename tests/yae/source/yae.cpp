@@ -229,7 +229,7 @@ int main() noexcept
 
         //gl::TextureRenderer ren(2048, 2048);
         for(int i = 0;i < 6;i++)
-            // TODO: TextureRendererÒì³££¬Debugger¿´¼û¹ÜÏßÀïÒ»¸öshader¶¼Ã»ÓÐ
+            // TODO: TextureRendererï¿½ì³£ï¿½ï¿½Debuggerï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½shaderï¿½ï¿½Ã»ï¿½ï¿½
             //ren.draw_to_cubemap(skybox_cubemap, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, gl::Image(skybox_texture_pathes[i], false));
             skybox_cubemap.generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,gl::Image(skybox_texture_pathes[i],false));
 

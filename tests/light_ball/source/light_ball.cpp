@@ -166,6 +166,11 @@ void run() noexcept(false)
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "cube_light_maps_fs.glsl"))
 	);
 
+	quick3d::gl::Program parallel_light_cube_program(
+		quick3d::gl::GLSLReader(std::format("{}/{}",GLSL_FOLDER,"cube_light_maps_vs.glsl")),
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "parallel_light_cube_fs.glsl"))
+	);
+
 	quick3d::gl::Program light_program(
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_vs.glsl")),
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_fs.glsl"))
@@ -327,6 +332,33 @@ void run() noexcept(false)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,0);
 
+		for(int i = 0;i < 10;i++)
+		{
+			parallel_light_cube_program.set_uniform("view", camera.get_view_matrix());
+			parallel_light_cube_program.set_uniform("projection", camera.get_projection_matrix());
+			parallel_light_cube_program.set_uniform("model",
+				glm::translate(glm::mat4(1.0f), glm::vec3(-20 - 5 * i, -5.0f, -1.0f)) *
+				glm::rotate(glm::mat4(1.0f), static_cast<float>(glfwGetTime() * (i + 1)) * 2.0f, glm::vec3(0.7f + i % 3, 0.33f + i % 2, 0.0f))
+				);
+			parallel_light_cube_program.set_uniform("viewPos", camera.get_position());
+			parallel_light_cube_program.set_uniform("material.diffuse", 0);
+			parallel_light_cube_program.set_uniform("material.specular", 1);
+			parallel_light_cube_program.set_uniform("material.shininess", 32.0f);
+			parallel_light_cube_program.set_uniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+			parallel_light_cube_program.set_uniform("light.diffuse", glm::vec3(1.0f,1.0f,1.0f));
+			parallel_light_cube_program.set_uniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+			parallel_light_cube_program.set_uniform("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D,container_diffuse_tex.get_tex_id());
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D,container_specular_tex.get_tex_id());
+			cube_with_light_maps_vao.draw(parallel_light_cube_program, GL_TRIANGLES, 0, 36);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D,0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D,0);
+		}
+
 		cube_light_maps_program.set_uniform("model",glm::translate(glm::mat4(1.0f), glm::vec3(20.0f, -5.0f, 3.0f)));
 		yoimiya_model.draw_model(cube_light_maps_program);
 
@@ -349,3 +381,6 @@ int main() noexcept
 		std::cerr << std::format("Exception: {}", e.what()) << std::endl;
 	}
 }
+
+// TODO: 放射光贴图
+// https://learnopengl-cn.github.io/img/02/04/lighting_maps_exercise4.png
