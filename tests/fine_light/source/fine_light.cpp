@@ -12,6 +12,8 @@
 #include <fine_light/obj_container.hpp>
 #include <fine_light/obj_light_ball.hpp>
 
+#define __MULTI_THREAD_TEST__
+
 static constexpr int SCR_WIDTH = 1920;
 static constexpr int SCR_HEIGHT = 1080;
 
@@ -25,10 +27,18 @@ void run() noexcept(false)
 	quick3d::test::fine_light::Skybox skybox;
 
 	std::vector<std::unique_ptr<quick3d::test::fine_light::Object>> objects;
-	for(int i = 0;i < 5000;i++)
-		objects.push_back(std::make_unique<quick3d::test::fine_light::Container>());
-	for(int i = 0;i < 500;i++)
-		objects.push_back(std::make_unique<quick3d::test::fine_light::LightBall>());
+	std::vector<std::unique_ptr<quick3d::test::fine_light::LightBall>> light_balls;
+	std::vector<std::unique_ptr<quick3d::test::fine_light::Container>> containers;
+	for(int i = 0;i < 100;i++)
+		containers.push_back(std::make_unique<quick3d::test::fine_light::Container>());
+	for(int i = 0;i < 50;i++)
+		light_balls.push_back(std::make_unique<quick3d::test::fine_light::LightBall>());
+	for(auto& light_ball : light_balls)
+		quick3d::test::fine_light::Container::add_light_ball(light_ball.get());
+	for(auto& container : containers)
+		objects.push_back(std::move(container));
+	for(auto& light_ball : light_balls)
+		objects.push_back(std::move(light_ball));
 
 	context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y)
 		{ camera.process_mouse_input(win, x, y); });
@@ -60,35 +70,44 @@ void run() noexcept(false)
 	//glCullFace(GL_FRONT);
 	glEnable(GL_DEPTH_TEST);
 
-	glm::vec3 light_pos;
-	glm::vec3 light_diffuse;
-
 	// Multi-thread test
+#ifdef __MULTI_THREAD_TEST__
 	std::thread t0([&]()
 	{
 		while(true)
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(6));
-
-			light_pos =  glm::vec3(sin(glfwGetTime()) * 10.0f,sin(glfwGetTime()) * 10.0f, 0.0f);
-			light_diffuse = glm::vec3(abs(sin(glfwGetTime()) / 2.0f), abs(cos(glfwGetTime()) / 2.0f), 0.5f);
-
+			//std::this_thread::sleep_for(std::chrono::milliseconds(6));
 			current_frame = glfwGetTime();
 			delta_time = current_frame - last_frame;
-			last_frame = current_frame;
+			if(delta_time > 0.003)
+			{
+				last_frame = current_frame;
+				camera.on_tick(static_cast<float>(delta_time) * 10);
 
-			camera.on_tick(static_cast<float>(delta_time) * 10);
-
-			// obj on_tick
-			for(const auto& obj : objects)
-				obj->on_tick(delta_time);
+				// obj on_tick
+				for(const auto& obj : objects)
+					obj->on_tick(delta_time);
+			}
 		}
 	});
 	t0.detach();
+#endif
 
 	auto win{ context.get_window(0).get_glfw_window() };
 	while (!glfwWindowShouldClose(win))
 	{
+#ifndef __MULTI_THREAD_TEST__
+		current_frame = glfwGetTime();
+		delta_time = current_frame - last_frame;
+		last_frame = current_frame;
+
+		camera.on_tick(static_cast<float>(delta_time) * 10);
+
+		// obj on_tick
+		for(const auto& obj : objects)
+			obj->on_tick(delta_time);
+#endif
+
 		// draw skybox
 		skybox.on_draw(camera);
 		// draw obj
@@ -113,6 +132,3 @@ int main() noexcept
 		std::cerr << std::format("Exception: {}", e.what()) << std::endl;
 	}
 }
-
-// TODO: 放射光贴图
-// https://learnopengl-cn.github.io/img/02/04/lighting_maps_exercise4.png

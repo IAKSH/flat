@@ -33,9 +33,11 @@ void quick3d::test::fine_light::LightBall::on_create() noexcept(false)
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> position_dis(-25.0, 25.0);
-    std::uniform_real_distribution<double> light_color_dis(0.0, 1.0);
+    std::uniform_real_distribution<double> direction_dis(-1.0, 1.0);
+    std::uniform_real_distribution<double> light_color_dis(-1.0, 1.0);
 
     position = glm::vec3(position_dis(gen),position_dis(gen),position_dis(gen));
+    move_direction = glm::vec3(direction_dis(gen),direction_dis(gen),direction_dis(gen));
     light_color = glm::vec3(light_color_dis(gen),light_color_dis(gen),light_color_dis(gen));
 }
 
@@ -50,18 +52,32 @@ void quick3d::test::fine_light::LightBall::on_tick(double delta_time) noexcept(f
     static std::uniform_real_distribution<double> dis(-1.0f, 1.0f);
 
     // update move direction
-    move_direction += 0.01f * glm::vec3(dis(gen),dis(gen),dis(gen));
+    move_direction += 0.1f * glm::vec3(dis(gen),dis(gen),dis(gen));
     move_direction = glm::normalize(move_direction);
 
     // move
-    position += 0.01f * move_direction;
+    position += 0.05f * move_direction;
+
+    int positive;
+
+    positive = position.x > 0 ? 1 : -1;;
+    if(abs(position.x) > 10.0f)
+        position.x = positive * 10.f;
+
+    positive = position.y > 0 ? 1 : -1;;
+    if(abs(position.y) > 10.0f)
+        position.y = positive * 10.0f;
+
+    positive = position.z > 0 ? 1 : -1;;
+    if(abs(position.z) > 10.0f)
+        position.z = positive * 10.0f;
 }
 
 void quick3d::test::fine_light::LightBall::on_draw(const gl::FPSCamera& camera) noexcept(false)
 {
     program->set_uniform("view", camera.get_view_matrix());
 	program->set_uniform("projection", camera.get_projection_matrix());
-	program->set_uniform("model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f),glm::vec3(0.2f,0.2f,0.2f)));
+	program->set_uniform("model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f),glm::vec3(0.05f,0.05f,0.05f)));
     program->set_uniform("lightColor", light_color);
     model->draw_model(*program);
 }
@@ -77,4 +93,14 @@ void quick3d::test::fine_light::LightBall::on_load() noexcept(false)
 
 void quick3d::test::fine_light::LightBall::on_unload() noexcept(false)
 {
+}
+
+glm::vec3 quick3d::test::fine_light::LightBall::get_light_color() const noexcept
+{
+    return light_color;
+}
+
+glm::vec3 quick3d::test::fine_light::LightBall::get_position() const noexcept
+{
+    return position;
 }

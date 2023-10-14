@@ -5,6 +5,7 @@
 #include <quick_gl/texture.hpp>
 #include <quick_gl/camera.hpp>
 #include <fine_light/object.hpp>
+#include <fine_light/obj_light_ball.hpp>
 
 namespace quick3d::test::fine_light
 {
@@ -16,6 +17,7 @@ namespace quick3d::test::fine_light
         inline static std::shared_ptr<gl::Texture> texture_diffuse;
         inline static std::shared_ptr<gl::Texture> texture_specular;
         inline static std::shared_ptr<gl::Program> program;
+        inline static std::vector<LightBall*> light_balls;
 
         glm::vec3 position;
         glm::vec3 rotate_axis;
@@ -38,5 +40,7 @@ namespace quick3d::test::fine_light
 
         void on_load() noexcept(false);
         void on_unload() noexcept(false);
+
+        static void add_light_ball(LightBall* light_ball) noexcept;
     };
 }

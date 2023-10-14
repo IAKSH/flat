@@ -1,5 +1,6 @@
 #include <array>
 #include <random>
+#include <thread>
 #include <quick_gl/image.hpp>
 #include <fine_light/obj_container.hpp>
 
@@ -73,7 +74,7 @@ void quick3d::test::fine_light::Container::try_load_program(std::string_view vs,
 	    program->set_uniform("material.specular", 1);
 	    program->set_uniform("material.shininess", 32.0f);
 	    program->set_uniform("directLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
-	    program->set_uniform("directLight.diffuse", glm::vec3(0.2f,0.2f,0.4f));
+	    program->set_uniform("directLight.diffuse", glm::vec3(0.0f,0.0f,1.0f));
 	    program->set_uniform("directLight.specular", glm::vec3(0.5f,0.5f,0.5f));
 	    program->set_uniform("directLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
         program->set_uniform("pointLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
@@ -90,6 +91,15 @@ void quick3d::test::fine_light::Container::try_load_program(std::string_view vs,
         program->set_uniform("spotLight.constant", 1.0f);
         program->set_uniform("spotLight.linear", 0.007f);
         program->set_uniform("spotLight.quadratic", 0.0002f);
+
+        for(int i = 0;i < 50;i++)
+        {
+            program->set_uniform(std::format("pointLights[{}].ambient",i), glm::vec3(0.1f,0.1f,0.1f));
+            program->set_uniform(std::format("pointLights[{}].specular",i), glm::vec3(1.0f,1.1f,1.1f));
+            program->set_uniform(std::format("pointLights[{}].constant",i), 1.0f);
+            program->set_uniform(std::format("pointLights[{}].linear",i), 0.22f);
+            program->set_uniform(std::format("pointLights[{}].quadratic",i), 0.20f);
+        }
     }
 }
 
@@ -132,6 +142,13 @@ void quick3d::test::fine_light::Container::on_draw(const gl::FPSCamera& camera) 
     program->set_uniform("spotLight.position", camera.get_position());
     program->set_uniform("spotLight.direction", camera.get_front_vec());
 
+    // too slow!
+    for(int i = 0;i < light_balls.size();i++)
+    {
+        program->set_uniform(std::format("pointLights[{}].position",i),light_balls[i]->get_position());
+        program->set_uniform(std::format("pointLights[{}].diffuse",i),light_balls[i]->get_light_color());
+    }
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,texture_diffuse->get_tex_id());
 	glActiveTexture(GL_TEXTURE1);
@@ -147,7 +164,7 @@ void quick3d::test::fine_light::Container::on_create() noexcept(false)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> position_dis(-50.0, 50.0);
+    std::uniform_real_distribution<double> position_dis(-10.0, 10.0);
     std::uniform_real_distribution<double> rotation_dis(0.0, 1.0);
 
     position = glm::vec3(position_dis(gen),position_dis(gen),position_dis(gen));
@@ -175,4 +192,9 @@ void quick3d::test::fine_light::Container::on_load() noexcept(false)
 
 void quick3d::test::fine_light::Container::on_unload() noexcept(false)
 {
+}
+
+void quick3d::test::fine_light::Container::add_light_ball(LightBall* light_ball) noexcept
+{
+    light_balls.push_back(light_ball);
 }

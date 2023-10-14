@@ -33,5 +33,8 @@ namespace quick3d::test::fine_light
 
         void on_load() noexcept(false);
         void on_unload() noexcept(false);
+
+        glm::vec3 get_light_color() const noexcept;
+        glm::vec3 get_position() const noexcept;
     };
 }
