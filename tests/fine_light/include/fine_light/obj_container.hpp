@@ -25,17 +25,17 @@ namespace quick3d::test::fine_light
         void try_load_texture(std::string_view diffuse_tex_folder,std::string_view specular_tex_folder,GLenum color_format) noexcept(false);
         void try_setup_vao() noexcept;
 
-    public:
-        Container(std::string_view vs,std::string_view fs,
-            std::string_view diffuse_tex_folder,std::string_view specular_tex_folder,GLenum color_format) noexcept(false);
+        void on_create() noexcept(false);
+        void on_destroy() noexcept(false);
 
+    public:
+        Container() noexcept(false);
         Container(Container&) = delete;
-        ~Container() = default;
+        ~Container() noexcept(false);
 
         void on_tick(double delta_time) noexcept(false);
         void on_draw(const gl::FPSCamera& camera) noexcept(false);
-        void on_create() noexcept(false);
-        void on_destroy() noexcept(false);
+
         void on_load() noexcept(false);
         void on_unload() noexcept(false);
     };

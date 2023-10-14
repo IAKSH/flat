@@ -10,10 +10,6 @@
 #include <fine_light/obj_skybox.hpp>
 #include <fine_light/obj_container.hpp>
 
-static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/fine_light/glsl";
-static constexpr std::string_view MODEL_FOLDER = "../../../../../tests/light_ball/model";
-static constexpr std::string_view IMAGE_FOLDER = "../../../../../tests/fine_light/image";
-
 static constexpr int SCR_WIDTH = 800;
 static constexpr int SCR_HEIGHT = 600;
 
@@ -24,18 +20,10 @@ void run() noexcept(false)
 
 	quick3d::gl::FPSCamera camera(SCR_WIDTH, SCR_HEIGHT);
 
-	quick3d::test::fine_light::Skybox skybox(IMAGE_FOLDER);
+	quick3d::test::fine_light::Skybox skybox;
 	std::vector<std::unique_ptr<quick3d::test::fine_light::Container>> containers;
-	for(int i = 0;i < 250;i++)
-	{
-		containers.push_back(std::make_unique<quick3d::test::fine_light::Container>(
-			quick3d::gl::GLSLReader(std::format("{}/{}",GLSL_FOLDER,"container_direct_light_vs.glsl")).get_glsl(),
-			quick3d::gl::GLSLReader(std::format("{}/{}",GLSL_FOLDER,"container_direct_light_fs.glsl")).get_glsl(),
-			IMAGE_FOLDER,
-			IMAGE_FOLDER,
-			GL_RGBA
-		));
-	}
+	for(int i = 0;i < 5000;i++)
+		containers.push_back(std::make_unique<quick3d::test::fine_light::Container>());
 
 	context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y)
 		{ camera.process_mouse_input(win, x, y); });

@@ -3,6 +3,9 @@
 #include <quick_gl/image.hpp>
 #include <fine_light/obj_skybox.hpp>
 
+static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/fine_light/glsl";
+static constexpr std::string_view IMAGE_FOLDER = "../../../../../tests/fine_light/image";
+
 static constexpr std::array<float,108> skybox_vertices
 {
     // right
@@ -76,7 +79,7 @@ in vec3 texCoord;
 uniform samplerCube skybox_cubemap;
 void main()
 {
-    fragColor = texture(skybox_cubemap,texCoord);
+    fragColor = vec4(0.3f,0.3f,0.3f,1.0f) * texture(skybox_cubemap,texCoord);
 }
 )"};
 
@@ -90,21 +93,15 @@ static constexpr std::array<std::string_view, 6> skybox_texture_names
     "back.jpg"
 };
 
-quick3d::test::fine_light::Skybox::Skybox(std::string_view img_folder,GLenum format,uint32_t w,uint32_t h) noexcept(false)
+quick3d::test::fine_light::Skybox::Skybox() noexcept(false)
 {
-    try_load_program(skybox_vs_glsl,skybox_fs_glsl);
-    try_load_cubemap(img_folder,format,w,h);
-    try_setup_vao();
+    on_load();
     on_create();
 }
 
-quick3d::test::fine_light::Skybox::Skybox(std::string_view vs,std::string_view fs,
-    std::string_view img_folder,GLenum format,uint32_t w,uint32_t h) noexcept(false)
+quick3d::test::fine_light::Skybox::~Skybox() noexcept(false)
 {
-    try_load_program(vs,fs);
-    try_load_cubemap(img_folder,format,w,h);
-    try_setup_vao();
-    on_create();
+    on_destroy();
 }
 
 void quick3d::test::fine_light::Skybox::try_load_program(std::string_view vs,std::string_view fs) noexcept(false)
@@ -124,7 +121,8 @@ void quick3d::test::fine_light::Skybox::try_setup_vao() noexcept
     }
 }
 
-void quick3d::test::fine_light::Skybox::try_load_cubemap(std::string_view folder,GLenum format,uint32_t w,uint32_t h) noexcept(false)
+void quick3d::test::fine_light::Skybox::try_load_cubemap(std::string_view folder,
+    const std::array<std::string_view, 6>& names,GLenum format,uint32_t w,uint32_t h) noexcept(false)
 {
     if(!cubemap)
     {
@@ -132,7 +130,7 @@ void quick3d::test::fine_light::Skybox::try_load_cubemap(std::string_view folder
 
         for(int i = 0;i < 6;i++)
         cubemap->generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-            gl::Image(std::format("{}/{}",folder,skybox_texture_names[i]),false));
+            gl::Image(std::format("{}/{}",folder,names[i]),false));
     }
 }
 
@@ -166,6 +164,9 @@ void quick3d::test::fine_light::Skybox::on_destroy() noexcept(false)
 
 void quick3d::test::fine_light::Skybox::on_load() noexcept(false)
 {
+    try_load_program(skybox_vs_glsl,skybox_fs_glsl);
+    try_load_cubemap(IMAGE_FOLDER,skybox_texture_names,GL_RGBA,2048,2048);
+    try_setup_vao();
 }
 
 void quick3d::test::fine_light::Skybox::on_unload() noexcept(false)

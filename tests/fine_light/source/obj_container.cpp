@@ -3,6 +3,9 @@
 #include <quick_gl/image.hpp>
 #include <fine_light/obj_container.hpp>
 
+static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/fine_light/glsl";
+static constexpr std::string_view IMAGE_FOLDER = "../../../../../tests/fine_light/image";
+
 static constexpr std::array<float, 288> container_vertices
 {
 	// positions          // normals           // texture coords
@@ -49,13 +52,15 @@ static constexpr std::array<float, 288> container_vertices
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
 };
 
-quick3d::test::fine_light::Container::Container(std::string_view vs,std::string_view fs,
-            std::string_view diffuse_tex_folder,std::string_view specular_tex_folder,GLenum color_format) noexcept(false)
+quick3d::test::fine_light::Container::Container() noexcept(false)
 {
-    try_load_program(vs,fs);
-    try_load_texture(diffuse_tex_folder,specular_tex_folder,color_format);
-    try_setup_vao();
+    on_load();
     on_create();
+}
+
+quick3d::test::fine_light::Container::~Container() noexcept(false)
+{
+    on_destroy();
 }
 
 void quick3d::test::fine_light::Container::try_load_program(std::string_view vs,std::string_view fs) noexcept(false)
@@ -64,15 +69,13 @@ void quick3d::test::fine_light::Container::try_load_program(std::string_view vs,
         program = std::make_shared<gl::Program>(vs,fs);
 }
 
-void quick3d::test::fine_light::Container::try_load_texture(std::string_view diffuse_tex_folder,
-    std::string_view specular_tex_folder, GLenum color_format) noexcept(false)
+void quick3d::test::fine_light::Container::try_load_texture(std::string_view diffuse_tex_path,
+    std::string_view specular_tex_path, GLenum color_format) noexcept(false)
 {
     if(!texture_diffuse)
-        texture_diffuse = std::make_shared<gl::Texture>(color_format,
-            gl::Image(std::format("{}/{}",diffuse_tex_folder,"container2.png")));
+        texture_diffuse = std::make_shared<gl::Texture>(color_format,gl::Image(diffuse_tex_path));
     if(!texture_specular)
-        texture_specular = std::make_shared<gl::Texture>(color_format,
-            gl::Image(std::format("{}/{}",specular_tex_folder,"container2_specular.png")));
+        texture_specular = std::make_shared<gl::Texture>(color_format,gl::Image(specular_tex_path));
 }
 
 void quick3d::test::fine_light::Container::try_setup_vao() noexcept
@@ -104,9 +107,9 @@ void quick3d::test::fine_light::Container::on_draw(const gl::FPSCamera& camera) 
 	program->set_uniform("material.diffuse", 0);
 	program->set_uniform("material.specular", 1);
 	program->set_uniform("material.shininess", 32.0f);
-	program->set_uniform("light.ambient", glm::vec3(0.6f, 0.6f, 0.6f));
-	program->set_uniform("light.diffuse", glm::vec3(1.0f,1.0f,1.0f));
-	program->set_uniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+	program->set_uniform("light.ambient", glm::vec3(0.3f, 0.3f, 0.3f));
+	program->set_uniform("light.diffuse", glm::vec3(0.5f,0.5f,0.5f));
+	program->set_uniform("light.specular", glm::vec3(0.5f,0.5f,0.5f));
 	program->set_uniform("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,texture_diffuse->get_tex_id());
@@ -137,6 +140,16 @@ void quick3d::test::fine_light::Container::on_destroy() noexcept(false)
 
 void quick3d::test::fine_light::Container::on_load() noexcept(false)
 {
+    try_load_program(
+        gl::GLSLReader(std::format("{}/{}",GLSL_FOLDER,"container_direct_light_vs.glsl")).get_glsl(),
+        gl::GLSLReader(std::format("{}/{}",GLSL_FOLDER,"container_direct_light_fs.glsl")).get_glsl()
+    );
+    try_load_texture(
+        std::format("{}/{}",IMAGE_FOLDER,"container2.png"),
+        std::format("{}/{}",IMAGE_FOLDER,"container2_specular.png"),
+        GL_RGBA
+    );
+    try_setup_vao();
 }
 
 void quick3d::test::fine_light::Container::on_unload() noexcept(false)
