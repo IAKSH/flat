@@ -1,16 +1,43 @@
 #version 330 core
 
-struct Material {
+struct Material
+{
     sampler2D diffuse;
     sampler2D specular;
     float     shininess;
 }; 
 
-struct Light {
+struct DirectLight
+{
     vec3 direction;
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+};
+
+struct PointLight
+{
+    vec3 position;  
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+struct SpotLight
+{
+    vec3 position;  
+    vec3 direction;
+    float cutOff; 
+    float outerCutOff;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float constant;
+    float linear;
+    float quadratic;
 };
 
 in vec3 Normal;
@@ -18,30 +45,130 @@ in vec3 FragPos;
 in vec2 TexCoords;
 uniform vec3 viewPos;
 uniform Material material;
-uniform Light light;
+uniform DirectLight directLight;
+uniform PointLight pointLight;
+uniform SpotLight spotLight;
 
 out vec4 FragColor;
 
-void main()
+vec3 processDirectLight()
 {
     // ambient
-    vec3 ambient = light.ambient * texture(material.diffuse, TexCoords).rgb;
+    vec3 ambient = directLight.ambient * texture(material.diffuse, TexCoords).rgb;
   	
     // diffuse 
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(-light.direction);
+    vec3 lightDir = normalize(-directLight.direction);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = light.diffuse * diff * texture(material.diffuse, TexCoords).rgb;
+    vec3 diffuse = directLight.diffuse * diff * texture(material.diffuse, TexCoords).rgb;
     
     // specular
-    // 我们选择在世界空间进行光照计算，但是大多数人趋向于更偏向在观察空间进行光照计算。
-    // 在观察空间计算的优势是，观察者的位置总是在(0, 0, 0)，所以你已经零成本地拿到了观察者的位置。
-    // 然而，若以学习为目的，我认为在世界空间中计算光照更符合直觉。
-    // 如果你仍然希望在观察空间计算光照的话，你需要将所有相关的向量也用观察矩阵进行变换（不要忘记也修改法线矩阵）。
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;  
+    vec3 specular = directLight.specular * spec * texture(material.specular, TexCoords).rgb;
+    
+    return ambient + diffuse + specular;
+}
 
-    FragColor = vec4(ambient + diffuse + specular, 1.0);
+vec3 processPointLight()
+{
+    // ambient
+    vec3 ambient = pointLight.ambient * texture(material.diffuse, TexCoords).rgb;
+  	
+    // diffuse 
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(pointLight.position - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = pointLight.diffuse * diff * texture(material.diffuse, TexCoords).rgb;
+    
+    // specular
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = pointLight.specular * spec * texture(material.specular, TexCoords).rgb;
+
+    float distance    = length(pointLight.position - FragPos);
+    float attenuation = 1.0 / (pointLight.constant + pointLight.linear * distance + 
+        pointLight.quadratic * (distance * distance));
+
+    ambient  *= attenuation; 
+    diffuse  *= attenuation;
+    specular *= attenuation;
+
+    return ambient + diffuse + specular;
+}
+
+vec3 processSpotLight()
+{
+    vec3 lightDir = normalize(spotLight.position - FragPos);
+
+    float theta = dot(lightDir, normalize(-spotLight.direction));
+    if(theta > spotLight.cutOff) 
+    {
+        // ambient
+        vec3 ambient = spotLight.ambient * texture(material.diffuse, TexCoords).rgb;
+    
+        // diffuse 
+        vec3 norm = normalize(Normal);
+        float diff = max(dot(norm, lightDir), 0.0);
+        vec3 diffuse = spotLight.diffuse * diff * texture(material.diffuse, TexCoords).rgb;
+
+        // specular
+        vec3 viewDir = normalize(viewPos - FragPos);
+        vec3 reflectDir = reflect(-lightDir, norm);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+        vec3 specular = spotLight.specular * spec * texture(material.specular, TexCoords).rgb;
+        
+        // attenuation
+        float distance    = length(spotLight.position - FragPos);
+        float attenuation = 1.0 / (spotLight.constant + spotLight.linear * distance + spotLight.quadratic * (distance * distance));    
+
+        // ambient  *= attenuation; // remove attenuation from ambient, as otherwise at large distances the light would be darker inside than outside the spotlight due the ambient term in the else branch
+        diffuse   *= attenuation;
+        specular *= attenuation;   
+
+        return ambient + diffuse + specular;
+    }
+    else
+        return spotLight.ambient * vec3(texture(material.diffuse, TexCoords));
+}
+
+vec3 processSpotLightSoft()
+{
+    // ambient
+    vec3 ambient = spotLight.ambient * texture(material.diffuse, TexCoords).rgb;
+    
+    // diffuse 
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(spotLight.position - FragPos);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = spotLight.diffuse * diff * texture(material.diffuse, TexCoords).rgb;  
+    
+    // specular
+    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);  
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = spotLight.specular * spec * texture(material.specular, TexCoords).rgb;  
+    
+    // spotlight (soft edges)
+    float theta = dot(lightDir, normalize(-spotLight.direction)); 
+    float epsilon = (spotLight.cutOff - spotLight.outerCutOff);
+    float intensity = clamp((theta - spotLight.outerCutOff) / epsilon, 0.0, 1.0);
+    diffuse  *= intensity;
+    specular *= intensity;
+    
+    // attenuation
+    float distance    = length(spotLight.position - FragPos);
+    float attenuation = 1.0 / (spotLight.constant + spotLight.linear * distance + spotLight.quadratic * (distance * distance));    
+    ambient  *= attenuation; 
+    diffuse   *= attenuation;
+    specular *= attenuation;  
+
+    return ambient + diffuse + specular;
+}
+
+void main()
+{
+    FragColor = vec4(processSpotLightSoft() + processPointLight() + processDirectLight(), 1.0);
 }

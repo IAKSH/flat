@@ -66,7 +66,31 @@ quick3d::test::fine_light::Container::~Container() noexcept(false)
 void quick3d::test::fine_light::Container::try_load_program(std::string_view vs,std::string_view fs) noexcept(false)
 {
     if(!program)
+    {
         program = std::make_shared<gl::Program>(vs,fs);
+
+	    program->set_uniform("material.diffuse", 0);
+	    program->set_uniform("material.specular", 1);
+	    program->set_uniform("material.shininess", 32.0f);
+	    program->set_uniform("directLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+	    program->set_uniform("directLight.diffuse", glm::vec3(0.2f,0.2f,0.4f));
+	    program->set_uniform("directLight.specular", glm::vec3(0.5f,0.5f,0.5f));
+	    program->set_uniform("directLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+        program->set_uniform("pointLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+        program->set_uniform("pointLight.diffuse", glm::vec3(0.6f, 1.0f, 0.6f));
+        program->set_uniform("pointLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+        program->set_uniform("pointLight.constant", 1.0f);
+        program->set_uniform("pointLight.linear", 0.045f);
+        program->set_uniform("pointLight.quadratic", 0.0075f);
+        program->set_uniform("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+        program->set_uniform("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
+        program->set_uniform("spotLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+        program->set_uniform("spotLight.diffuse", glm::vec3(1.0f, 0.0f, 0.0f));
+        program->set_uniform("spotLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+        program->set_uniform("spotLight.constant", 1.0f);
+        program->set_uniform("spotLight.linear", 0.007f);
+        program->set_uniform("spotLight.quadratic", 0.0002f);
+    }
 }
 
 void quick3d::test::fine_light::Container::try_load_texture(std::string_view diffuse_tex_path,
@@ -104,13 +128,10 @@ void quick3d::test::fine_light::Container::on_draw(const gl::FPSCamera& camera) 
         glm::rotate(glm::mat4(1.0f),static_cast<float>(glfwGetTime() * rotate_speed),rotate_axis)        
         );
 	program->set_uniform("viewPos", camera.get_position());
-	program->set_uniform("material.diffuse", 0);
-	program->set_uniform("material.specular", 1);
-	program->set_uniform("material.shininess", 32.0f);
-	program->set_uniform("light.ambient", glm::vec3(0.3f, 0.3f, 0.3f));
-	program->set_uniform("light.diffuse", glm::vec3(0.5f,0.5f,0.5f));
-	program->set_uniform("light.specular", glm::vec3(0.5f,0.5f,0.5f));
-	program->set_uniform("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+    program->set_uniform("pointLight.position", camera.get_position());
+    program->set_uniform("spotLight.position", camera.get_position());
+    program->set_uniform("spotLight.direction", camera.get_front_vec());
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D,texture_diffuse->get_tex_id());
 	glActiveTexture(GL_TEXTURE1);

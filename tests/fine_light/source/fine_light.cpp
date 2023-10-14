@@ -9,6 +9,7 @@
 #include <quick_gl/model.hpp>
 #include <fine_light/obj_skybox.hpp>
 #include <fine_light/obj_container.hpp>
+#include <fine_light/obj_light_ball.hpp>
 
 static constexpr int SCR_WIDTH = 800;
 static constexpr int SCR_HEIGHT = 600;
@@ -21,9 +22,12 @@ void run() noexcept(false)
 	quick3d::gl::FPSCamera camera(SCR_WIDTH, SCR_HEIGHT);
 
 	quick3d::test::fine_light::Skybox skybox;
-	std::vector<std::unique_ptr<quick3d::test::fine_light::Container>> containers;
+
+	std::vector<std::unique_ptr<quick3d::test::fine_light::Object>> objects;
 	for(int i = 0;i < 5000;i++)
-		containers.push_back(std::make_unique<quick3d::test::fine_light::Container>());
+		objects.push_back(std::make_unique<quick3d::test::fine_light::Container>());
+	for(int i = 0;i < 500;i++)
+		objects.push_back(std::make_unique<quick3d::test::fine_light::LightBall>());
 
 	context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y)
 		{ camera.process_mouse_input(win, x, y); });
@@ -70,11 +74,15 @@ void run() noexcept(false)
 
 		camera.on_tick(static_cast<float>(delta_time) * 10);
 
+		// obj on_tick
+		for(const auto& obj : objects)
+			obj->on_tick(delta_time);
+
 		// draw skybox
 		skybox.on_draw(camera);
 
-		// draw container
-		for(const auto& obj : containers)
+		// draw obj
+		for(const auto& obj : objects)
 			obj->on_draw(camera);
 
 		glfwSwapBuffers(win);
