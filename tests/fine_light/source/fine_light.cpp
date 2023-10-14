@@ -11,15 +11,16 @@
 #include <fine_light/obj_skybox.hpp>
 #include <fine_light/obj_container.hpp>
 #include <fine_light/obj_light_ball.hpp>
+#include <fine_light/obj_yoimiya.hpp>
 
-#define __MULTI_THREAD_TEST__
+//#define __MULTI_THREAD_TEST__
 
 static constexpr int SCR_WIDTH = 1920;
 static constexpr int SCR_HEIGHT = 1080;
 
 void run() noexcept(false)
 {
-	quick3d::gl::Context context("light test", SCR_WIDTH, SCR_HEIGHT);
+	quick3d::gl::Context context("fine light test", SCR_WIDTH, SCR_HEIGHT);
 	glfwSetInputMode(context.get_window(0).get_glfw_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	quick3d::gl::FPSCamera camera(SCR_WIDTH, SCR_HEIGHT);
@@ -29,14 +30,21 @@ void run() noexcept(false)
 	std::vector<std::unique_ptr<quick3d::test::fine_light::Object>> objects;
 	std::vector<std::unique_ptr<quick3d::test::fine_light::LightBall>> light_balls;
 	std::vector<std::unique_ptr<quick3d::test::fine_light::Container>> containers;
-	for(int i = 0;i < 100;i++)
+	std::vector<std::unique_ptr<quick3d::test::fine_light::Yoimiya>> yoimiyas;
+	for(int i = 0;i < 10;i++)
 		containers.push_back(std::make_unique<quick3d::test::fine_light::Container>());
-	for(int i = 0;i < 50;i++)
+	for(int i = 0;i < 10;i++)
+		yoimiyas.push_back(std::make_unique<quick3d::test::fine_light::Yoimiya>());
+	for(int i = 0;i < 250;i++)
 		light_balls.push_back(std::make_unique<quick3d::test::fine_light::LightBall>());
 	for(auto& light_ball : light_balls)
 		quick3d::test::fine_light::Container::add_light_ball(light_ball.get());
+	for(auto& light_ball : light_balls)
+		quick3d::test::fine_light::Yoimiya::add_light_ball(light_ball.get());
 	for(auto& container : containers)
 		objects.push_back(std::move(container));
+	for(auto& yoimiya : yoimiyas)
+		objects.push_back(std::move(yoimiya));
 	for(auto& light_ball : light_balls)
 		objects.push_back(std::move(light_ball));
 
@@ -79,7 +87,7 @@ void run() noexcept(false)
 			//std::this_thread::sleep_for(std::chrono::milliseconds(6));
 			current_frame = glfwGetTime();
 			delta_time = current_frame - last_frame;
-			if(delta_time > 0.003)
+			if(delta_time > 0.006)
 			{
 				last_frame = current_frame;
 				camera.on_tick(static_cast<float>(delta_time) * 10);

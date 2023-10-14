@@ -49,7 +49,7 @@ uniform DirectLight directLight;
 uniform PointLight pointLight;
 uniform SpotLight spotLight;
 
-#define NR_POINT_LIGHTS 50
+#define NR_POINT_LIGHTS 250
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 out vec4 FragColor;

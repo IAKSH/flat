@@ -92,7 +92,7 @@ void quick3d::test::fine_light::Container::try_load_program(std::string_view vs,
         program->set_uniform("spotLight.linear", 0.007f);
         program->set_uniform("spotLight.quadratic", 0.0002f);
 
-        for(int i = 0;i < 50;i++)
+        for(int i = 0;i < 250;i++)
         {
             program->set_uniform(std::format("pointLights[{}].ambient",i), glm::vec3(0.1f,0.1f,0.1f));
             program->set_uniform(std::format("pointLights[{}].specular",i), glm::vec3(1.0f,1.1f,1.1f));
@@ -164,7 +164,7 @@ void quick3d::test::fine_light::Container::on_create() noexcept(false)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> position_dis(-10.0, 10.0);
+    std::uniform_real_distribution<double> position_dis(-15.0, 15.0);
     std::uniform_real_distribution<double> rotation_dis(0.0, 1.0);
 
     position = glm::vec3(position_dis(gen),position_dis(gen),position_dis(gen));

@@ -79,7 +79,7 @@ in vec3 texCoord;
 uniform samplerCube skybox_cubemap;
 void main()
 {
-    fragColor = vec4(0.1f,0.1f,0.1f,1.0f) * texture(skybox_cubemap,texCoord);
+    fragColor = vec4(0.2f,0.2f,0.2f,1.0f) * texture(skybox_cubemap,texCoord);
 }
 )"};
 

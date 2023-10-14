@@ -77,7 +77,7 @@ void quick3d::test::fine_light::LightBall::on_draw(const gl::FPSCamera& camera) 
 {
     program->set_uniform("view", camera.get_view_matrix());
 	program->set_uniform("projection", camera.get_projection_matrix());
-	program->set_uniform("model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f),glm::vec3(0.05f,0.05f,0.05f)));
+	program->set_uniform("model", glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f),glm::vec3(0.01f,0.01f,0.01f)));
     program->set_uniform("lightColor", light_color);
     model->draw_model(*program);
 }
