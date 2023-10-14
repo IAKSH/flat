@@ -50,11 +50,11 @@ void quick3d::test::fine_light::LightBall::on_tick(double delta_time) noexcept(f
     static std::uniform_real_distribution<double> dis(-1.0f, 1.0f);
 
     // update move direction
-    move_direction += 0.1f * glm::vec3(dis(gen),dis(gen),dis(gen));
+    move_direction += 0.01f * glm::vec3(dis(gen),dis(gen),dis(gen));
     move_direction = glm::normalize(move_direction);
 
     // move
-    position += 0.1f * move_direction;
+    position += 0.01f * move_direction;
 }
 
 void quick3d::test::fine_light::LightBall::on_draw(const gl::FPSCamera& camera) noexcept(false)

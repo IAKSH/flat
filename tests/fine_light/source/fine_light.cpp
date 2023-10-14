@@ -1,4 +1,5 @@
 #include <array>
+#include <thread>
 #include <format>
 #include <iostream>
 #include <stdexcept>
@@ -11,8 +12,8 @@
 #include <fine_light/obj_container.hpp>
 #include <fine_light/obj_light_ball.hpp>
 
-static constexpr int SCR_WIDTH = 800;
-static constexpr int SCR_HEIGHT = 600;
+static constexpr int SCR_WIDTH = 1920;
+static constexpr int SCR_HEIGHT = 1080;
 
 void run() noexcept(false)
 {
@@ -62,32 +63,40 @@ void run() noexcept(false)
 	glm::vec3 light_pos;
 	glm::vec3 light_diffuse;
 
+	// Multi-thread test
+	std::thread t0([&]()
+	{
+		while(true)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(6));
+
+			light_pos =  glm::vec3(sin(glfwGetTime()) * 10.0f,sin(glfwGetTime()) * 10.0f, 0.0f);
+			light_diffuse = glm::vec3(abs(sin(glfwGetTime()) / 2.0f), abs(cos(glfwGetTime()) / 2.0f), 0.5f);
+
+			current_frame = glfwGetTime();
+			delta_time = current_frame - last_frame;
+			last_frame = current_frame;
+
+			camera.on_tick(static_cast<float>(delta_time) * 10);
+
+			// obj on_tick
+			for(const auto& obj : objects)
+				obj->on_tick(delta_time);
+		}
+	});
+	t0.detach();
+
 	auto win{ context.get_window(0).get_glfw_window() };
 	while (!glfwWindowShouldClose(win))
 	{
-		light_pos =  glm::vec3(sin(glfwGetTime()) * 10.0f,sin(glfwGetTime()) * 10.0f, 0.0f);
-		light_diffuse = glm::vec3(abs(sin(glfwGetTime()) / 2.0f), abs(cos(glfwGetTime()) / 2.0f), 0.5f);
-
-		current_frame = glfwGetTime();
-		delta_time = current_frame - last_frame;
-		last_frame = current_frame;
-
-		camera.on_tick(static_cast<float>(delta_time) * 10);
-
-		// obj on_tick
-		for(const auto& obj : objects)
-			obj->on_tick(delta_time);
-
 		// draw skybox
 		skybox.on_draw(camera);
-
 		// draw obj
 		for(const auto& obj : objects)
 			obj->on_draw(camera);
 
 		glfwSwapBuffers(win);
 		glfwPollEvents();
-
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
