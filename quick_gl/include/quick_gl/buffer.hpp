@@ -14,10 +14,11 @@
 namespace quick3d::gl
 {
     // [√] VBO,EBO
-    // [ ] UBO,SSBO,TBO
+    // [O] UBO,SSBO
+    // [X] TBO
     // [√] 从OpenGL 3.3迁移到~~OpenGL4.3~~ OpenGL ES 3.2
-    // [ ] 考虑：PBO,ACB
-    // [X] FBO（和RBO）从frame.hpp移动到这里 <驳回：不是同一种Buffer> 
+    // [X] 考虑：PBO,ACB
+    // [~] FBO（和RBO）从frame.hpp移动到这里 <驳回：不是同一种Buffer> 
     // [√] 预分配
     // [√] 一次性写入和分段写入（内存映射）
 
@@ -114,21 +115,30 @@ namespace quick3d::gl
     using EBO_Dynamic   =   __Buffer<GL_ELEMENT_ARRAY_BUFFER,GL_DYNAMIC_DRAW>;
     using EBO_Stream   =   __Buffer<GL_ELEMENT_ARRAY_BUFFER,GL_STREAM_DRAW>;
 
-    using TBO_Static   =   __Buffer<GL_TEXTURE_BUFFER,GL_STATIC_DRAW>;
-    using TBO_Dynamic   =   __Buffer<GL_TEXTURE_BUFFER,GL_DYNAMIC_DRAW>;
-    using TBO_Stream   =   __Buffer<GL_TEXTURE_BUFFER,GL_STREAM_DRAW>;
+    // TODO: TBO is so strange, current API is not usable for sure
+    //using TBO_Static   =   __Buffer<GL_TEXTURE_BUFFER,GL_STATIC_DRAW>;
+    //using TBO_Dynamic   =   __Buffer<GL_TEXTURE_BUFFER,GL_DYNAMIC_DRAW>;
+    //using TBO_Stream   =   __Buffer<GL_TEXTURE_BUFFER,GL_STREAM_DRAW>;
+
+    // about UBO:
+    // https://www.khronos.org/opengl/wiki/Uniform_Buffer_Object
+    // for more infomation, see the part of DirectUBO
 
     using UBO_Static   =   __Buffer<GL_UNIFORM_BUFFER,GL_STATIC_DRAW>;
     using UBO_Dynamic   =   __Buffer<GL_UNIFORM_BUFFER,GL_DYNAMIC_DRAW>;
     using UBO_Stream   =   __Buffer<GL_UNIFORM_BUFFER,GL_STREAM_DRAW>;
 
-    using PackPBO_Static   =   __Buffer<GL_PIXEL_PACK_BUFFER,GL_STATIC_DRAW>;
-    using PackPBO_Dynamic   =   __Buffer<GL_PIXEL_PACK_BUFFER,GL_DYNAMIC_DRAW>;
-    using PackPBO_Stream   =   __Buffer<GL_PIXEL_PACK_BUFFER,GL_STREAM_DRAW>;
+    //using PackPBO_Static   =   __Buffer<GL_PIXEL_PACK_BUFFER,GL_STATIC_DRAW>;
+    //using PackPBO_Dynamic   =   __Buffer<GL_PIXEL_PACK_BUFFER,GL_DYNAMIC_DRAW>;
+    //using PackPBO_Stream   =   __Buffer<GL_PIXEL_PACK_BUFFER,GL_STREAM_DRAW>;
 
-    using UnpackPBO_Static   =   __Buffer<GL_PIXEL_UNPACK_BUFFER,GL_STATIC_DRAW>;
-    using UnpackPBO_Dynamic   =   __Buffer<GL_PIXEL_UNPACK_BUFFER,GL_DYNAMIC_DRAW>;
-    using UnpackPBO_Stream   =   __Buffer<GL_PIXEL_UNPACK_BUFFER,GL_STREAM_DRAW>;
+    //using UnpackPBO_Static   =   __Buffer<GL_PIXEL_UNPACK_BUFFER,GL_STATIC_DRAW>;
+    //using UnpackPBO_Dynamic   =   __Buffer<GL_PIXEL_UNPACK_BUFFER,GL_DYNAMIC_DRAW>;
+    //using UnpackPBO_Stream   =   __Buffer<GL_PIXEL_UNPACK_BUFFER,GL_STREAM_DRAW>;
+
+    // about SSBO:
+    // https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object
+    // for more infomation, see the part of DirectSSBO
 
     using SSBO_Static   =   __Buffer<GL_SHADER_STORAGE_BUFFER,GL_STATIC_DRAW>;
     using SSBO_Dynamic   =   __Buffer<GL_SHADER_STORAGE_BUFFER,GL_DYNAMIC_DRAW>;
@@ -235,22 +245,134 @@ namespace quick3d::gl
     using DirectEBO_Dynamic   =   __DMABuffer<GL_ELEMENT_ARRAY_BUFFER,GL_DYNAMIC_DRAW>;
     using DirectEBO_Stream   =   __DMABuffer<GL_ELEMENT_ARRAY_BUFFER,GL_STREAM_DRAW>;
 
-    using DirectTBO_Static   =   __DMABuffer<GL_TEXTURE_BUFFER,GL_STATIC_DRAW>;
-    using DirectTBO_Dynamic   =   __DMABuffer<GL_TEXTURE_BUFFER,GL_DYNAMIC_DRAW>;
-    using DirectTBO_Stream   =   __DMABuffer<GL_TEXTURE_BUFFER,GL_STREAM_DRAW>;
+    // about TBO:
+    // https://www.khronos.org/opengl/wiki/Buffer_Texture
+    // TBO is useful when transport huge amount of texture data from CPU to GPU
+    // with TBO, you can reduce calls of OpenGL ES API, which will increase your performance
+    // and more, through DMA, you can update parts of the texture in a high performance way
+    // there's a limit on texture size in legacy Texture, TBO can store more data than legacy Texture could
+    // 
+    // however TBOs are just Buffers, they can't create minimap for textures
+    // 
+    // TBO uses like VBO/EBO, you can create,fill and bind TBO like this:
+    // glBindBuffer(GL_TEXTURE_BUFFER, tbo_id);
+    // glBufferData(GL_TEXTURE_BUFFER, texture.size() * sizeof(float), texture.data(), GL_STATIC_DRAW);
+    // (or you can use glBufferSubData to fill/update parts of the TBO)
+    // 
+    // as the steps upon, you have a Texture Buffer now, but things no end yet
+    // before you use this TBO, you need to bind your Texture Buffer (a buffer) to a Buffer Texture (a texture)
+    // do like this:
+    // 
+    // glGenTextures(1,&texture_id);
+    // glbindTexture(GL_TEXTURE_BUFFER, texture);
+    // glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA32F, tbo_id);
+    // 
+    // then the TBO was binded to a buffered texture, and the texture was binded to contex
+    // next you may need to the set the filter of this buffered texture:
+    // 
+    // glTexParameteri(GL_TEXTURE_BUFFER, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    // glTexParameteri(GL_TEXTURE_BUFFER, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // glTexParameteri(GL_TEXTURE_BUFFER, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    // glTexParameteri(GL_TEXTURE_BUFFER, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // 
+    // you can now use the binding TBO in GLSL like this:
+    // 
+    // #version 320 es
+    // precision highp float;
+    // 
+    // uniform samplerBuffer tboSampler
+    // void main()
+    // {
+    //     vec4 tboData = texelFetch(tboSampler,0);
+    //     ...
+    // }
+    //
+    // the '0' in 'texelFetch(tboSampler,0);' was the index of the TBO's element
+    // which meas on 
+
+    // TODO: TBO are not simply a buffer, but a combination of texture and buffer
+    // need to create a single class for TBO
+
+    // TODO: TBO is so strange, current API is not usable for sure
+    //using DirectTBO_Static   =   __DMABuffer<GL_TEXTURE_BUFFER,GL_STATIC_DRAW>;
+    //using DirectTBO_Dynamic   =   __DMABuffer<GL_TEXTURE_BUFFER,GL_DYNAMIC_DRAW>;
+    //using DirectTBO_Stream   =   __DMABuffer<GL_TEXTURE_BUFFER,GL_STREAM_DRAW>;
+
+    // about UBO:
+    // https://www.khronos.org/opengl/wiki/Uniform_Buffer_Object
+    // UBO is global accessable (for shaders that have uniform block binding to it)
+    // use UBO instead of a large number of plain uniforms can reduce calls of OpenGL ES API
+    // which benefets alot on the performance
+    // 
+    // to bind a UBO to context's UBO binding point, use like this:
+    // glBindBufferBase(GL_UNIFORM_BUFFER, 2, uboExampleBlock); 
+    // 
+    // or:                                                 (offset)(size)
+    // glBindBufferRange(GL_UNIFORM_BUFFER, 2, uboExampleBlock, 0, 152);
+    // 
+    // you can define a uniform block in GLSL to access the UBO binded
+    //
+    // layout(row_major) uniform MatrixBlock
+    // {
+    //     mat4 projection;
+    //     mat4 modelview;
+    // } matrices[3];
+    // 
+    // not finish yet, you need also bind GLSL's uniform block to the binding point, like below:
+    // 
+    // unsigned int lights_index = glGetUniformBlockIndex(shaderA.ID, "Lights");   
+    // glUniformBlockBinding(shaderA.ID, lights_index, 2)
+    //
+    // this needs shader's id, so we put this API in shader.hpp
+    // in most case, you don't need to bind shader's uniform block use plain OpenGL ES API
 
     using DirectUBO_Static   =   __DMABuffer<GL_UNIFORM_BUFFER,GL_STATIC_DRAW>;
     using DirectUBO_Dynamic   =   __DMABuffer<GL_UNIFORM_BUFFER,GL_DYNAMIC_DRAW>;
     using DirectUBO_Stream   =   __DMABuffer<GL_UNIFORM_BUFFER,GL_STREAM_DRAW>;
 
-    using DirectPackPBO_Static   =   __DMABuffer<GL_PIXEL_PACK_BUFFER,GL_STATIC_DRAW>;
-    using DirectPackPBO_Dynamic   =   __DMABuffer<GL_PIXEL_PACK_BUFFER,GL_DYNAMIC_DRAW>;
-    using DirectPackPBO_Stream   =   __DMABuffer<GL_PIXEL_PACK_BUFFER,GL_STREAM_DRAW>;
+    //using DirectPackPBO_Static   =   __DMABuffer<GL_PIXEL_PACK_BUFFER,GL_STATIC_DRAW>;
+    //using DirectPackPBO_Dynamic   =   __DMABuffer<GL_PIXEL_PACK_BUFFER,GL_DYNAMIC_DRAW>;
+    //using DirectPackPBO_Stream   =   __DMABuffer<GL_PIXEL_PACK_BUFFER,GL_STREAM_DRAW>;
 
-    using DirectUnPackPBO_Static   =   __DMABuffer<GL_PIXEL_UNPACK_BUFFER,GL_STATIC_DRAW>;
-    using DirectUnPackPBO_Dynamic   =   __DMABuffer<GL_PIXEL_UNPACK_BUFFER,GL_DYNAMIC_DRAW>;
-    using DirectUnPackPBO_Stream   =   __DMABuffer<GL_PIXEL_UNPACK_BUFFER,GL_STREAM_DRAW>;
+    //using DirectUnPackPBO_Static   =   __DMABuffer<GL_PIXEL_UNPACK_BUFFER,GL_STATIC_DRAW>;
+    //using DirectUnPackPBO_Dynamic   =   __DMABuffer<GL_PIXEL_UNPACK_BUFFER,GL_DYNAMIC_DRAW>;
+    //using DirectUnPackPBO_Stream   =   __DMABuffer<GL_PIXEL_UNPACK_BUFFER,GL_STREAM_DRAW>;
 
+    // about SSBO:
+    // https://www.khronos.org/opengl/wiki/Shader_Storage_Buffer_Object
+    // SSBO is slower than UBO in most case
+    // however, it can contains a variable-length array in the end of it's memory structure
+    // 
+    // SSBO uses like UBO, both are global accessable (also, you need to define the interface block before you access them)
+    // SSBO has its own binding points that just like UBO's
+    // to bind a SSBO to certain binding point, do like this:
+    //
+    // glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, ssbo);
+    // 
+    // or:                                            (offset)(size)
+    // glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 2, ssbo, 0, 152);
+    // 
+    // the's one thing you need to pay attention to is that,
+    // as SSBO needs to be updated in most case, and you might need to change the size of its buffer
+    // when you glBufferData() SSBO into a bigger mem space, you actually create a new buffer
+    // in that case, you need to rebind this buffer as a SSBO, and rebind this SSBO to former SSBO binding point
+    // and, the one last thing is, you need to delete the former buffer, OpenGL ES context won't delete it automaticly
+    // 
+    // TODO: Buffer class need to do this (👆) automaticly
+    //
+    // you also need to define a buffer block in GLSL, so that you can access the binding SSBOs
+    // your GLSL code may look like this:
+    //
+    // layout(std430, binding = 2) buffer anotherLayoutName
+    // {
+    //     int some_int;
+    //     float fixed_array[42];
+    //     float variable_array[];
+    // };
+    // 
+    // as you can see, the binding point of GLSL's Buffer Block was defined while compiling shader program
+    // you can not change this after it was compiled
+    
     using DirectSSBO_Static   =   __DMABuffer<GL_SHADER_STORAGE_BUFFER,GL_STATIC_DRAW>;
     using DirectSSBO_Dynamic   =   __DMABuffer<GL_SHADER_STORAGE_BUFFER,GL_DYNAMIC_DRAW>;
     using DirectSSBO_Stream   =   __DMABuffer<GL_SHADER_STORAGE_BUFFER,GL_STREAM_DRAW>;

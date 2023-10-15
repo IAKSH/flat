@@ -12,7 +12,7 @@
 #include <quick_gl/image.hpp>
 
 // TODO: 需要大改
-// 具体见vao.hpp
+// [ ] 使用buffer.hpp和vao.hpp，以从中获得优化
 
 namespace quick3d::gl
 {

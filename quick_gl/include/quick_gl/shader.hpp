@@ -12,6 +12,8 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// [√] Shader也需要修改，以支持Uniform块到UBO的绑定
+
 namespace quick3d::gl
 {
     template <typename T,typename U>
@@ -70,6 +72,7 @@ namespace quick3d::gl
         ~Program() noexcept;
 
         GLuint get_program_id() const noexcept;
+		void bind_uniform_block(std::string_view name, GLuint point) noexcept(false);
 
         template <Uniform T>
         void set_uniform(std::string_view uniform,const T& t) noexcept(false)

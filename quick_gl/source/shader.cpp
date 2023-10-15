@@ -47,6 +47,15 @@ GLuint quick3d::gl::Program::get_program_id() const noexcept
     return program_id;
 }
 
+void quick3d::gl::Program::bind_uniform_block(std::string_view name, GLuint point) noexcept(false)
+{
+    auto uniform_block_index = glGetUniformBlockIndex(program_id, name.data());
+    if (uniform_block_index == GL_INVALID_INDEX)
+        throw std::runtime_error(std::format("can't find Uniform Block \"{}\" from shader", name));
+
+    glUniformBlockBinding(program_id, uniform_block_index, point);
+}
+
 GLint quick3d::gl::Program::get_uniform_location(std::string_view uniform) noexcept(false)
 {
     if (int location = glGetUniformLocation(program_id, uniform.data()); location == -1)
