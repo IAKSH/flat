@@ -1,4 +1,5 @@
 #include <format>
+#include <cstring>
 #include <iostream>
 #include <stdexcept>
 #include <quick_al/device.hpp>
@@ -52,7 +53,7 @@ void quick3d::al::Device::list_al_devices() noexcept
     std::cout << "Devices list:\n";
     while (device && *device != '\0' && next && *next != '\0') {
             std::cout << device << '\n';
-            len = strlen(device);
+            len = std::strlen(device);
             device += (len + 1);
             next += (len + 2);
     }

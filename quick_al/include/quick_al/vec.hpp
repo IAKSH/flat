@@ -3,7 +3,7 @@
 
 namespace quick3d::al
 {
-    template <size_t len>
+    template <std::size_t len>
 	using Vec = std::array<ALfloat,len>;
 	using Vec3 = Vec<3>;
 }
