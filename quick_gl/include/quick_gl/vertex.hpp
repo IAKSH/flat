@@ -27,8 +27,18 @@ OpenGL限制了它能够处理的uniform数量，这可以通过GL_MAX_VERTEX_UN
 所以，当你达到了uniform的最大数量时（比如再做骨骼动画(Skeletal Animation)的时候），你总是可以选择使用Uniform缓冲对象。
 */
 
+#ifdef _MSC_VER
+#pragma deprecated(VertexBuffer)
+#pragma deprecated(VBO)
+#pragma deprecated(EBO)
+#pragma deprecated(VAO)
+#endif
+
 namespace quick3d::gl
 {
+#ifndef _MSC_VER
+    [[deprecated("use buffer.hpp")]]
+#endif
     template <GLenum buffer_type>
     class VertexBuffer
     {
@@ -124,9 +134,18 @@ namespace quick3d::gl
         }
     };
 
+#ifndef _MSC_VER
+    [[deprecated("use buffer.hpp")]]
+#endif
     using VBO = VertexBuffer<GL_ARRAY_BUFFER>;
+#ifndef _MSC_VER
+    [[deprecated("use buffer.hpp")]]
+#endif
     using EBO = VertexBuffer<GL_ELEMENT_ARRAY_BUFFER>;
 
+#ifndef _MSC_VER
+    [[deprecated("use vao.hpp")]]
+#endif
     class VAO
     {
     private:
