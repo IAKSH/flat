@@ -4,9 +4,9 @@
 #include <quick_gl/shader.hpp>
 #include <quick_gl/model.hpp>
 #include <quick_gl/camera.hpp>
-#include <quick_gl/vertex.hpp>
 #include <quick_gl/cubemap.hpp>
-#include <quick_gl/texture_render.hpp>
+#include <quick_gl/buffer.hpp>
+#include <quick_gl/vao.hpp>
 #include <quick_gl/debug.hpp>
 #include <quick_al/device.hpp>
 #include <quick_al/context.hpp>
@@ -199,32 +199,17 @@ int main() noexcept
         gl::Context context("yae", SCR_WIDTH, SCR_HEIGHT);
         glfwSetInputMode(context.get_window(0).get_glfw_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-        gl::check_ogl_error();
-
         al::Device al_device(NULL);
         al::Context al_context(al_device);
 
-        gl::check_ogl_error();
-
         gl::Program skybox_program(skybox_vertex_glsl, skybox_fragment_glsl);
 
-        gl::check_ogl_error();
-
-        gl::VBO skybox_vbo(skybox_vertices);
-
-        gl::check_ogl_error();
-
-        gl::VAO skybox_vao(skybox_vbo);
-
-        gl::check_ogl_error();
-
-        skybox_vao.enable_attrib(0,3,3,0);
-
-        gl::check_ogl_error();
+        gl::DirectVBO_Static skybox_vbo(skybox_vertices.size() * sizeof(float));
+        skybox_vbo.set_buffer_mem(skybox_vertices.data(), skybox_vertices.size() * sizeof(float), 0);
+        gl::VertexArray skybox_vao;
+        skybox_vao.add_attrib(skybox_vbo, 0, 3, 3, 0);
 
         gl::CubeMap skybox_cubemap(GL_RGBA,2048,2048);
-
-        gl::check_ogl_error();
 
         std::array<std::string,6> skybox_texture_pathes
         {
@@ -236,21 +221,13 @@ int main() noexcept
             std::format("{}/{}", IMAGE_FOLDER, "back.jpg"),
         };
 
-        gl::check_ogl_error();
-
         //gl::TextureRenderer ren(2048, 2048);
         for(int i = 0;i < 6;i++)
-            // TODO: TextureRenderer�쳣��Debugger����������һ��shader��û��
-            //ren.draw_to_cubemap(skybox_cubemap, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, gl::Image(skybox_texture_pathes[i], false));
             skybox_cubemap.generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,gl::Image(skybox_texture_pathes[i],false));
-
-        gl::check_ogl_error();
             
         gl::Program model_program(model_vertex_glsl, model_fragment_glsl);
         gl::Model model(MODEL_PATH);
         gl::FPSCamera camera(SCR_WIDTH, SCR_HEIGHT);
-
-        gl::check_ogl_error();
 
         context.get_window(0).set_mouse_callback([&](GLFWwindow *win, double x, double y)
                                                  { camera.process_mouse_input(win, x, y); });
@@ -291,8 +268,6 @@ int main() noexcept
         auto win{context.get_window(0).get_glfw_window()};
         while (!glfwWindowShouldClose(win))
         {
-            gl::check_ogl_error();
-
             current_frame = glfwGetTime();
             delta_time = current_frame - last_frame;
             last_frame = current_frame;
@@ -305,17 +280,12 @@ int main() noexcept
 
             camera.on_tick(static_cast<float>(delta_time));
 
-            gl::check_ogl_error();
-
             // draw skybox
             skybox_program.set_uniform("projection",camera.get_projection_matrix());
-            //skybox_program.set_uniform("view", camera.get_view_matrix());
             skybox_program.set_uniform("view",glm::lookAt(glm::vec3(0.0f,0.0f,0.0f),glm::vec3(0.0f,0.0f,0.0f) + camera.get_front_vec(), camera.get_up_vec()));
             glBindTexture(GL_TEXTURE_CUBE_MAP,skybox_cubemap.get_cubemap_id());
             skybox_vao.draw(skybox_program,GL_TRIANGLES,0,36);
             glBindTexture(GL_TEXTURE_CUBE_MAP,0);
-
-            gl::check_ogl_error();
 
             // draw model
             glEnable(GL_DEPTH_TEST);
@@ -327,12 +297,8 @@ int main() noexcept
             model_program.set_uniform("projection", camera.get_projection_matrix());
             model.draw_model(model_program);
 
-            gl::check_ogl_error();
-
             glfwSwapBuffers(win);
             glfwPollEvents();
-
-            gl::check_ogl_error();
 
             glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);

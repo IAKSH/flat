@@ -9,7 +9,7 @@
 #include <quick_gl/vao.hpp>
 #include <quick_gl/debug.hpp>
 
-static constexpr std::string_view GLSL_FOLDER = "../../../../tests/light/glsl";
+static constexpr std::string_view GLSL_FOLDER = "../../../../tests/dma_buffer_test/glsl";
 
 static constexpr int SCR_WIDTH = 800;
 static constexpr int SCR_HEIGHT = 600;
@@ -104,7 +104,7 @@ constexpr std::array<float, 108> cube_vertices{
 
 void run() noexcept(false)
 {
-	quick3d::gl::Context context("light test", SCR_WIDTH, SCR_HEIGHT);
+	quick3d::gl::Context context("dma buffer test", SCR_WIDTH, SCR_HEIGHT);
 	glfwSetInputMode(context.get_window(0).get_glfw_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	quick3d::gl::FPSCamera camera(SCR_WIDTH, SCR_HEIGHT);
@@ -158,6 +158,15 @@ void run() noexcept(false)
 	//glFrontFace(GL_CW);
 	//glCullFace(GL_FRONT);
 	glEnable(GL_DEPTH_TEST);
+	
+
+	light_program.set_uniform("model", glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
+	cube_program.set_uniform("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
+	cube_program.set_uniform("material.diffuse", glm::vec3(0.7f, 0.2f, 0.3f));
+	cube_program.set_uniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+	cube_program.set_uniform("material.shininess", 32.0f);
+	cube_program.set_uniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+	cube_program.set_uniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	auto win{ context.get_window(0).get_glfw_window() };
 	while (!glfwWindowShouldClose(win))
@@ -171,25 +180,18 @@ void run() noexcept(false)
 		// draw
 		light_program.set_uniform("view", camera.get_view_matrix());
 		light_program.set_uniform("projection", camera.get_projection_matrix());
-		light_program.set_uniform("model", glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
 		light_program.set_uniform("lightColor", glm::vec3(sin(glfwGetTime()) / 2.0f, cos(glfwGetTime()) / 2.0f, 0.5f));
 		light_vao.draw(light_program, GL_TRIANGLES, 0, 36);
 
 		cube_program.set_uniform("view", camera.get_view_matrix());
 		cube_program.set_uniform("projection", camera.get_projection_matrix());
-		cube_program.set_uniform("model",
-			glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, -1.0f, 0.0f)) *
-			glm::rotate(glm::mat4(1.0f), static_cast<float>(glfwGetTime()), glm::vec3(sin(glfwGetTime()) * 10.0f, cos(glfwGetTime()) * 10.0f, 0.0f))
-		);
+		glm::mat4 cube_model {glm::translate(glm::mat4(1.0f), glm::vec3(-10.0f, -1.0f, 0.0f))*
+			glm::rotate(glm::mat4(1.0f), static_cast<float>(glfwGetTime()), glm::vec3(sin(glfwGetTime()) * 10.0f, cos(glfwGetTime()) * 10.0f, 0.0f))};
+		cube_program.set_uniform("model",cube_model);
+		cube_program.set_uniform("transposedInversedModel", glm::mat3(glm::transpose(glm::inverse(cube_model))));
 		cube_program.set_uniform("viewPos", camera.get_position());
-		cube_program.set_uniform("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
-		cube_program.set_uniform("material.diffuse", glm::vec3(0.7f, 0.2f, 0.3f));
-		cube_program.set_uniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-		cube_program.set_uniform("material.shininess", 32.0f);
-		cube_program.set_uniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 		cube_program.set_uniform("light.diffuse", glm::vec3(abs(sin(glfwGetTime()) / 2.0f), abs(cos(glfwGetTime()) / 2.0f), 0.5f));
-		cube_program.set_uniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		cube_vao.draw(cube_program, GL_TRIANGLES, 0, 36);
+		cube_vao.draw(cube_program, GL_TRIANGLES, 0, 36,20);
 
 		glfwSwapBuffers(win);
 		glfwPollEvents();

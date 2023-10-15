@@ -5,7 +5,8 @@
 #include <quick_gl/context.hpp>
 #include <quick_gl/camera.hpp>
 #include <quick_gl/shader.hpp>
-#include <quick_gl/vertex.hpp>
+#include <quick_gl/buffer.hpp>
+#include <quick_gl/vao.hpp>
 
 static constexpr std::string_view GLSL_FOLDER = "../../../../tests/light/glsl";
 
@@ -117,14 +118,16 @@ void run() noexcept(false)
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_fs.glsl"))
 	);
 
-	quick3d::gl::VBO cube_vbo(cube_vertices_with_normal);
-	quick3d::gl::VAO cube_vao(cube_vbo);
-	cube_vao.enable_attrib(0, 3, 6, 0);
-	cube_vao.enable_attrib(1, 3, 6, 3);
+	quick3d::gl::DirectVBO_Static cube_vbo(cube_vertices_with_normal.size() * sizeof(float));
+	cube_vbo.set_buffer_mem(cube_vertices_with_normal.data(), cube_vertices_with_normal.size() * sizeof(float), 0);
+	quick3d::gl::VertexArray cube_vao;
+	cube_vao.add_attrib(cube_vbo, 0, 3, 6, 0);
+	cube_vao.add_attrib(cube_vbo, 1, 3, 6, 3);
 
-	quick3d::gl::VBO light_vbo(cube_vertices);
-	quick3d::gl::VAO light_vao(light_vbo);
-	light_vao.enable_attrib(0, 3, 3, 0);
+	quick3d::gl::DirectVBO_Static light_vbo(cube_vertices.size() * sizeof(float));
+	light_vbo.set_buffer_mem(cube_vertices.data(), cube_vertices.size() * sizeof(float), 0);
+	quick3d::gl::VertexArray light_vao;
+	light_vao.add_attrib(light_vbo, 0, 3, 3, 0);
 
 	context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
 	context.get_window(0).set_keybord_callback([&](GLFWwindow* win, int key, int scancode, int action, int mods)

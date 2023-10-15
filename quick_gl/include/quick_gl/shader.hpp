@@ -31,7 +31,7 @@ namespace quick3d::gl
 	}
 
     template <typename T>
-    concept Uniform = any_same<T,int,float,glm::vec2,glm::vec3,glm::vec4,glm::mat4>();
+    concept Uniform = any_same<T,int,float,glm::vec2,glm::vec3,glm::vec4,glm::mat3,glm::mat4>();
 
 	class GLSLReader
 	{
@@ -87,6 +87,8 @@ namespace quick3d::gl
 				glUniform3fv(location, 1, glm::value_ptr(t));
 			else if constexpr (is_same<T, glm::vec4>())
 				glUniform4fv(location, 1, glm::value_ptr(t));
+			else if constexpr (is_same<T, glm::mat3>())
+				glUniformMatrix3fv(location, 1, false, glm::value_ptr(t));
 			else if constexpr (is_same<T, glm::mat4>())
 				glUniformMatrix4fv(location, 1, false, glm::value_ptr(t));
 			else
@@ -118,6 +120,8 @@ namespace quick3d::gl
 				aimed_type = GL_FLOAT_VEC3;
 			else if constexpr (is_same<T, glm::vec4>())
 				aimed_type = GL_FLOAT_VEC4;
+			else if constexpr (is_same<T, glm::mat3>())
+				aimed_type = GL_FLOAT_MAT3;
 			else if constexpr (is_same<T, glm::mat4>())
 				aimed_type = GL_FLOAT_MAT4;
 			else

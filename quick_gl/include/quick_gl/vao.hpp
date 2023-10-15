@@ -4,6 +4,12 @@
 #include <stdexcept>
 #include <glad/glad.h>
 
+// [√] 实现VAO的多VBO挂载，VAO不在构造时绑定VBO，VAO不管理VBO的内存
+// [√] 实现Buffer的预分配和分块写入，同时保留整块写入API
+// [√] 实现Uniform Buffer Object (UBO)
+// [O] Shader也需要修改，以支持Uniform块到UBO的绑定
+// [O] 实现SSBO，同样也需要改Shader
+
 namespace quick3d::gl
 {
 	class VertexArray
@@ -53,16 +59,16 @@ namespace quick3d::gl
 			add_attrib(t.get_buffer_target(), t.get_buffer_id(), index, len, vertex_len, offset, normalized);
 		}
 
-		void draw(GLuint program_id, GLenum primitive, GLint first, GLsizei vertex_count) noexcept;
+		void draw(GLuint program_id, GLenum primitive, GLint first, GLsizei vertex_count, GLsizei instance = 0) noexcept;
 
 		template <typename T>
 			requires requires(T t)
 		{
 			{t.get_program_id()} -> std::same_as<GLuint>;
 		}
-		void draw(const T& t, GLenum primitive, GLint first, GLsizei vertex_count) noexcept
+		void draw(const T& t, GLenum primitive, GLint first, GLsizei vertex_count, GLsizei instance = 0) noexcept
 		{
-			draw(t.get_program_id(), primitive, first, vertex_count);
+			draw(t.get_program_id(), primitive, first, vertex_count, instance);
 		}
 	};
 }

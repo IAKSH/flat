@@ -5,7 +5,8 @@
 #include <quick_gl/shader.hpp>
 #include <quick_gl/model.hpp>
 #include <quick_gl/cubemap.hpp>
-#include <quick_gl/vertex.hpp>
+#include <quick_gl/buffer.hpp>
+#include <quick_gl/vao.hpp>
 
 static constexpr std::string_view GLSL_FOLDER = "../../../../tests/outer_glsl/glsl";
 static constexpr std::string_view MODEL_FOLDER = "../../../../tests/outer_glsl/model";
@@ -89,9 +90,10 @@ void run() noexcept(false)
     for (int i = 0; i < skybox_texture_pathes.size(); i++)
         skybox_cubemap.generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, quick3d::gl::Image(skybox_texture_pathes[i], false));
 
-    quick3d::gl::VBO skybox_vbo(skybox_vertices);
-    quick3d::gl::VAO skybox_vao(skybox_vbo);
-    skybox_vao.enable_attrib(0, 3, 3, 0);
+    quick3d::gl::DirectVBO_Static skybox_vbo(skybox_vertices.size() * sizeof(float));
+    skybox_vbo.set_buffer_mem(skybox_vertices.data(), skybox_vertices.size() * sizeof(float), 0);
+    quick3d::gl::VertexArray skybox_vao;
+    skybox_vao.add_attrib(skybox_vbo, 0, 3, 3, 0);
 
     quick3d::gl::Program model_program(
         quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_vs.glsl")).get_glsl(),

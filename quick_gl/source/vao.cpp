@@ -53,7 +53,7 @@ void quick3d::gl::VertexArray::add_attrib(GLenum buffer_target, uint32_t buffer_
 	glBindVertexArray(0);
 }
 
-void quick3d::gl::VertexArray::draw(GLuint program_id, GLenum primitive, GLint first, GLsizei vertex_count) noexcept
+void quick3d::gl::VertexArray::draw(GLuint program_id, GLenum primitive, GLint first, GLsizei vertex_count, GLsizei instance) noexcept
 {
 	glUseProgram(program_id);
 	glBindVertexArray(vao_id);
@@ -62,9 +62,15 @@ void quick3d::gl::VertexArray::draw(GLuint program_id, GLenum primitive, GLint f
 	// because vao had recorded them before
 
 	if (has_ebo)
-		glDrawElements(primitive, vertex_count, GL_UNSIGNED_INT, 0);
+		if (instance)
+			glDrawElementsInstanced(primitive, vertex_count, GL_UNSIGNED_INT, 0, instance);
+		else
+			glDrawElements(primitive, vertex_count, GL_UNSIGNED_INT, 0);
 	else
-		glDrawArrays(primitive, first, vertex_count);
+		if (instance)
+			glDrawArraysInstanced(primitive, first, vertex_count, instance);
+		else
+			glDrawArrays(primitive, first, vertex_count);
 
 	glBindVertexArray(0);
 	glUseProgram(0);

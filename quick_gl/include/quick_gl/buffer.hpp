@@ -17,7 +17,7 @@ namespace quick3d::gl
     // [ ] UBO,SSBO,TBO
     // [√] 从OpenGL 3.3迁移到~~OpenGL4.3~~ OpenGL ES 3.2
     // [ ] 考虑：PBO,ACB
-    // [ ] FBO（和RBO）从frame.hpp移动到这里
+    // [X] FBO（和RBO）从frame.hpp移动到这里 <驳回：不是同一种Buffer> 
     // [√] 预分配
     // [√] 一次性写入和分段写入（内存映射）
 
@@ -31,9 +31,9 @@ namespace quick3d::gl
             glGenBuffers(1,&buffer_id);
         }
 
-        template <GLenum buffer_target, GLenum buffer_usage>
-        void pre_allocate_mem(uint32_t size) noexcept
+        void pre_allocate_mem(GLenum buffer_target, GLenum buffer_usage, GLsizeiptr size) noexcept
         {
+            
             glBindBuffer(buffer_target, buffer_id);
             glBufferData(buffer_target,size,nullptr,buffer_usage);
             glBindBuffer(buffer_target,0);
@@ -52,23 +52,17 @@ namespace quick3d::gl
 
         virtual constexpr GLenum get_buffer_target() noexcept = 0;
         virtual constexpr GLenum get_buffer_usage() noexcept = 0;
-        virtual GLsizei get_buffer_size() noexcept = 0;
-    };
-
-    struct NoneDMABuffer : public Buffer
-    {
-        virtual void set_buffer_data(GLvoid* data,GLsizei size) noexcept = 0;
-        virtual void set_buffer_sub_data(GLvoid* data,GLsizei size,GLsizei offset) noexcept = 0;   
+        virtual GLint get_buffer_size() noexcept = 0;
     };
 
     template <GLenum buffer_target,GLenum buffer_usage>
-    class __Buffer : public NoneDMABuffer
+    class __Buffer : public Buffer
     {
     public:
-        __Buffer(uint32_t size) noexcept
+        __Buffer(GLsizeiptr size) noexcept
         {
             create_ogl_buffer();
-            pre_allocate_mem<buffer_target, buffer_usage>(size);
+            pre_allocate_mem(buffer_target, buffer_usage, size);
         }
 
         __Buffer(__Buffer&) = delete;
@@ -87,10 +81,10 @@ namespace quick3d::gl
         {
             return buffer_usage;
         }
-
-        GLsizei get_buffer_size() noexcept
+        
+        GLint get_buffer_size() noexcept
         {
-            GLsizei size;
+            GLint size;
             glBindBuffer(buffer_target, buffer_id);
             glGetBufferParameteriv(buffer_target, GL_BUFFER_SIZE, &size);
             glBindBuffer(buffer_target, 0);
@@ -98,35 +92,17 @@ namespace quick3d::gl
         }
 
         template <typename T>
-        requires requires(T t)
-        {
-            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
-        }
-        void set_buffer_data(T data, GLsizei size) noexcept
-        {
-            set_buffer_sub_data(data, size, 0);
-        }
-
-        void set_buffer_data(GLvoid* data, GLsizei size) noexcept
+        void set_buffer_data(T* data, GLsizeiptr size) noexcept
         {
             set_buffer_sub_data(data, size, 0);
         }
 
         template <typename T>
-        requires requires(T t)
-        {
-            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
-        }
-        void set_buffer_sub_data(T data, GLsizei size, GLsizei offset) noexcept
+        void set_buffer_sub_data(T* data, GLsizeiptr size, GLsizeiptr offset) noexcept
         {
             glBindBuffer(buffer_target, buffer_id);
             glBufferSubData(buffer_target, offset, size, data);
             glBindBuffer(buffer_target, 0);
-        }
-
-        void set_buffer_sub_data(GLvoid* data, GLsizei size, GLsizei offset) noexcept
-        {
-            set_buffer_sub_data(data, size, offset);
         }
     };
 
@@ -158,27 +134,20 @@ namespace quick3d::gl
     using SSBO_Dynamic   =   __Buffer<GL_SHADER_STORAGE_BUFFER,GL_DYNAMIC_DRAW>;
     using SSBO_Stream   =   __Buffer<GL_SHADER_STORAGE_BUFFER,GL_STREAM_DRAW>;
 
-    struct DMABuffer : public Buffer
-    {
-        virtual void buffer_mapping_do(std::function<void(GLvoid* mapping_ptr)> callback) noexcept = 0;
-        virtual std::unique_ptr<unsigned char[]> copy_buffer_mem(GLsizei size,GLsizei offset) noexcept = 0;
-        virtual void set_buffer_mem(GLvoid* data,GLsizei size,GLsizei offset) noexcept = 0;
-    };
-
     template <GLenum buffer_target,GLenum buffer_usage>
-    class __DMABuffer : public DMABuffer
+    class __DMABuffer : public Buffer
     {
     public:
-        __DMABuffer(uint32_t size) noexcept
+        __DMABuffer(GLsizeiptr size) noexcept
         {
             create_ogl_buffer();
-            pre_allocate_mem<buffer_target, buffer_usage>(size);
+            pre_allocate_mem(buffer_target, buffer_usage, size);
         }
         
         template <typename T>
         requires requires(T t)
         {
-            {t.get_buffer_size()} -> std::same_as<GLsizei>;
+            {t.get_buffer_size()} -> std::same_as<GLint>;
             {t.buffer_mapping_do(std::declval<std::function<void(GLvoid*)>>())} -> std::same_as<void>;
         }
         __DMABuffer(T& t) noexcept
@@ -209,9 +178,9 @@ namespace quick3d::gl
             return buffer_usage;
         }
 
-        GLsizei get_buffer_size() noexcept
+        GLint get_buffer_size() noexcept
         {
-            GLsizei size;
+            GLint size;
             glBindBuffer(buffer_target, buffer_id);
             glGetBufferParameteriv(buffer_target, GL_BUFFER_SIZE, &size);
             glBindBuffer(buffer_target, 0);
@@ -219,11 +188,7 @@ namespace quick3d::gl
         }
 
         template <typename T>
-        requires requires(T t)
-        {
-            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
-        }
-        void buffer_mapping_do(std::function<void(T mapping_ptr)> callback) noexcept
+        void buffer_mapping_do(std::function<void(T* mapping_ptr)> callback) noexcept
         {
             glBindBuffer(buffer_target,buffer_id);
 
@@ -234,12 +199,7 @@ namespace quick3d::gl
             glBindBuffer(buffer_target,0);
         }
 
-        void buffer_mapping_do(std::function<void(GLvoid* mapping_ptr)> callback) noexcept
-        {
-            buffer_mapping_do(callback);
-        }
-
-        std::unique_ptr<unsigned char[]> copy_buffer_mem(GLsizei size,GLsizei offset) noexcept
+        std::unique_ptr<unsigned char[]> copy_buffer_mem(GLsizeiptr size, GLsizeiptr offset) noexcept
         {
             // no any check, for better performance
 
@@ -255,11 +215,7 @@ namespace quick3d::gl
         }
 
         template <typename T>
-        requires requires(T t)
-        {
-            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
-        }
-        void set_buffer_mem(T data,GLsizei size,GLsizei offset) noexcept
+        void set_buffer_mem(T* data, GLsizeiptr size, GLsizeiptr offset) noexcept
         {
             glBindBuffer(buffer_target,buffer_id);
 
@@ -268,11 +224,6 @@ namespace quick3d::gl
 
             glUnmapBuffer(buffer_target);
             glBindBuffer(buffer_target,0);
-        }
-
-        void set_buffer_mem(GLvoid* data, GLsizei size, GLsizei offset) noexcept
-        {
-            set_buffer_mem(data, size, offset);
         }
     };
 

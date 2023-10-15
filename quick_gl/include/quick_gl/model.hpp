@@ -6,7 +6,7 @@
 #include <quick_gl/mesh.hpp>
 
 // TODO: 需要大改
-// 具体见vertex.hpp
+// 具体见vao.hpp
 
 namespace quick3d::gl
 {

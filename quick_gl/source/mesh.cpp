@@ -13,20 +13,6 @@ quick3d::gl::Mesh::~Mesh() noexcept
     delete_vao();
 }
 
-void quick3d::gl::Mesh::bind_instance_array(GLuint instance_vbo_id, GLuint index, GLuint len,
-    GLuint vertex_size, GLuint offset_size, GLuint divisor) const noexcept
-{
-    glBindVertexArray(vao_id);
-    glBindBuffer(GL_ARRAY_BUFFER,instance_vbo_id);
-
-    glVertexAttribPointer(index, len, GL_FLOAT, GL_FALSE, vertex_size, (void*)offset_size);
-	glEnableVertexAttribArray(index);
-    glVertexAttribDivisor(index,divisor);
-
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-    glBindVertexArray(0);
-}
-
 void quick3d::gl::Mesh::setup_vao() noexcept
 {
     glGenVertexArrays(1,&vao_id);
