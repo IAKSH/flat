@@ -1,4 +1,5 @@
 #version 320 es
+precision mediump float;
 
 struct Material
 {

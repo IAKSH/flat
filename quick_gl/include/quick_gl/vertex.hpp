@@ -36,9 +36,6 @@ OpenGL限制了它能够处理的uniform数量，这可以通过GL_MAX_VERTEX_UN
 
 namespace quick3d::gl
 {
-#ifndef _MSC_VER
-    [[deprecated("use buffer.hpp")]]
-#endif
     template <GLenum buffer_type>
     class VertexBuffer
     {
@@ -134,18 +131,9 @@ namespace quick3d::gl
         }
     };
 
-#ifndef _MSC_VER
-    [[deprecated("use buffer.hpp")]]
-#endif
     using VBO = VertexBuffer<GL_ARRAY_BUFFER>;
-#ifndef _MSC_VER
-    [[deprecated("use buffer.hpp")]]
-#endif
     using EBO = VertexBuffer<GL_ELEMENT_ARRAY_BUFFER>;
 
-#ifndef _MSC_VER
-    [[deprecated("use vao.hpp")]]
-#endif
     class VAO
     {
     private:
@@ -179,21 +167,14 @@ namespace quick3d::gl
         void draw(const T& t,GLenum primitive,GLint first,GLsizei vertex_count) noexcept
         {
             glUseProgram(t.get_program_id());
-
             glBindVertexArray(vao_id);
-            glBindBuffer(GL_ARRAY_BUFFER,vbo->get_buffer_id());
 
             if (!ebo)
                 glDrawArrays(primitive, first, vertex_count);
             else
-            {
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
                 glDrawElements(primitive, vertex_count, GL_UNSIGNED_INT, 0);
-            }
 
             glBindVertexArray(0);
-            glBindBuffer(GL_ARRAY_BUFFER,0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
             glUseProgram(0);
         }
     };

@@ -26,6 +26,8 @@ using namespace quick3d;
 constexpr std::string_view model_vertex_strange_glsl{
     R"(
 #version 320 es
+precision mediump float;
+
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
@@ -69,6 +71,8 @@ void main()
 constexpr std::string_view model_vertex_glsl{
     R"(
 #version 320 es
+precision mediump float;
+
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
@@ -89,6 +93,8 @@ void main()
 constexpr std::string_view model_fragment_glsl{
     R"(
 #version 320 es
+precision mediump float;
+
 out vec4 FragColor;
 
 in vec2 TexCoords;
@@ -104,6 +110,8 @@ void main()
 constexpr std::string_view skybox_vertex_glsl{
     R"(
             #version 320 es
+            precision mediump float;
+
             layout (location = 0) in vec3 aPos;
 
             out vec3 texCoord;
@@ -121,6 +129,8 @@ constexpr std::string_view skybox_vertex_glsl{
 constexpr std::string_view skybox_fragment_glsl{
     R"(
             #version 320 es
+            precision mediump float;
+
             out vec4 fragColor;
 
             in vec3 texCoord;

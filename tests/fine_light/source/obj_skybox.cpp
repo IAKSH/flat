@@ -60,6 +60,7 @@ static constexpr std::array<float,108> skybox_vertices
 constexpr std::string_view skybox_vs_glsl{
 R"(
 #version 320 es
+precision mediump float;
 layout (location = 0) in vec3 aPos;
 out vec3 texCoord;
 uniform mat4 projection;
@@ -74,6 +75,7 @@ void main()
 constexpr std::string_view skybox_fs_glsl{
 R"(
 #version 320 es
+precision mediump float;
 out vec4 fragColor;
 in vec3 texCoord;
 uniform samplerCube skybox_cubemap;

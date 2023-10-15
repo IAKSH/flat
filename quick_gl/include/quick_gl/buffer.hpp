@@ -3,21 +3,23 @@
 #include <format>
 #include <memory>
 #include <cstdint>
+#include <cstring>
 #include <concepts>
 #include <stdexcept>
-#include <algorithm>
 #include <functional>
 #include <glad/glad.h>
 
+#include <iostream>
+
 namespace quick3d::gl
 {
-    // VBO,EBO
-    // UBO,SSBO,TBO
-    // 从OpenGL 3.3迁移到OpenGL4.3
-    // 考虑：PBO,ACB
-    // FBO（和RBO）从frame.hpp移动到这里
-    // 预分配
-    // 一次性写入和分段写入（内存映射）
+    // [√] VBO,EBO
+    // [ ] UBO,SSBO,TBO
+    // [√] 从OpenGL 3.3迁移到~~OpenGL4.3~~ OpenGL ES 3.2
+    // [ ] 考虑：PBO,ACB
+    // [ ] FBO（和RBO）从frame.hpp移动到这里
+    // [√] 预分配
+    // [√] 一次性写入和分段写入（内存映射）
 
     struct Buffer
     {
@@ -29,9 +31,10 @@ namespace quick3d::gl
             glGenBuffers(1,&buffer_id);
         }
 
-        void pre_allocate_mem(GLenum buffer_target,GLenum buffer_usage, uint32_t size) noexcept
+        template <GLenum buffer_target, GLenum buffer_usage>
+        void pre_allocate_mem(uint32_t size) noexcept
         {
-            glBindBuffer(buffer_target,buffer_id);
+            glBindBuffer(buffer_target, buffer_id);
             glBufferData(buffer_target,size,nullptr,buffer_usage);
             glBindBuffer(buffer_target,0);
         }
@@ -42,7 +45,11 @@ namespace quick3d::gl
         }
         
     public:
-        virtual GLuint get_buffer_id() noexcept = 0;
+        GLuint get_buffer_id() noexcept
+        {
+            return buffer_id;
+        }
+
         virtual constexpr GLenum get_buffer_target() noexcept = 0;
         virtual constexpr GLenum get_buffer_usage() noexcept = 0;
         virtual GLsizei get_buffer_size() noexcept = 0;
@@ -50,35 +57,82 @@ namespace quick3d::gl
 
     struct NoneDMABuffer : public Buffer
     {
-        /*
-        virtual void buffer_mapping_do(std::function<void(GLvoid* mapping_ptr)> callback) noexcept = 0;
-        virtual std::unique_ptr<unsigned char[]> copy_buffer_mem(GLsizei size,GLsizei offset) noexcept = 0;
-        virtual void set_buffer_mem(GLvoid* data,GLsizei size,GLsizei offset) noexcept = 0;
-        */
-    
         virtual void set_buffer_data(GLvoid* data,GLsizei size) noexcept = 0;
         virtual void set_buffer_sub_data(GLvoid* data,GLsizei size,GLsizei offset) noexcept = 0;   
-        virtual std::unique_ptr<unsigned char[]> copy_buffer_data() noexcept = 0;
-        virtual std::unique_ptr<unsigned char[]> copy_buffer_sub_data() noexcept = 0;
     };
 
     template <GLenum buffer_target,GLenum buffer_usage>
     class __Buffer : public NoneDMABuffer
     {
-    private:
-        
-
     public:
-        __Buffer(uint32_t size)
+        __Buffer(uint32_t size) noexcept
         {
             create_ogl_buffer();
-            pre_allocate_mem(buffer_target,buffer_usage,size);
+            pre_allocate_mem<buffer_target, buffer_usage>(size);
+        }
+
+        __Buffer(__Buffer&) = delete;
+
+        ~__Buffer() noexcept
+        {
+            delete_buffer();
+        }
+
+        constexpr GLenum get_buffer_target() noexcept
+        {
+            return buffer_target;
+        }
+
+        constexpr GLenum get_buffer_usage() noexcept
+        {
+            return buffer_usage;
+        }
+
+        GLsizei get_buffer_size() noexcept
+        {
+            GLsizei size;
+            glBindBuffer(buffer_target, buffer_id);
+            glGetBufferParameteriv(buffer_target, GL_BUFFER_SIZE, &size);
+            glBindBuffer(buffer_target, 0);
+            return size;
+        }
+
+        template <typename T>
+        requires requires(T t)
+        {
+            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
+        }
+        void set_buffer_data(T data, GLsizei size) noexcept
+        {
+            set_buffer_sub_data(data, size, 0);
+        }
+
+        void set_buffer_data(GLvoid* data, GLsizei size) noexcept
+        {
+            set_buffer_sub_data(data, size, 0);
+        }
+
+        template <typename T>
+        requires requires(T t)
+        {
+            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
+        }
+        void set_buffer_sub_data(T data, GLsizei size, GLsizei offset) noexcept
+        {
+            glBindBuffer(buffer_target, buffer_id);
+            glBufferSubData(buffer_target, offset, size, data);
+            glBindBuffer(buffer_target, 0);
+        }
+
+        void set_buffer_sub_data(GLvoid* data, GLsizei size, GLsizei offset) noexcept
+        {
+            set_buffer_sub_data(data, size, offset);
         }
     };
 
-    using VBO_Static   =   __Buffer<GL_VERTEX_ARRAY,GL_STATIC_DRAW>;
-    using VBO_Dynamic   =   __Buffer<GL_VERTEX_ARRAY,GL_DYNAMIC_DRAW>;
-    using VBO_Stream   =   __Buffer<GL_VERTEX_ARRAY,GL_STREAM_DRAW>;
+    using VBO_Static   =   __Buffer<GL_ARRAY_BUFFER,GL_STATIC_DRAW>;
+    using VBO_Dynamic   =   __Buffer<GL_ARRAY_BUFFER,GL_DYNAMIC_DRAW>;
+    using VBO_Stream   =   __Buffer<GL_ARRAY_BUFFER,GL_STREAM_DRAW>;
 
     using EBO_Static   =   __Buffer<GL_ELEMENT_ARRAY_BUFFER,GL_STATIC_DRAW>;
     using EBO_Dynamic   =   __Buffer<GL_ELEMENT_ARRAY_BUFFER,GL_DYNAMIC_DRAW>;
@@ -118,7 +172,7 @@ namespace quick3d::gl
         __DMABuffer(uint32_t size) noexcept
         {
             create_ogl_buffer();
-            pre_allocate_mem(buffer_target,buffer_usage,size);
+            pre_allocate_mem<buffer_target, buffer_usage>(size);
         }
         
         template <typename T>
@@ -135,7 +189,7 @@ namespace quick3d::gl
             {
                 t.buffer_mapping_do([&](GLvoid* src_mapping_ptr)
                     {
-                        std::copy(src_mapping_ptr, src_mapping_ptr + get_buffer_size(), dest_mapping_ptr);
+                        std::memcpy(dest_mapping_ptr, src_mapping_ptr, get_buffer_size());
                     });
             });
         }
@@ -143,11 +197,6 @@ namespace quick3d::gl
         ~__DMABuffer() noexcept
         {
             delete_buffer();
-        }
-
-        GLuint get_buffer_id() noexcept
-        {
-            return buffer_id;
         }
 
         constexpr GLenum get_buffer_target() noexcept
@@ -169,15 +218,25 @@ namespace quick3d::gl
             return size;
         }
 
-        void buffer_mapping_do(std::function<void(GLvoid* mapping_ptr)> callback) noexcept
+        template <typename T>
+        requires requires(T t)
+        {
+            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
+        }
+        void buffer_mapping_do(std::function<void(T mapping_ptr)> callback) noexcept
         {
             glBindBuffer(buffer_target,buffer_id);
 
-            GLvoid* mapping_ptr {glMapBuffer(buffer_target,GL_READ_WRITE)};
+            GLvoid* mapping_ptr{ glMapBufferRange(buffer_target,0,get_buffer_size(), GL_MAP_READ_BIT) };
             callback(mapping_ptr);
 
             glUnmapBuffer(buffer_target);
             glBindBuffer(buffer_target,0);
+        }
+
+        void buffer_mapping_do(std::function<void(GLvoid* mapping_ptr)> callback) noexcept
+        {
+            buffer_mapping_do(callback);
         }
 
         std::unique_ptr<unsigned char[]> copy_buffer_mem(GLsizei size,GLsizei offset) noexcept
@@ -186,30 +245,40 @@ namespace quick3d::gl
 
             glBindBuffer(buffer_target,buffer_id);
 
-            GLvoid* mapping_ptr {glMapBuffer(buffer_target,GL_READ_ONLY)};
+            GLvoid* mapping_ptr{ glMapBufferRange(buffer_target,0,get_buffer_size(),GL_MAP_READ_BIT) };
             auto copied_ptr = std::make_unique<unsigned char[]>(size);
-            std::copy(mapping_ptr + offset,mapping_ptr + offset + size,copied_ptr.get());
+            std::memcpy(copied_ptr.get(), reinterpret_cast<int*>(mapping_ptr) + offset, size);
 
             glUnmapBuffer(buffer_target);
             glBindBuffer(buffer_target,0);
             return copied_ptr;
         }
 
-        void set_buffer_mem(GLvoid* data,GLsizei size,GLsizei offset) noexcept
+        template <typename T>
+        requires requires(T t)
+        {
+            std::convertible_to<std::remove_cvref<T>, GLvoid*>;
+        }
+        void set_buffer_mem(T data,GLsizei size,GLsizei offset) noexcept
         {
             glBindBuffer(buffer_target,buffer_id);
 
-            GLvoid* mapping_ptr {glMapBuffer(buffer_target,GL_WRITE_ONLY)};
-            std::copy(data,data + size,mapping_ptr + offset);
+            GLvoid* mapping_ptr{ glMapBufferRange(buffer_target, 0, size, GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT) };
+            std::memcpy(reinterpret_cast<int*>(mapping_ptr) + offset, data, size);
 
             glUnmapBuffer(buffer_target);
             glBindBuffer(buffer_target,0);
         }
+
+        void set_buffer_mem(GLvoid* data, GLsizei size, GLsizei offset) noexcept
+        {
+            set_buffer_mem(data, size, offset);
+        }
     };
 
-    using DirectVBO_Static   =   __DMABuffer<GL_VERTEX_ARRAY,GL_STATIC_DRAW>;
-    using DirectVBO_Dynamic   =   __DMABuffer<GL_VERTEX_ARRAY,GL_DYNAMIC_DRAW>;
-    using DirectVBO_Stream   =   __DMABuffer<GL_VERTEX_ARRAY,GL_STREAM_DRAW>;
+    using DirectVBO_Static   =   __DMABuffer<GL_ARRAY_BUFFER,GL_STATIC_DRAW>;
+    using DirectVBO_Dynamic   =   __DMABuffer<GL_ARRAY_BUFFER,GL_DYNAMIC_DRAW>;
+    using DirectVBO_Stream   =   __DMABuffer<GL_ARRAY_BUFFER,GL_STREAM_DRAW>;
 
     using DirectEBO_Static   =   __DMABuffer<GL_ELEMENT_ARRAY_BUFFER,GL_STATIC_DRAW>;
     using DirectEBO_Dynamic   =   __DMABuffer<GL_ELEMENT_ARRAY_BUFFER,GL_DYNAMIC_DRAW>;

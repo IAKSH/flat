@@ -1,4 +1,6 @@
 #version 320 es
+precision mediump float;
+
 layout (location = 0) in vec3 aPos;
 layout (location = 6) in vec3 instanceLightColor;
 layout (location = 7) in mat4 instanceModel;

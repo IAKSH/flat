@@ -29,7 +29,7 @@ void quick3d::gl::VAO::enable_attrib(uint32_t index,uint32_t len,uint32_t vertex
 
 	glVertexAttribPointer(index, len, GL_FLOAT, normalized, vertex_len * sizeof(float), (void*)(offset * sizeof(float)));
 	glEnableVertexAttribArray(index);
-            
+
     glBindBuffer(GL_ARRAY_BUFFER,0);
     glBindVertexArray(0);
 }
