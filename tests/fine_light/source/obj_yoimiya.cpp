@@ -4,8 +4,8 @@
 #include <quick_gl/image.hpp>
 #include <fine_light/obj_yoimiya.hpp>
 
-static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/fine_light/glsl";
-static constexpr std::string_view MODEL_FOLDER = "../../../../../tests/light_ball/model";
+static constexpr std::string_view GLSL_FOLDER = "../../../../tests/fine_light/glsl";
+static constexpr std::string_view MODEL_FOLDER = "../../../../tests/light_ball/model";
 
 quick3d::test::fine_light::Yoimiya::Yoimiya() noexcept(false)
 {
@@ -46,7 +46,7 @@ void quick3d::test::fine_light::Yoimiya::try_load_program(std::string_view vs,st
         program->set_uniform("spotLight.linear", 0.007f);
         program->set_uniform("spotLight.quadratic", 0.0002f);
 
-        for(int i = 0;i < 250;i++)
+        for(int i = 0;i < 50;i++)
         {
             program->set_uniform(std::format("pointLights[{}].ambient",i), glm::vec3(0.1f,0.1f,0.1f));
             program->set_uniform(std::format("pointLights[{}].specular",i), glm::vec3(1.0f,1.1f,1.1f));
@@ -78,10 +78,10 @@ void quick3d::test::fine_light::Yoimiya::on_draw(const gl::FPSCamera& camera) no
     program->set_uniform("spotLight.direction", camera.get_front_vec());
 
     // too slow!
-    for(int i = 0;i < light_balls.size();i++)
+    for(int i = 0;i < binding_light_ball->datas.size();i++)
     {
-        program->set_uniform(std::format("pointLights[{}].position",i),light_balls[i]->get_position());
-        program->set_uniform(std::format("pointLights[{}].diffuse",i),light_balls[i]->get_light_color());
+        program->set_uniform(std::format("pointLights[{}].position",i),binding_light_ball->datas[i].position);
+        program->set_uniform(std::format("pointLights[{}].diffuse",i),binding_light_ball->datas[i].light_color);
     }
 
 	model->draw_model(*program);
@@ -114,7 +114,7 @@ void quick3d::test::fine_light::Yoimiya::on_unload() noexcept(false)
 {
 }
 
-void quick3d::test::fine_light::Yoimiya::add_light_ball(LightBall* light_ball) noexcept
+void quick3d::test::fine_light::Yoimiya::bind_light_ball(LightBall* light_ball) noexcept
 {
-    light_balls.push_back(light_ball);
+    binding_light_ball = light_ball;
 }

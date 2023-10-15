@@ -3,8 +3,8 @@
 #include <quick_gl/image.hpp>
 #include <fine_light/obj_skybox.hpp>
 
-static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/fine_light/glsl";
-static constexpr std::string_view IMAGE_FOLDER = "../../../../../tests/fine_light/image";
+static constexpr std::string_view GLSL_FOLDER = "../../../../tests/fine_light/glsl";
+static constexpr std::string_view IMAGE_FOLDER = "../../../../tests/fine_light/image";
 
 static constexpr std::array<float,108> skybox_vertices
 {
@@ -59,7 +59,7 @@ static constexpr std::array<float,108> skybox_vertices
 
 constexpr std::string_view skybox_vs_glsl{
 R"(
-#version 330 core
+#version 320 es
 layout (location = 0) in vec3 aPos;
 out vec3 texCoord;
 uniform mat4 projection;
@@ -73,7 +73,7 @@ void main()
 
 constexpr std::string_view skybox_fs_glsl{
 R"(
-#version 330 core
+#version 320 es
 out vec4 fragColor;
 in vec3 texCoord;
 uniform samplerCube skybox_cubemap;

@@ -7,9 +7,9 @@
 #include <quick_gl/cubemap.hpp>
 #include <quick_gl/vertex.hpp>
 
-static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/outer_glsl/glsl";
-static constexpr std::string_view MODEL_FOLDER = "../../../../../tests/outer_glsl/model";
-static constexpr std::string_view IMAGE_FOLDER = "../../../../../tests/outer_glsl/image";
+static constexpr std::string_view GLSL_FOLDER = "../../../../tests/outer_glsl/glsl";
+static constexpr std::string_view MODEL_FOLDER = "../../../../tests/outer_glsl/model";
+static constexpr std::string_view IMAGE_FOLDER = "../../../../tests/outer_glsl/image";
 
 static constexpr int SCR_WIDTH = 1920;
 static constexpr int SCR_HEIGHT = 1080;

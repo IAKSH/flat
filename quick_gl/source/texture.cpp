@@ -51,7 +51,7 @@ void quick3d::gl::Texture::set_tex_format(GLenum format) noexcept
 {
     switch (format)
     {
-    case GL_R:
+    case GL_RED:
     case GL_RGB:
     case GL_RGBA:
         tex_format = format;

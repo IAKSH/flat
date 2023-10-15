@@ -17,7 +17,7 @@ namespace quick3d::test::fine_light
         inline static std::shared_ptr<gl::Texture> texture_diffuse;
         inline static std::shared_ptr<gl::Texture> texture_specular;
         inline static std::shared_ptr<gl::Program> program;
-        inline static std::vector<LightBall*> light_balls;
+        inline static LightBall* binding_light_ball;
 
         glm::vec3 position;
         glm::vec3 rotate_axis;
@@ -41,6 +41,6 @@ namespace quick3d::test::fine_light
         void on_load() noexcept(false);
         void on_unload() noexcept(false);
 
-        static void add_light_ball(LightBall* light_ball) noexcept;
+        static void bind_light_ball(LightBall* light_ball) noexcept;
     };
 }

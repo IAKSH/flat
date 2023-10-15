@@ -8,9 +8,9 @@
 #include <quick_gl/vertex.hpp>
 #include <quick_gl/model.hpp>
 
-static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/light_ball/glsl";
-static constexpr std::string_view MODEL_FOLDER = "../../../../../tests/light_ball/model";
-static constexpr std::string_view IMAGE_FOLDER = "../../../../../tests/light_ball/image";
+static constexpr std::string_view GLSL_FOLDER = "../../../../tests/light_ball/glsl";
+static constexpr std::string_view MODEL_FOLDER = "../../../../tests/light_ball/model";
+static constexpr std::string_view IMAGE_FOLDER = "../../../../tests/light_ball/image";
 
 static constexpr int SCR_WIDTH = 800;
 static constexpr int SCR_HEIGHT = 600;

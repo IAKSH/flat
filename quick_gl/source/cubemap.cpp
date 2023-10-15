@@ -6,7 +6,7 @@ quick3d::gl::CubeMap::CubeMap(GLenum format,uint32_t w,uint32_t h) noexcept
 {
     switch (format)
     {
-    case GL_R:
+    case GL_LUMINANCE:
     case GL_RGB:
     case GL_RGBA:
         cubmap_format = format;
@@ -91,7 +91,7 @@ void quick3d::gl::CubeMap::generate_texture(GLenum location,unsigned char* img_d
     GLenum img_format;
     switch (img_channels)
     {
-    case 1: img_format = GL_R;    break;
+    case 1: img_format = GL_LUMINANCE;    break;
     case 3: img_format = GL_RGB;  break;
     case 4: img_format = GL_RGBA; break;
     }

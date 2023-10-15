@@ -15,8 +15,9 @@
 #include <quick_al/buffer.hpp>
 #include <quick_al/sample.hpp>
 
-#define BGM_PATH "D:/Programming-Playground/wav_audio/heart.wav"
-#define MODEL_PATH "D:/Programming-Playground/distort/test/model/yae_obj/yae.obj"
+#define BGM_PATH "../../../../tests/oal_test/audio/heart.wav"
+#define MODEL_PATH "../../../../tests/outer_glsl/model/yae/yae.obj"
+#define IMAGE_FOLDER "../../../../tests/outer_glsl/image/"
 #define SCR_WIDTH 1920
 #define SCR_HEIGHT 1080
 
@@ -24,7 +25,7 @@ using namespace quick3d;
 
 constexpr std::string_view model_vertex_strange_glsl{
     R"(
-#version 330 core
+#version 320 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
@@ -67,7 +68,7 @@ void main()
 
 constexpr std::string_view model_vertex_glsl{
     R"(
-#version 330 core
+#version 320 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
@@ -87,7 +88,7 @@ void main()
 
 constexpr std::string_view model_fragment_glsl{
     R"(
-#version 330 core
+#version 320 es
 out vec4 FragColor;
 
 in vec2 TexCoords;
@@ -102,7 +103,7 @@ void main()
 
 constexpr std::string_view skybox_vertex_glsl{
     R"(
-            #version 330 core
+            #version 320 es
             layout (location = 0) in vec3 aPos;
 
             out vec3 texCoord;
@@ -119,7 +120,7 @@ constexpr std::string_view skybox_vertex_glsl{
 
 constexpr std::string_view skybox_fragment_glsl{
     R"(
-            #version 330 core
+            #version 320 es
             out vec4 fragColor;
 
             in vec3 texCoord;
@@ -215,14 +216,14 @@ int main() noexcept
 
         gl::check_ogl_error();
 
-        constexpr std::array<std::string_view,6> skybox_texture_pathes
+        std::array<std::string,6> skybox_texture_pathes
         {
-            "D:\\Programming-Projects\\glbind\\tests\\img\\right.jpg",
-            "D:\\Programming-Projects\\glbind\\tests\\img\\left.jpg",
-            "D:\\Programming-Projects\\glbind\\tests\\img\\top.jpg",
-            "D:\\Programming-Projects\\glbind\\tests\\img\\bottom.jpg",
-            "D:\\Programming-Projects\\glbind\\tests\\img\\front.jpg",
-            "D:\\Programming-Projects\\glbind\\tests\\img\\back.jpg"
+            std::format("{}/{}", IMAGE_FOLDER, "right.jpg"),
+            std::format("{}/{}", IMAGE_FOLDER, "left.jpg"),
+            std::format("{}/{}", IMAGE_FOLDER, "top.jpg"),
+            std::format("{}/{}", IMAGE_FOLDER, "bottom.jpg"),
+            std::format("{}/{}", IMAGE_FOLDER, "front.jpg"),
+            std::format("{}/{}", IMAGE_FOLDER, "back.jpg"),
         };
 
         gl::check_ogl_error();

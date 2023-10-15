@@ -7,7 +7,7 @@
 #include <quick_gl/shader.hpp>
 #include <quick_gl/vertex.hpp>
 
-static constexpr std::string_view GLSL_FOLDER = "../../../../../tests/light/glsl";
+static constexpr std::string_view GLSL_FOLDER = "../../../../tests/light/glsl";
 
 static constexpr int SCR_WIDTH = 800;
 static constexpr int SCR_HEIGHT = 600;
@@ -185,7 +185,7 @@ void run() noexcept(false)
 		cube_program.set_uniform("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
 		cube_program.set_uniform("material.shininess", 32.0f);
 		cube_program.set_uniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-		cube_program.set_uniform("light.diffuse", glm::vec3(sin(glfwGetTime()) / 2.0f, cos(glfwGetTime()) / 2.0f, 0.5f));
+		cube_program.set_uniform("light.diffuse", glm::vec3(abs(sin(glfwGetTime()) / 2.0f), abs(cos(glfwGetTime()) / 2.0f), 0.5f));
 		cube_program.set_uniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 		cube_vao.draw(cube_program, GL_TRIANGLES, 0, 36);
 

@@ -8,6 +8,11 @@ quick3d::gl::Model::Model(std::string_view path) noexcept(false)
     load_model(path);
 }
 
+const std::vector<std::unique_ptr<quick3d::gl::Mesh>>* quick3d::gl::Model::get_meshes() const noexcept
+{
+    return &meshes;
+}
+
 void quick3d::gl::Model::load_model(std::string_view path) noexcept(false)
 {
     Assimp::Importer importer;

@@ -29,12 +29,13 @@ namespace quick3d::gl
             {t.get_tex_id()} -> std::same_as<GLuint>;
             {t.get_tex_width()} -> std::same_as<GLint>;
             {t.get_tex_height()} -> std::same_as<GLint>;
+            {t.get_tex_format()} -> std::same_as<GLenum>;
         }
         Framebuffer(const T& t) noexcept(false)
             : tex_id(t.get_tex_id())
         {
             create_fbo_and_rbo(t.get_tex_width(),t.get_tex_height());
-            bind_texture_to_fbo();
+            bind_texture_to_fbo(t.get_tex_format(), tex_id);
             if(!(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE))
                 throw std::runtime_error(std::format("fbo {} incomplete",fbo_id));
         }

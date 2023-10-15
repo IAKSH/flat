@@ -40,7 +40,7 @@ namespace quick3d::gl
             GLenum img_format;
             switch(t.get_img_channels())
             {
-            case 1: img_format = GL_R; break;
+            case 1: img_format = GL_RED; break;
             case 3: img_format = GL_RGB;    break;
             case 4: img_format = GL_RGBA;   break;
             }

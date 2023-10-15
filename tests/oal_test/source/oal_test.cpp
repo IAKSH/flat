@@ -8,7 +8,7 @@
 #include <quick_al/source.hpp>
 #include <quick_al/sample.hpp>
 
-static constexpr std::string_view BGM_PATH = "D:/Programming-Playground/wav_audio/heart.wav";
+static constexpr std::string_view BGM_PATH = "../../../../tests/oal_test/audio/heart.wav";
 static quick3d::al::Sample sample(BGM_PATH);
 
 void directly_oal_api() noexcept

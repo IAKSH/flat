@@ -22,6 +22,7 @@ void run() noexcept(false)
 {
 	quick3d::gl::Context context("fine light test", SCR_WIDTH, SCR_HEIGHT);
 	glfwSetInputMode(context.get_window(0).get_glfw_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwWindowHint(GLFW_SAMPLES, 4);
 
 	quick3d::gl::FPSCamera camera(SCR_WIDTH, SCR_HEIGHT);
 
@@ -35,12 +36,12 @@ void run() noexcept(false)
 		containers.push_back(std::make_unique<quick3d::test::fine_light::Container>());
 	for(int i = 0;i < 10;i++)
 		yoimiyas.push_back(std::make_unique<quick3d::test::fine_light::Yoimiya>());
-	for(int i = 0;i < 250;i++)
-		light_balls.push_back(std::make_unique<quick3d::test::fine_light::LightBall>());
-	for(auto& light_ball : light_balls)
-		quick3d::test::fine_light::Container::add_light_ball(light_ball.get());
-	for(auto& light_ball : light_balls)
-		quick3d::test::fine_light::Yoimiya::add_light_ball(light_ball.get());
+
+	auto light_ball {std::make_unique<quick3d::test::fine_light::LightBall>()};
+	quick3d::test::fine_light::Container::bind_light_ball(light_ball.get());
+	quick3d::test::fine_light::Yoimiya::bind_light_ball(light_ball.get());
+	light_balls.push_back(std::move(light_ball));
+		
 	for(auto& container : containers)
 		objects.push_back(std::move(container));
 	for(auto& yoimiya : yoimiyas)
@@ -77,6 +78,7 @@ void run() noexcept(false)
 	//glFrontFace(GL_CW);
 	//glCullFace(GL_FRONT);
 	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_MULTISAMPLE);
 
 	// Multi-thread test
 #ifdef __MULTI_THREAD_TEST__

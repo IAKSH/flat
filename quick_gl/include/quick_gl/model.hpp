@@ -5,6 +5,9 @@
 #include <assimp/postprocess.h>
 #include <quick_gl/mesh.hpp>
 
+// TODO: 需要大改
+// 具体见vertex.hpp
+
 namespace quick3d::gl
 {
     class Model
@@ -29,6 +32,8 @@ namespace quick3d::gl
         Model(Model&) = delete;
 
         ~Model() = default;
+
+        const std::vector<std::unique_ptr<Mesh>>* get_meshes() const noexcept;
 
         template <typename T>
         requires requires(T t)

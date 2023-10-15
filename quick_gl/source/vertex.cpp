@@ -43,3 +43,29 @@ quick3d::gl::EBO* quick3d::gl::VAO::get_binding_ebo() const noexcept
 {
     return ebo;
 }
+
+void quick3d::gl::VAO::bind_instance_array(const VBO& vbo, GLuint index, GLuint len, GLuint vertex_size, GLuint offset_size, GLuint divisor) const noexcept
+{
+    glBindVertexArray(vao_id);
+    glBindBuffer(GL_ARRAY_BUFFER,vbo.get_buffer_id());
+
+    glVertexAttribPointer(index, len, GL_FLOAT, GL_FALSE, vertex_size, (void*)offset_size);
+	glEnableVertexAttribArray(index);
+    glVertexAttribDivisor(index,divisor);
+
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glBindVertexArray(0);
+}
+
+void quick3d::gl::VAO::bind_instance_array(GLuint instance_vbo_id, GLuint index, GLuint len, GLuint vertex_size, GLuint offset_size, GLuint divisor) const noexcept
+{
+    glBindVertexArray(vao_id);
+    glBindBuffer(GL_ARRAY_BUFFER,instance_vbo_id);
+
+    glVertexAttribPointer(index, len, GL_FLOAT, GL_FALSE, vertex_size, (void*)offset_size);
+	glEnableVertexAttribArray(index);
+    glVertexAttribDivisor(index,divisor);
+
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glBindVertexArray(0);
+}

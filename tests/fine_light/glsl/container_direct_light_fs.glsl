@@ -1,4 +1,4 @@
-#version 330 core
+#version 320 es
 
 struct Material
 {
@@ -49,7 +49,7 @@ uniform DirectLight directLight;
 uniform PointLight pointLight;
 uniform SpotLight spotLight;
 
-#define NR_POINT_LIGHTS 250
+#define NR_POINT_LIGHTS 50
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
 out vec4 FragColor;

@@ -101,7 +101,7 @@ void quick3d::gl::TextureRenderer::draw_to_texture(GLuint output_texture_id, uns
     GLenum img_format;
     switch (img_channels)
     {
-    case 1: img_format = GL_R;      break;
+    case 1: img_format = GL_LUMINANCE;      break;
     case 3: img_format = GL_RGB;    break;
     case 4: img_format = GL_RGBA;   break;
     default:
@@ -164,7 +164,7 @@ void quick3d::gl::TextureRenderer::draw_to_cubemap(GLuint output_cubemap_id, GLe
     GLenum img_format;
     switch (img_channels)
     {
-    case 1: img_format = GL_R;      break;
+    case 1: img_format = GL_LUMINANCE;      break;
     case 3: img_format = GL_RGB;    break;
     case 4: img_format = GL_RGBA;   break;
     default:

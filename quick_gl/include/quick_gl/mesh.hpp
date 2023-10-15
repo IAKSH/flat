@@ -11,6 +11,9 @@
 #include <quick_gl/texture.hpp>
 #include <quick_gl/image.hpp>
 
+// TODO: 需要大改
+// 具体见vertex.hpp
+
 namespace quick3d::gl
 {
     constexpr uint32_t MAX_BONE_INFLUENCE{ 4 };
@@ -58,6 +61,9 @@ namespace quick3d::gl
         Mesh(Mesh&) = delete;
 
         ~Mesh() noexcept;
+
+        void bind_instance_array(GLuint instance_vbo_id, GLuint index, GLuint len,
+            GLuint vertex_size, GLuint offset_size, GLuint divisor) const noexcept;
 
         template <typename T>
         requires requires(T t)
