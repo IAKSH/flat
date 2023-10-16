@@ -158,7 +158,6 @@ void run() noexcept(false)
 	//glFrontFace(GL_CW);
 	//glCullFace(GL_FRONT);
 	glEnable(GL_DEPTH_TEST);
-	
 
 	light_program.set_uniform("model", glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)));
 	cube_program.set_uniform("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
