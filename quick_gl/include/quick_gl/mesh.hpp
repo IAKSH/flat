@@ -13,9 +13,6 @@
 #include <quick_gl/buffer.hpp>
 #include <quick_gl/vao.hpp>
 
-// TODO: 需要大改
-// [ ] 使用buffer.hpp和vao.hpp，以从中获得优化 
-
 namespace quick3d::gl
 {
     constexpr uint32_t MAX_BONE_INFLUENCE{ 4 };

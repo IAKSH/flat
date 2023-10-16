@@ -5,10 +5,6 @@
 #include <stdexcept>
 #include <glad/glad.h>
 
-#ifdef _MSC_VER
-#pragma deprecated(Framebuffer)
-#endif
-
 namespace quick3d::gl
 {
     // this Framebuffer use Texture from outside

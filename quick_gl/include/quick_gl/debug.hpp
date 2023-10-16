@@ -17,10 +17,6 @@ namespace quick3d::gl
     GLenum __check_ogl_error(const char* file_name,int line)
     {
         GLenum error_code;
-#ifdef __GPU_EXT_DEBUGGER__
-        goto end;
-#endif
-
         while ((error_code = glGetError()) != GL_NO_ERROR)
         {
             std::string_view error;
@@ -37,9 +33,6 @@ namespace quick3d::gl
             if constexpr (print_error_info)
                 std::cerr << std::format("OpenGL ERROR: {} | file {} line {}\n",error,file_name,line) << std::endl;
         }
-#ifdef __GPU_EXT_DEBUGGER__
-end:
-#endif
         return error_code;
     }
 

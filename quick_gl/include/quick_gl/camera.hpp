@@ -5,7 +5,8 @@
 #include <glm/gtc/constants.hpp>
 #include <GLFW/glfw3.h>
 
-// TODO: API太烂了，需要修改
+// TODO: FPSCamera API太烂了，需要修改
+// TODO：可能需要实现一个单独的全向相机，作为所有相机的基类
 
 namespace quick3d::gl
 {
