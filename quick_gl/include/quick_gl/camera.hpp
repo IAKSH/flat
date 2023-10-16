@@ -5,6 +5,8 @@
 #include <glm/gtc/constants.hpp>
 #include <GLFW/glfw3.h>
 
+// TODO: API太烂了，需要修改
+
 namespace quick3d::gl
 {
     class FPSCamera

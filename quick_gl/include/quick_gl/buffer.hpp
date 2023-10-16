@@ -13,15 +13,50 @@
 
 namespace quick3d::gl
 {
-    // [√] VBO,EBO
-    // [O] UBO,SSBO
-    // [X] TBO
-    // [√] 从OpenGL 3.3迁移到~~OpenGL4.3~~ OpenGL ES 3.2
-    // [X] 考虑：PBO,ACB
-    // [~] FBO（和RBO）从frame.hpp移动到这里 <驳回：不是同一种Buffer> 
-    // [√] 预分配
-    // [√] 一次性写入和分段写入（内存映射）
+#ifndef __ENABLE_OLD_BUFFER__
+    class Buffer
+    {
+    private:
+        GLuint buffer_id;
+        GLenum buffer_target;
+        GLenum buffer_usage;
 
+        bool verifiy_target(GLenum target) const noexcept;
+        bool verifiy_usage(GLenum usage) const noexcept;
+
+        void gen_buffer_id() noexcept;
+        void pre_allocate_mem(GLsizeiptr size) noexcept;
+        void delete_buffer() noexcept;
+
+    public:
+        Buffer(GLenum target, GLenum usage, GLsizeiptr size) noexcept(false);
+        Buffer(Buffer& src, GLsizeiptr new_size = 0) noexcept;
+        ~Buffer() noexcept;
+
+        GLuint get_buffer_id() const noexcept;
+        GLsizeiptr get_buffer_size() const noexcept;
+        GLenum get_buffer_target() const noexcept;
+        GLenum get_buffer_usage() const noexcept;
+        void set_buffer_target(GLenum new_target) noexcept(false);
+
+        // this will not check if out of range
+        void load_buffer_data(const void* data, GLintptr offset, GLsizeiptr size) noexcept;
+        // this will not check if out of range
+        void dma_do(std::function<void(void* data)> callback, GLintptr offset, GLsizeiptr length, GLbitfield access) noexcept;
+        void dma_do(std::function<void(void* data)> callback) noexcept;
+
+        template <typename T>
+        requires requires(T t)
+        {
+            {t.size()} -> std::same_as<std::size_t>;
+            {t.data()} -> std::convertible_to<void*>;
+        }
+        void load_buffer_data(const T& t, GLintptr offset = 0) noexcept
+        {
+            load_buffer_data(t.data(), t.size(), offset);
+        }
+    };
+#else
     struct Buffer
     {
     protected:
@@ -376,4 +411,5 @@ namespace quick3d::gl
     using DirectSSBO_Static   =   __DMABuffer<GL_SHADER_STORAGE_BUFFER,GL_STATIC_DRAW>;
     using DirectSSBO_Dynamic   =   __DMABuffer<GL_SHADER_STORAGE_BUFFER,GL_DYNAMIC_DRAW>;
     using DirectSSBO_Stream   =   __DMABuffer<GL_SHADER_STORAGE_BUFFER,GL_STREAM_DRAW>;
+#endif
 }

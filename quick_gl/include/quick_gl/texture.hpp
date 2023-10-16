@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+// TODO: 实现TBO
+
 namespace quick3d::gl
 {
     class Texture

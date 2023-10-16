@@ -10,9 +10,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <quick_gl/texture.hpp>
 #include <quick_gl/image.hpp>
+#include <quick_gl/buffer.hpp>
+#include <quick_gl/vao.hpp>
 
 // TODO: 需要大改
-// [ ] 使用buffer.hpp和vao.hpp，以从中获得优化
+// [ ] 使用buffer.hpp和vao.hpp，以从中获得优化 
 
 namespace quick3d::gl
 {
@@ -48,10 +50,11 @@ namespace quick3d::gl
         std::vector<unsigned int> indices;
         std::vector<MeshVertexPack> vertices;
         std::vector<MeshTexturePack*> textures;
-        GLuint vao_id,vbo_id,ebo_id;
+        std::unique_ptr<Buffer> vbo;
+        std::unique_ptr<Buffer> ebo;
+        VertexArray vao;
 
         void setup_vao() noexcept;
-        void delete_vao() noexcept;
 
     public:
         Mesh(std::vector<MeshTexturePack*> textures,
@@ -59,7 +62,7 @@ namespace quick3d::gl
             std::vector<unsigned int> indices) noexcept;
 
         Mesh(Mesh&) = delete;
-        ~Mesh() noexcept;
+        ~Mesh() = default;
 
         template <typename T>
         requires requires(T t)
@@ -95,15 +98,8 @@ namespace quick3d::gl
                 glBindTexture(GL_TEXTURE_2D,textures[i]->texture->get_tex_id());
             }
 
-            glBindVertexArray(vao_id);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
+            vao.draw(t, GL_TRIANGLES, 0, static_cast<GLsizei>(indices.size()), instance);
 
-            if(!instance)
-                glDrawElements(GL_TRIANGLES,static_cast<GLsizei>(indices.size()),GL_UNSIGNED_INT,0);
-            else
-                glDrawElementsInstanced(GL_TRIANGLES,static_cast<GLsizei>(indices.size()),GL_UNSIGNED_INT,0,instance);
-
-            glBindVertexArray(0);
             glActiveTexture(GL_TEXTURE0);
             glUseProgram(0);
         }

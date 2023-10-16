@@ -30,7 +30,7 @@ namespace quick3d::gl
 			{t.get_buffer_id()} -> std::same_as<GLuint>;
 			{t.get_buffer_target()} -> std::same_as<GLenum>;
 		}
-		void bind_ebo(const T& t) const noexcept(false)
+		void bind_ebo(const T& t) noexcept(false)
 		{
 			if (t.get_buffer_target() != GL_ELEMENT_ARRAY_BUFFER)
 				throw std::runtime_error("invalid buffer target for vao::bind_ebo()");
@@ -38,6 +38,8 @@ namespace quick3d::gl
 			bind_ebo(t.get_buffer_id());
 		}
 
+		// TODO: 需要开放更多API，比如参数的具体类型，主要是确定VAO属性的大小，详见glVertexAttribPointer的参数列表
+		// 也许可以用模板实现
 		void add_attrib(GLenum buffer_target, uint32_t buffer_id,
 			uint32_t index, uint32_t len, uint32_t vertex_len, uint32_t offset, bool normalized = false) noexcept(false);
 

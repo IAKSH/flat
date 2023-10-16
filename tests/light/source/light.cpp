@@ -118,14 +118,14 @@ void run() noexcept(false)
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_fs.glsl"))
 	);
 
-	quick3d::gl::DirectVBO_Static cube_vbo(cube_vertices_with_normal.size() * sizeof(float));
-	cube_vbo.set_buffer_mem(cube_vertices_with_normal.data(), cube_vertices_with_normal.size() * sizeof(float), 0);
+	quick3d::gl::Buffer cube_vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, cube_vertices_with_normal.size() * sizeof(float));
+	cube_vbo.load_buffer_data(cube_vertices_with_normal);
 	quick3d::gl::VertexArray cube_vao;
 	cube_vao.add_attrib(cube_vbo, 0, 3, 6, 0);
 	cube_vao.add_attrib(cube_vbo, 1, 3, 6, 3);
 
-	quick3d::gl::DirectVBO_Static light_vbo(cube_vertices.size() * sizeof(float));
-	light_vbo.set_buffer_mem(cube_vertices.data(), cube_vertices.size() * sizeof(float), 0);
+	quick3d::gl::Buffer light_vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, cube_vertices.size() * sizeof(float));
+	light_vbo.load_buffer_data(cube_vertices);
 	quick3d::gl::VertexArray light_vao;
 	light_vao.add_attrib(light_vbo, 0, 3, 3, 0);
 

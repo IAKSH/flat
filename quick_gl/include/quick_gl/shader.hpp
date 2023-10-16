@@ -12,8 +12,6 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// [√] Shader也需要修改，以支持Uniform块到UBO的绑定
-
 namespace quick3d::gl
 {
     template <typename T,typename U>

@@ -90,8 +90,8 @@ void run() noexcept(false)
     for (int i = 0; i < skybox_texture_pathes.size(); i++)
         skybox_cubemap.generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, quick3d::gl::Image(skybox_texture_pathes[i], false));
 
-    quick3d::gl::DirectVBO_Static skybox_vbo(skybox_vertices.size() * sizeof(float));
-    skybox_vbo.set_buffer_mem(skybox_vertices.data(), skybox_vertices.size() * sizeof(float), 0);
+    quick3d::gl::Buffer skybox_vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, skybox_vertices.size() * sizeof(float));
+    skybox_vbo.load_buffer_data(skybox_vertices);
     quick3d::gl::VertexArray skybox_vao;
     skybox_vao.add_attrib(skybox_vbo, 0, 3, 3, 0);
 
