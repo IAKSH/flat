@@ -205,7 +205,7 @@ int main() noexcept
         gl::Program skybox_program(skybox_vertex_glsl, skybox_fragment_glsl);
 
         gl::Buffer skybox_vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, skybox_vertices.size() * sizeof(float));
-        skybox_vbo.load_buffer_data(skybox_vertices);
+        skybox_vbo.write_buffer_data(skybox_vertices);
         gl::VertexArray skybox_vao;
         skybox_vao.add_attrib(skybox_vbo, 0, 3, 3, 0);
 

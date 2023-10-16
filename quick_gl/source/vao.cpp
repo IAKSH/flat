@@ -46,8 +46,8 @@ void quick3d::gl::VertexArray::add_attrib(GLenum buffer_target, uint32_t buffer_
 	glBindBuffer(buffer_target, buffer_id);
 	glBindVertexArray(vao_id);
 
-	glVertexAttribPointer(index, len, GL_FLOAT, normalized, vertex_len * sizeof(float), (void*)(offset * sizeof(float)));
 	glEnableVertexAttribArray(index);
+	glVertexAttribPointer(index, len, GL_FLOAT, normalized, vertex_len * sizeof(float), (void*)(offset * sizeof(float)));
 
 	glBindBuffer(buffer_target, 0);
 	glBindVertexArray(0);

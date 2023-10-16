@@ -40,7 +40,7 @@ namespace quick3d::gl
         void set_buffer_target(GLenum new_target) noexcept(false);
 
         // this will not check if out of range
-        void load_buffer_data(const void* data, GLintptr offset, GLsizeiptr size) noexcept;
+        void write_buffer_data(const void* data, GLintptr offset, GLsizeiptr size) noexcept;
         // this will not check if out of range
         void dma_do(std::function<void(void* data)> callback, GLintptr offset, GLsizeiptr length, GLbitfield access) noexcept;
         void dma_do(std::function<void(void* data)> callback) noexcept;
@@ -51,9 +51,12 @@ namespace quick3d::gl
             {t.size()} -> std::same_as<std::size_t>;
             {t.data()} -> std::convertible_to<void*>;
         }
-        void load_buffer_data(const T& t, GLintptr offset = 0) noexcept
+        void write_buffer_data(const T& t, std::size_t size = 0) noexcept
         {
-            load_buffer_data(t.data(), t.size(), offset);
+            if (size)
+                write_buffer_data(t.data(), 0, size);
+            else
+                write_buffer_data(t.data(), 0, t.size() * sizeof(float));
         }
     };
 #else

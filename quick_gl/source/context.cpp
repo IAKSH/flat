@@ -83,3 +83,121 @@ void quick3d::gl::Context::remove_window(uint32_t index) noexcept(false)
         throw std::out_of_range("index out of range");
     windows.erase(std::next(std::begin(windows), index));
 }
+
+GLuint quick3d::gl::Context::get_binding_obj_id(GLenum target) noexcept(false)
+{
+    switch (target)
+    {
+    case GL_ARRAY_BUFFER:
+    case GL_ELEMENT_ARRAY_BUFFER:
+        return get_binding_buffer(target);
+    case GL_VERTEX_ARRAY:
+        return get_binding_vao();
+    case GL_PROGRAM:
+        return get_binding_shader();
+    case GL_TEXTURE_2D:
+        return get_binding_texture();
+    case GL_TEXTURE_CUBE_MAP:
+        return get_binding_cubemap();
+    case GL_FRAMEBUFFER:
+        return get_binding_framebuffer();
+    default:
+        throw std::invalid_argument(std::format("invalid ogl target: 0x{:X}", target));
+    }
+}
+
+GLuint quick3d::gl::Context::get_binding_buffer(GLenum target) noexcept(false)
+{
+    GLint id;
+    switch (target)
+    {
+    case GL_ARRAY_BUFFER:
+        glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &id);
+        break;
+    case GL_ELEMENT_ARRAY_BUFFER:
+        glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &id);
+        break;
+    case GL_UNIFORM_BUFFER:
+        glGetIntegerv(GL_UNIFORM_BUFFER_BINDING, &id);
+        break;
+    case GL_SHADER_STORAGE_BUFFER:
+        glGetIntegerv(GL_SHADER_STORAGE_BUFFER_BINDING, &id);
+        break;
+    case GL_TEXTURE_BUFFER:
+        glGetIntegerv(GL_TEXTURE_BUFFER_BINDING, &id);
+        break;
+    case GL_PIXEL_PACK_BUFFER:
+        glGetIntegerv(GL_PIXEL_PACK_BUFFER_BINDING, &id);
+        break;
+    case GL_PIXEL_UNPACK_BUFFER:
+        glGetIntegerv(GL_PIXEL_UNPACK_BUFFER_BINDING, &id);
+        break;
+    default:
+        throw std::invalid_argument(std::format("invalied ogl target: 0x{:X}", target));
+    }
+}
+
+GLuint quick3d::gl::Context::get_binding_vao() noexcept
+{
+    GLint id;
+    glGetIntegerv(GL_VERTEX_ARRAY, &id);
+    return id;
+}
+
+GLuint quick3d::gl::Context::get_binding_shader() noexcept
+{
+    GLint id;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+    return id;
+}
+
+GLuint quick3d::gl::Context::get_binding_texture() noexcept
+{
+    GLint id;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &id);
+    return id;
+}
+
+GLuint quick3d::gl::Context::get_binding_cubemap() noexcept
+{
+    GLint id;
+    glGetIntegerv(GL_TEXTURE_BINDING_CUBE_MAP, &id);
+    return id;
+}
+
+GLuint quick3d::gl::Context::get_binding_framebuffer() noexcept
+{
+    GLint id;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &id);
+    return id;
+}
+
+void quick3d::gl::Context::unbind_buffer(GLenum target) noexcept
+{
+    glBindBuffer(target, 0);
+}
+
+void quick3d::gl::Context::unbind_vao() noexcept
+{
+    glBindVertexArray(0);
+}
+
+void quick3d::gl::Context::unbind_shader() noexcept
+{
+    glUseProgram(0);
+}
+
+void quick3d::gl::Context::unbind_texture() noexcept
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void quick3d::gl::Context::unbind_cubemap() noexcept
+{
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+}
+
+void quick3d::gl::Context::unbind_framebuffer() noexcept
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}

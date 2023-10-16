@@ -7,10 +7,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#ifdef _MSC_VER
-#include <Windows.h>
-#endif
-
 namespace quick3d::gl
 {
     template <bool print_error_info>
@@ -101,11 +97,8 @@ namespace quick3d::gl
                         length,
                         message,
                         user_param);
-#ifdef _MSC_VER
-                    MessageBoxA(NULL, error_message.c_str(), "OpenGL Error", MB_OK | MB_ICONERROR);
-#else
+
                     std::cerr << error_message << std::endl;
-#endif
                 }, nullptr);
 
             glEnable(GL_DEBUG_OUTPUT);

@@ -35,6 +35,7 @@ bool quick3d::gl::Buffer::verifiy_usage(GLenum usage) const noexcept
 }
 
 quick3d::gl::Buffer::Buffer(GLenum target, GLenum usage, GLsizeiptr size) noexcept(false)
+    : buffer_target(target), buffer_usage(usage)
 {
     if (!verifiy_target(target))
         throw std::invalid_argument(std::format("invalied buffer target: 0x{:X}", target));
@@ -62,7 +63,9 @@ void quick3d::gl::Buffer::gen_buffer_id() noexcept
 
 void quick3d::gl::Buffer::pre_allocate_mem(GLsizeiptr size) noexcept
 {
+    glBindBuffer(buffer_target, buffer_id);
     glBufferData(buffer_target, size, nullptr, buffer_usage);
+    glBindBuffer(buffer_target, 0);
 }
 
 void quick3d::gl::Buffer::delete_buffer() noexcept
@@ -102,7 +105,7 @@ void quick3d::gl::Buffer::set_buffer_target(GLenum new_target) noexcept(false)
     buffer_target = new_target;
 }
 
-void quick3d::gl::Buffer::load_buffer_data(const void* data, GLintptr offset, GLsizeiptr size) noexcept
+void quick3d::gl::Buffer::write_buffer_data(const void* data, GLintptr offset, GLsizeiptr size) noexcept
 {
     glBindBuffer(buffer_target, buffer_id);
     glBufferSubData(buffer_target, offset, size, data);
