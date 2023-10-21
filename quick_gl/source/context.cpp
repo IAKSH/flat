@@ -106,6 +106,31 @@ GLuint quick3d::gl::Context::get_binding_obj_id(GLenum target) noexcept(false)
     }
 }
 
+void quick3d::gl::Context::swap_window_buffers() noexcept
+{
+    glfwSwapBuffers(glfwGetCurrentContext());
+}
+
+void quick3d::gl::Context::poll_events() noexcept
+{
+    glfwPollEvents();
+}
+
+void quick3d::gl::Context::fill_frame_color(std::array<float, 4> color) noexcept
+{
+    glClearColor(color[0],color[1],color[2],color[3]);
+}
+
+void quick3d::gl::Context::fill_frame_color(float r, float g, float b, float a) noexcept
+{
+    glClearColor(r,g,b,a);
+}
+
+void quick3d::gl::Context::clean_frame_buffers() noexcept
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
 GLuint quick3d::gl::Context::get_binding_buffer(GLenum target) noexcept(false)
 {
     GLint id;

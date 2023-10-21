@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <vector>
 #include <memory>
 #include <quick_gl/window.hpp>
@@ -121,5 +122,11 @@ namespace quick3d::gl
 
         GLuint get_binding_obj_id(GLenum target) noexcept(false);
         void unbind_from_context(GLenum target) noexcept(false);
+
+        void swap_window_buffers() noexcept;
+        void poll_events() noexcept;
+        void fill_frame_color(std::array<float,4> color) noexcept;
+        void fill_frame_color(float r,float g,float b,float a) noexcept;
+        void clean_frame_buffers() noexcept;
     };
 }

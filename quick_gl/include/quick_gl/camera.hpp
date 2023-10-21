@@ -34,8 +34,8 @@ namespace quick3d::gl
 
     public:
         FPSCamera(int screen_width, int screen_height, glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), float start_yaw = -90.0f,
-            float start_pitch = 0.0f, float speed = 2.5f, float sensitivity = 0.1f, float start_fov = 45.0f, float start_near = 0.1f,
-            float start_far = 100.0f) noexcept
+            float start_pitch = 0.0f, float speed = 0.00005f, float sensitivity = 0.1f, float start_fov = 45.0f, float start_near = 0.001f,
+            float start_far = 10000.0f) noexcept
             : screen_width(screen_width), screen_height(screen_height), position(start_pos), front(glm::vec3(0.0f, 0.0f, -1.0f)),
               right(glm::vec3(1.0f, 0.0f, 0.0f)), up(glm::vec3(0.0f, 1.0f, 0.0f)), yaw(start_yaw), pitch(start_pitch),
               movement_speed(speed), mouse_sensitivity(sensitivity), fov(start_fov), near_plane(start_near), far_plane(start_far),
