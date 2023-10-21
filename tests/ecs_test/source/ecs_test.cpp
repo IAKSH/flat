@@ -6,6 +6,9 @@
 #include <quick_gl/cubemap.hpp>
 #include <format>
 
+#include <ecs_test/entity_yae.hpp>
+#include <ecs_test/entity_skybox.hpp>
+
 static constexpr std::string_view GLSL_FOLDER = "../../../../tests/ecs_test/glsl";
 static constexpr std::string_view MODEL_FOLDER = "../../../../tests/outer_glsl/model";
 static constexpr std::string_view IMAGE_FOLDER = "../../../../tests/outer_glsl/image";
@@ -60,6 +63,17 @@ constexpr std::array<float, 108> skybox_vertices{
 		1.0f, -1.0f, 1.0f
 };
 
+static std::vector<std::unique_ptr<quick3d::gl::Program>> programs;
+static std::vector<std::unique_ptr<quick3d::gl::Model>> models;
+static std::vector<std::unique_ptr<quick3d::gl::VertexArray>> vaos;
+static std::vector<std::unique_ptr<quick3d::gl::Buffer>> buffers;
+static std::vector<std::unique_ptr<quick3d::gl::Texture>> textures;
+static std::vector<std::unique_ptr<quick3d::gl::CubeMap>> cubemaps;
+static std::vector<quick3d::core::Component*> components;
+static std::vector<quick3d::core::Entity*> entities;
+static quick3d::core::GFXSystem gfx(800, 600);
+static quick3d::core::SFXSystem sfx;
+
 void set_ogl_state() noexcept
 {
 	glEnable(GL_BLEND);
@@ -77,35 +91,6 @@ void reset_ogl_state() noexcept
 	glDisable(GL_CULL_FACE);
 }
 
-static std::vector<std::unique_ptr<quick3d::gl::Program>> programs;
-static std::vector<std::unique_ptr<quick3d::gl::Model>> models;
-static std::vector<std::unique_ptr<quick3d::gl::VertexArray>> vaos;
-static std::vector<std::unique_ptr<quick3d::gl::Buffer>> buffers;
-static std::vector<std::unique_ptr<quick3d::gl::Texture>> textures;
-static std::vector<std::unique_ptr<quick3d::gl::CubeMap>> cubemaps;
-
-static std::vector<quick3d::core::Component*> components;
-static std::vector<quick3d::core::Entity*> entities;
-
-quick3d::core::GFXSystem gfx(800, 600);
-quick3d::core::SFXSystem sfx;
-
-class YaeEntity : public quick3d::core::Entity
-{
-public:
-	YaeEntity() = default;
-	YaeEntity(YaeEntity&) = delete;
-	~YaeEntity() = default;
-};
-
-class SkyboxEntity : public quick3d::core::Entity
-{
-public:
-	SkyboxEntity() = default;
-	SkyboxEntity(SkyboxEntity&) = delete;
-	~SkyboxEntity() = default;
-};
-
 void setup_model_entity() noexcept
 {
 	auto program{ std::make_unique<quick3d::gl::Program>(
@@ -114,11 +99,13 @@ void setup_model_entity() noexcept
 	) };
 	auto model{ std::make_unique<quick3d::gl::Model>("D:/Programming-Playground/quick3d/tests/outer_glsl/model/yae/yae.obj") };
 	auto renderer{ new quick3d::core::ModelRenderer() };
+	//auto renderer{ new quick3d::core::InstanceModelRenderer() };
+	//renderer->set_instance_count(100);
 	renderer->bind_camera(&gfx.get_camera());
 	renderer->bind_program(program.get());
 	renderer->bind_model(model.get());
 
-	auto entity{ new YaeEntity() };
+	auto entity{ new quick3d::test::YaeEntity() };
 	entity->bind_component(renderer);
 	entities.push_back(entity);
 
@@ -158,7 +145,7 @@ void setup_skybox_entity() noexcept
 
 	renderer->bind_cubemap(skybox_cubemap.get());
 
-	auto entity{ new SkyboxEntity() };
+	auto entity{ new quick3d::test::SkyboxEntity() };
 	entity->bind_component(renderer);
 	entities.push_back(entity);
 
@@ -171,22 +158,29 @@ void setup_skybox_entity() noexcept
 
 int main() noexcept
 {
-	setup_model_entity();
-	setup_skybox_entity();
-
-	gfx.capture_mouse();
-	quick3d::ecs::HightResTimer timer;
-	while (gfx.is_running() && sfx.is_running())
+	try
 	{
-		auto delta{ timer.get_timer_duration<std::chrono::microseconds>().count() / 1000.0f};
-		timer.record_time_point();
+		setup_model_entity();
+		setup_skybox_entity();
 
-		set_ogl_state();
-		for (auto& entity : entities)
-			entity->on_tick(delta);
-		reset_ogl_state();
+		gfx.capture_mouse();
+		quick3d::ecs::HightResTimer timer;
+		while (gfx.is_running() && sfx.is_running())
+		{
+			auto delta{ timer.get_timer_duration<std::chrono::microseconds>().count() / 1000.0f };
+			timer.record_time_point();
 
-		gfx.on_tick(delta);
-		sfx.on_tick(delta);
+			set_ogl_state();
+			for (auto& entity : entities)
+				entity->on_tick(delta);
+			reset_ogl_state();
+
+			gfx.on_tick(delta);
+			sfx.on_tick(delta);
+		}
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
 	}
 }

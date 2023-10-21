@@ -13,7 +13,6 @@ namespace quick3d::core
 	protected:
 		gl::FPSCamera* camera;
 		gl::Program* program;
-
 		float position_x;
 		float position_y;
 		float position_z;
@@ -29,8 +28,6 @@ namespace quick3d::core
 		Renderer() noexcept;
 		Renderer(Renderer&) = delete;
 		~Renderer() = default;
-
-		virtual void on_tick(float delta_ms) noexcept(false) override = 0;
 		void bind_camera(gl::FPSCamera* camera) noexcept;
 		void bind_program(gl::Program* program) noexcept;
 		float get_position_x() noexcept;
@@ -47,23 +44,23 @@ namespace quick3d::core
 		void set_rotate_yaw(float f) noexcept;
 		void set_rotate_roll(float f) noexcept;
 		void set_scale(float f) noexcept;
+		virtual void on_tick(float delta_ms) noexcept(false) override = 0;
 	};
 
-	class ModelRenderer : public Renderer
+	class ModelRenderer : virtual public Renderer
 	{
-	private:
+	protected:
 		gl::Model* model;
 		
 	public:
 		ModelRenderer() = default;
 		ModelRenderer(ModelRenderer&) = delete;
 		~ModelRenderer() = default;
-
-		virtual void on_tick(float delta_ms) noexcept(false) override final;
 		void bind_model(gl::Model* model) noexcept;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
-	class CubeMapVAORenderer : public Renderer
+	class CubeMapVAORenderer : virtual public Renderer
 	{
 	protected:
 		gl::Buffer* vbo;
@@ -74,14 +71,13 @@ namespace quick3d::core
 		CubeMapVAORenderer() = default;
 		CubeMapVAORenderer(CubeMapVAORenderer&) = delete;
 		~CubeMapVAORenderer() = default;
-
-		virtual void on_tick(float delta_ms) noexcept(false) override;
 		void bind_vbo(gl::Buffer* vbo) noexcept;
 		void bind_vao(gl::VertexArray* vao) noexcept;
 		void bind_cubemap(gl::CubeMap* cubemap) noexcept;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
-	class SkyboxVAORenderer : public CubeMapVAORenderer
+	class SkyboxVAORenderer : virtual public CubeMapVAORenderer
 	{
 	private:
 		void update_skybox_program_uniform() noexcept;
@@ -94,9 +90,9 @@ namespace quick3d::core
 		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
-	class VAORenderer : public Renderer
+	class VAORenderer : virtual public Renderer
 	{
-	private:
+	protected:
 		gl::Buffer* vbo;
 		gl::VertexArray* vao;
 		std::vector<gl::Texture*> textures;
@@ -105,14 +101,50 @@ namespace quick3d::core
 		VAORenderer() = default;
 		VAORenderer(VAORenderer&) = delete;
 		~VAORenderer() = default;
-
-		virtual void on_tick(float delta_ms) noexcept(false) override;
 		void bind_vbo(gl::Buffer* vbo) noexcept;
 		void bind_vao(gl::VertexArray* vao) noexcept;
 		void bind_textures(gl::Texture* tex) noexcept;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
-	// TODO: instance renderer
-	// eg: class ModelInstanceRenderer
-	// ...
+	class InstanceRenderer : virtual public Renderer
+	{
+	protected:
+		std::size_t instance_count;
+
+	public:
+		InstanceRenderer() noexcept;
+		InstanceRenderer(InstanceRenderer&) = delete;
+		~InstanceRenderer() = default;
+		std::size_t get_instance_count() noexcept;
+		void set_instance_count(std::size_t count) noexcept;
+		virtual void on_tick(float delta_ms) noexcept(false) override = 0;
+	};
+
+	class InstanceModelRenderer : virtual public ModelRenderer, virtual public InstanceRenderer
+	{
+	public:
+		InstanceModelRenderer() = default;
+		InstanceModelRenderer(InstanceModelRenderer&) = delete;
+		~InstanceModelRenderer() = default;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
+	};
+
+	class InstanceCubeMapVAORenderer : virtual public CubeMapVAORenderer, virtual public InstanceRenderer
+	{
+	public:
+		InstanceCubeMapVAORenderer() = default;
+		InstanceCubeMapVAORenderer(InstanceCubeMapVAORenderer&) = delete;
+		~InstanceCubeMapVAORenderer() = default;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
+	};
+
+	class InstanceVAORenderer : virtual public VAORenderer, virtual public InstanceRenderer
+	{
+	public:
+		InstanceVAORenderer() = default;
+		InstanceVAORenderer(InstanceVAORenderer&) = delete;
+		~InstanceVAORenderer() = default;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
+	};
 }
