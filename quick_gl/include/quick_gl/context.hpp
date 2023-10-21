@@ -32,7 +32,7 @@ namespace quick3d::gl
         void unbind_framebuffer() noexcept;
 
     public:
-        Context(std::string_view title,int w,int h) noexcept;
+        Context(std::string_view title,int w,int h) noexcept(false);
         Context(Context&) = delete;
         ~Context() noexcept;
 

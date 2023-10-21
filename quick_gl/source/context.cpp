@@ -4,7 +4,7 @@
 #include <quick_gl/context.hpp>
 #include <quick_gl/debug.hpp>
 
-quick3d::gl::Context::Context(std::string_view title,int w,int h) noexcept
+quick3d::gl::Context::Context(std::string_view title,int w,int h) noexcept(false)
 {
     setup_context(title,w,h);
 }
