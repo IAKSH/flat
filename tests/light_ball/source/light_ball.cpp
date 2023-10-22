@@ -211,7 +211,7 @@ void run() noexcept(false)
 	quick3d::gl::Texture container_diffuse_tex(GL_RGBA,quick3d::gl::Image(std::format("{}/{}",IMAGE_FOLDER,"container2.png")));
 	quick3d::gl::Texture container_specular_tex(GL_RGBA,quick3d::gl::Image(std::format("{}/{}",IMAGE_FOLDER,"container2_specular.png")));
 
-	context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
+	context.get_window(0).set_mouse_movement_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
 	context.get_window(0).set_keybord_callback([&](GLFWwindow* win, int key, int scancode, int action, int mods)
 		{
 			camera.process_keyboard_input(win, 0.01f);

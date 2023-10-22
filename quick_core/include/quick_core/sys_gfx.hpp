@@ -11,6 +11,7 @@ namespace quick3d::core
 	private:
 		gl::Context context;
 		gl::FPSCamera camera;
+		bool mouse_caputured;
 
 		void bind_camera_to_context() noexcept;
 
@@ -20,7 +21,7 @@ namespace quick3d::core
 		~GFXSystem() = default;
 
 		gl::FPSCamera& get_camera() noexcept;
-		void capture_mouse() noexcept;
+		void capture_mouse(bool b = true) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }

@@ -25,7 +25,12 @@ void quick3d::gl::Window::create_glfw_window(int w,int h) noexcept
 
     glfwSetCursorPosCallback(window,[](GLFWwindow* win,double x,double y)
     {
-        ((Window*)glfwGetWindowUserPointer(win))->try_run_mouse_callback(x,y);
+        ((Window*)glfwGetWindowUserPointer(win))->try_run_mouse_movement_callback(x,y);
+    });
+
+    glfwSetMouseButtonCallback(window, [](GLFWwindow* win, int button, int action, int mods)
+    {
+        ((Window*)glfwGetWindowUserPointer(win))->try_run_mouse_button_callback(button, action, mods);
     });
 
     glfwSetScrollCallback(window,[](GLFWwindow* win,double x,double y)
@@ -69,10 +74,16 @@ void quick3d::gl::Window::try_run_keyboard_callback(int key,int scancode,int act
         keyboard_callback(window,key,scancode,action,mods);
 }
 
-void quick3d::gl::Window::try_run_mouse_callback(double x,double y) const noexcept
+void quick3d::gl::Window::try_run_mouse_movement_callback(double x,double y) const noexcept
 {
-    if(mouse_callback)
-        mouse_callback(window,x,y);
+    if(mouse_movement_callback)
+        mouse_movement_callback(window,x,y);
+}
+
+void quick3d::gl::Window::try_run_mouse_button_callback(int button, int action, int mods) const noexcept
+{
+    if (mouse_button_callback)
+        mouse_button_callback(window, button, action, mods);
 }
 
 void quick3d::gl::Window::try_run_scroll_callback(double x,double y) const noexcept
@@ -86,9 +97,14 @@ void quick3d::gl::Window::set_keybord_callback(const std::function<void(GLFWwind
     keyboard_callback = callback;
 }
 
-void quick3d::gl::Window::set_mouse_callback(const std::function<void(GLFWwindow*,double x,double y)>& callback) noexcept
+void quick3d::gl::Window::set_mouse_movement_callback(const std::function<void(GLFWwindow*,double x,double y)>& callback) noexcept
 {
-    mouse_callback = callback;
+    mouse_movement_callback = callback;
+}
+
+void quick3d::gl::Window::set_mouse_button_callback(const std::function<void(GLFWwindow*, int button, int action, int mods)>& callback) noexcept
+{
+    mouse_button_callback = callback;
 }
 
 void quick3d::gl::Window::set_scroll_callback(const std::function<void(GLFWwindow*,double x,double y)>& callback) noexcept

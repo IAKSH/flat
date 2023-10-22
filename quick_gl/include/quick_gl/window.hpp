@@ -14,7 +14,8 @@ namespace quick3d::gl
         // GLFW don't have API to get window's title, so we store it by ourselves
         // https://discourse.glfw.org/t/get-the-title-of-an-existing-window/744
         std::string title;
-        std::function<void(GLFWwindow*,double x,double y)> mouse_callback;
+        std::function<void(GLFWwindow*,double x,double y)> mouse_movement_callback;
+        std::function<void(GLFWwindow*, int button, int action, int mods)> mouse_button_callback;
         std::function<void(GLFWwindow*,double x,double y)> scroll_callback;
         std::function<void(GLFWwindow*,int key,int scancode,int action,int mods)> keyboard_callback;
 
@@ -32,10 +33,12 @@ namespace quick3d::gl
         int get_window_height() const noexcept;
         std::string_view get_title() const noexcept;
         void try_run_keyboard_callback(int key,int scancode,int action,int mods) const noexcept;
-        void try_run_mouse_callback(double x,double y) const noexcept;
+        void try_run_mouse_movement_callback(double x,double y) const noexcept;
+        void try_run_mouse_button_callback(int button, int action, int mods) const noexcept;
         void try_run_scroll_callback(double x,double y) const noexcept;
         void set_keybord_callback(const std::function<void(GLFWwindow*,int key,int scancode,int action,int mods)>& callback) noexcept;
-        void set_mouse_callback(const std::function<void(GLFWwindow*,double x,double y)>& callback) noexcept;
+        void set_mouse_movement_callback(const std::function<void(GLFWwindow*,double x,double y)>& callback) noexcept;
+        void set_mouse_button_callback(const std::function<void(GLFWwindow*, int button, int action, int mods)>& callback) noexcept;
         void set_scroll_callback(const std::function<void(GLFWwindow*,double x,double y)>& callback) noexcept;
     };
 }

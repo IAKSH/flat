@@ -1,3 +1,6 @@
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 #include <quick_core/sys_gfx.hpp>
 #include <quick_core/sys_sfx.hpp>
 #include <quick_core/timer.hpp>
@@ -91,6 +94,9 @@ void reset_ogl_state() noexcept
 	glDisable(GL_CULL_FACE);
 }
 
+// temp
+quick3d::core::InstanceModelRenderer* instance_renderer;
+
 void setup_model_entity() noexcept
 {
 	auto program{ std::make_unique<quick3d::gl::Program>(
@@ -98,7 +104,6 @@ void setup_model_entity() noexcept
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_fs.glsl")).get_glsl()
 	) };
 	program->bind_uniform_block("CameraMatrix", 0);
-	program->bind_uniform_block("InstanceModelMatrix", 1);
 	auto model{ std::make_unique<quick3d::gl::Model>("D:/Programming-Playground/quick3d/tests/outer_glsl/model/yae/yae.obj") };
 	auto renderer{ new quick3d::core::InstanceModelRenderer() };
 	renderer->set_instance_count(10);
@@ -112,6 +117,9 @@ void setup_model_entity() noexcept
 	programs.push_back(std::move(program));
 	models.push_back(std::move(model));
 	components.push_back(renderer);
+
+	// temp
+	instance_renderer = renderer;
 }
 
 void setup_skybox_entity() noexcept
@@ -179,7 +187,19 @@ int main() noexcept
 		setup_model_entity();
 		setup_skybox_entity();
 
-		gfx.capture_mouse();
+		ImGui::CreateContext();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+		ImGui::StyleColorsDark();
+
+		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
+		ImGui_ImplOpenGL3_Init("#version 320 es");
+
+		//gfx.capture_mouse();
+		int instance_count{ 1 };
 		quick3d::ecs::HightResTimer timer;
 		while (gfx.is_running() && sfx.is_running())
 		{
@@ -190,11 +210,32 @@ int main() noexcept
 			sfx.on_tick(delta);
 			update_camera_ubo();
 
+			instance_renderer->set_instance_count(instance_count);
+
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+
 			set_ogl_state();
 			for (auto& entity : entities)
 				entity->on_tick(delta);
 			reset_ogl_state();
+
+			ImGui::Begin("Control");
+			ImGui::SliderInt("instance count", &instance_count, 0, 10);
+			ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::End();
+
+			ImGui::Render();
+			int display_w, display_h;
+			glfwGetFramebufferSize(glfwGetCurrentContext(), &display_w, &display_h);
+			glViewport(0, 0, display_w, display_h);
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
+
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
 	}
 	catch (std::exception& e)
 	{

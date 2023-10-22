@@ -3,7 +3,7 @@
 
 quick3d::test::YaeEntity::YaeEntity()
 	: //ssbo_model(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, sizeof(model_data))
-	ubo_model(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, sizeof(model_data))
+	ssbo_model(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, sizeof(model_data))
 {
 	setup_model_data();
 }
@@ -25,6 +25,6 @@ void quick3d::test::YaeEntity::setup_model_data() noexcept
 	for (int i = 0; i < 10; i++)
 		model_data.model[i] = glm::translate(model, glm::vec3(i, 0.0f, 0.0f));
 
-	ubo_model.write_buffer_data(&model_data, 0, sizeof(ModelData));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 1, ubo_model.get_buffer_id());
+	ssbo_model.write_buffer_data(&model_data, 0, sizeof(ModelData));
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
 }

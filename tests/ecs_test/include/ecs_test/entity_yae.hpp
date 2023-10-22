@@ -14,7 +14,7 @@ namespace quick3d::test
 			glm::mat4 model[10];
 		} model_data;
 		//gl::Buffer ssbo_model;
-		gl::Buffer ubo_model;
+		gl::Buffer ssbo_model;
 
 		void setup_model_data() noexcept;
 

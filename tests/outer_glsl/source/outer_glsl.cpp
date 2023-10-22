@@ -108,7 +108,7 @@ void run() noexcept(false)
     quick3d::gl::Model earth_model(std::format("{}/{}", MODEL_FOLDER, "earth/Earth 2K.obj"));
     std::clog << "town model loadded!" << std::endl;
 
-    context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
+    context.get_window(0).set_mouse_movement_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
     context.get_window(0).set_keybord_callback([&](GLFWwindow* win, int key, int scancode, int action, int mods)
         {
             camera.process_keyboard_input(win, 0.01f);

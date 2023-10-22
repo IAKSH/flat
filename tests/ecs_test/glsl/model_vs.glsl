@@ -15,9 +15,9 @@ layout (std140) uniform CameraMatrix
    mat4 view;
 };
 
-layout(std140) uniform InstanceModelMatrix
+layout(std430, binding = 1) buffer InstanceModelMatrix
 {
-	mat4 model[10];
+	mat4 model[];
 };
 
 void main()

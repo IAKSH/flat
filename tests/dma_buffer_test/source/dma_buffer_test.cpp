@@ -130,7 +130,7 @@ void run() noexcept(false)
 	quick3d::gl::VertexArray light_vao;
 	light_vao.add_attrib(light_vbo, 0, 3, 3, 0);
 
-	context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
+	context.get_window(0).set_mouse_movement_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
 	context.get_window(0).set_keybord_callback([&](GLFWwindow* win, int key, int scancode, int action, int mods)
 		{
 			camera.process_keyboard_input(win, 0.01f);
