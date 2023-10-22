@@ -1,33 +1,8 @@
 #include <quick_core/com_renderer.hpp>
 
-void quick3d::core::Renderer::update_program_uniform() noexcept
-{
-	update_program_uniform_without_model();
-	glm::mat4 rotate_matrix = glm::rotate(glm::mat4(1.0f), rotate_pitch, glm::vec3(1.0f, 0.0f, 0.0f));
-	rotate_matrix = glm::rotate(rotate_matrix, rotate_yaw, glm::vec3(0.0f, 1.0f, 0.0f));
-	rotate_matrix = glm::rotate(rotate_matrix, rotate_roll, glm::vec3(0.0f, 0.0f, 1.0f));
-
-	program->set_uniform("model",
-		glm::translate(glm::mat4(1.0f), glm::vec3(position_x, position_y, position_z)) *
-		glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale)) * 
-		rotate_matrix
-		);
-}
-
-void quick3d::core::Renderer::update_program_uniform_without_model() noexcept
-{
-	program->set_uniform("projection", camera->get_projection_matrix());
-	program->set_uniform("view", camera->get_view_matrix());
-}
-
 quick3d::core::Renderer::Renderer() noexcept
 	: position_x(0.0f), position_y(0.0f), position_z(0.0f), rotate_pitch(0.0f), rotate_yaw(0.0f), rotate_roll(0.0f), scale(0.001f)
 {
-}
-
-void quick3d::core::Renderer::bind_camera(gl::FPSCamera* camera) noexcept
-{
-	this->camera = camera;
 }
 
 void quick3d::core::Renderer::bind_program(gl::Program* program) noexcept
@@ -105,9 +80,13 @@ void quick3d::core::Renderer::set_scale(float f) noexcept
 	scale = f;
 }
 
+quick3d::gl::Program* quick3d::core::Renderer::get_program() noexcept
+{
+	return program;
+}
+
 void quick3d::core::ModelRenderer::on_tick(float delta_ms) noexcept(false)
 {
-	update_program_uniform();
 	model->draw_model(*program);
 }
 
@@ -121,7 +100,6 @@ void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->get_cubemap_id());
 
-	update_program_uniform();
 	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float));
 
 	glActiveTexture(GL_TEXTURE0);
@@ -143,10 +121,14 @@ void quick3d::core::CubeMapVAORenderer::bind_cubemap(gl::CubeMap* cubemap) noexc
 	this->cubemap = cubemap;
 }
 
+void quick3d::core::SkyboxVAORenderer::bind_camera(gl::FPSCamera* camera) noexcept
+{
+	this->camera = camera;
+}
+
 void quick3d::core::SkyboxVAORenderer::update_skybox_program_uniform() noexcept
 {
-	program->set_uniform("projection", camera->get_projection_matrix());
-	program->set_uniform("view", glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) + camera->get_front_vec(), camera->get_up_vec()));
+	program->set_uniform("skybox_view", glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) + camera->get_front_vec(), camera->get_up_vec()));
 }
 
 void quick3d::core::SkyboxVAORenderer::on_tick(float delta_ms) noexcept(false)
@@ -169,7 +151,6 @@ void quick3d::core::VAORenderer::on_tick(float delta_ms) noexcept(false)
 		glBindTexture(GL_TEXTURE_2D, textures[i]->get_tex_id());
 	}
 
-	update_program_uniform();
 	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float));
 
 	glActiveTexture(GL_TEXTURE0);
@@ -208,7 +189,6 @@ void quick3d::core::InstanceRenderer::set_instance_count(std::size_t count) noex
 
 void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms) noexcept(false)
 {
-	update_program_uniform();
 	model->draw_model(*program, instance_count);
 }
 
@@ -217,7 +197,6 @@ void quick3d::core::InstanceCubeMapVAORenderer::on_tick(float delta_ms) noexcept
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->get_cubemap_id());
 
-	update_program_uniform();
 	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float), instance_count);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -232,7 +211,6 @@ void quick3d::core::InstanceVAORenderer::on_tick(float delta_ms) noexcept(false)
 		glBindTexture(GL_TEXTURE_2D, textures[i]->get_tex_id());
 	}
 
-	update_program_uniform();
 	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float), instance_count);
 
 	glActiveTexture(GL_TEXTURE0);

@@ -23,7 +23,7 @@ void quick3d::core::GFXSystem::bind_camera_to_context() noexcept
     context.get_window(0).set_mouse_callback([&](GLFWwindow* win, double x, double y) { camera.process_mouse_input(win, x, y); });
     context.get_window(0).set_keybord_callback([&](GLFWwindow* win, int key, int scancode, int action, int mods)
         {
-            camera.process_keyboard_input(win, 0.001f);
+            camera.process_keyboard_input(win, 0.1f);
 
             if (action == GLFW_PRESS)
             {

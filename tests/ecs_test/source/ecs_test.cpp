@@ -97,11 +97,11 @@ void setup_model_entity() noexcept
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_vs.glsl")).get_glsl(),
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_fs.glsl")).get_glsl()
 	) };
+	program->bind_uniform_block("CameraMatrix", 0);
+	program->bind_uniform_block("InstanceModelMatrix", 1);
 	auto model{ std::make_unique<quick3d::gl::Model>("D:/Programming-Playground/quick3d/tests/outer_glsl/model/yae/yae.obj") };
-	auto renderer{ new quick3d::core::ModelRenderer() };
-	//auto renderer{ new quick3d::core::InstanceModelRenderer() };
-	//renderer->set_instance_count(100);
-	renderer->bind_camera(&gfx.get_camera());
+	auto renderer{ new quick3d::core::InstanceModelRenderer() };
+	renderer->set_instance_count(10);
 	renderer->bind_program(program.get());
 	renderer->bind_model(model.get());
 
@@ -120,6 +120,7 @@ void setup_skybox_entity() noexcept
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_vs.glsl")).get_glsl(),
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_fs.glsl")).get_glsl()
 	) };
+	program->bind_uniform_block("CameraMatrix", 0);
 	auto vbo{ std::make_unique<quick3d::gl::Buffer>(GL_ARRAY_BUFFER,GL_STATIC_DRAW,skybox_vertices.size() * sizeof(float)) };
 	vbo->write_buffer_data(skybox_vertices);
 	auto vao{ std::make_unique<quick3d::gl::VertexArray>() };
@@ -156,6 +157,21 @@ void setup_skybox_entity() noexcept
 	components.push_back(renderer);
 }
 
+static struct Data
+{
+	glm::mat4 projection;
+	glm::mat4 view;
+} data;
+static auto camera_ubo{ std::make_unique<quick3d::gl::Buffer>(GL_UNIFORM_BUFFER,GL_STREAM_DRAW,sizeof(data)) };
+
+void update_camera_ubo() noexcept
+{
+	data.projection = gfx.get_camera().get_projection_matrix();
+	data.view = gfx.get_camera().get_view_matrix();
+	camera_ubo->write_buffer_data(&data, 0, sizeof(data));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo->get_buffer_id());
+}
+
 int main() noexcept
 {
 	try
@@ -170,13 +186,14 @@ int main() noexcept
 			auto delta{ timer.get_timer_duration<std::chrono::microseconds>().count() / 1000.0f };
 			timer.record_time_point();
 
+			gfx.on_tick(delta);
+			sfx.on_tick(delta);
+			update_camera_ubo();
+
 			set_ogl_state();
 			for (auto& entity : entities)
 				entity->on_tick(delta);
 			reset_ogl_state();
-
-			gfx.on_tick(delta);
-			sfx.on_tick(delta);
 		}
 	}
 	catch (std::exception& e)
