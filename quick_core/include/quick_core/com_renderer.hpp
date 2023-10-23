@@ -24,22 +24,6 @@ namespace quick3d::core
 		Renderer() noexcept;
 		Renderer(Renderer&) = delete;
 		~Renderer() = default;
-		void bind_program(gl::Program* program) noexcept;
-		float get_position_x() noexcept;
-		float get_position_y() noexcept;
-		float get_position_z() noexcept;
-		float get_rotate_pitch() noexcept;
-		float get_rotate_yaw() noexcept;
-		float get_rotate_roll() noexcept;
-		float get_sacle() noexcept;
-		void set_position_x(float f) noexcept;
-		void set_position_y(float f) noexcept;
-		void set_position_z(float f) noexcept;
-		void set_rotate_pitch(float f) noexcept;
-		void set_rotate_yaw(float f) noexcept;
-		void set_rotate_roll(float f) noexcept;
-		void set_scale(float f) noexcept;
-		gl::Program* get_program() noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override = 0;
 	};
 
@@ -52,7 +36,6 @@ namespace quick3d::core
 		ModelRenderer() = default;
 		ModelRenderer(ModelRenderer&) = delete;
 		~ModelRenderer() = default;
-		void bind_model(gl::Model* model) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
@@ -67,24 +50,21 @@ namespace quick3d::core
 		CubeMapVAORenderer() = default;
 		CubeMapVAORenderer(CubeMapVAORenderer&) = delete;
 		~CubeMapVAORenderer() = default;
-		void bind_vbo(gl::Buffer* vbo) noexcept;
-		void bind_vao(gl::VertexArray* vao) noexcept;
-		void bind_cubemap(gl::CubeMap* cubemap) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
 	class SkyboxVAORenderer : virtual public CubeMapVAORenderer
 	{
 	private:
-		gl::FPSCamera* camera;
 		void update_skybox_program_uniform() noexcept;
+
+	protected:
+		gl::FPSCamera* camera;
 
 	public:
 		SkyboxVAORenderer() = default;
 		SkyboxVAORenderer(SkyboxVAORenderer&) = delete;
 		~SkyboxVAORenderer() = default;
-
-		void bind_camera(gl::FPSCamera* camera) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
@@ -99,9 +79,6 @@ namespace quick3d::core
 		VAORenderer() = default;
 		VAORenderer(VAORenderer&) = delete;
 		~VAORenderer() = default;
-		void bind_vbo(gl::Buffer* vbo) noexcept;
-		void bind_vao(gl::VertexArray* vao) noexcept;
-		void bind_textures(gl::Texture* tex) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
@@ -113,9 +90,7 @@ namespace quick3d::core
 	public:
 		InstanceRenderer() noexcept;
 		InstanceRenderer(InstanceRenderer&) = delete;
-		~InstanceRenderer() = default;
-		std::size_t get_instance_count() noexcept;
-		void set_instance_count(std::size_t count) noexcept;
+		~InstanceRenderer() = default;		
 		virtual void on_tick(float delta_ms) noexcept(false) override = 0;
 	};
 

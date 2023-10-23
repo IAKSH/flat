@@ -5,94 +5,9 @@ quick3d::core::Renderer::Renderer() noexcept
 {
 }
 
-void quick3d::core::Renderer::bind_program(gl::Program* program) noexcept
-{
-	this->program = program;
-}
-
-float quick3d::core::Renderer::get_position_x() noexcept
-{
-	return position_x;
-}
-
-float quick3d::core::Renderer::get_position_y() noexcept
-{
-	return position_y;
-}
-
-float quick3d::core::Renderer::get_position_z() noexcept
-{
-	return position_z;
-}
-
-float quick3d::core::Renderer::get_rotate_pitch() noexcept
-{
-	return rotate_pitch;
-}
-
-float quick3d::core::Renderer::get_rotate_yaw() noexcept
-{
-	return rotate_yaw;
-}
-
-float quick3d::core::Renderer::get_rotate_roll() noexcept
-{
-	return rotate_roll;
-}
-
-void quick3d::core::Renderer::set_rotate_pitch(float f) noexcept
-{
-	rotate_pitch = f;
-}
-
-void quick3d::core::Renderer::set_rotate_yaw(float f) noexcept
-{
-	rotate_yaw = f;
-}
-
-void quick3d::core::Renderer::set_rotate_roll(float f) noexcept
-{
-	rotate_roll = f;
-}
-
-float quick3d::core::Renderer::get_sacle() noexcept
-{
-	return scale;
-}
-
-void quick3d::core::Renderer::set_position_x(float f) noexcept
-{
-	position_x = f;
-}
-
-void quick3d::core::Renderer::set_position_y(float f) noexcept
-{
-	position_y = f;
-}
-
-void quick3d::core::Renderer::set_position_z(float f) noexcept
-{
-	position_z = f;
-}
-
-void quick3d::core::Renderer::set_scale(float f) noexcept
-{
-	scale = f;
-}
-
-quick3d::gl::Program* quick3d::core::Renderer::get_program() noexcept
-{
-	return program;
-}
-
 void quick3d::core::ModelRenderer::on_tick(float delta_ms) noexcept(false)
 {
 	model->draw_model(*program);
-}
-
-void quick3d::core::ModelRenderer::bind_model(gl::Model* model) noexcept
-{
-	this->model = model;
 }
 
 void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
@@ -104,26 +19,6 @@ void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-}
-
-void quick3d::core::CubeMapVAORenderer::bind_vbo(gl::Buffer* vbo) noexcept
-{
-	this->vbo = vbo;
-}
-
-void quick3d::core::CubeMapVAORenderer::bind_vao(gl::VertexArray* vao) noexcept
-{
-	this->vao = vao;
-}
-
-void quick3d::core::CubeMapVAORenderer::bind_cubemap(gl::CubeMap* cubemap) noexcept
-{
-	this->cubemap = cubemap;
-}
-
-void quick3d::core::SkyboxVAORenderer::bind_camera(gl::FPSCamera* camera) noexcept
-{
-	this->camera = camera;
 }
 
 void quick3d::core::SkyboxVAORenderer::update_skybox_program_uniform() noexcept
@@ -157,34 +52,9 @@ void quick3d::core::VAORenderer::on_tick(float delta_ms) noexcept(false)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void quick3d::core::VAORenderer::bind_vao(gl::VertexArray* vao) noexcept
-{
-	this->vao = vao;
-}
-
-void quick3d::core::VAORenderer::bind_textures(gl::Texture* tex) noexcept
-{
-	textures.push_back(tex);
-}
-
-void quick3d::core::VAORenderer::bind_vbo(gl::Buffer* vbo) noexcept
-{
-	this->vbo = vbo;
-}
-
 quick3d::core::InstanceRenderer::InstanceRenderer() noexcept
 	: instance_count(1)
 {
-}
-
-std::size_t quick3d::core::InstanceRenderer::get_instance_count() noexcept
-{
-	return instance_count;
-}
-
-void quick3d::core::InstanceRenderer::set_instance_count(std::size_t count) noexcept
-{
-	instance_count = count;
 }
 
 void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms) noexcept(false)

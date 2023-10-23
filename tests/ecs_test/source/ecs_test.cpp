@@ -9,73 +9,8 @@
 #include <quick_gl/cubemap.hpp>
 #include <format>
 
-#include <ecs_test/entity_yae.hpp>
-#include <ecs_test/entity_skybox.hpp>
-
-static constexpr std::string_view GLSL_FOLDER = "../../../../tests/ecs_test/glsl";
-static constexpr std::string_view MODEL_FOLDER = "../../../../tests/outer_glsl/model";
-static constexpr std::string_view IMAGE_FOLDER = "../../../../tests/outer_glsl/image";
-
-constexpr std::array<float, 108> skybox_vertices{
-	// right
-	-1.0f, 1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-
-		// left
-		-1.0f, -1.0f, 1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, -1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-
-		// top
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-
-		// bottom
-		-1.0f, -1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f,
-		-1.0f, -1.0f, 1.0f,
-
-		// front
-		-1.0f, 1.0f, -1.0f,
-		1.0f, 1.0f, -1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, -1.0f,
-
-		// back
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f, 1.0f,
-		1.0f, -1.0f, 1.0f
-};
-
-static std::vector<std::unique_ptr<quick3d::gl::Program>> programs;
-static std::vector<std::unique_ptr<quick3d::gl::Model>> models;
-static std::vector<std::unique_ptr<quick3d::gl::VertexArray>> vaos;
-static std::vector<std::unique_ptr<quick3d::gl::Buffer>> buffers;
-static std::vector<std::unique_ptr<quick3d::gl::Texture>> textures;
-static std::vector<std::unique_ptr<quick3d::gl::CubeMap>> cubemaps;
-static std::vector<quick3d::core::Component*> components;
-static std::vector<quick3d::core::Entity*> entities;
-static quick3d::core::GFXSystem gfx(800, 600);
-static quick3d::core::SFXSystem sfx;
+#include <ecs_test/yae.hpp>
+#include <ecs_test/skybox.hpp>
 
 void set_ogl_state() noexcept
 {
@@ -94,99 +29,39 @@ void reset_ogl_state() noexcept
 	glDisable(GL_CULL_FACE);
 }
 
-// temp
-quick3d::core::InstanceModelRenderer* instance_renderer;
-
-void setup_model_entity() noexcept
-{
-	auto program{ std::make_unique<quick3d::gl::Program>(
-		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_vs.glsl")).get_glsl(),
-		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_fs.glsl")).get_glsl()
-	) };
-	program->bind_uniform_block("CameraMatrix", 0);
-	auto model{ std::make_unique<quick3d::gl::Model>("D:/Programming-Playground/quick3d/tests/outer_glsl/model/yae/yae.obj") };
-	auto renderer{ new quick3d::core::InstanceModelRenderer() };
-	renderer->set_instance_count(10);
-	renderer->bind_program(program.get());
-	renderer->bind_model(model.get());
-
-	auto entity{ new quick3d::test::YaeEntity() };
-	entity->bind_component(renderer);
-	entities.push_back(entity);
-
-	programs.push_back(std::move(program));
-	models.push_back(std::move(model));
-	components.push_back(renderer);
-
-	// temp
-	instance_renderer = renderer;
-}
-
-void setup_skybox_entity() noexcept
-{
-	auto program{ std::make_unique<quick3d::gl::Program>(
-		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_vs.glsl")).get_glsl(),
-		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_fs.glsl")).get_glsl()
-	) };
-	program->bind_uniform_block("CameraMatrix", 0);
-	auto vbo{ std::make_unique<quick3d::gl::Buffer>(GL_ARRAY_BUFFER,GL_STATIC_DRAW,skybox_vertices.size() * sizeof(float)) };
-	vbo->write_buffer_data(skybox_vertices);
-	auto vao{ std::make_unique<quick3d::gl::VertexArray>() };
-	vao->add_attrib(*vbo, 0, 3, 3, 0);
-	auto renderer{ new quick3d::core::SkyboxVAORenderer() };
-	renderer->bind_camera(&gfx.get_camera());
-	renderer->bind_program(program.get());
-	renderer->bind_vbo(vbo.get());
-	renderer->bind_vao(vao.get());
-
-	std::array<std::string, 6> skybox_texture_pathes
-	{
-		std::format("{}/{}", IMAGE_FOLDER, "right.jpg"),
-			std::format("{}/{}", IMAGE_FOLDER, "left.jpg"),
-			std::format("{}/{}", IMAGE_FOLDER, "top.jpg"),
-			std::format("{}/{}", IMAGE_FOLDER, "bottom.jpg"),
-			std::format("{}/{}", IMAGE_FOLDER, "front.jpg"),
-			std::format("{}/{}", IMAGE_FOLDER, "back.jpg")
-	};
-	auto skybox_cubemap{ std::make_unique<quick3d::gl::CubeMap>(GL_RGBA,2048,2048) };
-	for (int i = 0; i < 6; i++)
-		skybox_cubemap->generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, quick3d::gl::Image(skybox_texture_pathes[i], false));
-
-	renderer->bind_cubemap(skybox_cubemap.get());
-
-	auto entity{ new quick3d::test::SkyboxEntity() };
-	entity->bind_component(renderer);
-	entities.push_back(entity);
-
-	programs.push_back(std::move(program));
-	buffers.push_back(std::move(vbo));
-	vaos.push_back(std::move(vao));
-	cubemaps.push_back(std::move(skybox_cubemap));
-	components.push_back(renderer);
-}
-
-static struct Data
-{
-	glm::mat4 projection;
-	glm::mat4 view;
-} data;
-static auto camera_ubo{ std::make_unique<quick3d::gl::Buffer>(GL_UNIFORM_BUFFER,GL_STREAM_DRAW,sizeof(data)) };
-
-void update_camera_ubo() noexcept
+// temp code
+// TODO: 可能需要并入gfx.on_tick()
+void update_camera_ubo(quick3d::core::GFXSystem& gfx, quick3d::gl::Buffer& ubo, auto& data) noexcept
 {
 	data.projection = gfx.get_camera().get_projection_matrix();
 	data.view = gfx.get_camera().get_view_matrix();
-	camera_ubo->write_buffer_data(&data, 0, sizeof(data));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo->get_buffer_id());
+	ubo.write_buffer_data(&data, 0, sizeof(data));
+	glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get_buffer_id());
 }
 
 int main() noexcept
 {
 	try
 	{
-		setup_model_entity();
-		setup_skybox_entity();
+		quick3d::core::GFXSystem gfx(800, 600);
+		quick3d::core::SFXSystem sfx;
+		quick3d::core::EntityManager entity_manager;
 
+		// temp code
+		// TODO: 可能需要并入gfx.on_tick()
+		struct
+		{
+			glm::mat4 projection;
+			glm::mat4 view;
+		} camera_ubo_data;
+		auto camera_ubo{ std::make_unique<quick3d::gl::Buffer>(GL_UNIFORM_BUFFER,GL_STREAM_DRAW,sizeof(camera_ubo_data)) };
+
+		entity_manager.add_entity<quick3d::test::SkyboxEntity>("skybox");
+		entity_manager.add_entity<quick3d::test::YaeEntity>("yae");
+
+		// TODO：应当也在UBO中实现，在UBO中加入没有位移信息的view矩阵
+		reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->bind_camera(gfx.get_camera());
+			
 		ImGui::CreateContext();
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -208,17 +83,17 @@ int main() noexcept
 
 			gfx.on_tick(delta);
 			sfx.on_tick(delta);
-			update_camera_ubo();
-
-			instance_renderer->set_instance_count(instance_count);
+			update_camera_ubo(gfx, *camera_ubo, camera_ubo_data);
 
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
+			// temp code
+			reinterpret_cast<quick3d::test::YaeEntity*>(entity_manager.get_entity("yae"))->set_instance_count(instance_count);
+
 			set_ogl_state();
-			for (auto& entity : entities)
-				entity->on_tick(delta);
+			entity_manager.foreach_on_tick(delta);
 			reset_ogl_state();
 
 			ImGui::Begin("Control");
@@ -227,9 +102,6 @@ int main() noexcept
 			ImGui::End();
 
 			ImGui::Render();
-			int display_w, display_h;
-			glfwGetFramebufferSize(glfwGetCurrentContext(), &display_w, &display_h);
-			glViewport(0, 0, display_w, display_h);
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		}
 
