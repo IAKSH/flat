@@ -9,7 +9,7 @@ namespace quick3d::test
 	// 至于从Entity操控Renderer的过程，由你自己在这里实现API的导出
 	// 最简单的方式（虽然不是很优雅），就是直接导出shader program，在外部（entity中）设置uniform
 	// 但是通常来说，都是用UBO/SSBO的，这种情况就还是在该类中进行，只导出部分控制API
-	// 关于UBO和SSBO的绑定问题，这俩的绑定点会冲突，可能需要在quick3d::gl中对其进行一定的封装
+	// TODO: 关于UBO和SSBO的绑定问题，这俩的绑定点会冲突，可能需要在quick3d::gl中对其进行一定的封装
 	class YaeRenderer : public core::InstanceModelRenderer
 	{
 	private:

@@ -64,16 +64,6 @@ namespace quick3d::core
 		bool is_running() noexcept;
 	};
 
-	// TODO: 缺少一种从Component访问所在Entity，以及其他Entity数据的方式
-	// TODO: 缺少一种同Entity中各Component相互访问的方式
-	// 简而言之，需要建立一个（或多个）观察者模式，让Components，Entities能够相互访问。
-	// 但是按照经验而言，似乎类似Qt的那种插槽与回调式的设计更好 （好像不尽然，因为那种插槽架构依赖预处理器，以及可能需要考虑单例模式）
-	// 还有，肯定不能用消息队列了，至少不是多周期（帧）的消息队列
-	// 
-	// 这会涉及到一个，由谁来管理数据的问题
-	// 我的意见是让需要数据的人拥有数据，但是不要定死，毕竟这样做肯定会缺少一些资源复用的优化
-	// 剩下的就不是quick3d::core需要考虑的了
-
 	class Component
 	{
 	public:
