@@ -30,8 +30,7 @@ namespace quick3d::core
 			if (entities.count(_name) > 0)
 				throw std::invalid_argument(std::format("entities¡¯ naming conflict (name: {})", name));
 
-			auto ptr{ new T(*this,std::forward<Args>(args)...) };
-			entities[_name] = ptr;
+			entities[_name] = new T(*this, std::forward<Args>(args)...);
 		}
 
 		FakeEntity* get_entity(std::string_view name) noexcept(false)
