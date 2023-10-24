@@ -13,7 +13,7 @@ namespace quick3d::test
 	class YaeRenderer : public core::InstanceModelRenderer
 	{
 	private:
-		inline static struct ModelData
+		struct ModelData
 		{
 			glm::mat4 model[10];
 		};

@@ -11,6 +11,7 @@
 
 #include <ecs_test/yae.hpp>
 #include <ecs_test/skybox.hpp>
+#include <ecs_test/box.hpp>
 
 void set_ogl_state() noexcept
 {
@@ -39,6 +40,7 @@ int main() noexcept
 
 		entity_manager.add_entity<quick3d::test::SkyboxEntity>("skybox");
 		entity_manager.add_entity<quick3d::test::YaeEntity>("yae");
+		entity_manager.add_entity<quick3d::test::BoxEntity>("box");
 			
 		ImGui::CreateContext();
 		ImGui::CreateContext();
@@ -51,7 +53,8 @@ int main() noexcept
 		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
 		ImGui_ImplOpenGL3_Init("#version 320 es");
 
-		int instance_count{ 1 };
+		int yae_instance{ 1 };
+		int box_instance{ 1 };
 		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
 		glm::vec3 sun_light_direction(0.0f, 0.0f, 0.0f);
 		quick3d::ecs::HightResTimer timer;
@@ -68,7 +71,8 @@ int main() noexcept
 			ImGui::NewFrame();
 
 			// temp code
-			reinterpret_cast<quick3d::test::YaeEntity*>(entity_manager.get_entity("yae"))->set_instance_count(instance_count);
+			reinterpret_cast<quick3d::test::YaeEntity*>(entity_manager.get_entity("yae"))->set_instance_count(yae_instance);
+			reinterpret_cast<quick3d::test::BoxEntity*>(entity_manager.get_entity("box"))->set_instance_count(box_instance);
 			reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->set_light_ambient(sun_light_ambient);
 			reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->set_light_direction(sun_light_direction);
 
@@ -78,7 +82,8 @@ int main() noexcept
 
 			ImGui::Begin("Control");
 			ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-			ImGui::SliderInt("instance count", &instance_count, 0, 10);
+			ImGui::SliderInt("box instance", &box_instance, 0, 500);
+			ImGui::SliderInt("yae instance", &yae_instance, 0, 10);
 			ImGui::ColorPicker3("ambient", glm::value_ptr(sun_light_ambient));
 			ImGui::SliderFloat3("sun_light_direction", glm::value_ptr(sun_light_direction), -100.0f, 100.0f);
 			ImGui::End();
