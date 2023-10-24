@@ -53,21 +53,6 @@ namespace quick3d::core
 		virtual void on_tick(float delta_ms) noexcept(false) override;
 	};
 
-	class SkyboxVAORenderer : virtual public CubeMapVAORenderer
-	{
-	private:
-		void update_skybox_program_uniform() noexcept;
-
-	protected:
-		gl::FPSCamera* camera;
-
-	public:
-		SkyboxVAORenderer() = default;
-		SkyboxVAORenderer(SkyboxVAORenderer&) = delete;
-		~SkyboxVAORenderer() = default;
-		virtual void on_tick(float delta_ms) noexcept(false) override;
-	};
-
 	class VAORenderer : virtual public Renderer
 	{
 	protected:

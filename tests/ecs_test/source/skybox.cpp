@@ -107,11 +107,6 @@ quick3d::test::SkyboxRenderer::~SkyboxRenderer() noexcept
 	delete vbo;
 }
 
-void quick3d::test::SkyboxRenderer::bind_camera(gl::FPSCamera* cam) noexcept
-{
-	camera = cam;
-}
-
 void quick3d::test::SkyboxEntity::try_load_renderer() noexcept(false)
 {
 	if (!ren)
@@ -122,11 +117,6 @@ quick3d::test::SkyboxEntity::SkyboxEntity(core::EntityManager& manager) noexcept
 	: Entity(manager)
 {
 	try_load_renderer();
-}
-
-void quick3d::test::SkyboxEntity::bind_camera(gl::FPSCamera& camera) noexcept
-{
-	ren->bind_camera(&camera);
 }
 
 void quick3d::test::SkyboxEntity::on_tick(float delta_ms) noexcept(false)

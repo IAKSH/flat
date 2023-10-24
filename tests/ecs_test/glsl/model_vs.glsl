@@ -13,6 +13,7 @@ layout (std140) uniform CameraMatrix
 {
    mat4 projection;
    mat4 view;
+   mat4 view_without_movement;
 };
 
 layout(std430, binding = 1) buffer InstanceModelMatrix

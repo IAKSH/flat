@@ -21,23 +21,6 @@ void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void quick3d::core::SkyboxVAORenderer::update_skybox_program_uniform() noexcept
-{
-	program->set_uniform("skybox_view", glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) + camera->get_front_vec(), camera->get_up_vec()));
-}
-
-void quick3d::core::SkyboxVAORenderer::on_tick(float delta_ms) noexcept(false)
-{
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->get_cubemap_id());
-
-	update_skybox_program_uniform();
-	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float));
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-}
-
 void quick3d::core::VAORenderer::on_tick(float delta_ms) noexcept(false)
 {
 	for (int i = 0; i < textures.size(); i++)

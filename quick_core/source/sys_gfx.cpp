@@ -1,13 +1,15 @@
 #include <quick_core/sys_gfx.hpp>
 
 quick3d::core::GFXSystem::GFXSystem(int w, int h, std::string_view title) noexcept(false)
-    : context(title, w, h), camera(w, h), mouse_caputured(false)
+    : context(title, w, h), camera(w, h), mouse_caputured(false), camera_ubo(GL_UNIFORM_BUFFER, GL_STREAM_DRAW, sizeof(CameraUBOData))
 {
     bind_camera_to_context();
 }
 
 void quick3d::core::GFXSystem::on_tick(float delta_ms) noexcept(false)
 {
+    update_camera_ubo();
+
     // temp
     if (glfwWindowShouldClose(glfwGetCurrentContext()))
         running = false;
@@ -52,6 +54,18 @@ void quick3d::core::GFXSystem::bind_camera_to_context() noexcept
                 capture_mouse((mouse_caputured = !mouse_caputured));
         }
     });
+}
+
+void quick3d::core::GFXSystem::update_camera_ubo() noexcept
+{
+    camera_ubo.dma_do([&](void* data)
+    {
+        auto ptr = reinterpret_cast<CameraUBOData*>(data);
+        ptr->projection = get_camera().get_projection_matrix();
+        ptr->view = get_camera().get_view_matrix();
+        ptr->view_without_movement = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) + camera.get_front_vec(), camera.get_up_vec());
+    });
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo.get_buffer_id());
 }
 
 void quick3d::core::GFXSystem::capture_mouse(bool b) noexcept

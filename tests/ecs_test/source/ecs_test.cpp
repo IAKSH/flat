@@ -29,16 +29,6 @@ void reset_ogl_state() noexcept
 	glDisable(GL_CULL_FACE);
 }
 
-// temp code
-// TODO: 可能需要并入gfx.on_tick()
-void update_camera_ubo(quick3d::core::GFXSystem& gfx, quick3d::gl::Buffer& ubo, auto& data) noexcept
-{
-	data.projection = gfx.get_camera().get_projection_matrix();
-	data.view = gfx.get_camera().get_view_matrix();
-	ubo.write_buffer_data(&data, 0, sizeof(data));
-	glBindBufferBase(GL_UNIFORM_BUFFER, 0, ubo.get_buffer_id());
-}
-
 int main() noexcept
 {
 	try
@@ -47,20 +37,8 @@ int main() noexcept
 		quick3d::core::SFXSystem sfx;
 		quick3d::core::EntityManager entity_manager;
 
-		// temp code
-		// TODO: 可能需要并入gfx.on_tick()
-		struct
-		{
-			glm::mat4 projection;
-			glm::mat4 view;
-		} camera_ubo_data;
-		auto camera_ubo{ std::make_unique<quick3d::gl::Buffer>(GL_UNIFORM_BUFFER,GL_STREAM_DRAW,sizeof(camera_ubo_data)) };
-
 		entity_manager.add_entity<quick3d::test::SkyboxEntity>("skybox");
 		entity_manager.add_entity<quick3d::test::YaeEntity>("yae");
-
-		// TODO：应当也在UBO中实现，在UBO中加入没有位移信息的view矩阵
-		reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->bind_camera(gfx.get_camera());
 			
 		ImGui::CreateContext();
 		ImGui::CreateContext();
@@ -83,7 +61,6 @@ int main() noexcept
 
 			gfx.on_tick(delta);
 			sfx.on_tick(delta);
-			update_camera_ubo(gfx, *camera_ubo, camera_ubo_data);
 
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();

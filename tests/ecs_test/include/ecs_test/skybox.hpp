@@ -4,7 +4,7 @@
 
 namespace quick3d::test
 {
-	class SkyboxRenderer : public core::SkyboxVAORenderer
+	class SkyboxRenderer : public core::CubeMapVAORenderer
 	{
 	private:
 		glm::vec3 phone_ambient;
@@ -17,8 +17,6 @@ namespace quick3d::test
 		SkyboxRenderer() noexcept(false);
 		SkyboxRenderer(SkyboxRenderer&) = delete;
 		~SkyboxRenderer() noexcept;
-
-		void bind_camera(gl::FPSCamera* cam) noexcept;
 	};
 
 	class SkyboxEntity : public core::Entity
@@ -31,7 +29,6 @@ namespace quick3d::test
 		SkyboxEntity(core::EntityManager& manager) noexcept(false);
 		SkyboxEntity(SkyboxEntity&) = delete;
 		~SkyboxEntity() = default;
-		void bind_camera(gl::FPSCamera& cam) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }
