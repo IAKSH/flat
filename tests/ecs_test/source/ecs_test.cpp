@@ -33,7 +33,7 @@ int main() noexcept
 {
 	try
 	{
-		quick3d::core::GFXSystem gfx(800, 600);
+		quick3d::core::GFXSystem gfx(1280, 720);
 		quick3d::core::SFXSystem sfx;
 		quick3d::core::EntityManager entity_manager;
 
@@ -51,8 +51,9 @@ int main() noexcept
 		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
 		ImGui_ImplOpenGL3_Init("#version 320 es");
 
-		//gfx.capture_mouse();
 		int instance_count{ 1 };
+		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
+		glm::vec3 sun_light_direction(0.0f, 0.0f, 0.0f);
 		quick3d::ecs::HightResTimer timer;
 		while (gfx.is_running() && sfx.is_running())
 		{
@@ -68,14 +69,18 @@ int main() noexcept
 
 			// temp code
 			reinterpret_cast<quick3d::test::YaeEntity*>(entity_manager.get_entity("yae"))->set_instance_count(instance_count);
+			reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->set_light_ambient(sun_light_ambient);
+			reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->set_light_direction(sun_light_direction);
 
 			set_ogl_state();
 			entity_manager.foreach_on_tick(delta);
 			reset_ogl_state();
 
 			ImGui::Begin("Control");
-			ImGui::SliderInt("instance count", &instance_count, 0, 10);
 			ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::SliderInt("instance count", &instance_count, 0, 10);
+			ImGui::ColorPicker3("ambient", glm::value_ptr(sun_light_ambient));
+			ImGui::SliderFloat3("sun_light_direction", glm::value_ptr(sun_light_direction), -100.0f, 100.0f);
 			ImGui::End();
 
 			ImGui::Render();

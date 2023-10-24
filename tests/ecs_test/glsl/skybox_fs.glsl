@@ -7,7 +7,15 @@ in vec3 texCoord;
 
 uniform samplerCube skybox_cubemap;
 
+layout (std140) uniform PhoneDirectLighting
+{
+    vec4 direction;
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
+};
+
 void main()
 {
-    fragColor = texture(skybox_cubemap,texCoord);
+    fragColor = ambient * texture(skybox_cubemap,texCoord);
 }

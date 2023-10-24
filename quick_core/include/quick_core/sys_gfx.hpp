@@ -19,6 +19,7 @@ namespace quick3d::core
 			glm::mat4 projection;
 			glm::mat4 view;
 			glm::mat4 view_without_movement;
+			glm::vec4 camera_position;
 		};
 		quick3d::gl::Buffer camera_ubo;
 

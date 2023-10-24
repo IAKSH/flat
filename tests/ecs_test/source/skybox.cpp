@@ -54,9 +54,17 @@ constexpr std::array<float, 108> skybox_vertices{
 		1.0f, -1.0f, 1.0f
 };
 
-void quick3d::test::SkyboxRenderer::setup_phone_ambient_value() noexcept
+void quick3d::test::SkyboxRenderer::setup_phone_direct_lighting() noexcept
 {
-	phone_ambient = glm::vec3(1.0f, 1.0f, 1.0f);
+	phone_direct_lighting_ubo.dma_do([&](void* data) 
+	{
+		auto ptr{ reinterpret_cast<PhoneDirectLightingData*>(data) };
+		ptr->ambient = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		ptr->diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		ptr->specular = glm::vec4(0.5f, 0.5f, 0.5f, 1.0f);
+		ptr->direction = glm::vec4(-0.2f, -0.5f, -0.3f, 1.0f);
+	});
+	glBindBufferBase(GL_UNIFORM_BUFFER, 2, phone_direct_lighting_ubo.get_buffer_id());
 }
 
 void quick3d::test::SkyboxRenderer::load_shader_program() noexcept(false)
@@ -66,6 +74,7 @@ void quick3d::test::SkyboxRenderer::load_shader_program() noexcept(false)
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_fs.glsl")).get_glsl()
 	);
 	program->bind_uniform_block("CameraMatrix", 0);
+	program->bind_uniform_block("PhoneDirectLighting", 2);
 }
 
 void quick3d::test::SkyboxRenderer::load_cubemap() noexcept(false)
@@ -93,10 +102,12 @@ void quick3d::test::SkyboxRenderer::load_vbo_vao() noexcept
 }
 
 quick3d::test::SkyboxRenderer::SkyboxRenderer() noexcept(false)
+	: phone_direct_lighting_ubo(GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, sizeof(PhoneDirectLightingData))
 {
 	load_shader_program();
 	load_cubemap();
 	load_vbo_vao();
+	setup_phone_direct_lighting();
 }
 
 quick3d::test::SkyboxRenderer::~SkyboxRenderer() noexcept
@@ -105,6 +116,33 @@ quick3d::test::SkyboxRenderer::~SkyboxRenderer() noexcept
 	delete cubemap;
 	delete vao;
 	delete vbo;
+}
+
+void quick3d::test::SkyboxRenderer::set_light_ambient(const glm::vec3& ambient) noexcept
+{
+	phone_direct_lighting_ubo.dma_do([&](void* data)
+	{
+			auto ptr{ reinterpret_cast<PhoneDirectLightingData*>(data) };
+			ptr->ambient = glm::vec4(ambient, 1.0f);
+	});
+}
+
+void quick3d::test::SkyboxRenderer::set_light_diffuse(const glm::vec3& diffuse) noexcept
+{
+	phone_direct_lighting_ubo.dma_do([&](void* data)
+		{
+			auto ptr{ reinterpret_cast<PhoneDirectLightingData*>(data) };
+			ptr->diffuse = glm::vec4(diffuse, 1.0f);
+		});
+}
+
+void quick3d::test::SkyboxRenderer::set_light_direction(const glm::vec3& direction) noexcept
+{
+	phone_direct_lighting_ubo.dma_do([&](void* data)
+	{
+		auto ptr{ reinterpret_cast<PhoneDirectLightingData*>(data) };
+		ptr->direction = glm::vec4(direction, 1.0f);
+	});
 }
 
 void quick3d::test::SkyboxEntity::try_load_renderer() noexcept(false)
@@ -117,6 +155,17 @@ quick3d::test::SkyboxEntity::SkyboxEntity(core::EntityManager& manager) noexcept
 	: Entity(manager)
 {
 	try_load_renderer();
+}
+
+void quick3d::test::SkyboxEntity::set_light_ambient(const glm::vec3& ambient) noexcept
+{
+	ren->set_light_ambient(ambient);
+	ren->set_light_diffuse(ambient);
+}
+
+void quick3d::test::SkyboxEntity::set_light_direction(const glm::vec3& direction) noexcept
+{
+	ren->set_light_direction(direction);
 }
 
 void quick3d::test::SkyboxEntity::on_tick(float delta_ms) noexcept(false)

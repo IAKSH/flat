@@ -45,6 +45,7 @@ namespace quick3d::core
 		gl::Buffer* vbo;
 		gl::VertexArray* vao;
 		gl::CubeMap* cubemap;
+		void draw_vao() noexcept;
 
 	public:
 		CubeMapVAORenderer() = default;
@@ -59,6 +60,7 @@ namespace quick3d::core
 		gl::Buffer* vbo;
 		gl::VertexArray* vao;
 		std::vector<gl::Texture*> textures;
+		void draw_vao() noexcept;
 		
 	public:
 		VAORenderer() = default;
@@ -90,6 +92,9 @@ namespace quick3d::core
 
 	class InstanceCubeMapVAORenderer : virtual public CubeMapVAORenderer, virtual public InstanceRenderer
 	{
+	protected:
+		void draw_vao() noexcept;
+
 	public:
 		InstanceCubeMapVAORenderer() = default;
 		InstanceCubeMapVAORenderer(InstanceCubeMapVAORenderer&) = delete;
@@ -99,6 +104,9 @@ namespace quick3d::core
 
 	class InstanceVAORenderer : virtual public VAORenderer, virtual public InstanceRenderer
 	{
+	protected:
+		void draw_vao() noexcept;
+
 	public:
 		InstanceVAORenderer() = default;
 		InstanceVAORenderer(InstanceVAORenderer&) = delete;

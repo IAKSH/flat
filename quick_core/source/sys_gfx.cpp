@@ -60,10 +60,11 @@ void quick3d::core::GFXSystem::update_camera_ubo() noexcept
 {
     camera_ubo.dma_do([&](void* data)
     {
-        auto ptr = reinterpret_cast<CameraUBOData*>(data);
+        auto ptr{ reinterpret_cast<CameraUBOData*>(data) };
         ptr->projection = get_camera().get_projection_matrix();
         ptr->view = get_camera().get_view_matrix();
         ptr->view_without_movement = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) + camera.get_front_vec(), camera.get_up_vec());
+        ptr->camera_position = glm::vec4(get_camera().get_position(), 1.0f);
     });
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo.get_buffer_id());
 }

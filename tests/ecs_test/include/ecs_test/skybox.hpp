@@ -7,8 +7,16 @@ namespace quick3d::test
 	class SkyboxRenderer : public core::CubeMapVAORenderer
 	{
 	private:
-		glm::vec3 phone_ambient;
-		void setup_phone_ambient_value() noexcept;
+		struct PhoneDirectLightingData
+		{
+			glm::vec4 direction;
+			glm::vec4 ambient;
+			glm::vec4 diffuse;
+			glm::vec4 specular;
+		};
+
+		gl::Buffer phone_direct_lighting_ubo;
+		void setup_phone_direct_lighting() noexcept;
 		void load_shader_program() noexcept(false);
 		void load_cubemap() noexcept(false);
 		void load_vbo_vao() noexcept;
@@ -17,6 +25,9 @@ namespace quick3d::test
 		SkyboxRenderer() noexcept(false);
 		SkyboxRenderer(SkyboxRenderer&) = delete;
 		~SkyboxRenderer() noexcept;
+		void set_light_ambient(const glm::vec3& ambient) noexcept;
+		void set_light_diffuse(const glm::vec3& diffuse) noexcept;
+		void set_light_direction(const glm::vec3& direction) noexcept;
 	};
 
 	class SkyboxEntity : public core::Entity
@@ -29,6 +40,8 @@ namespace quick3d::test
 		SkyboxEntity(core::EntityManager& manager) noexcept(false);
 		SkyboxEntity(SkyboxEntity&) = delete;
 		~SkyboxEntity() = default;
+		void set_light_ambient(const glm::vec3& ambient) noexcept;
+		void set_light_direction(const glm::vec3& direction) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }

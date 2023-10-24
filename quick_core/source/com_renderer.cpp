@@ -10,7 +10,7 @@ void quick3d::core::ModelRenderer::on_tick(float delta_ms) noexcept(false)
 	model->draw_model(*program);
 }
 
-void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
+void quick3d::core::CubeMapVAORenderer::draw_vao() noexcept
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->get_cubemap_id());
@@ -21,7 +21,12 @@ void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void quick3d::core::VAORenderer::on_tick(float delta_ms) noexcept(false)
+void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
+{
+	draw_vao();
+}
+
+void quick3d::core::VAORenderer::draw_vao() noexcept
 {
 	for (int i = 0; i < textures.size(); i++)
 	{
@@ -33,6 +38,11 @@ void quick3d::core::VAORenderer::on_tick(float delta_ms) noexcept(false)
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void quick3d::core::VAORenderer::on_tick(float delta_ms) noexcept(false)
+{
+	draw_vao();
 }
 
 quick3d::core::InstanceRenderer::InstanceRenderer() noexcept
@@ -45,7 +55,7 @@ void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms) noexcept(fals
 	model->draw_model(*program, instance_count);
 }
 
-void quick3d::core::InstanceCubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
+void quick3d::core::InstanceCubeMapVAORenderer::draw_vao() noexcept
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->get_cubemap_id());
@@ -56,7 +66,12 @@ void quick3d::core::InstanceCubeMapVAORenderer::on_tick(float delta_ms) noexcept
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
-void quick3d::core::InstanceVAORenderer::on_tick(float delta_ms) noexcept(false)
+void quick3d::core::InstanceCubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
+{
+	draw_vao();
+}
+
+void quick3d::core::InstanceVAORenderer::draw_vao() noexcept
 {
 	for (int i = 0; i < textures.size(); i++)
 	{
@@ -68,4 +83,9 @@ void quick3d::core::InstanceVAORenderer::on_tick(float delta_ms) noexcept(false)
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void quick3d::core::InstanceVAORenderer::on_tick(float delta_ms) noexcept(false)
+{
+	draw_vao();
 }
