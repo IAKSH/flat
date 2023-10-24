@@ -16,13 +16,12 @@ namespace quick3d::test
 		inline static struct ModelData
 		{
 			glm::mat4 model[10];
-		} model_data;
+		};
 		gl::Buffer ssbo_model;
 
 		void setup_model_data() noexcept(false);
 		void load_shader_program() noexcept(false);
 		void load_model() noexcept(false);
-		void modify_renderer() noexcept;
 
 	public:
 		YaeRenderer() noexcept(false);
