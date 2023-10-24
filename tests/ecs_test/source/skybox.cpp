@@ -112,17 +112,24 @@ void quick3d::test::SkyboxRenderer::bind_camera(gl::FPSCamera* cam) noexcept
 	camera = cam;
 }
 
-quick3d::test::SkyboxEntity::SkyboxEntity(core::EntityManager& manager) noexcept
+void quick3d::test::SkyboxEntity::try_load_renderer() noexcept(false)
+{
+	if (!ren)
+		ren = std::make_shared<SkyboxRenderer>();
+}
+
+quick3d::test::SkyboxEntity::SkyboxEntity(core::EntityManager& manager) noexcept(false)
 	: Entity(manager)
 {
+	try_load_renderer();
 }
 
 void quick3d::test::SkyboxEntity::bind_camera(gl::FPSCamera& camera) noexcept
 {
-	ren.bind_camera(&camera);
+	ren->bind_camera(&camera);
 }
 
 void quick3d::test::SkyboxEntity::on_tick(float delta_ms) noexcept(false)
 {
-	ren.on_tick(delta_ms);
+	ren->on_tick(delta_ms);
 }

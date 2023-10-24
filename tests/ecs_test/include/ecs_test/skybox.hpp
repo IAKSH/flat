@@ -24,10 +24,11 @@ namespace quick3d::test
 	class SkyboxEntity : public core::Entity
 	{
 	private:
-		SkyboxRenderer ren;
+		inline static std::shared_ptr< SkyboxRenderer> ren;
+		void try_load_renderer() noexcept(false);
 
 	public:
-		SkyboxEntity(core::EntityManager& manager) noexcept;
+		SkyboxEntity(core::EntityManager& manager) noexcept(false);
 		SkyboxEntity(SkyboxEntity&) = delete;
 		~SkyboxEntity() = default;
 		void bind_camera(gl::FPSCamera& cam) noexcept;

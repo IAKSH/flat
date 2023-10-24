@@ -34,10 +34,13 @@ namespace quick3d::test
 	class YaeEntity : public core::Entity
 	{
 	private:
-		YaeRenderer ren;
+		// TODO: 或许需要DI，renderer在外部实例化，然后在构造时传入
+		// 但是这样EntityManager的转发会有问题
+		inline static std::shared_ptr<YaeRenderer> ren;
+		void try_load_renderer() noexcept(false);
 
 	public:
-		YaeEntity(core::EntityManager& manager) noexcept;
+		YaeEntity(core::EntityManager& manager) noexcept(false);
 		YaeEntity(YaeEntity&) = delete;
 		~YaeEntity() = default;
 		void set_instance_count(int instance) noexcept;

@@ -52,17 +52,24 @@ void quick3d::test::YaeRenderer::set_instance_count(int instance) noexcept
 	instance_count = instance;
 }
 
-quick3d::test::YaeEntity::YaeEntity(core::EntityManager& manager) noexcept
+void quick3d::test::YaeEntity::try_load_renderer() noexcept(false)
+{
+	if (!ren)
+		ren = std::make_shared<YaeRenderer>();
+}
+
+quick3d::test::YaeEntity::YaeEntity(core::EntityManager& manager) noexcept(false)
 	: Entity(manager)
 {
+	try_load_renderer();
 }
 
 void quick3d::test::YaeEntity::set_instance_count(int instance) noexcept
 {
-	ren.set_instance_count(instance);
+	ren->set_instance_count(instance);
 }
 
 void quick3d::test::YaeEntity::on_tick(float delta_ms) noexcept(false)
 {
-	ren.on_tick(delta_ms);
+	ren->on_tick(delta_ms);
 }
