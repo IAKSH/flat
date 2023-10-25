@@ -56,7 +56,7 @@ void quick3d::test::BoxRenderer::setup_model_data(std::size_t index) noexcept
     {
         auto ptr{ reinterpret_cast<ModelData*>(data) };
         auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(0.00025f, 0.00025f, 0.00025f)) };
-        ptr->model[index] = glm::translate(scale, glm::vec3(position_dis(gen), position_dis(gen), position_dis(gen)));
+        ptr->model[index] = glm::translate(scale, glm::vec3(position_dis(gen), position_dis(gen) + 20.0f, position_dis(gen)));
     });
 
     model_rotate_attribs[index].rotate_axis = glm::vec3(rotation_dis(gen), rotation_dis(gen), rotation_dis(gen));

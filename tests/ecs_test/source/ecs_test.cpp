@@ -12,6 +12,7 @@
 #include <ecs_test/yae.hpp>
 #include <ecs_test/skybox.hpp>
 #include <ecs_test/box.hpp>
+#include <ecs_test/floor.hpp>
 
 void set_ogl_state() noexcept
 {
@@ -41,6 +42,7 @@ int main() noexcept
 		entity_manager.add_entity<quick3d::test::SkyboxEntity>("skybox");
 		entity_manager.add_entity<quick3d::test::YaeEntity>("yae");
 		entity_manager.add_entity<quick3d::test::BoxEntity>("box");
+		entity_manager.add_entity<quick3d::test::FloorEntity>("floor");
 			
 		ImGui::CreateContext();
 		ImGui::CreateContext();
