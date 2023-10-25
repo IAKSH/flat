@@ -83,7 +83,7 @@ void quick3d::test::BoxRenderer::load_shader_program() noexcept(false)
         quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "box_vs.glsl")).get_glsl(),
         quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "box_fs.glsl")).get_glsl()
     );
-    program->bind_uniform_block("CameraMatrix", 0);
+    program->bind_uniform_block("GFXGlobalUBO", 0);
     program->bind_uniform_block("PhoneDirectLighting", 2);
 
     program->set_uniform("material.diffuse", 0);

@@ -7,6 +7,7 @@ in vec3 viewPos;
 in vec3 FragPos;  
 in vec3 Normal;
 in vec2 TexCoords;
+in float gamma;
 
 layout (std140) uniform PhoneDirectLighting
 {
@@ -48,7 +49,6 @@ vec3 processDirectLight()
 void main()
 {
     vec4 result = vec4(processDirectLight(), 1.0);
-    float gamma = 2.2;
     result.rgb = pow(result.rgb, vec3(1.0/gamma));
     FragColor = result;
 }

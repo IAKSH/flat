@@ -21,7 +21,7 @@ void quick3d::test::YaeRenderer::load_shader_program() noexcept(false)
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_vs.glsl")).get_glsl(),
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_fs.glsl")).get_glsl()
 	);
-	program->bind_uniform_block("CameraMatrix", 0);
+	program->bind_uniform_block("GFXGlobalUBO", 0);
 	program->bind_uniform_block("PhoneDirectLighting", 2);
 
 	program->set_uniform("material.diffuse", 0);

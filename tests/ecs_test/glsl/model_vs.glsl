@@ -9,13 +9,15 @@ out vec3 viewPos;
 out vec3 FragPos;  
 out vec3 Normal;
 out vec2 TexCoords;
+out float gamma;
 
-layout (std140) uniform CameraMatrix
+layout (std140) uniform GFXGlobalUBO
 {
-   mat4 projection;
-   mat4 view;
+   mat4 global_projection;
+   mat4 global_view;
    mat4 view_without_movement;
-   vec4 camera_position;
+   vec4 global_camera_position;
+   float global_gamma;
 };
 
 layout(std430, binding = 1) buffer InstanceModelMatrix
@@ -25,9 +27,10 @@ layout(std430, binding = 1) buffer InstanceModelMatrix
 
 void main()
 {
+    gamma = global_gamma;
     TexCoords = aTexCoords;
-    viewPos = camera_position.xyz;
+    viewPos = global_camera_position.xyz;
     FragPos = vec3(model[gl_InstanceID] * vec4(aPos, 1.0));
     Normal = mat3(transpose(inverse(model[gl_InstanceID]))) * aNormal; // 开销较大，考虑在CPU计算后作为uniform传入
-    gl_Position = projection * view * model[gl_InstanceID] * vec4(aPos, 1.0);
+    gl_Position = global_projection * global_view * model[gl_InstanceID] * vec4(aPos, 1.0);
 }

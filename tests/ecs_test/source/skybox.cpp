@@ -73,7 +73,7 @@ void quick3d::test::SkyboxRenderer::load_shader_program() noexcept(false)
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_vs.glsl")).get_glsl(),
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_fs.glsl")).get_glsl()
 	);
-	program->bind_uniform_block("CameraMatrix", 0);
+	program->bind_uniform_block("GFXGlobalUBO", 0);
 	program->bind_uniform_block("PhoneDirectLighting", 2);
 }
 

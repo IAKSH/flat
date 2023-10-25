@@ -55,6 +55,7 @@ int main() noexcept
 
 		int yae_instance{ 1 };
 		int box_instance{ 1 };
+		float gfx_gamma{ 2.2f };
 		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
 		glm::vec3 sun_light_direction(0.0f, 0.0f, 0.0f);
 		quick3d::ecs::HightResTimer timer;
@@ -71,6 +72,7 @@ int main() noexcept
 			ImGui::NewFrame();
 
 			// temp code
+			gfx.set_gamma(gfx_gamma);
 			reinterpret_cast<quick3d::test::YaeEntity*>(entity_manager.get_entity("yae"))->set_instance_count(yae_instance);
 			reinterpret_cast<quick3d::test::BoxEntity*>(entity_manager.get_entity("box"))->set_instance_count(box_instance);
 			reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->set_light_ambient(sun_light_ambient);
@@ -82,6 +84,7 @@ int main() noexcept
 
 			ImGui::Begin("Control");
 			ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::SliderFloat("gamma", &gfx_gamma, 0.0f, 10.0f);
 			ImGui::SliderInt("box instance", &box_instance, 0, 500);
 			ImGui::SliderInt("yae instance", &yae_instance, 0, 10);
 			ImGui::ColorPicker3("ambient", glm::value_ptr(sun_light_ambient));

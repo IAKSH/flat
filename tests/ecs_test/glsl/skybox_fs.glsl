@@ -4,6 +4,7 @@ precision lowp float;
 out vec4 FragColor;
 
 in vec3 texCoord;
+in float gamma;
 
 uniform samplerCube skybox_cubemap;
 
@@ -18,7 +19,6 @@ layout (std140) uniform PhoneDirectLighting
 void main()
 {
     vec4 result = ambient * texture(skybox_cubemap,texCoord);
-    float gamma = 2.2;
     result.rgb = pow(result.rgb, vec3(1.0/gamma));
     FragColor = result;
 }

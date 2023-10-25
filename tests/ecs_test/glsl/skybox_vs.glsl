@@ -4,17 +4,20 @@ precision lowp float;
 layout (location = 0) in vec3 aPos;
 
 out vec3 texCoord;
+out float gamma;
 
-layout (std140) uniform CameraMatrix
+layout (std140) uniform GFXGlobalUBO
 {
-   mat4 projection;
-   mat4 view;
-   mat4 view_without_movement;
-   vec4 camera_position;
+   mat4 global_projection;
+   mat4 global_view;
+   mat4 global_view_without_movement;
+   vec4 global_camera_position;
+   float global_gamma;
 };
 
 void main()
 {
+    gamma = global_gamma;
     texCoord = aPos;
-    gl_Position = projection * view_without_movement * vec4(aPos,1.0);
+    gl_Position = global_projection * global_view_without_movement * vec4(aPos,1.0);
 }

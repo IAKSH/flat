@@ -14,16 +14,18 @@ namespace quick3d::core
 		gl::FPSCamera camera;
 		bool mouse_caputured;
 
-		struct CameraUBOData
+		struct GFXGlobalUBO
 		{
 			glm::mat4 projection;
 			glm::mat4 view;
 			glm::mat4 view_without_movement;
 			glm::vec4 camera_position;
+			float gamma;
 		};
-		quick3d::gl::Buffer camera_ubo;
+		quick3d::gl::Buffer gfx_global_ubo;
 
 		void bind_camera_to_context() noexcept;
+		void bind_gfx_global_ubo() noexcept;
 		void update_camera_ubo() noexcept;
 
 	public:
@@ -33,6 +35,7 @@ namespace quick3d::core
 
 		gl::FPSCamera& get_camera() noexcept;
 		void capture_mouse(bool b = true) noexcept;
+		void set_gamma(float gamma) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }

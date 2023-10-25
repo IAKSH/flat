@@ -1,9 +1,11 @@
 #include <quick_core/sys_gfx.hpp>
 
 quick3d::core::GFXSystem::GFXSystem(int w, int h, std::string_view title) noexcept(false)
-    : context(title, w, h), camera(w, h), mouse_caputured(false), camera_ubo(GL_UNIFORM_BUFFER, GL_STREAM_DRAW, sizeof(CameraUBOData))
+    : context(title, w, h), camera(w, h), mouse_caputured(false), gfx_global_ubo(GL_UNIFORM_BUFFER, GL_STREAM_DRAW, sizeof(GFXGlobalUBO))
 {
     bind_camera_to_context();
+    bind_gfx_global_ubo();
+    set_gamma(2.2f);
 }
 
 void quick3d::core::GFXSystem::on_tick(float delta_ms) noexcept(false)
@@ -56,17 +58,21 @@ void quick3d::core::GFXSystem::bind_camera_to_context() noexcept
     });
 }
 
+void quick3d::core::GFXSystem::bind_gfx_global_ubo() noexcept
+{
+    glBindBufferBase(GL_UNIFORM_BUFFER, 0, gfx_global_ubo.get_buffer_id());
+}
+
 void quick3d::core::GFXSystem::update_camera_ubo() noexcept
 {
-    camera_ubo.dma_do([&](void* data)
+    gfx_global_ubo.dma_do([&](void* data)
     {
-        auto ptr{ reinterpret_cast<CameraUBOData*>(data) };
+        auto ptr{ reinterpret_cast<GFXGlobalUBO*>(data) };
         ptr->projection = get_camera().get_projection_matrix();
         ptr->view = get_camera().get_view_matrix();
         ptr->view_without_movement = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) + camera.get_front_vec(), camera.get_up_vec());
         ptr->camera_position = glm::vec4(get_camera().get_position(), 1.0f);
     });
-    glBindBufferBase(GL_UNIFORM_BUFFER, 0, camera_ubo.get_buffer_id());
 }
 
 void quick3d::core::GFXSystem::capture_mouse(bool b) noexcept
@@ -75,6 +81,15 @@ void quick3d::core::GFXSystem::capture_mouse(bool b) noexcept
         glfwSetInputMode(context.get_window(0).get_glfw_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     else
         glfwSetInputMode(context.get_window(0).get_glfw_window(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+void quick3d::core::GFXSystem::set_gamma(float gamma) noexcept
+{
+    gfx_global_ubo.dma_do([&](void* data)
+    {
+        auto ptr{ reinterpret_cast<GFXGlobalUBO*>(data) };
+        ptr->gamma = gamma;
+    });
 }
 
 quick3d::gl::FPSCamera& quick3d::core::GFXSystem::get_camera() noexcept
