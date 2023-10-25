@@ -14,9 +14,8 @@ namespace quick3d::gl
     private:
         GLuint tex_id;
         GLenum tex_format;
-        const bool enable_rtti;
-
-        void generate_texture(GLenum img_format,unsigned char* img_data,uint32_t img_width,uint32_t img_height) noexcept;
+        bool enable_rtti;
+        void generate_texture(GLenum img_format, unsigned char* img_data, uint32_t img_width, uint32_t img_height) noexcept;
         void delete_texture() noexcept;
         void set_tex_format(GLenum format) noexcept;
 
@@ -35,8 +34,8 @@ namespace quick3d::gl
             { t.get_img_height() } -> std::same_as<int>;
         }
         Texture(GLenum tex_format,const T& t,bool enable_rtti = true) noexcept
-            : enable_rtti(enable_rtti)
         {
+            this->enable_rtti = enable_rtti;
             set_tex_format(tex_format);
 
             GLenum img_format;
@@ -52,14 +51,9 @@ namespace quick3d::gl
 
         // maybe realized latter
         Texture(Texture& texture) = delete;
-
         ~Texture() noexcept;
 
-        GLuint get_tex_id() const noexcept
-        {
-            return tex_id;
-        }
-
+        GLuint get_tex_id() const noexcept;
         GLint get_tex_width() const noexcept;
         GLint get_tex_height() const noexcept;
         GLenum get_tex_format() const noexcept;

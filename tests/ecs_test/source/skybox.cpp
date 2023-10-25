@@ -88,7 +88,7 @@ void quick3d::test::SkyboxRenderer::load_cubemap() noexcept(false)
 			std::format("{}/{}", IMAGE_FOLDER, "front.jpg"),
 			std::format("{}/{}", IMAGE_FOLDER, "back.jpg")
 	};
-	cubemap = new quick3d::gl::CubeMap(GL_RGBA, 2048, 2048);
+	cubemap = new quick3d::gl::CubeMap(GL_SRGB8_ALPHA8, 2048, 2048);
 	for (int i = 0; i < 6; i++)
 		cubemap->generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, quick3d::gl::Image(skybox_texture_pathes[i], false));
 }
@@ -130,10 +130,19 @@ void quick3d::test::SkyboxRenderer::set_light_ambient(const glm::vec3& ambient) 
 void quick3d::test::SkyboxRenderer::set_light_diffuse(const glm::vec3& diffuse) noexcept
 {
 	phone_direct_lighting_ubo.dma_do([&](void* data)
-		{
-			auto ptr{ reinterpret_cast<PhoneDirectLightingData*>(data) };
-			ptr->diffuse = glm::vec4(diffuse, 1.0f);
-		});
+	{
+		auto ptr{ reinterpret_cast<PhoneDirectLightingData*>(data) };
+		ptr->diffuse = glm::vec4(diffuse, 1.0f);
+	});
+}
+
+void quick3d::test::SkyboxRenderer::set_light_specular(const glm::vec3& specular) noexcept
+{
+	phone_direct_lighting_ubo.dma_do([&](void* data)
+	{
+		auto ptr{ reinterpret_cast<PhoneDirectLightingData*>(data) };
+		ptr->specular = glm::vec4(specular, 1.0f);
+	});
 }
 
 void quick3d::test::SkyboxRenderer::set_light_direction(const glm::vec3& direction) noexcept
@@ -161,6 +170,7 @@ void quick3d::test::SkyboxEntity::set_light_ambient(const glm::vec3& ambient) no
 {
 	ren->set_light_ambient(ambient);
 	ren->set_light_diffuse(ambient);
+	ren->set_light_specular(ambient);
 }
 
 void quick3d::test::SkyboxEntity::set_light_direction(const glm::vec3& direction) noexcept

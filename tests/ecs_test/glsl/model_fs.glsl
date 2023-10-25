@@ -47,5 +47,8 @@ vec3 processDirectLight()
 
 void main()
 {
-    FragColor = vec4(processDirectLight(), 1.0);
+    vec4 result = vec4(processDirectLight(), 1.0);
+    float gamma = 2.2;
+    result.rgb = pow(result.rgb, vec3(1.0/gamma));
+    FragColor = result;
 }

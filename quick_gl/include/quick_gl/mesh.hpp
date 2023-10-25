@@ -35,7 +35,7 @@ namespace quick3d::gl
         std::string path;
 
         MeshTexturePack(std::string_view file_name,std::string_view directory,std::string_view type)
-            : texture(std::make_unique<Texture>(GL_RGBA,Image(std::format("{}/{}",directory,file_name),false))),
+            : texture(std::make_unique<Texture>(GL_SRGB8_ALPHA8,Image(std::format("{}/{}",directory,file_name),false))),
                 type(type),path(std::format("{}/{}",directory,file_name))
         {
         }

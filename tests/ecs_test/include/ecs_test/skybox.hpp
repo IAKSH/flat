@@ -27,6 +27,7 @@ namespace quick3d::test
 		~SkyboxRenderer() noexcept;
 		void set_light_ambient(const glm::vec3& ambient) noexcept;
 		void set_light_diffuse(const glm::vec3& diffuse) noexcept;
+		void set_light_specular(const glm::vec3& specular) noexcept;
 		void set_light_direction(const glm::vec3& direction) noexcept;
 	};
 

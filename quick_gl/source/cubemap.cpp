@@ -9,6 +9,9 @@ quick3d::gl::CubeMap::CubeMap(GLenum format,uint32_t w,uint32_t h) noexcept
     case GL_LUMINANCE:
     case GL_RGB:
     case GL_RGBA:
+    case GL_SRGB:
+    case GL_SRGB8:
+    case GL_SRGB8_ALPHA8:
         cubmap_format = format;
         break;
 

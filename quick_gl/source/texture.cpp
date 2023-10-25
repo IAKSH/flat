@@ -2,21 +2,22 @@
 #include <quick_gl/texture.hpp>
 
 quick3d::gl::Texture::Texture(GLenum tex_format,uint32_t tex_width,uint32_t tex_height,bool enable_rtti) noexcept
-    : enable_rtti(enable_rtti)
 {
+    this->enable_rtti = enable_rtti;
     set_tex_format(tex_format);
     generate_texture(GL_RGBA,nullptr,tex_width,tex_height);
 }
 
 quick3d::gl::Texture::Texture(GLenum tex_format,GLuint tex_id,bool enable_rtti) noexcept
-    : tex_id(tex_id),enable_rtti(enable_rtti)
 {
+    this->tex_id = tex_id;
+    this->enable_rtti = enable_rtti;
     set_tex_format(tex_format);
 }
 
 quick3d::gl::Texture::Texture(GLenum tex_format,GLenum img_format,unsigned char* img_data,uint32_t img_width,uint32_t img_height,bool enable_rtti) noexcept
-    : enable_rtti(enable_rtti)
 {
+    this->enable_rtti = enable_rtti;
     set_tex_format(tex_format);
     generate_texture(img_format,img_data,img_width,img_height);
 }
@@ -54,6 +55,9 @@ void quick3d::gl::Texture::set_tex_format(GLenum format) noexcept
     case GL_RED:
     case GL_RGB:
     case GL_RGBA:
+    case GL_SRGB:
+    case GL_SRGB8:
+    case GL_SRGB8_ALPHA8:
         tex_format = format;
         break;
 
@@ -61,6 +65,11 @@ void quick3d::gl::Texture::set_tex_format(GLenum format) noexcept
         std::cerr << "invalid texture foramt" << std::endl;
         std::terminate();
     }
+}
+
+GLuint quick3d::gl::Texture::get_tex_id() const noexcept
+{
+    return tex_id;
 }
 
 GLint quick3d::gl::Texture::get_tex_width() const noexcept

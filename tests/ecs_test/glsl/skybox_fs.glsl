@@ -1,7 +1,7 @@
 #version 320 es
 precision lowp float;
 
-out vec4 fragColor;
+out vec4 FragColor;
 
 in vec3 texCoord;
 
@@ -17,5 +17,8 @@ layout (std140) uniform PhoneDirectLighting
 
 void main()
 {
-    fragColor = ambient * texture(skybox_cubemap,texCoord);
+    vec4 result = ambient * texture(skybox_cubemap,texCoord);
+    float gamma = 2.2;
+    result.rgb = pow(result.rgb, vec3(1.0/gamma));
+    FragColor = result;
 }

@@ -55,7 +55,7 @@ void quick3d::test::BoxRenderer::setup_model_data(std::size_t index) noexcept
     ssbo_model.dma_do([&](void* data)
     {
         auto ptr{ reinterpret_cast<ModelData*>(data) };
-        auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(0.0005f, 0.0005f, 0.0005f)) };
+        auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(0.00025f, 0.00025f, 0.00025f)) };
         ptr->model[index] = glm::translate(scale, glm::vec3(position_dis(gen), position_dis(gen), position_dis(gen)));
     });
 
@@ -72,7 +72,7 @@ void quick3d::test::BoxRenderer::rotate_model() noexcept
         {
             float& rotate_speed{ model_rotate_attribs[i].rotate_speed };
             glm::vec3& rotate_axis{ model_rotate_attribs[i].rotate_axis };
-            ptr->model[i] = glm::rotate(ptr->model[i], static_cast<float>(glfwGetTime() * rotate_speed) / 1000.0f, rotate_axis);
+            ptr->model[i] = glm::rotate(ptr->model[i], static_cast<float>(glfwGetTime() * rotate_speed) / 10000.0f, rotate_axis);
         }
     });
 }
@@ -88,7 +88,7 @@ void quick3d::test::BoxRenderer::load_shader_program() noexcept(false)
 
     program->set_uniform("material.diffuse", 0);
     program->set_uniform("material.specular", 1);
-    program->set_uniform("material.shininess", 32.0f);
+    program->set_uniform("material.shininess", 128.0f);
 
     // 也许不应该放在这里
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, ssbo_model.get_buffer_id());
@@ -96,8 +96,8 @@ void quick3d::test::BoxRenderer::load_shader_program() noexcept(false)
 
 void quick3d::test::BoxRenderer::load_texture() noexcept(false)
 {
-    textures.push_back(new gl::Texture(GL_RGBA, gl::Image(std::format("{}/{}", IMAGE_FOLDER, "container2.png"))));
-    textures.push_back(new gl::Texture(GL_RGBA, gl::Image(std::format("{}/{}", IMAGE_FOLDER, "container2_specular.png"))));
+    textures.push_back(new gl::Texture(GL_SRGB8_ALPHA8, gl::Image(std::format("{}/{}", IMAGE_FOLDER, "container2.png"))));
+    textures.push_back(new gl::Texture(GL_SRGB8_ALPHA8, gl::Image(std::format("{}/{}", IMAGE_FOLDER, "container2_specular.png"))));
 }
 
 void quick3d::test::BoxRenderer::load_vbo_vao() noexcept
