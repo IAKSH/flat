@@ -112,7 +112,7 @@ void quick3d::test::BoxRenderer::load_vbo_vao() noexcept
 }
 
 quick3d::test::BoxRenderer::BoxRenderer() noexcept(false)
-	: gen(rd()), position_dis(-10.0f, 10.0f), rotation_dis(0.0, 1.0),
+	: gen(rd()), position_dis(-20.0f, 20.0f), rotation_dis(0.0, 1.0),
 		ssbo_model(GL_SHADER_STORAGE_BUFFER, GL_DYNAMIC_DRAW, sizeof(ModelData))
 {
     load_shader_program();

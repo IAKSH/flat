@@ -5,9 +5,14 @@ quick3d::core::Renderer::Renderer() noexcept
 {
 }
 
-void quick3d::core::ModelRenderer::on_tick(float delta_ms) noexcept(false)
+void quick3d::core::ModelRenderer::draw_model() noexcept
 {
 	model->draw_model(*program);
+}
+
+void quick3d::core::ModelRenderer::on_tick(float delta_ms) noexcept(false)
+{
+	draw_model();
 }
 
 void quick3d::core::CubeMapVAORenderer::draw_vao() noexcept
@@ -50,9 +55,14 @@ quick3d::core::InstanceRenderer::InstanceRenderer() noexcept
 {
 }
 
-void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms) noexcept(false)
+void quick3d::core::InstanceModelRenderer::draw_model() noexcept
 {
 	model->draw_model(*program, instance_count);
+}
+
+void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms) noexcept(false)
+{
+	draw_model();
 }
 
 void quick3d::core::InstanceCubeMapVAORenderer::draw_vao() noexcept

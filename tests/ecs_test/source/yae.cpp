@@ -31,7 +31,7 @@ void quick3d::test::YaeRenderer::load_shader_program() noexcept(false)
 
 void quick3d::test::YaeRenderer::load_model() noexcept(false)
 {
-	model = new quick3d::gl::Model("D:/Programming-Playground/quick3d/tests/outer_glsl/model/yae/yae.obj");
+	model = new quick3d::gl::Model(std::format("{}/{}", MODEL_FOLDER, "yae/yae.obj"));
 }
 
 quick3d::test::YaeRenderer::YaeRenderer() noexcept(false)

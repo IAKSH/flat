@@ -31,6 +31,7 @@ namespace quick3d::core
 	{
 	protected:
 		gl::Model* model;
+		void draw_model() noexcept;
 		
 	public:
 		ModelRenderer() = default;
@@ -83,6 +84,9 @@ namespace quick3d::core
 
 	class InstanceModelRenderer : virtual public ModelRenderer, virtual public InstanceRenderer
 	{
+	protected:
+		void draw_model() noexcept;
+
 	public:
 		InstanceModelRenderer() = default;
 		InstanceModelRenderer(InstanceModelRenderer&) = delete;

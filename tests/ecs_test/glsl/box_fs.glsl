@@ -26,6 +26,33 @@ struct Material
 
 uniform Material material;
 
+layout(std430, binding = 6) buffer LightBallInstanceColor
+{
+	vec4 lightBallColor[];
+};
+
+layout(std430, binding = 5) buffer LightBallInstanceModelMatrix
+{
+	mat4 lightBallModel[];
+};
+
+layout(std430, binding = 7) buffer LightBallInstancePos
+{
+	vec4 lightBallPos[];
+};
+
+layout(std430, binding = 8) buffer LightBallInstanceCount
+{
+	int lightBallInstance;
+};
+
+layout(std430, binding = 9) buffer LightBallAttenuation
+{
+	float light_ball_constant;
+    float light_ball_linear;
+	float light_ball_quadratic;
+};
+
 vec3 processDirectLight()
 {
     // ambient
@@ -46,29 +73,27 @@ vec3 processDirectLight()
     return ambient + diffuse + specular;
 }
 
-/*
-vec3 processPointLight()
+vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 light_ball_diffuse,vec3 light_ball_specular)
 {
-    vec4 phone_direct_lighting_position = vec4(viewPos,1.0);
-
     // ambient
-    vec3 ambient = phone_direct_lighting_ambient.rgb * texture(material.diffuse, TexCoords).rgb;
+    vec3 ambient = light_ball_ambient * texture(material.diffuse, TexCoords).rgb;
   	
     // diffuse 
     vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(phone_direct_lighting_position.rgb - FragPos);
+    vec3 lightDir = normalize(light_ball_position - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = phone_direct_lighting_diffuse.rgb * diff * texture(material.diffuse, TexCoords).rgb;
+    vec3 diffuse = light_ball_diffuse * diff * texture(material.diffuse, TexCoords).rgb;
     
     // specular
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    vec3 specular = phone_direct_lighting_specular.rgb * spec * texture(material.specular, TexCoords).rgb;
+    vec3 specular = light_ball_specular * spec * texture(material.specular, TexCoords).rgb;
 
-    float distance    = length(phone_direct_lighting_position.rgb - FragPos);
-    float attenuation = 1.0 / (phone_direct_lighting_constant.rgb + phone_direct_lighting_linear.rgb * distance + 
-        phone_direct_lighting_quadratic.rgb * (distance * distance));
+    // attenuation
+    float distance    = length(light_ball_position - FragPos);
+    float attenuation = 1.0 / (light_ball_constant + light_ball_linear * distance + 
+                light_ball_quadratic * (distance * distance));
 
     ambient  *= attenuation; 
     diffuse  *= attenuation;
@@ -76,14 +101,20 @@ vec3 processPointLight()
 
     return ambient + diffuse + specular;
 }
-*/
 
 void main()
 {
-    //vec3 result = processDirectLight() + processPointLight;
-    //FragColor = vec4(result, 1.0);
+    vec3 result = processDirectLight();
+    for(int i = 1;i < lightBallInstance;i++)
+    {
+        result += processPointLight(
+            lightBallPos[i].rgb,
+            phone_direct_lighting_ambient.rgb,
+            lightBallColor[i].rgb,
+            lightBallColor[i].rgb
+        );
+    }
 
-    vec4 result = vec4(processDirectLight(), 1.0);
-    result.rgb = pow(result.rgb, vec3(1.0/gamma));
-    FragColor = result;
+    vec4 gammaed_result = vec4(pow(result.rgb, vec3(1.0/gamma)),1.0);
+    FragColor = gammaed_result;
 }
