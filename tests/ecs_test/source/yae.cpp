@@ -5,9 +5,11 @@ static constexpr std::string_view MODEL_FOLDER = "../../../../tests/outer_glsl/m
 
 void quick3d::test::YaeRenderer::setup_model_data() noexcept(false)
 {
+	constexpr float MODEL_SCALE_FACTOR{ 1.0f };
+
 	ssbo_model.dma_do([&](void* data)
 	{
-		auto model{ glm::scale(glm::mat4(1.0f),glm::vec3(0.001f,0.001f,0.001f)) };
+			auto model{ glm::scale(glm::mat4(1.0f),glm::vec3(MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR)) };
 		auto ptr{ reinterpret_cast<ModelData*>(data) };
 		for (int i = 0; i < 10; i++)
 			ptr->model[i] = glm::translate(model, glm::vec3(i, 0.0f, 0.0f));

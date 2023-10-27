@@ -28,7 +28,9 @@ void quick3d::core::CubeMapVAORenderer::draw_vao() noexcept
 
 void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
 {
+	glDisable(GL_DEPTH_TEST);
 	draw_vao();
+	glEnable(GL_DEPTH_TEST);
 }
 
 void quick3d::core::VAORenderer::draw_vao() noexcept

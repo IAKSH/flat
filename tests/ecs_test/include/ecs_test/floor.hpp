@@ -8,6 +8,7 @@ namespace quick3d::test
 	{
 	private:
 		gl::Buffer ebo;
+		void setup_model_matrix() noexcept;
 		void load_shader_program() noexcept(false);
 		void load_texture() noexcept(false);
 		void load_vbo_vao() noexcept;

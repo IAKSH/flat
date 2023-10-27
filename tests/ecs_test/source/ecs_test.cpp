@@ -15,6 +15,8 @@
 #include <ecs_test/floor.hpp>
 #include <ecs_test/light_ball.hpp>
 
+#define IMGUI_IMPL_OPENGL_ES3
+
 void set_ogl_state() noexcept
 {
 	glEnable(GL_BLEND);

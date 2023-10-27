@@ -19,7 +19,7 @@ void quick3d::test::LightBallRenderer::setup_color_data(int index) noexcept
 
 void quick3d::test::LightBallRenderer::setup_model_data(int index) noexcept
 {
-	auto scale_factor{ 0.0001f };
+	auto scale_factor{ 1.0f };
 	auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(scale_factor, scale_factor, scale_factor)) };
 	auto scaled_position{ scale_factor * glm::vec3(position_dis(gen), position_dis(gen) + 20.0f, position_dis(gen)) };
 	ssbo_position.dma_do([&](void* data)

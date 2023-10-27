@@ -12,7 +12,6 @@ void quick3d::gl::FPSCamera::on_tick(float delta_time) noexcept
         position += right * velocity;
     if(move_left)
         position -= right * velocity;
-
 }
 
 void quick3d::gl::FPSCamera::process_keyboard_input(GLFWwindow* window, float delta_time) noexcept

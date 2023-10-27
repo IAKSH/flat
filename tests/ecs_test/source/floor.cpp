@@ -19,6 +19,13 @@ static constexpr std::array<unsigned int, 6> FLOOR_INDICES
 	2,3,0
 };
 
+void quick3d::test::FloorRenderer::setup_model_matrix() noexcept
+{
+	constexpr float MODEL_SCALE_FACTOR{ 100.0f };
+	auto model{ glm::scale(glm::mat4(1.0f),glm::vec3(MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR)) };
+	program->set_uniform("model", model);
+}
+
 void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 {
 	program = new gl::Program(
@@ -31,6 +38,8 @@ void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 	program->set_uniform("material.diffuse", 0);
 	program->set_uniform("material.specular", 1);
 	program->set_uniform("material.shininess", 128.0f);
+
+	program->set_uniform("texcoords_scale", 100.0f);
 }
 
 void quick3d::test::FloorRenderer::load_texture() noexcept(false)
@@ -73,7 +82,7 @@ quick3d::test::FloorRenderer::FloorRenderer() noexcept(false)
 	load_shader_program();
 	load_texture();
 	load_vbo_vao();
-	set_position(glm::vec3(0.0f, 0.0f, 0.0f));
+	setup_model_matrix();
 }
 
 quick3d::test::FloorRenderer::~FloorRenderer() noexcept
@@ -89,7 +98,6 @@ quick3d::test::FloorRenderer::~FloorRenderer() noexcept
 void quick3d::test::FloorRenderer::set_position(const glm::vec3& pos) noexcept
 {
 	program->set_uniform("model", glm::translate(glm::mat4(1.0f), pos));
-	program->set_uniform("texcoords_scale", 2500.0f);
 }
 
 void quick3d::test::FloorRenderer::on_tick(float delta_ms) noexcept(false)

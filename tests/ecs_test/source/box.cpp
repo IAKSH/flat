@@ -55,7 +55,7 @@ void quick3d::test::BoxRenderer::setup_model_data(std::size_t index) noexcept
     ssbo_model.dma_do([&](void* data)
     {
         auto ptr{ reinterpret_cast<ModelData*>(data) };
-        auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(0.00025f, 0.00025f, 0.00025f)) };
+        auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f)) };
         ptr->model[index] = glm::translate(scale, glm::vec3(position_dis(gen), position_dis(gen) + 20.0f, position_dis(gen)));
     });
 

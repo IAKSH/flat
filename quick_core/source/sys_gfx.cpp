@@ -10,8 +10,6 @@ quick3d::core::GFXSystem::GFXSystem(int w, int h, std::string_view title) noexce
 
 void quick3d::core::GFXSystem::on_tick(float delta_ms) noexcept(false)
 {
-    update_camera_ubo();
-
     // temp
     if (glfwWindowShouldClose(glfwGetCurrentContext()))
         running = false;
@@ -20,6 +18,8 @@ void quick3d::core::GFXSystem::on_tick(float delta_ms) noexcept(false)
     context.swap_window_buffers();
     context.poll_events();
     context.clean_frame_buffers();
+
+    update_camera_ubo();
 }
 
 void quick3d::core::GFXSystem::bind_camera_to_context() noexcept
