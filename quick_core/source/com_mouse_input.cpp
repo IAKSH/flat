@@ -3,13 +3,14 @@
 void quick3d::core::MousePositionInput::record_mouse_position() noexcept
 {
 	glfwGetCursorPos(win, &mouse_x, &mouse_y);
-	mouse_delta_x = static_cast<float>(mouse_x - mouse_last_x);
-	mouse_delta_y = static_cast<float>(mouse_y - mouse_last_y);
+	mouse_delta_x = mouse_x - mouse_last_x;
+	mouse_delta_y = mouse_y - mouse_last_y;
 	mouse_last_x = mouse_x;
 	mouse_last_y = mouse_y;
 }
 
 quick3d::core::MousePositionInput::MousePositionInput(GLFWwindow* win) noexcept
+	: mouse_last_x(0.0), mouse_last_y(0.0), mouse_x(0.0), mouse_y(0.0), mouse_delta_x(0.0), mouse_delta_y(0.0)
 {
 	if (win)
 		this->win = win;
@@ -17,12 +18,12 @@ quick3d::core::MousePositionInput::MousePositionInput(GLFWwindow* win) noexcept
 		this->win = glfwGetCurrentContext();
 }
 
-float quick3d::core::MousePositionInput::get_mouse_delta_x() const noexcept
+double quick3d::core::MousePositionInput::get_mouse_delta_x() const noexcept
 {
 	return mouse_delta_x;
 }
 
-float quick3d::core::MousePositionInput::get_mouse_delta_y() const noexcept
+double quick3d::core::MousePositionInput::get_mouse_delta_y() const noexcept
 {
 	return mouse_delta_y;
 }

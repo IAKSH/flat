@@ -27,11 +27,13 @@ namespace quick3d::core
 		quick3d::gl::Buffer gfx_global_ubo;
 
 		MousePositionInput mouse_pos_input;
+		MouseButtonInput mouse_button_input;
 		KeyboardInput keyboard_input;
 
 		void bind_gfx_global_ubo() noexcept;
 		void update_camera(float delta_ms) noexcept;
 		void update_camera_ubo() noexcept;
+		void enable_full_screen() noexcept;
 
 	public:
 		GFXSystem(int w, int h, std::string_view title = "Quick3D") noexcept(false);

@@ -5,7 +5,6 @@ quick3d::core::GFXSystem::GFXSystem(int w, int h, std::string_view title) noexce
 {
     bind_gfx_global_ubo();
     set_gamma(2.2f);
-    capture_mouse();
     mouse_caputured = true;
 }
 
@@ -33,20 +32,17 @@ void quick3d::core::GFXSystem::update_camera(float delta_ms) noexcept
 {
     mouse_pos_input.on_tick(delta_ms);
 
-    if (keyboard_input.check_key_pressed(GLFW_KEY_LEFT_CONTROL))
+    if (mouse_button_input.check_mouse_button_pressed(GLFW_MOUSE_BUTTON_1))
     {
-        mouse_caputured = !mouse_caputured;
-        capture_mouse(mouse_caputured);
-    }
-
-    if (mouse_caputured)
-    {
-        // TODO: temp
         camera.process_mouse_input(nullptr,
             mouse_pos_input.get_mouse_delta_x(),
             mouse_pos_input.get_mouse_delta_y());
-        camera.process_keyboard_input(context.get_window(0).get_glfw_window(), 0);
     }
+
+    if (keyboard_input.check_key_pressed(GLFW_KEY_Q))
+        enable_full_screen();
+
+    camera.process_keyboard_input(context.get_window(0).get_glfw_window(), 0);
 
     if (keyboard_input.check_key_pressed(GLFW_KEY_ESCAPE))
         running = false;
@@ -62,6 +58,14 @@ void quick3d::core::GFXSystem::update_camera_ubo() noexcept
         ptr->view_without_movement = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f) + camera.get_front_vec(), camera.get_up_vec());
         ptr->camera_position = glm::vec4(get_camera().get_position(), 1.0f);
     });
+}
+
+void quick3d::core::GFXSystem::enable_full_screen() noexcept
+{
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+    glfwSetWindowMonitor(context.get_window(0).get_glfw_window(), monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
 }
 
 void quick3d::core::GFXSystem::capture_mouse(bool b) noexcept

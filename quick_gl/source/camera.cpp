@@ -25,7 +25,7 @@ void quick3d::gl::FPSCamera::process_keyboard_input(GLFWwindow* window, float de
 void quick3d::gl::FPSCamera::process_mouse_input(GLFWwindow* window, double delta_x, double delta_y) noexcept
 {
     delta_x *= mouse_sensitivity;
-    delta_y *= mouse_sensitivity;
+    delta_y *= -mouse_sensitivity;
 
     yaw += delta_x;
     pitch += delta_y;

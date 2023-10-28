@@ -11,15 +11,15 @@ namespace quick3d::core
 		GLFWwindow* win;
 		double mouse_x, mouse_y;
 		double mouse_last_x, mouse_last_y;
-		float mouse_delta_x, mouse_delta_y;
+		double mouse_delta_x, mouse_delta_y;
 		void record_mouse_position() noexcept;
 
 	public:
 		MousePositionInput(GLFWwindow* win = nullptr) noexcept;
 		MousePositionInput(MousePositionInput&) = delete;
 		~MousePositionInput() = default;
-		float get_mouse_delta_x() const noexcept;
-		float get_mouse_delta_y() const noexcept;
+		double get_mouse_delta_x() const noexcept;
+		double get_mouse_delta_y() const noexcept;
 		double get_mouse_x() const noexcept;
 		double get_mouse_y() const noexcept;
 		virtual void on_tick(float delta_ms) noexcept override;
