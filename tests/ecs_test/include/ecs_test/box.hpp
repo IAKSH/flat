@@ -38,6 +38,7 @@ namespace quick3d::test
 		BoxRenderer(BoxRenderer&) = delete;
 		~BoxRenderer() noexcept;
 		void set_instance_count(int instance) noexcept;
+		void switch_blinn_phong_lighting(bool b) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 
@@ -54,6 +55,7 @@ namespace quick3d::test
 		BoxEntity(BoxEntity&) = delete;
 		~BoxEntity() = default;
 		void set_instance_count(int instance) noexcept;
+		void switch_blinn_phong_lighting(bool b) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }

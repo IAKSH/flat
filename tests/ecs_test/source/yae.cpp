@@ -29,6 +29,8 @@ void quick3d::test::YaeRenderer::load_shader_program() noexcept(false)
 	program->set_uniform("material.diffuse", 0);
 	program->set_uniform("material.specular", 1);
 	program->set_uniform("material.shininess", 32.0f);
+
+	program->set_uniform("useBlinnPhong", 1);
 }
 
 void quick3d::test::YaeRenderer::load_model() noexcept(false)
@@ -55,6 +57,11 @@ void quick3d::test::YaeRenderer::set_instance_count(int instance) noexcept
 	instance_count = instance;
 }
 
+void quick3d::test::YaeRenderer::switch_blinn_phong_lighting(bool b) noexcept
+{
+	program->set_uniform("useBlinnPhong", static_cast<int>(b));
+}
+
 void quick3d::test::YaeEntity::try_load_renderer() noexcept(false)
 {
 	if (!ren)
@@ -70,6 +77,11 @@ quick3d::test::YaeEntity::YaeEntity(core::EntityManager& manager) noexcept(false
 void quick3d::test::YaeEntity::set_instance_count(int instance) noexcept
 {
 	ren->set_instance_count(instance);
+}
+
+void quick3d::test::YaeEntity::switch_blinn_phong_lighting(bool b) noexcept
+{
+	ren->switch_blinn_phong_lighting(b);
 }
 
 void quick3d::test::YaeEntity::on_tick(float delta_ms) noexcept(false)

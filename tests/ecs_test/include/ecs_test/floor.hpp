@@ -19,6 +19,7 @@ namespace quick3d::test
 		FloorRenderer(FloorRenderer&) = delete;
 		~FloorRenderer() noexcept;
 		void set_position(const glm::vec3& pos) noexcept;
+		void switch_blinn_phong_lighting(bool b) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 
@@ -32,6 +33,7 @@ namespace quick3d::test
 		FloorEntity(core::EntityManager& manager) noexcept(false);
 		FloorEntity(FloorEntity&) = delete;
 		~FloorEntity() = default;
+		void switch_blinn_phong_lighting(bool b) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }

@@ -90,6 +90,8 @@ void quick3d::test::BoxRenderer::load_shader_program() noexcept(false)
     program->set_uniform("material.specular", 1);
     program->set_uniform("material.shininess", 128.0f);
 
+    program->set_uniform("useBlinnPhong", 1);
+
     // 也许不应该放在这里
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 4, ssbo_model.get_buffer_id());
 }
@@ -109,6 +111,11 @@ void quick3d::test::BoxRenderer::load_vbo_vao() noexcept
     vao->add_attrib(*vbo, 0, 3, 8, 0);
     vao->add_attrib(*vbo, 1, 3, 8, 3);
     vao->add_attrib(*vbo, 2, 2, 8, 6);
+}
+
+void quick3d::test::BoxRenderer::switch_blinn_phong_lighting(bool b) noexcept
+{
+    program->set_uniform("useBlinnPhong", static_cast<int>(b));
 }
 
 quick3d::test::BoxRenderer::BoxRenderer() noexcept(false)
@@ -155,6 +162,11 @@ void quick3d::test::BoxEntity::try_load_renderer() noexcept(false)
 void quick3d::test::BoxEntity::set_instance_count(int instance) noexcept
 {
     ren->set_instance_count(instance);
+}
+
+void quick3d::test::BoxEntity::switch_blinn_phong_lighting(bool b) noexcept
+{
+    ren->switch_blinn_phong_lighting(b);
 }
 
 void quick3d::test::BoxEntity::on_tick(float delta_ms) noexcept(false)

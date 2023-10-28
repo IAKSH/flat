@@ -40,6 +40,7 @@ void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 	program->set_uniform("material.shininess", 128.0f);
 
 	program->set_uniform("texcoords_scale", 100.0f);
+	program->set_uniform("useBlinnPhong", 1);
 }
 
 void quick3d::test::FloorRenderer::load_texture() noexcept(false)
@@ -100,6 +101,11 @@ void quick3d::test::FloorRenderer::set_position(const glm::vec3& pos) noexcept
 	program->set_uniform("model", glm::translate(glm::mat4(1.0f), pos));
 }
 
+void quick3d::test::FloorRenderer::switch_blinn_phong_lighting(bool b) noexcept
+{
+	program->set_uniform("useBlinnPhong", static_cast<int>(b));
+}
+
 void quick3d::test::FloorRenderer::on_tick(float delta_ms) noexcept(false)
 {
 	draw_indexed_vao();
@@ -115,6 +121,11 @@ quick3d::test::FloorEntity::FloorEntity(core::EntityManager& manager) noexcept(f
 	: Entity(manager)
 {
 	try_load_renderer();
+}
+
+void quick3d::test::FloorEntity::switch_blinn_phong_lighting(bool b) noexcept
+{
+	ren->switch_blinn_phong_lighting(b);
 }
 
 void quick3d::test::FloorEntity::on_tick(float delta_ms) noexcept(false)

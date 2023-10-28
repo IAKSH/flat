@@ -62,6 +62,7 @@ int main() noexcept
 		int yae_instance{ 1 };
 		int box_instance{ 1 };
 		int light_ball_instance{ 1 };
+		bool enable_bilnn_phong{ true };
 		float gfx_gamma{ 2.2f };
 		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
 		glm::vec3 sun_light_direction(0.0f, 0.0f, 0.0f);
@@ -86,12 +87,19 @@ int main() noexcept
 			reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->set_light_ambient(sun_light_ambient);
 			reinterpret_cast<quick3d::test::SkyboxEntity*>(entity_manager.get_entity("skybox"))->set_light_direction(sun_light_direction);
 
+			reinterpret_cast<quick3d::test::YaeEntity*>(entity_manager.get_entity("yae"))->switch_blinn_phong_lighting(enable_bilnn_phong);
+			reinterpret_cast<quick3d::test::BoxEntity*>(entity_manager.get_entity("box"))->switch_blinn_phong_lighting(enable_bilnn_phong);
+			reinterpret_cast<quick3d::test::FloorEntity*>(entity_manager.get_entity("floor"))->switch_blinn_phong_lighting(enable_bilnn_phong);
+
 			set_ogl_state();
 			entity_manager.foreach_on_tick(delta);
 			reset_ogl_state();
 
 			ImGui::Begin("Control");
 			ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			ImGui::Text(enable_bilnn_phong ? "Bilnn-Phong Lighting enabled" : "Bilnn-Phong Lighting disabled");
+			if (ImGui::Button("switch "))
+				enable_bilnn_phong = !enable_bilnn_phong;
 			ImGui::SliderFloat("gamma", &gfx_gamma, 0.0f, 10.0f);
 			ImGui::SliderInt("light ball instance", &light_ball_instance, 0, 500);
 			ImGui::SliderInt("box instance", &box_instance, 0, 500);

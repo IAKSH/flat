@@ -25,6 +25,7 @@ struct Material
 };
 
 uniform Material material;
+uniform bool useBlinnPhong;
 
 layout(std430, binding = 6) buffer LightBallInstanceColor
 {
@@ -66,8 +67,17 @@ vec3 processDirectLight()
     
     // specular
     vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    float spec;
+    if(useBlinnPhong)
+    {
+        vec3 halfwayDir = normalize(lightDir + viewDir);  
+        float spec = pow(max(dot(Normal, halfwayDir), 0.0), material.shininess);
+    }
+    else
+    {
+        vec3 reflectDir = reflect(-lightDir, Normal);
+        spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    }
     vec3 specular = phone_direct_lighting_specular.rgb * spec * texture(material.specular, TexCoords).rgb;
     
     return ambient + diffuse + specular;
@@ -86,8 +96,17 @@ vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 lig
     
     // specular
     vec3 viewDir = normalize(viewPos - FragPos);
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    float spec;
+    if(useBlinnPhong)
+    {
+        vec3 halfwayDir = normalize(lightDir + viewDir);  
+        float spec = pow(max(dot(Normal, halfwayDir), 0.0), material.shininess);
+    }
+    else
+    {
+        vec3 reflectDir = reflect(-lightDir, Normal);
+        spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    }
     vec3 specular = light_ball_specular * spec * texture(material.specular, TexCoords).rgb;
 
     // attenuation

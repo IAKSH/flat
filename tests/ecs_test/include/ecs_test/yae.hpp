@@ -28,6 +28,7 @@ namespace quick3d::test
 		YaeRenderer(YaeRenderer&) = delete;
 		~YaeRenderer() noexcept;
 		void set_instance_count(int instance) noexcept;
+		void switch_blinn_phong_lighting(bool b) noexcept;
 	};
 
 	class YaeEntity : public core::Entity
@@ -43,6 +44,7 @@ namespace quick3d::test
 		YaeEntity(YaeEntity&) = delete;
 		~YaeEntity() = default;
 		void set_instance_count(int instance) noexcept;
+		void switch_blinn_phong_lighting(bool b) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }
