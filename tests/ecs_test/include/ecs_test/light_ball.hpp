@@ -55,7 +55,7 @@ namespace quick3d::test
 
 		void setup_color_data(int index) noexcept;
 		void setup_model_data(int index) noexcept;
-		void update_instance_position() noexcept;
+		void update_instance_position(float delta_ms) noexcept;
 		void load_shader_program() noexcept(false);
 		void load_model() noexcept(false);
 

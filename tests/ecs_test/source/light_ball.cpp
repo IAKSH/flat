@@ -38,14 +38,14 @@ void quick3d::test::LightBallRenderer::setup_model_data(int index) noexcept
 		move_direction_dis(gen), move_direction_dis(gen), move_direction_dis(gen));
 }
 
-void quick3d::test::LightBallRenderer::update_instance_position() noexcept
+void quick3d::test::LightBallRenderer::update_instance_position(float delta_ms) noexcept
 {
 	ssbo_model.dma_do([&](void* data)
 	{
 		auto ptr{ reinterpret_cast<ModelData*>(data) };
 		for (int i = 0; i < instance_count; i++)
 		{
-			const float& speed{ model_move_attribs[i].speed };
+			const float& speed{ delta_ms * model_move_attribs[i].speed / 100.0f};
 			const glm::vec3& direction{ model_move_attribs[i].direction };
 			ptr->model[i] = glm::translate(ptr->model[i], speed * direction);
 		}
@@ -56,10 +56,9 @@ void quick3d::test::LightBallRenderer::update_instance_position() noexcept
 		auto ptr{ reinterpret_cast<PositionData*>(data) };
 		for (int i = 0; i < instance_count; i++)
 		{
-			const float& speed{ model_move_attribs[i].speed };
+			const float& speed{ delta_ms * model_move_attribs[i].speed / 100.0f };
 			const glm::vec3& direction{ model_move_attribs[i].direction };
 			ptr->position[i] = glm::translate(glm::mat4(1.0f), speed * direction) * ptr->position[i];
-			//ptr->position[i] = glm::vec4(100.0f, 0.0f, 0.0f, 0.0f);
 		}
 	});
 }
@@ -136,7 +135,7 @@ void quick3d::test::LightBallRenderer::set_instance_count(int instance) noexcept
 
 void quick3d::test::LightBallRenderer::on_tick(float delta_ms) noexcept(false)
 {
-	update_instance_position();
+	update_instance_position(delta_ms);
 	draw_model();
 }
 

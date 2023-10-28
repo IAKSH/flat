@@ -63,7 +63,7 @@ void quick3d::test::BoxRenderer::setup_model_data(std::size_t index) noexcept
     model_rotate_attribs[index].rotate_speed = static_cast<float>(rotation_dis(gen));
 }
 
-void quick3d::test::BoxRenderer::rotate_model() noexcept
+void quick3d::test::BoxRenderer::rotate_model(float delta_ms) noexcept
 {
     ssbo_model.dma_do([&](void* data)
     {
@@ -72,7 +72,7 @@ void quick3d::test::BoxRenderer::rotate_model() noexcept
         {
             float& rotate_speed{ model_rotate_attribs[i].rotate_speed };
             glm::vec3& rotate_axis{ model_rotate_attribs[i].rotate_axis };
-            ptr->model[i] = glm::rotate(ptr->model[i], static_cast<float>(glfwGetTime() * rotate_speed) / 10000.0f, rotate_axis);
+            ptr->model[i] = glm::rotate(ptr->model[i], delta_ms / 1000.0f, rotate_axis);
         }
     });
 }
@@ -140,7 +140,7 @@ void quick3d::test::BoxRenderer::set_instance_count(int instance) noexcept
 
 void quick3d::test::BoxRenderer::on_tick(float delta_ms) noexcept(false)
 {
-    rotate_model();
+    rotate_model(delta_ms);
     glDisable(GL_CULL_FACE);
     draw_vao();
     glEnable(GL_CULL_FACE);
