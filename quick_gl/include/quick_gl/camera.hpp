@@ -24,7 +24,6 @@ namespace quick3d::gl
         float fov;
         float near_plane;
         float far_plane;
-        glm::vec2 last_mouse_position;
         int screen_width;
         int screen_height;
         bool move_right;
@@ -38,8 +37,7 @@ namespace quick3d::gl
             float start_far = 10000.0f) noexcept
             : screen_width(screen_width), screen_height(screen_height), position(start_pos), front(glm::vec3(0.0f, 0.0f, -1.0f)),
               right(glm::vec3(1.0f, 0.0f, 0.0f)), up(glm::vec3(0.0f, 1.0f, 0.0f)), yaw(start_yaw), pitch(start_pitch),
-              movement_speed(speed), mouse_sensitivity(sensitivity), fov(start_fov), near_plane(start_near), far_plane(start_far),
-              last_mouse_position(0.0f, 0.0f)
+              movement_speed(speed), mouse_sensitivity(sensitivity), fov(start_fov), near_plane(start_near), far_plane(start_far)
         {
         }
 

@@ -3,9 +3,10 @@
 quick3d::core::GFXSystem::GFXSystem(int w, int h, std::string_view title) noexcept(false)
     : context(title, w, h), camera(w, h), mouse_caputured(false), gfx_global_ubo(GL_UNIFORM_BUFFER, GL_STREAM_DRAW, sizeof(GFXGlobalUBO))
 {
-    bind_camera_to_context();
     bind_gfx_global_ubo();
     set_gamma(2.2f);
+    capture_mouse();
+    mouse_caputured = true;
 }
 
 void quick3d::core::GFXSystem::on_tick(float delta_ms) noexcept(false)
@@ -19,48 +20,36 @@ void quick3d::core::GFXSystem::on_tick(float delta_ms) noexcept(false)
     context.poll_events();
     context.clean_frame_buffers();
 
+    update_camera(delta_ms);
     update_camera_ubo();
-}
-
-void quick3d::core::GFXSystem::bind_camera_to_context() noexcept
-{
-    // TODO: 需要构建一个独立的键鼠事件系统
-    context.get_window(0).set_mouse_movement_callback([&](GLFWwindow* win, double x, double y)
-    {
-        if(mouse_caputured)
-            camera.process_mouse_input(win, x, y);
-    });
-
-    context.get_window(0).set_keybord_callback([&](GLFWwindow* win, int key, int scancode, int action, int mods)
-        {
-            camera.process_keyboard_input(win, 0.1f);
-
-            if (action == GLFW_PRESS)
-            {
-                switch (key)
-                {
-                case GLFW_KEY_ESCAPE:
-                    glfwSetWindowShouldClose(win, true);
-                    break;
-
-                default:
-                    break;
-                }
-            } });
-
-    context.get_window(0).set_mouse_button_callback([&](GLFWwindow* win, int button, int action, int mods)
-    {
-        if (action == GLFW_PRESS)
-        {
-            if (button == GLFW_MOUSE_BUTTON_RIGHT)
-                capture_mouse((mouse_caputured = !mouse_caputured));
-        }
-    });
 }
 
 void quick3d::core::GFXSystem::bind_gfx_global_ubo() noexcept
 {
     glBindBufferBase(GL_UNIFORM_BUFFER, 0, gfx_global_ubo.get_buffer_id());
+}
+
+void quick3d::core::GFXSystem::update_camera(float delta_ms) noexcept
+{
+    mouse_pos_input.on_tick(delta_ms);
+
+    if (keyboard_input.check_key_pressed(GLFW_KEY_LEFT_CONTROL))
+    {
+        mouse_caputured = !mouse_caputured;
+        capture_mouse(mouse_caputured);
+    }
+
+    if (mouse_caputured)
+    {
+        // TODO: temp
+        camera.process_mouse_input(nullptr,
+            mouse_pos_input.get_mouse_delta_x(),
+            mouse_pos_input.get_mouse_delta_y());
+        camera.process_keyboard_input(context.get_window(0).get_glfw_window(), 0);
+    }
+
+    if (keyboard_input.check_key_pressed(GLFW_KEY_ESCAPE))
+        running = false;
 }
 
 void quick3d::core::GFXSystem::update_camera_ubo() noexcept
@@ -95,4 +84,9 @@ void quick3d::core::GFXSystem::set_gamma(float gamma) noexcept
 quick3d::gl::FPSCamera& quick3d::core::GFXSystem::get_camera() noexcept
 {
     return camera;
+}
+
+quick3d::gl::Context& quick3d::core::GFXSystem::get_context() noexcept
+{
+    return context;
 }
