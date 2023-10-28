@@ -28,7 +28,7 @@ namespace quick3d::test
 		std::uniform_real_distribution<double> rotation_dis;
 
 		void setup_model_data(std::size_t index) noexcept;
-		void rotate_model(float delta_ms) noexcept;
+		void rotate_model() noexcept;
 		void load_shader_program() noexcept(false);
 		void load_texture() noexcept(false);
 		void load_vbo_vao() noexcept;
