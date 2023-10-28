@@ -82,8 +82,8 @@ void quick3d::test::LightBallRenderer::load_shader_program() noexcept(false)
 	{
 		auto ptr{ reinterpret_cast<AttenuationData*>(data) };
 		ptr->constant = 1.0f;
-		ptr->linear = 0.35f;
-		ptr->quadratic = 0.44f;
+		ptr->linear = 0.09f;
+		ptr->quadratic = 0.032f;
 	});
 }
 
