@@ -128,7 +128,7 @@ void main()
     {
         result += processPointLight(
             lightBallPos[i].rgb,
-            lightBallColor[i].rgb,
+            phone_direct_lighting_ambient.rgb,
             lightBallColor[i].rgb,
             lightBallColor[i].rgb
         );

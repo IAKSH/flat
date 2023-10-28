@@ -59,7 +59,7 @@ vec3 processDirectLight()
     // ambient
     vec3 ambient = phone_direct_lighting_ambient.rgb * texture(material.diffuse, TexCoords).rgb;
   
-    // diffuse
+    // diffuse 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(-phone_direct_lighting_direction.xyz);
     float diff = max(dot(norm, lightDir), 0.0);
@@ -128,7 +128,7 @@ void main()
     {
         result += processPointLight(
             lightBallPos[i].rgb,
-            lightBallColor[i].rgb,
+            phone_direct_lighting_ambient.rgb,
             lightBallColor[i].rgb,
             lightBallColor[i].rgb
         );

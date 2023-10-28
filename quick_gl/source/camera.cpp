@@ -16,33 +16,19 @@ void quick3d::gl::FPSCamera::on_tick(float delta_time) noexcept
 
 void quick3d::gl::FPSCamera::process_keyboard_input(GLFWwindow* window, float delta_time) noexcept
 {
-    float velocity = movement_speed * delta_time;
-    
     move_forward = glfwGetKey(window, GLFW_KEY_W);
     move_backward = glfwGetKey(window,GLFW_KEY_S);
     move_right = glfwGetKey(window,GLFW_KEY_D);
     move_left = glfwGetKey(window,GLFW_KEY_A);
 }
 
-void quick3d::gl::FPSCamera::process_mouse_input(GLFWwindow* window, double x_pos, double y_pos) noexcept
+void quick3d::gl::FPSCamera::process_mouse_input(GLFWwindow* window, double delta_x, double delta_y) noexcept
 {
-    if (last_mouse_position.x == 0.0f && last_mouse_position.y == 0.0f) {
-        last_mouse_position.x = static_cast<float>(x_pos);
-        last_mouse_position.y = static_cast<float>(y_pos);
-        return;
-    }
-    
-    float xOffset = static_cast<float>(x_pos) - last_mouse_position.x;
-    float yOffset = last_mouse_position.y - static_cast<float>(y_pos);  // Reversed since y-coordinates range from bottom to top
-    
-    last_mouse_position.x = static_cast<float>(x_pos);
-    last_mouse_position.y = static_cast<float>(y_pos);
+    delta_x *= mouse_sensitivity;
+    delta_y *= -mouse_sensitivity;
 
-    xOffset *= mouse_sensitivity;
-    yOffset *= mouse_sensitivity;
-
-    yaw += xOffset;
-    pitch += yOffset;
+    yaw += delta_x;
+    pitch += delta_y;
 
     // Clamp pitch to avoid flipping
     if (pitch > 89.0f)
