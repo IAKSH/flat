@@ -1,11 +1,11 @@
 #pragma once
 
 #include <format>
-#include <iostream>
 #include <functional>
 #include <string_view>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <spdlog/spdlog.h>
 
 namespace quick3d::gl
 {
@@ -79,17 +79,20 @@ namespace quick3d::gl
     {
         if (glDebugMessageCallback)
         {
+            spdlog::set_level(spdlog::level::err);
             glDebugMessageCallback([](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* user_param)
                 {
                     std::string error_message = std::format(
-                        "OpenGL Error!\n"
+                        "[OGL Debug Message]\n"
+                        "-------------------\n"
                         "Source: {}\n"
                         "Type: {}\n"
                         "ID: {}\n"
                         "Severity: {}\n"
                         "Length: {}\n"
                         "Message:\n{}\n"
-                        "User Param: {}\n",
+                        "User Param: {}\n"
+                        "-------------------\n",
                         __get_source_string(source),
                         __get_type_string(type),
                         id,
@@ -98,11 +101,22 @@ namespace quick3d::gl
                         message,
                         user_param);
 
-                    std::cerr << error_message << std::endl;
+                    switch (severity)
+                    {
+                    case GL_DEBUG_SEVERITY_HIGH:
+                        spdlog::critical(error_message); break;
+                    case GL_DEBUG_SEVERITY_MEDIUM:
+                    case GL_DEBUG_SEVERITY_LOW:
+                        spdlog::warn(error_message); break;
+                    case GL_DEBUG_SEVERITY_NOTIFICATION:
+                        spdlog::info(error_message); break;
+                    default:
+                        spdlog::warn(error_message);
+                    }
                 }, nullptr);
 
             glEnable(GL_DEBUG_OUTPUT);
-            std::clog << "OpenGL debug callback binded!" << std::endl;
+            spdlog::info("OpenGL debug callback binded!");
         }
     }
 }

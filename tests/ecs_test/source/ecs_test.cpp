@@ -57,7 +57,7 @@ int main() noexcept
 		ImGui::StyleColorsDark();
 
 		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
-		ImGui_ImplOpenGL3_Init("#version 320 es");
+		ImGui_ImplOpenGL3_Init("#version 330 core");
 
 		int yae_instance{ 1 };
 		int box_instance{ 1 };

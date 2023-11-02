@@ -56,8 +56,8 @@ void quick3d::test::FloorRenderer::load_vbo_vao() noexcept
 	vao = new gl::VertexArray();
 	vao->bind_ebo(ebo);
 	vao->add_attrib(*vbo, 0, 3, 8, 0);
-	vao->add_attrib(*vbo, 3, 3, 8, 3);
-	vao->add_attrib(*vbo, 2, 3, 8, 6);
+	vao->add_attrib(*vbo, 1, 3, 8, 3);
+	vao->add_attrib(*vbo, 2, 2, 8, 6);
 }
 
 void quick3d::test::FloorRenderer::draw_indexed_vao() noexcept
