@@ -38,7 +38,8 @@ void quick3d::gl::Context::setup_context(std::string_view title,int w,int h) noe
     
 	    if (!glad_loaded)
 	    {
-	    	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	    	//if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+            if (!gladLoadGLES2Loader((GLADloadproc)glfwGetProcAddress))
 	    	{
 	    		std::cerr << "failed to initialize GLAD" << std::endl;
 	    		std::terminate();

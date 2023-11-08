@@ -28,8 +28,8 @@ static constexpr std::string_view MODEL_SHADOW_GLSL_FS_PATH = "../../../../tests
 
 constexpr int SCREEN_WIDTH{ 1280 };
 constexpr int SCREEN_HEIGHT{ 720 };
-constexpr float SHADOW_WIDTH{ 4096 };
-constexpr float SHADOW_HEIGHT{ 4096 };
+constexpr float SHADOW_WIDTH{ 2048 };
+constexpr float SHADOW_HEIGHT{ 2048 };
 
 void set_ogl_state() noexcept
 {

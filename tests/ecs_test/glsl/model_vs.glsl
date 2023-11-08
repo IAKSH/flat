@@ -1,4 +1,4 @@
-#version 460 core
+#version 320 es
 precision highp float;
 
 layout (location = 0) in vec3 aPos;
