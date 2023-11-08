@@ -28,8 +28,8 @@ static constexpr std::string_view MODEL_SHADOW_GLSL_FS_PATH = "../../../../tests
 
 constexpr int SCREEN_WIDTH{ 1280 };
 constexpr int SCREEN_HEIGHT{ 720 };
-constexpr float SHADOW_WIDTH{ 2048 };
-constexpr float SHADOW_HEIGHT{ 2048 };
+constexpr float SHADOW_WIDTH{ 4096 };
+constexpr float SHADOW_HEIGHT{ 4096 };
 
 void set_ogl_state() noexcept
 {
@@ -88,7 +88,7 @@ int main() noexcept
 		bool enable_bilnn_phong{ true };
 		float gfx_gamma{ 2.2f };
 		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
-		glm::vec3 sun_light_direction(0.0f, 0.0f, 0.0f);
+		glm::vec3 sun_light_direction(-10.0f, -10.0f, -10.0f);
 		quick3d::ecs::HightResTimer timer;
 		while (gfx.is_running() && sfx.is_running())
 		{
@@ -122,7 +122,10 @@ int main() noexcept
 			float far_plane = 100.0f;
 			glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
 			std::vector<glm::mat4> shadowTransforms;
-			//glm::vec3 lightPos{ gfx.get_camera().get_position() };
+
+			sun_light_direction.x = sin(glfwGetTime() / 50.0f) * 10.0f;
+			sun_light_direction.z = cos(glfwGetTime() / 50.0f) * 10.0f;
+
 			glm::vec3 lightPos{ -sun_light_direction };
 			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));

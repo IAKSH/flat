@@ -2,7 +2,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <quick_gl/context.hpp>
-#include <quick_gl/debug.hpp>
 
 quick3d::gl::Context::Context(std::string_view title,int w,int h) noexcept(false)
 {
@@ -44,8 +43,6 @@ void quick3d::gl::Context::setup_context(std::string_view title,int w,int h) noe
 	    		std::cerr << "failed to initialize GLAD" << std::endl;
 	    		std::terminate();
 	    	}
-
-            //try_insert_debug_callback();
 
 	    	glad_loaded = true;
 	    }
