@@ -75,6 +75,7 @@ void quick3d::test::SkyboxRenderer::load_shader_program() noexcept(false)
 	);
 	program->bind_uniform_block("GFXGlobalUBO", 0);
 	program->bind_uniform_block("PhoneDirectLighting", 2);
+	program->set_uniform("skybox_cubemap", 0);
 }
 
 void quick3d::test::SkyboxRenderer::load_cubemap() noexcept(false)
@@ -88,7 +89,7 @@ void quick3d::test::SkyboxRenderer::load_cubemap() noexcept(false)
 			std::format("{}/{}", IMAGE_FOLDER, "front.jpg"),
 			std::format("{}/{}", IMAGE_FOLDER, "back.jpg")
 	};
-	cubemap = new quick3d::gl::CubeMap(GL_SRGB8_ALPHA8, 2048, 2048);
+	cubemap = new quick3d::gl::ColorCubeMap(GL_SRGB8_ALPHA8, 2048, 2048);
 	for (int i = 0; i < 6; i++)
 		cubemap->generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, quick3d::gl::Image(skybox_texture_pathes[i], false));
 }
@@ -180,5 +181,15 @@ void quick3d::test::SkyboxEntity::set_light_direction(const glm::vec3& direction
 
 void quick3d::test::SkyboxEntity::on_tick(float delta_ms) noexcept(false)
 {
+
+}
+
+void quick3d::test::SkyboxEntity::on_draw(float delta_ms) noexcept(false)
+{
 	ren->on_tick(delta_ms);
+}
+
+void quick3d::test::SkyboxEntity::on_darw_with_shader(float delta_ms, gl::Program& program) noexcept(false)
+{
+	ren->on_tick(delta_ms, program);
 }

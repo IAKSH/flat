@@ -44,5 +44,7 @@ namespace quick3d::test
 		void set_light_ambient(const glm::vec3& ambient) noexcept;
 		void set_light_direction(const glm::vec3& direction) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
+		virtual void on_draw(float delta_ms) noexcept(false) override final;
+		virtual void on_darw_with_shader(float delta_ms, gl::Program& program) noexcept(false) override final;
 	};
 }

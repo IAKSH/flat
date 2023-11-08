@@ -60,12 +60,15 @@ namespace quick3d::gl
         template <GLenum shader_type>
         bool check_shader(GLuint shader_id) const noexcept;
 
-        void create_program(std::string_view vs,std::string_view fs);
+		void create_program(std::string_view vs, std::string_view fs) noexcept(false);
+		void create_program(std::string_view vs, std::string_view gs, std::string_view fs) noexcept(false);
 		GLint get_uniform_location(std::string_view uniform) noexcept(false);
 
     public:
         Program(std::string_view vs, std::string_view fs) noexcept(false);
+		Program(std::string_view vs, std::string_view gs, std::string_view fs) noexcept(false);
 		Program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false);
+		Program(const GLSLReader& vs, const GLSLReader& gs, const GLSLReader& fs) noexcept(false);
         Program(Program&) = delete;
         ~Program() noexcept;
 

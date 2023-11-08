@@ -209,7 +209,7 @@ int main() noexcept
         gl::VertexArray skybox_vao;
         skybox_vao.add_attrib(skybox_vbo, 0, 3, 3, 0);
 
-        gl::CubeMap skybox_cubemap(GL_RGBA,2048,2048);
+        gl::ColorCubeMap skybox_cubemap(GL_RGBA,2048,2048);
 
         std::array<std::string,6> skybox_texture_pathes
         {

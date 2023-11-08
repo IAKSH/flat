@@ -86,7 +86,7 @@ void run() noexcept(false)
         quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_vs.glsl")).get_glsl(),
         quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "skybox_fs.glsl")).get_glsl());
 
-    quick3d::gl::CubeMap skybox_cubemap(GL_RGBA, 2048, 2048);
+    quick3d::gl::ColorCubeMap skybox_cubemap(GL_RGBA, 2048, 2048);
     for (int i = 0; i < skybox_texture_pathes.size(); i++)
         skybox_cubemap.generate_texture(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, quick3d::gl::Image(skybox_texture_pathes[i], false));
 

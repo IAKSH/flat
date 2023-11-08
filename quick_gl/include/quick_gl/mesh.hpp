@@ -97,6 +97,12 @@ namespace quick3d::gl
 
             vao.draw(t, GL_TRIANGLES, 0, static_cast<GLsizei>(indices.size()), instance);
 
+            for (int i = 0; i < textures.size(); i++)
+            {
+                glActiveTexture(GL_TEXTURE0 + i);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
+
             glActiveTexture(GL_TEXTURE0);
             glUseProgram(0);
         }

@@ -55,7 +55,6 @@ namespace quick3d::test
 
 		void setup_color_data(int index) noexcept;
 		void setup_model_data(int index) noexcept;
-		void update_instance_position() noexcept;
 		void load_shader_program() noexcept(false);
 		void load_model() noexcept(false);
 
@@ -64,7 +63,7 @@ namespace quick3d::test
 		LightBallRenderer(LightBallRenderer&) = delete;
 		~LightBallRenderer() noexcept;
 		void set_instance_count(int instance) noexcept;
-		virtual void on_tick(float delta_ms) noexcept(false) override final;
+		void update_instance_position(float delta_ms) noexcept;
 	};
 
 	class LightBallEntity : public core::Entity
@@ -79,5 +78,7 @@ namespace quick3d::test
 		~LightBallEntity() = default;
 		void set_instance_count(int instance) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
+		virtual void on_draw(float delta_ms) noexcept(false) override final;
+		virtual void on_darw_with_shader(float delta_ms, gl::Program& program) noexcept(false) override final;
 	};
 }

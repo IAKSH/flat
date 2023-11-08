@@ -7,6 +7,7 @@
 #include <quick_core/com_renderer.hpp>
 #include <quick_gl/model.hpp>
 #include <quick_gl/cubemap.hpp>
+#include <quick_gl/frame.hpp>
 #include <format>
 
 #include <ecs_test/yae.hpp>
@@ -16,6 +17,19 @@
 #include <ecs_test/light_ball.hpp>
 
 #define IMGUI_IMPL_OPENGL_ES3
+
+// TODO: 还是不行，需要给Model，VAO之类的东西按着之前Renderer的多态结构再分别写一套阴影着色器。
+//       不对，Model最后不也是VAO吗... 如果能统一model矩阵之类的接口，就能实现阴影着色器的复用了。
+//       其实现在的问题也就是model矩阵之类的接口不统一吧... 现在的SSBO model似乎是各自用不同的绑定点，如果是共用统一的绑定点，然后绘制之前把自己的SSBO model绑上去呢？
+//       然后SSBO在GLSL中的接口还是可变长度的，非常的合理。
+static constexpr std::string_view MODEL_SHADOW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_vs.glsl";
+static constexpr std::string_view MODEL_SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_gs.glsl";
+static constexpr std::string_view MODEL_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_fs.glsl";
+
+constexpr int SCREEN_WIDTH{ 1280 };
+constexpr int SCREEN_HEIGHT{ 720 };
+constexpr float SHADOW_WIDTH{ 2048 };
+constexpr float SHADOW_HEIGHT{ 2048 };
 
 void set_ogl_state() noexcept
 {
@@ -38,7 +52,7 @@ int main() noexcept
 {
 	try
 	{
-		quick3d::core::GFXSystem gfx(1280, 720);
+		quick3d::core::GFXSystem gfx(SCREEN_WIDTH, SCREEN_HEIGHT);
 		quick3d::core::SFXSystem sfx;
 		quick3d::core::EntityManager entity_manager;
 
@@ -58,6 +72,15 @@ int main() noexcept
 
 		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
 		ImGui_ImplOpenGL3_Init("#version 330 core");
+
+		// shadow test begin
+		quick3d::gl::DepthCubeMap depth_cubemap(SHADOW_WIDTH, SHADOW_HEIGHT);
+		quick3d::gl::DepthFramebuffer depth_framebuffer(depth_cubemap);
+		quick3d::gl::Program shadow_program(
+			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_GS_PATH)),
+			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_FS_PATH)));
+		// shadow test end
 
 		int yae_instance{ 1 };
 		int box_instance{ 1 };
@@ -91,12 +114,51 @@ int main() noexcept
 			reinterpret_cast<quick3d::test::BoxEntity*>(entity_manager.get_entity("box"))->switch_blinn_phong_lighting(enable_bilnn_phong);
 			reinterpret_cast<quick3d::test::FloorEntity*>(entity_manager.get_entity("floor"))->switch_blinn_phong_lighting(enable_bilnn_phong);
 
-			set_ogl_state();
 			entity_manager.foreach_on_tick(delta);
+
+			set_ogl_state();
+			// shadow test begin
+			float near_plane = 0.01f;
+			float far_plane = 25.0f;
+			glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
+			std::vector<glm::mat4> shadowTransforms;
+			//glm::vec3 lightPos{ gfx.get_camera().get_position() };
+			glm::vec3 lightPos{ -sun_light_direction };
+			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			for (unsigned int i = 0; i < 6; ++i)
+				shadow_program.set_uniform(std::format("shadowMatrices[{}]", i), shadowTransforms[i]);
+			shadow_program.set_uniform("far_plane", far_plane);
+			shadow_program.set_uniform("lightPos", lightPos);
+
+			glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+			glBindFramebuffer(GL_FRAMEBUFFER, depth_framebuffer.get_fbo_id());
+			glClear(GL_DEPTH_BUFFER_BIT);
+			//entity_manager.foreach_on_draw(delta, shadow_program);
+			entity_manager.foreach([&](std::string name, quick3d::core::Entity* entity)
+			{
+				if (name != "light_ball" && name != "skybox")
+					entity->on_darw_with_shader(delta, shadow_program);
+			});
+			glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, depth_cubemap.get_cubemap_id());
+
+			// shadow test end
+			entity_manager.foreach_on_draw(delta);
 			reset_ogl_state();
 
 			ImGui::Begin("Control");
 			ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+			float cam_pos_x{ gfx.get_camera().get_position().x };
+			float cam_pos_y{ gfx.get_camera().get_position().y };
+			float cam_pos_z{ gfx.get_camera().get_position().z };
+			ImGui::Text(" camera pos: (%.1f,%.1f,%.1f) ", cam_pos_x, cam_pos_y, cam_pos_z);
 			ImGui::Text(enable_bilnn_phong ? "Bilnn-Phong Lighting enabled" : "Bilnn-Phong Lighting disabled");
 			if (ImGui::Button("switch "))
 				enable_bilnn_phong = !enable_bilnn_phong;
@@ -105,7 +167,7 @@ int main() noexcept
 			ImGui::SliderInt("box instance", &box_instance, 0, 500);
 			ImGui::SliderInt("yae instance", &yae_instance, 0, 10);
 			ImGui::ColorPicker3("ambient", glm::value_ptr(sun_light_ambient));
-			ImGui::SliderFloat3("sun_light_direction", glm::value_ptr(sun_light_direction), -100.0f, 100.0f);
+			ImGui::SliderFloat3("sun_light_direction", glm::value_ptr(sun_light_direction), -10.0f, 10.0f);
 			ImGui::End();
 
 			ImGui::Render();

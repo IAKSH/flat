@@ -19,11 +19,15 @@ static constexpr std::array<unsigned int, 6> FLOOR_INDICES
 	2,3,0
 };
 
-void quick3d::test::FloorRenderer::setup_model_matrix() noexcept
+void quick3d::test::FloorRenderer::setup_model_ssbo() noexcept
 {
-	constexpr float MODEL_SCALE_FACTOR{ 100.0f };
-	auto model{ glm::scale(glm::mat4(1.0f),glm::vec3(MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR)) };
-	program->set_uniform("model", model);
+	ssbo_model.dma_do([](void* data)
+	{
+		constexpr float MODEL_SCALE_FACTOR{ 10.0f };
+		auto model{ glm::scale(glm::mat4(1.0f),glm::vec3(MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR)) };
+		auto ptr{ reinterpret_cast<ModelData*>(data) };
+		ptr->model[0] = model;
+	});
 }
 
 void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
@@ -37,9 +41,10 @@ void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 
 	program->set_uniform("material.diffuse", 0);
 	program->set_uniform("material.specular", 1);
+	program->set_uniform("material.depth_map", 2);
 	program->set_uniform("material.shininess", 128.0f);
 
-	program->set_uniform("texcoords_scale", 100.0f);
+	program->set_uniform("texcoords_scale", 10.0f);
 	program->set_uniform("useBlinnPhong", 1);
 }
 
@@ -62,6 +67,11 @@ void quick3d::test::FloorRenderer::load_vbo_vao() noexcept
 
 void quick3d::test::FloorRenderer::draw_indexed_vao() noexcept
 {
+	draw_indexed_vao(*program);
+}
+
+void quick3d::test::FloorRenderer::draw_indexed_vao(gl::Program& program) noexcept
+{
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -71,19 +81,20 @@ void quick3d::test::FloorRenderer::draw_indexed_vao() noexcept
 		glBindTexture(GL_TEXTURE_2D, textures[i]->get_tex_id());
 	}
 
-	vao->draw(*program, GL_TRIANGLES, 0, FLOOR_INDICES.size());
+	vao->draw(program, GL_TRIANGLES, 0, FLOOR_INDICES.size());
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 quick3d::test::FloorRenderer::FloorRenderer() noexcept(false)
-	: ebo(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(FLOOR_INDICES))
+	: ebo(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(FLOOR_INDICES)),
+		ssbo_model(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, sizeof(ModelData))
 {
 	load_shader_program();
 	load_texture();
 	load_vbo_vao();
-	setup_model_matrix();
+	setup_model_ssbo();
 }
 
 quick3d::test::FloorRenderer::~FloorRenderer() noexcept
@@ -96,9 +107,22 @@ quick3d::test::FloorRenderer::~FloorRenderer() noexcept
 		delete ptr;
 }
 
-void quick3d::test::FloorRenderer::set_position(const glm::vec3& pos) noexcept
+void quick3d::test::FloorRenderer::model_move(const glm::vec3& vec) noexcept
 {
-	program->set_uniform("model", glm::translate(glm::mat4(1.0f), pos));
+	ssbo_model.dma_do([&](void* data)
+	{
+		auto ptr{ reinterpret_cast<ModelData*>(data) };
+		ptr->model[0] = glm::translate(ptr->model[0], vec);
+	});
+}
+
+void quick3d::test::FloorRenderer::model_rotate(float r, const glm::vec3& axis) noexcept
+{
+	ssbo_model.dma_do([&](void* data)
+	{
+		auto ptr{ reinterpret_cast<ModelData*>(data) };
+		ptr->model[0] = glm::rotate(ptr->model[0], r, axis);
+	});
 }
 
 void quick3d::test::FloorRenderer::switch_blinn_phong_lighting(bool b) noexcept
@@ -108,7 +132,18 @@ void quick3d::test::FloorRenderer::switch_blinn_phong_lighting(bool b) noexcept
 
 void quick3d::test::FloorRenderer::on_tick(float delta_ms) noexcept(false)
 {
+	glDisable(GL_CULL_FACE);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
 	draw_indexed_vao();
+	glEnable(GL_CULL_FACE);
+}
+
+void quick3d::test::FloorRenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	glDisable(GL_CULL_FACE);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
+	draw_indexed_vao(program);
+	glEnable(GL_CULL_FACE);
 }
 
 void quick3d::test::FloorEntity::try_load_renderer() noexcept(false)
@@ -128,7 +163,27 @@ void quick3d::test::FloorEntity::switch_blinn_phong_lighting(bool b) noexcept
 	ren->switch_blinn_phong_lighting(b);
 }
 
+void quick3d::test::FloorEntity::move(const glm::vec3& vec) noexcept
+{
+	ren->model_move(vec);
+}
+
+void quick3d::test::FloorEntity::rotate(float r, const glm::vec3& axis) noexcept
+{
+	ren->model_rotate(r, axis);
+}
+
 void quick3d::test::FloorEntity::on_tick(float delta_ms) noexcept(false)
 {
+	
+}
+
+void quick3d::test::FloorEntity::on_draw(float delta_ms) noexcept(false)
+{
 	ren->on_tick(delta_ms);
+}
+
+void quick3d::test::FloorEntity::on_darw_with_shader(float delta_ms, gl::Program& program) noexcept(false)
+{
+	ren->on_tick(delta_ms, program);
 }

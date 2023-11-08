@@ -14,13 +14,12 @@ void quick3d::test::YaeRenderer::setup_model_data() noexcept(false)
 		for (int i = 0; i < 10; i++)
 			ptr->model[i] = glm::translate(model, glm::vec3(i, 0.0f, 0.0f));
 	});
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
 }
 
 void quick3d::test::YaeRenderer::load_shader_program() noexcept(false)
 {
 	program = new quick3d::gl::Program(
-		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_vs.glsl")).get_glsl(),
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "universual_vs.glsl")).get_glsl(),
 		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_fs.glsl")).get_glsl()
 	);
 	program->bind_uniform_block("GFXGlobalUBO", 0);
@@ -62,6 +61,18 @@ void quick3d::test::YaeRenderer::switch_blinn_phong_lighting(bool b) noexcept
 	program->set_uniform("useBlinnPhong", static_cast<int>(b));
 }
 
+void quick3d::test::YaeRenderer::on_tick(float delta_ms) noexcept(false)
+{
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
+	draw_model();
+}
+
+void quick3d::test::YaeRenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
+	draw_model(program);
+}
+
 void quick3d::test::YaeEntity::try_load_renderer() noexcept(false)
 {
 	if (!ren)
@@ -86,5 +97,15 @@ void quick3d::test::YaeEntity::switch_blinn_phong_lighting(bool b) noexcept
 
 void quick3d::test::YaeEntity::on_tick(float delta_ms) noexcept(false)
 {
+	
+}
+
+void quick3d::test::YaeEntity::on_draw(float delta_ms) noexcept(false)
+{
 	ren->on_tick(delta_ms);
+}
+
+void quick3d::test::YaeEntity::on_darw_with_shader(float delta_ms, gl::Program& program) noexcept(false)
+{
+	ren->on_tick(delta_ms, program);
 }

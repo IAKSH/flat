@@ -8,8 +8,8 @@ namespace quick3d::gl
 {
     class CubeMap
     {
-    private:
-        GLenum cubmap_format;
+    protected:
+        GLenum cubemap_format;
         GLuint cubemap_id;
         const uint32_t width;
         const uint32_t height;
@@ -22,17 +22,25 @@ namespace quick3d::gl
         bool negative_z_complete{ false };
 
         void mark_as_loaded(GLenum location) noexcept;
-        void setup_cubemap() noexcept;
+        void pre_alloc_cubemap(GLenum pre_alloc_format = GL_RGBA) noexcept;
 
     public:
-        CubeMap(GLenum cubemap_format,uint32_t w,uint32_t h) noexcept;
+        CubeMap(GLenum cubemap_format, uint32_t w, uint32_t h) noexcept;
+        CubeMap(GLenum cubemap_format, GLenum pre_alloc_format, uint32_t w, uint32_t h) noexcept;
         CubeMap(CubeMap&) = delete;
         ~CubeMap() noexcept;
-
         GLuint get_cubemap_id() const noexcept;
         uint32_t get_cubemap_width() const noexcept;
         uint32_t get_cubemap_height() const noexcept;
         bool is_cubemap_complete() const noexcept;
+    };
+
+    class ColorCubeMap : public CubeMap
+    {
+    public:
+        ColorCubeMap(GLenum cubemap_format,uint32_t w,uint32_t h) noexcept;
+        ColorCubeMap(ColorCubeMap&) = delete;
+        ~ColorCubeMap() = default;
 
         // this will regard the size of image as the size of cubemap itself
         // be carefull to use
@@ -62,11 +70,19 @@ namespace quick3d::gl
             case 4: img_format = GL_RGBA; break;
             }
 
-            glTexImage2D(location,0,cubmap_format,width,height,0,img_format,GL_UNSIGNED_BYTE,t.get_img_data());
+            glTexImage2D(location,0,cubemap_format,width,height,0,img_format,GL_UNSIGNED_BYTE,t.get_img_data());
             glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
             glBindTexture(GL_TEXTURE_CUBE_MAP,0);
             mark_as_loaded(location);
         }
+    };
+
+    class DepthCubeMap : public CubeMap
+    {
+    public:
+        DepthCubeMap(uint32_t w, uint32_t h) noexcept;
+        DepthCubeMap(DepthCubeMap&) = delete;
+        ~DepthCubeMap() = default;
     };
 }

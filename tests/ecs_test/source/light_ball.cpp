@@ -33,12 +33,12 @@ void quick3d::test::LightBallRenderer::setup_model_data(int index) noexcept
 		ptr->model[index] = glm::translate(scale, scaled_position);
 	});
 	
-	model_move_attribs[index].speed = abs(move_direction_dis(gen)) * 10.0f;
+	model_move_attribs[index].speed = abs(move_direction_dis(gen)) / 10.0f;
 	model_move_attribs[index].direction = glm::vec3(
 		move_direction_dis(gen), move_direction_dis(gen), move_direction_dis(gen));
 }
 
-void quick3d::test::LightBallRenderer::update_instance_position() noexcept
+void quick3d::test::LightBallRenderer::update_instance_position(float delta_ms) noexcept
 {
 	ssbo_model.dma_do([&](void* data)
 	{
@@ -47,7 +47,7 @@ void quick3d::test::LightBallRenderer::update_instance_position() noexcept
 		{
 			const float& speed{ model_move_attribs[i].speed };
 			const glm::vec3& direction{ model_move_attribs[i].direction };
-			ptr->model[i] = glm::translate(ptr->model[i], speed * direction);
+			ptr->model[i] = glm::translate(ptr->model[i], speed * direction * delta_ms);
 		}
 	});
 
@@ -58,7 +58,7 @@ void quick3d::test::LightBallRenderer::update_instance_position() noexcept
 		{
 			const float& speed{ model_move_attribs[i].speed };
 			const glm::vec3& direction{ model_move_attribs[i].direction };
-			ptr->position[i] = glm::translate(glm::mat4(1.0f), speed * direction) * ptr->position[i];
+			ptr->position[i] = glm::translate(glm::mat4(1.0f), speed * direction * delta_ms) * ptr->position[i];
 			//ptr->position[i] = glm::vec4(100.0f, 0.0f, 0.0f, 0.0f);
 		}
 	});
@@ -134,12 +134,6 @@ void quick3d::test::LightBallRenderer::set_instance_count(int instance) noexcept
 	});
 }
 
-void quick3d::test::LightBallRenderer::on_tick(float delta_ms) noexcept(false)
-{
-	update_instance_position();
-	draw_model();
-}
-
 void quick3d::test::LightBallEntity::try_load_renderer() noexcept(false)
 {
 	if (!ren)
@@ -159,5 +153,15 @@ void quick3d::test::LightBallEntity::set_instance_count(int instance) noexcept
 
 void quick3d::test::LightBallEntity::on_tick(float delta_ms) noexcept(false)
 {
+	ren->update_instance_position(delta_ms);
+}
+
+void quick3d::test::LightBallEntity::on_draw(float delta_ms) noexcept(false)
+{
 	ren->on_tick(delta_ms);
+}
+
+void quick3d::test::LightBallEntity::on_darw_with_shader(float delta_ms, gl::Program& program) noexcept(false)
+{
+	ren->on_tick(delta_ms, program);
 }

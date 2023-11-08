@@ -1,30 +1,44 @@
 #include <iostream>
 #include <quick_gl/frame.hpp>
 
-quick3d::gl::Framebuffer::Framebuffer(GLint width, GLint height) noexcept(false)
-    : Framebuffer(GL_TEXTURE_2D, 0, width, height)
+quick3d::gl::ColorFramebuffer::ColorFramebuffer(GLint width, GLint height) noexcept(false)
+    : ColorFramebuffer(GL_TEXTURE_2D, 0, width, height)
 {
 }
 
-quick3d::gl::Framebuffer::Framebuffer(GLenum texture_type,GLuint tex_id,GLint width,GLint height) noexcept(false)
+quick3d::gl::ColorFramebuffer::ColorFramebuffer(GLenum texture_type,GLuint tex_id,GLint width,GLint height) noexcept(false)
 {
-    create_fbo_and_rbo(width,height);
+    setup_rbo(width,height);
     bind_texture_to_fbo(texture_type,tex_id);
+}
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
-    //if(!(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE))
-    //    throw std::runtime_error(std::format("fbo {} incomplete",fbo_id));
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+quick3d::gl::ColorFramebuffer::~ColorFramebuffer() noexcept
+{
+    delete_rbo();
+}
+
+void quick3d::gl::Framebuffer::create_fbo() noexcept
+{
+    glGenFramebuffers(1, &fbo_id);
+}
+
+void quick3d::gl::Framebuffer::delete_fbo() noexcept
+{
+    glDeleteFramebuffers(1, &fbo_id);
+}
+
+quick3d::gl::Framebuffer::Framebuffer() noexcept
+{
+    create_fbo();
 }
 
 quick3d::gl::Framebuffer::~Framebuffer() noexcept
 {
-    delete_fbo_and_rbo();
+    delete_fbo();
 }
 
-void quick3d::gl::Framebuffer::create_fbo_and_rbo(GLint width,GLint height) noexcept
+void quick3d::gl::ColorFramebuffer::setup_rbo(GLint width,GLint height) noexcept
 {
-    glGenFramebuffers(1, &fbo_id);
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
 
 	glGenRenderbuffers(1, &rbo_id);
@@ -35,7 +49,7 @@ void quick3d::gl::Framebuffer::create_fbo_and_rbo(GLint width,GLint height) noex
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void quick3d::gl::Framebuffer::bind_texture_to_fbo(GLenum texture_type,GLuint id) noexcept
+void quick3d::gl::ColorFramebuffer::bind_texture_to_fbo(GLenum texture_type,GLuint id) noexcept
 {
     switch (texture_type)
     {
@@ -60,10 +74,9 @@ void quick3d::gl::Framebuffer::bind_texture_to_fbo(GLenum texture_type,GLuint id
     tex_id = id;
 }
 
-void quick3d::gl::Framebuffer::delete_fbo_and_rbo() noexcept
+void quick3d::gl::ColorFramebuffer::delete_rbo() noexcept
 {
     glDeleteRenderbuffers(1, &rbo_id);
-	glDeleteFramebuffers(1, &fbo_id);
 }
 
 GLint quick3d::gl::Framebuffer::get_width() const noexcept
@@ -91,7 +104,22 @@ GLuint quick3d::gl::Framebuffer::get_fbo_id() const noexcept
     return fbo_id;
 }
 
-GLuint quick3d::gl::Framebuffer::get_binding_tex_id() const noexcept
+GLuint quick3d::gl::ColorFramebuffer::get_binding_tex_id() const noexcept
 {
     return tex_id;
+}
+
+void quick3d::gl::DepthFramebuffer::bind_depth_attachment(GLuint depth_attachment_id) noexcept
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_attachment_id, 0);
+    GLenum flags[]{ GL_NONE };
+    glDrawBuffers(1, flags);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+quick3d::gl::DepthFramebuffer::DepthFramebuffer(GLuint depth_attachment_id) noexcept
+{
+    bind_depth_attachment(depth_attachment_id);
 }

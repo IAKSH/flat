@@ -25,6 +25,7 @@ namespace quick3d::core
 		Renderer(Renderer&) = delete;
 		~Renderer() = default;
 		virtual void on_tick(float delta_ms) noexcept(false) override = 0;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) = 0;
 	};
 
 	class ModelRenderer : virtual public Renderer
@@ -32,12 +33,14 @@ namespace quick3d::core
 	protected:
 		gl::Model* model;
 		void draw_model() noexcept;
+		void draw_model(gl::Program& _program) noexcept;
 		
 	public:
 		ModelRenderer() = default;
 		ModelRenderer(ModelRenderer&) = delete;
 		~ModelRenderer() = default;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 
 	class CubeMapVAORenderer : virtual public Renderer
@@ -45,14 +48,16 @@ namespace quick3d::core
 	protected:
 		gl::Buffer* vbo;
 		gl::VertexArray* vao;
-		gl::CubeMap* cubemap;
+		gl::ColorCubeMap* cubemap;
 		void draw_vao() noexcept;
+		void draw_vao(gl::Program& _program) noexcept;
 
 	public:
 		CubeMapVAORenderer() = default;
 		CubeMapVAORenderer(CubeMapVAORenderer&) = delete;
 		~CubeMapVAORenderer() = default;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 
 	class VAORenderer : virtual public Renderer
@@ -62,12 +67,14 @@ namespace quick3d::core
 		gl::VertexArray* vao;
 		std::vector<gl::Texture*> textures;
 		void draw_vao() noexcept;
+		void draw_vao(gl::Program& _program) noexcept;
 		
 	public:
 		VAORenderer() = default;
 		VAORenderer(VAORenderer&) = delete;
 		~VAORenderer() = default;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 
 	class InstanceRenderer : virtual public Renderer
@@ -80,41 +87,48 @@ namespace quick3d::core
 		InstanceRenderer(InstanceRenderer&) = delete;
 		~InstanceRenderer() = default;		
 		virtual void on_tick(float delta_ms) noexcept(false) override = 0;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override = 0;
 	};
 
 	class InstanceModelRenderer : virtual public ModelRenderer, virtual public InstanceRenderer
 	{
 	protected:
 		void draw_model() noexcept;
+		void draw_model(gl::Program& _program) noexcept;
 
 	public:
 		InstanceModelRenderer() = default;
 		InstanceModelRenderer(InstanceModelRenderer&) = delete;
 		~InstanceModelRenderer() = default;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 
 	class InstanceCubeMapVAORenderer : virtual public CubeMapVAORenderer, virtual public InstanceRenderer
 	{
 	protected:
 		void draw_vao() noexcept;
+		void draw_vao(gl::Program& _program) noexcept;
 
 	public:
 		InstanceCubeMapVAORenderer() = default;
 		InstanceCubeMapVAORenderer(InstanceCubeMapVAORenderer&) = delete;
 		~InstanceCubeMapVAORenderer() = default;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 
 	class InstanceVAORenderer : virtual public VAORenderer, virtual public InstanceRenderer
 	{
 	protected:
 		void draw_vao() noexcept;
+		void draw_vao(gl::Program& _program) noexcept;
 
 	public:
 		InstanceVAORenderer() = default;
 		InstanceVAORenderer(InstanceVAORenderer&) = delete;
 		~InstanceVAORenderer() = default;
 		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 }

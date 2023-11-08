@@ -10,6 +10,12 @@ namespace quick3d::test
 	// 最简单的方式（虽然不是很优雅），就是直接导出shader program，在外部（entity中）设置uniform
 	// 但是通常来说，都是用UBO/SSBO的，这种情况就还是在该类中进行，只导出部分控制API
 	// TODO: 关于UBO和SSBO的绑定问题，这俩的绑定点会冲突，可能需要在quick3d::gl中对其进行一定的封装
+
+	// 关于点阴影渲染，每个物体需要实现自己的 Depth-Pass only 的 Shader Program 【否决，考虑到点阴影渲染管线可以复用，选择在gl中建立一整套预制的点阴影渲染器
+	//																		 （当然，你也可以自行实现）
+	// 在外部管线中，首先将会使用这个阴影shader渲染到一个Depth Only的FBO（cubemap）中
+	// 当实际绘制时，将cubemap与后续内容混合。
+
 	class YaeRenderer : public core::InstanceModelRenderer
 	{
 	private:
@@ -29,6 +35,8 @@ namespace quick3d::test
 		~YaeRenderer() noexcept;
 		void set_instance_count(int instance) noexcept;
 		void switch_blinn_phong_lighting(bool b) noexcept;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 
 	class YaeEntity : public core::Entity
@@ -46,5 +54,7 @@ namespace quick3d::test
 		void set_instance_count(int instance) noexcept;
 		void switch_blinn_phong_lighting(bool b) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
+		virtual void on_draw(float delta_ms) noexcept(false) override final;
+		virtual void on_darw_with_shader(float delta_ms, gl::Program& program) noexcept(false) override final;
 	};
 }

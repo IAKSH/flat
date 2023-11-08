@@ -21,6 +21,7 @@ struct Material
 {
     sampler2D diffuse;
     sampler2D specular;
+    samplerCube depth_map;
     float     shininess;
 }; 
 
@@ -54,6 +55,45 @@ layout(std430, binding = 9) buffer LightBallAttenuation
 	float light_ball_quadratic;
 };
 
+// array of offset direction for sampling
+vec3 gridSamplingDisk[20] = vec3[]
+(
+   vec3(1, 1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1, 1,  1), 
+   vec3(1, 1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+   vec3(1, 1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1, 1,  0),
+   vec3(1, 0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1, 0, -1),
+   vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
+);
+
+float ShadowCalculation(vec3 fragPos)
+{
+    float far_plane = 25.0;
+    vec3 lightPos = -phone_direct_lighting_direction.xyz;
+
+    vec3 fragToLight = fragPos - lightPos;
+    float currentDepth = length(fragToLight);
+    
+    float shadow = 0.0;
+    float bias = 0.15;
+    int samples = 20;
+    float viewDistance = length(viewPos - fragPos);
+    float diskRadius = (1.0 + (viewDistance / far_plane)) / 250.0;
+    float closestDepth;
+    for(int i = 0; i < samples; ++i)
+    {
+        closestDepth = texture(material.depth_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
+        closestDepth *= far_plane;   // undo mapping [0;1]
+        if(currentDepth - bias > closestDepth)
+            shadow += 1.0;
+    }
+    shadow /= float(samples);
+        
+    // display closestDepth as debug (to visualize depth cubemap)
+    //FragColor = vec4(vec3(closestDepth / far_plane), 1.0);    
+        
+    return shadow;
+}
+
 vec3 processDirectLight()
 {
     // ambient
@@ -79,8 +119,12 @@ vec3 processDirectLight()
         spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     }
     vec3 specular = phone_direct_lighting_specular.rgb * spec * texture(material.specular, TexCoords).rgb;
-    
-    return ambient + diffuse + specular;
+
+    // calculate shadow
+    float shadow = ShadowCalculation(FragPos);
+    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular));
+
+    return lighting;
 }
 
 vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 light_ball_diffuse,vec3 light_ball_specular)
@@ -124,6 +168,7 @@ vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 lig
 void main()
 {
     vec3 result = processDirectLight();
+    /*
     for(int i = 1;i < lightBallInstance;i++)
     {
         result += processPointLight(
@@ -133,6 +178,7 @@ void main()
             lightBallColor[i].rgb
         );
     }
+    */
 
     vec4 gammaed_result = vec4(pow(result.rgb, vec3(1.0/gamma)),1.0);
     FragColor = gammaed_result;

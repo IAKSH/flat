@@ -1,31 +1,21 @@
 #include <iostream>
 #include <quick_gl/cubemap.hpp>
 
-quick3d::gl::CubeMap::CubeMap(GLenum format,uint32_t w,uint32_t h) noexcept
-    : width(w),height(h)
+quick3d::gl::CubeMap::CubeMap(GLenum cubemap_format, uint32_t w, uint32_t h) noexcept
+    : cubemap_format(cubemap_format), width(w), height(h)
 {
-    switch (format)
-    {
-    case GL_LUMINANCE:
-    case GL_RGB:
-    case GL_RGBA:
-    case GL_SRGB:
-    case GL_SRGB8:
-    case GL_SRGB8_ALPHA8:
-        cubmap_format = format;
-        break;
+    pre_alloc_cubemap();
+}
 
-    default:
-        std::cerr << "invalid cubemap foramt" << std::endl;
-        std::terminate();
-    }
-
-    setup_cubemap();
+quick3d::gl::CubeMap::CubeMap(GLenum cubemap_format, GLenum pre_alloc_format, uint32_t w, uint32_t h) noexcept
+    : cubemap_format(cubemap_format), width(w), height(h)
+{
+    pre_alloc_cubemap(pre_alloc_format);
 }
 
 quick3d::gl::CubeMap::~CubeMap() noexcept
 {
-    glDeleteTextures(1,&cubemap_id);
+    glDeleteTextures(1, &cubemap_id);
 }
 
 void quick3d::gl::CubeMap::mark_as_loaded(GLenum location) noexcept
@@ -41,7 +31,7 @@ void quick3d::gl::CubeMap::mark_as_loaded(GLenum location) noexcept
     }
 }
 
-void quick3d::gl::CubeMap::setup_cubemap() noexcept
+void quick3d::gl::CubeMap::pre_alloc_cubemap(GLenum pre_alloc_format) noexcept
 {
     glGenTextures(1,&cubemap_id);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -52,8 +42,13 @@ void quick3d::gl::CubeMap::setup_cubemap() noexcept
     glBindTexture(GL_TEXTURE_CUBE_MAP,cubemap_id);
     // must pre-set the size of each texture2d in cubemap
     // or the fbo that this cubemap binding to will be incompete
-    for(int i = 0;i < 6;i++)
-        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,0,cubmap_format,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,nullptr);
+    for (int i = 0; i < 6; i++)
+    {
+        if(pre_alloc_format == GL_DEPTH_COMPONENT)
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, cubemap_format, width, height, 0, pre_alloc_format, GL_FLOAT, nullptr);
+        else
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, cubemap_format, width, height, 0, pre_alloc_format, GL_UNSIGNED_BYTE, nullptr);
+    }
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 }
 
@@ -82,7 +77,12 @@ bool quick3d::gl::CubeMap::is_cubemap_complete() const noexcept
         negative_z_complete;
 }
 
-void quick3d::gl::CubeMap::generate_texture(GLenum location,unsigned char* img_data,uint32_t img_channels) noexcept
+quick3d::gl::ColorCubeMap::ColorCubeMap(GLenum format, uint32_t w, uint32_t h) noexcept
+    : CubeMap(format, w, h)
+{
+}
+
+void quick3d::gl::ColorCubeMap::generate_texture(GLenum location,unsigned char* img_data,uint32_t img_channels) noexcept
 {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -99,9 +99,14 @@ void quick3d::gl::CubeMap::generate_texture(GLenum location,unsigned char* img_d
     case 4: img_format = GL_RGBA; break;
     }
 
-    glTexImage2D(location,0,cubmap_format,width,height,0,img_format,GL_UNSIGNED_BYTE,img_data);
+    glTexImage2D(location,0,cubemap_format,width,height,0,img_format,GL_UNSIGNED_BYTE,img_data);
     glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 
     glBindTexture(GL_TEXTURE_CUBE_MAP,0);
     mark_as_loaded(location);
+}
+
+quick3d::gl::DepthCubeMap::DepthCubeMap(uint32_t w, uint32_t h) noexcept
+    : CubeMap(GL_DEPTH_COMPONENT, GL_DEPTH_COMPONENT, w, h)
+{
 }

@@ -1,9 +1,11 @@
 #pragma once
 #include <unordered_map>
+#include <functional>
 #include <stdexcept>
 #include <format>
 #include <string>
 #include <vector>
+#include <quick_gl/shader.hpp>
 
 namespace quick3d::core
 {
@@ -50,6 +52,24 @@ namespace quick3d::core
 			for (auto& set : entities)
 				set.second->on_tick(delta_ms);
 		}
+
+		void foreach_on_draw(float delta_ms) noexcept(false)
+		{
+			for (auto& set : entities)
+				set.second->on_draw(delta_ms);
+		}
+
+		void foreach_on_draw(float delta_ms, gl::Program& program) noexcept(false)
+		{
+			for (auto& set : entities)
+				set.second->on_darw_with_shader(delta_ms, program);
+		}
+
+		void foreach(std::function<void(std::string,FakeEntity*)> callback) noexcept(false)
+		{
+			for (auto& set : entities)
+				callback(set.first, set.second);
+		}
 	};
 
 	class System
@@ -77,6 +97,8 @@ namespace quick3d::core
 	public:
 		Entity(__EntityManager<Entity>& manager) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) = 0;
+		virtual void on_draw(float delta_ms) noexcept(false) = 0;
+		virtual void on_darw_with_shader(float delta_ms, quick3d::gl::Program& program) noexcept(false) = 0;
 	};
 
 	using EntityManager = __EntityManager<Entity>;

@@ -32,9 +32,19 @@ quick3d::gl::Program::Program(std::string_view vs, std::string_view fs) noexcept
     create_program(vs,fs);
 }
 
+quick3d::gl::Program::Program(std::string_view vs, std::string_view gs, std::string_view fs) noexcept(false)
+{
+    create_program(vs, gs, fs);
+}
+
 quick3d::gl::Program::Program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false)
 {
     create_program(vs.get_glsl(), fs.get_glsl());
+}
+
+quick3d::gl::Program::Program(const GLSLReader& vs, const GLSLReader& gs, const GLSLReader& fs) noexcept(false)
+{
+    create_program(vs.get_glsl(), gs.get_glsl(), fs.get_glsl());
 }
 
 quick3d::gl::Program::~Program() noexcept
@@ -82,6 +92,33 @@ void quick3d::gl::Program::create_program(std::string_view vs,std::string_view f
 	glLinkProgram(program_id);
 
     glDeleteShader(vs_id);
+    glDeleteShader(fs_id);
+}
+
+void quick3d::gl::Program::create_program(std::string_view vs,std::string_view gs, std::string_view fs) noexcept(false)
+{
+    GLuint vs_id, gs_id, fs_id;
+    vs_id = compile_shader<GL_VERTEX_SHADER>(vs);
+    gs_id = compile_shader<GL_GEOMETRY_SHADER>(gs);
+    fs_id = compile_shader<GL_FRAGMENT_SHADER>(fs);
+
+    if (!check_shader<GL_VERTEX_SHADER>(vs_id))
+        throw std::runtime_error("failed when compiling vertex shader from glsl");
+
+    if (!check_shader<GL_GEOMETRY_SHADER>(gs_id))
+        throw std::runtime_error("failed when compiling geometry shader from glsl");
+
+    if (!check_shader<GL_FRAGMENT_SHADER>(fs_id))
+        throw std::runtime_error("failed when compiling fragment shader from glsl");
+
+    program_id = glCreateProgram();
+    glAttachShader(program_id, vs_id);
+    glAttachShader(program_id, gs_id);
+    glAttachShader(program_id, fs_id);
+    glLinkProgram(program_id);
+
+    glDeleteShader(vs_id);
+    glDeleteShader(gs_id);
     glDeleteShader(fs_id);
 }
 

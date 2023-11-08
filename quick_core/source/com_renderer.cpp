@@ -7,7 +7,12 @@ quick3d::core::Renderer::Renderer() noexcept
 
 void quick3d::core::ModelRenderer::draw_model() noexcept
 {
-	model->draw_model(*program);
+	draw_model(*program);
+}
+
+void quick3d::core::ModelRenderer::draw_model(gl::Program& _program) noexcept
+{
+	model->draw_model(_program);
 }
 
 void quick3d::core::ModelRenderer::on_tick(float delta_ms) noexcept(false)
@@ -15,12 +20,22 @@ void quick3d::core::ModelRenderer::on_tick(float delta_ms) noexcept(false)
 	draw_model();
 }
 
+void quick3d::core::ModelRenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	draw_model(program);
+}
+
 void quick3d::core::CubeMapVAORenderer::draw_vao() noexcept
+{
+	draw_vao(*program);
+}
+
+void quick3d::core::CubeMapVAORenderer::draw_vao(gl::Program& _program) noexcept
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->get_cubemap_id());
 
-	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float));
+	vao->draw(_program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -33,7 +48,19 @@ void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms) noexcept(false)
 	glEnable(GL_DEPTH_TEST);
 }
 
+void quick3d::core::CubeMapVAORenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	glDisable(GL_DEPTH_TEST);
+	draw_vao(program);
+	glEnable(GL_DEPTH_TEST);
+}
+
 void quick3d::core::VAORenderer::draw_vao() noexcept
+{
+	draw_vao(*program);
+}
+
+void quick3d::core::VAORenderer::draw_vao(gl::Program& _program) noexcept
 {
 	for (int i = 0; i < textures.size(); i++)
 	{
@@ -41,7 +68,13 @@ void quick3d::core::VAORenderer::draw_vao() noexcept
 		glBindTexture(GL_TEXTURE_2D, textures[i]->get_tex_id());
 	}
 
-	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float));
+	vao->draw(_program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float));
+
+	for (int i = 0; i < textures.size(); i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -52,6 +85,11 @@ void quick3d::core::VAORenderer::on_tick(float delta_ms) noexcept(false)
 	draw_vao();
 }
 
+void quick3d::core::VAORenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	draw_vao(program);
+}
+
 quick3d::core::InstanceRenderer::InstanceRenderer() noexcept
 	: instance_count(1)
 {
@@ -59,7 +97,12 @@ quick3d::core::InstanceRenderer::InstanceRenderer() noexcept
 
 void quick3d::core::InstanceModelRenderer::draw_model() noexcept
 {
-	model->draw_model(*program, instance_count);
+	draw_model(*program);
+}
+
+void quick3d::core::InstanceModelRenderer::draw_model(gl::Program& _program) noexcept
+{
+	model->draw_model(_program, instance_count);
 }
 
 void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms) noexcept(false)
@@ -67,12 +110,22 @@ void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms) noexcept(fals
 	draw_model();
 }
 
+void quick3d::core::InstanceModelRenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	draw_model(program);
+}
+
 void quick3d::core::InstanceCubeMapVAORenderer::draw_vao() noexcept
+{
+	draw_vao(*program);
+}
+
+void quick3d::core::InstanceCubeMapVAORenderer::draw_vao(gl::Program& _program) noexcept
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap->get_cubemap_id());
 
-	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float), instance_count);
+	vao->draw(_program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float), instance_count);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
@@ -83,7 +136,17 @@ void quick3d::core::InstanceCubeMapVAORenderer::on_tick(float delta_ms) noexcept
 	draw_vao();
 }
 
+void quick3d::core::InstanceCubeMapVAORenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	draw_vao(program);
+}
+
 void quick3d::core::InstanceVAORenderer::draw_vao() noexcept
+{
+	draw_vao(*program);
+}
+
+void quick3d::core::InstanceVAORenderer::draw_vao(gl::Program& _program) noexcept
 {
 	for (int i = 0; i < textures.size(); i++)
 	{
@@ -91,13 +154,26 @@ void quick3d::core::InstanceVAORenderer::draw_vao() noexcept
 		glBindTexture(GL_TEXTURE_2D, textures[i]->get_tex_id());
 	}
 
-	vao->draw(*program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float), instance_count);
+	vao->draw(_program, GL_TRIANGLES, 0, vbo->get_buffer_size() / sizeof(float), instance_count);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	for (int i = 0; i < textures.size(); i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	glActiveTexture(GL_TEXTURE0);
 }
 
 void quick3d::core::InstanceVAORenderer::on_tick(float delta_ms) noexcept(false)
 {
 	draw_vao();
+}
+
+void quick3d::core::InstanceVAORenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	draw_vao(program);
 }
