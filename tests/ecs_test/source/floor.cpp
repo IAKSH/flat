@@ -4,6 +4,8 @@
 static constexpr std::string_view GLSL_FOLDER = "../../../../tests/ecs_test/glsl";
 static constexpr std::string_view IMAGE_FOLDER = "../../../../tests/ecs_test/image";
 
+static constexpr float MODEL_SCALE_FACTOR{ 100.0f };
+
 static constexpr std::array<GLfloat, 32> FLOOR_VERTICES
 {
 	// Positions          // Normals           // Texture Coords
@@ -23,7 +25,6 @@ void quick3d::test::FloorRenderer::setup_model_ssbo() noexcept
 {
 	ssbo_model.dma_do([](void* data)
 	{
-		constexpr float MODEL_SCALE_FACTOR{ 10.0f };
 		auto model{ glm::scale(glm::mat4(1.0f),glm::vec3(MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR,MODEL_SCALE_FACTOR)) };
 		auto ptr{ reinterpret_cast<ModelData*>(data) };
 		ptr->model[0] = model;
@@ -44,7 +45,7 @@ void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 	program->set_uniform("material.depth_map", 2);
 	program->set_uniform("material.shininess", 128.0f);
 
-	program->set_uniform("texcoords_scale", 10.0f);
+	program->set_uniform("texcoords_scale", MODEL_SCALE_FACTOR);
 	program->set_uniform("useBlinnPhong", 1);
 }
 

@@ -119,7 +119,7 @@ int main() noexcept
 			set_ogl_state();
 			// shadow test begin
 			float near_plane = 0.01f;
-			float far_plane = 25.0f;
+			float far_plane = 100.0f;
 			glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
 			std::vector<glm::mat4> shadowTransforms;
 			//glm::vec3 lightPos{ gfx.get_camera().get_position() };

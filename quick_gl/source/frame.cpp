@@ -111,6 +111,11 @@ GLuint quick3d::gl::ColorFramebuffer::get_binding_tex_id() const noexcept
 
 void quick3d::gl::DepthFramebuffer::bind_depth_attachment(GLuint depth_attachment_id) noexcept
 {
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
     glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_attachment_id, 0);
     GLenum flags[]{ GL_NONE };

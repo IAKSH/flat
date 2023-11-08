@@ -1,4 +1,4 @@
-#version 320 es
+#version 460 core
 precision highp float;
 
 out vec4 FragColor;
@@ -67,7 +67,7 @@ vec3 gridSamplingDisk[20] = vec3[]
 
 float ShadowCalculation(vec3 fragPos)
 {
-    float far_plane = 25.0;
+    float far_plane = 100.0;
     vec3 lightPos = -phone_direct_lighting_direction.xyz;
 
     vec3 fragToLight = fragPos - lightPos;
@@ -168,7 +168,6 @@ vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 lig
 void main()
 {
     vec3 result = processDirectLight();
-    /*
     for(int i = 1;i < lightBallInstance;i++)
     {
         result += processPointLight(
@@ -178,7 +177,6 @@ void main()
             lightBallColor[i].rgb
         );
     }
-    */
 
     vec4 gammaed_result = vec4(pow(result.rgb, vec3(1.0/gamma)),1.0);
     FragColor = gammaed_result;
