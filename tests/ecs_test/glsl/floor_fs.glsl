@@ -66,7 +66,7 @@ vec3 gridSamplingDisk[20] = vec3[]
 
 float ShadowCalculation(vec3 fragPos)
 {
-    float far_plane = 100.0;
+    float far_plane = 25.0;
     vec3 lightPos = -phone_direct_lighting_direction.xyz;
 
     vec3 fragToLight = fragPos - lightPos;
@@ -83,7 +83,9 @@ float ShadowCalculation(vec3 fragPos)
     {
         closestDepth = texture(material.depth_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
         closestDepth *= far_plane;   // undo mapping [0;1]
-        if(currentDepth - bias > closestDepth)
+        if(currentDepth > far_plane)
+            shadow = 0.0;
+        else if(currentDepth - bias > closestDepth)
             shadow += 1.0;
     }
     shadow /= float(samples);

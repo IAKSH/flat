@@ -104,7 +104,7 @@ int main() noexcept
 			(quick3d::gl::GLSLReader(HDR_GLSL_VS_PATH)),
 			(quick3d::gl::GLSLReader(HDR_GLSL_FS_PATH))
 		);
- 		quick3d::gl::Texture hdr_frame_tex(GL_RGBA16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+ 		quick3d::gl::Texture hdr_frame_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
 		quick3d::gl::ColorFramebuffer hdr_framebuffer(hdr_frame_tex);
 		// HDR test end
 
@@ -147,7 +147,7 @@ int main() noexcept
 			set_ogl_state();
 			// shadow test begin
 			float near_plane = 0.01f;
-			float far_plane = 100.0f;
+			float far_plane = 25.0f;
 			glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
 			std::vector<glm::mat4> shadowTransforms;
 
