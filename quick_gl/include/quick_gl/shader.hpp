@@ -62,6 +62,8 @@ namespace quick3d::gl
 
 		void create_program(std::string_view vs, std::string_view fs) noexcept(false);
 		void create_program(std::string_view vs, std::string_view gs, std::string_view fs) noexcept(false);
+		void create_program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false);
+		void create_program(const GLSLReader& vs, const GLSLReader& gs, const GLSLReader& fs) noexcept(false);
 		GLint get_uniform_location(std::string_view uniform) noexcept(false);
 
     public:

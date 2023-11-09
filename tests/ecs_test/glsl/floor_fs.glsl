@@ -76,6 +76,7 @@ float ShadowCalculation(vec3 fragPos)
     float bias = 0.15;
     int samples = 20;
     float viewDistance = length(viewPos - fragPos);
+    //                                                      ↓ 这个magic num与阴影模糊度负相关
     float diskRadius = (1.0 + (viewDistance / far_plane)) / 125.0;
     float closestDepth;
     for(int i = 0; i < samples; ++i)
