@@ -14,10 +14,12 @@ namespace quick3d::gl
     private:
         GLuint tex_id;
         GLenum tex_format;
+        uint32_t tex_width;
+        uint32_t tex_height;
+        
         bool enable_rtti;
         void generate_texture(GLenum img_format, unsigned char* img_data, uint32_t img_width, uint32_t img_height) noexcept;
         void delete_texture() noexcept;
-        void set_tex_format(GLenum format) noexcept;
 
     public:
         // this will create an empty Texture (with memory allocated)
@@ -36,7 +38,7 @@ namespace quick3d::gl
         Texture(GLenum tex_format,const T& t,bool enable_rtti = true) noexcept
         {
             this->enable_rtti = enable_rtti;
-            set_tex_format(tex_format);
+            this->tex_format = tex_format;
 
             GLenum img_format;
             switch(t.get_img_channels())

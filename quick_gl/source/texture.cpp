@@ -1,24 +1,20 @@
 #include <iostream>
 #include <quick_gl/texture.hpp>
 
-quick3d::gl::Texture::Texture(GLenum tex_format,uint32_t tex_width,uint32_t tex_height,bool enable_rtti) noexcept
+quick3d::gl::Texture::Texture(GLenum tex_format, uint32_t tex_width, uint32_t tex_height, bool enable_rtti) noexcept
+    : tex_format(tex_format), enable_rtti(enable_rtti), tex_width(tex_width), tex_height(tex_height)
 {
-    this->enable_rtti = enable_rtti;
-    set_tex_format(tex_format);
     generate_texture(GL_RGBA,nullptr,tex_width,tex_height);
 }
 
-quick3d::gl::Texture::Texture(GLenum tex_format,GLuint tex_id,bool enable_rtti) noexcept
+quick3d::gl::Texture::Texture(GLenum tex_format, GLuint tex_id, bool enable_rtti) noexcept
+    : tex_format(tex_format), tex_id(tex_id), enable_rtti(enable_rtti), tex_width(0), tex_height(0)
 {
-    this->tex_id = tex_id;
-    this->enable_rtti = enable_rtti;
-    set_tex_format(tex_format);
 }
 
-quick3d::gl::Texture::Texture(GLenum tex_format,GLenum img_format,unsigned char* img_data,uint32_t img_width,uint32_t img_height,bool enable_rtti) noexcept
+quick3d::gl::Texture::Texture(GLenum tex_format, GLenum img_format, unsigned char* img_data, uint32_t img_width, uint32_t img_height, bool enable_rtti) noexcept
+    : tex_format(tex_format), enable_rtti(enable_rtti), tex_width(img_width), tex_height(img_height)
 {
-    this->enable_rtti = enable_rtti;
-    set_tex_format(tex_format);
     generate_texture(img_format,img_data,img_width,img_height);
 }
 
@@ -48,25 +44,6 @@ void quick3d::gl::Texture::delete_texture() noexcept
     glDeleteTextures(1,&tex_id);
 }
 
-void quick3d::gl::Texture::set_tex_format(GLenum format) noexcept
-{
-    switch (format)
-    {
-    case GL_RED:
-    case GL_RGB:
-    case GL_RGBA:
-    case GL_SRGB:
-    case GL_SRGB8:
-    case GL_SRGB8_ALPHA8:
-        tex_format = format;
-        break;
-
-    default:
-        std::cerr << "invalid texture foramt" << std::endl;
-        std::terminate();
-    }
-}
-
 GLuint quick3d::gl::Texture::get_tex_id() const noexcept
 {
     return tex_id;
@@ -74,22 +51,16 @@ GLuint quick3d::gl::Texture::get_tex_id() const noexcept
 
 GLint quick3d::gl::Texture::get_tex_width() const noexcept
 {
-    GLint width;
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &width);
-    return width;
+    return tex_width;
 }
 
 GLint quick3d::gl::Texture::get_tex_height() const noexcept
 {
-    GLint height;
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &height);
-    return height;
+    return tex_height;
 }
 
 GLenum quick3d::gl::Texture::get_tex_format() const noexcept
 {
-    GLenum format;
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, reinterpret_cast<GLint*>(&format));
-    return format;
+    return tex_format;
 }
 

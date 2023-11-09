@@ -2,14 +2,18 @@
 #include <quick_gl/frame.hpp>
 
 quick3d::gl::ColorFramebuffer::ColorFramebuffer(GLint width, GLint height) noexcept(false)
-    : ColorFramebuffer(GL_TEXTURE_2D, 0, width, height)
 {
+    setup_rbo(width, height);
+    bind_texture_to_fbo(0);
 }
 
-quick3d::gl::ColorFramebuffer::ColorFramebuffer(GLenum texture_type,GLuint tex_id,GLint width,GLint height) noexcept(false)
+quick3d::gl::ColorFramebuffer::ColorFramebuffer(GLuint tex_id, GLint width, GLint height) noexcept(false)
+    : tex_id(tex_id)
 {
     setup_rbo(width,height);
-    bind_texture_to_fbo(texture_type,tex_id);
+    bind_texture_to_fbo(tex_id);
+    //if (!(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE))
+    //    throw std::runtime_error(std::format("fbo {} incomplete", fbo_id));
 }
 
 quick3d::gl::ColorFramebuffer::~ColorFramebuffer() noexcept
@@ -43,32 +47,16 @@ void quick3d::gl::ColorFramebuffer::setup_rbo(GLint width,GLint height) noexcept
 
 	glGenRenderbuffers(1, &rbo_id);
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo_id);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_id);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_id);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void quick3d::gl::ColorFramebuffer::bind_texture_to_fbo(GLenum texture_type,GLuint id) noexcept
+void quick3d::gl::ColorFramebuffer::bind_texture_to_fbo(GLuint id) noexcept
 {
-    switch (texture_type)
-    {
-    case GL_TEXTURE_2D:
-    case GL_TEXTURE_CUBE_MAP_POSITIVE_X:
-    case GL_TEXTURE_CUBE_MAP_POSITIVE_Y:
-    case GL_TEXTURE_CUBE_MAP_POSITIVE_Z:
-    case GL_TEXTURE_CUBE_MAP_NEGATIVE_X:
-    case GL_TEXTURE_CUBE_MAP_NEGATIVE_Y:
-    case GL_TEXTURE_CUBE_MAP_NEGATIVE_Z:
-        break;
-
-    default:
-        std::cerr << "bind_texture_to_fbo(): invalid texture_type" << std::endl;
-        std::terminate();
-    }
-
     glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture_type, id, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, id, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     tex_id = id;

@@ -35,15 +35,15 @@ namespace quick3d::gl
 
     public:
         ColorFramebuffer(GLint width, GLint height) noexcept(false);
-        ColorFramebuffer(GLenum texture_type, GLuint tex_id, GLint width, GLint height) noexcept(false);
+        ColorFramebuffer(GLuint tex_id, GLint width, GLint height) noexcept(false);
         ColorFramebuffer(ColorFramebuffer&) = delete;
         ~ColorFramebuffer() noexcept;
 
-        void bind_texture_to_fbo(GLenum texture_type, GLuint id) noexcept;
+        void bind_texture_to_fbo(GLuint id) noexcept;
         GLuint get_binding_tex_id() const noexcept;
 
         template <typename T>
-            requires requires(T t)
+        requires requires(T t)
         {
             {t.get_tex_id()} -> std::same_as<GLuint>;
             {t.get_tex_width()} -> std::same_as<GLint>;
@@ -53,10 +53,10 @@ namespace quick3d::gl
         ColorFramebuffer(const T& t) noexcept(false)
             : tex_id(t.get_tex_id())
         {
-            create_fbo_and_rbo(t.get_tex_width(), t.get_tex_height());
-            bind_texture_to_fbo(t.get_tex_format(), tex_id);
-            if (!(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE))
-                throw std::runtime_error(std::format("fbo {} incomplete", fbo_id));
+            setup_rbo(t.get_tex_width(), t.get_tex_height());
+            bind_texture_to_fbo(tex_id);
+            //if (!(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE))
+            //    throw std::runtime_error(std::format("fbo {} incomplete", fbo_id));
         }
     };
 
