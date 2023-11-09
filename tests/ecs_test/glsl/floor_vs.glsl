@@ -9,7 +9,6 @@ out vec3 viewPos;
 out vec3 FragPos;  
 out vec3 Normal;
 out vec2 TexCoords;
-out float gamma;
 
 layout (std140) uniform GFXGlobalUBO
 {
@@ -29,7 +28,6 @@ uniform float texcoords_scale;
 
 void main()
 {
-    gamma = global_gamma;
     TexCoords = texcoords_scale * aTexCoords;
     viewPos = global_camera_position.xyz;
     FragPos = vec3(model[0] * vec4(aPos, 1.0));

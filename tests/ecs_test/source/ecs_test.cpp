@@ -26,10 +26,22 @@ static constexpr std::string_view MODEL_SHADOW_GLSL_VS_PATH = "../../../../tests
 static constexpr std::string_view MODEL_SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_gs.glsl";
 static constexpr std::string_view MODEL_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_fs.glsl";
 
-constexpr int SCREEN_WIDTH{ 1280 };
-constexpr int SCREEN_HEIGHT{ 720 };
-constexpr float SHADOW_WIDTH{ 2048 };
-constexpr float SHADOW_HEIGHT{ 2048 };
+static constexpr std::string_view HDR_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/hdr_vs.glsl";
+static constexpr std::string_view HDR_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/hdr_fs.glsl";
+
+static constexpr int SCREEN_WIDTH{ 1280 };
+static constexpr int SCREEN_HEIGHT{ 720 };
+static constexpr float SHADOW_WIDTH{ 2048 };
+static constexpr float SHADOW_HEIGHT{ 2048 };
+
+static constexpr std::array<float,20> QUAD_VERTICES
+{
+	// Positions        // Texture Coords
+	-1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+	1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+	1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+};
 
 void set_ogl_state() noexcept
 {
@@ -82,11 +94,27 @@ int main() noexcept
 			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_FS_PATH)));
 		// shadow test end
 
+		// HDR test begin
+		quick3d::gl::Buffer hdr_frame_vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES));
+		hdr_frame_vbo.write_buffer_data(QUAD_VERTICES);
+		quick3d::gl::VertexArray hdr_frame_vao;
+		hdr_frame_vao.add_attrib(hdr_frame_vbo, 0, 3, 5, 0);
+		hdr_frame_vao.add_attrib(hdr_frame_vbo, 1, 2, 5, 3);
+		quick3d::gl::Program hdr_frame_program(
+			(quick3d::gl::GLSLReader(HDR_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(HDR_GLSL_FS_PATH))
+		);
+ 		quick3d::gl::Texture hdr_frame_tex(GL_RGBA16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+		quick3d::gl::ColorFramebuffer hdr_framebuffer(hdr_frame_tex);
+		// HDR test end
+
 		int yae_instance{ 1 };
 		int box_instance{ 1 };
 		int light_ball_instance{ 1 };
 		bool enable_bilnn_phong{ true };
+		bool enable_exposure{ true };
 		float gfx_gamma{ 2.2f };
+		float hdr_exposure{ 1.0f };
 		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
 		glm::vec3 sun_light_direction(-10.0f, -10.0f, -10.0f);
 		quick3d::ecs::HightResTimer timer;
@@ -148,12 +176,21 @@ int main() noexcept
 					entity->on_darw_with_shader(delta, shadow_program);
 			});
 			glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			// hdr test start
+			glBindFramebuffer(GL_FRAMEBUFFER, hdr_framebuffer.get_fbo_id());
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, depth_cubemap.get_cubemap_id());
-
 			// shadow test end
 			entity_manager.foreach_on_draw(delta);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, hdr_frame_tex.get_tex_id());
+			hdr_frame_program.set_uniform("exposure", hdr_exposure);
+			hdr_frame_program.set_uniform("enable_exposure", static_cast<int>(enable_exposure));
+			hdr_frame_vao.draw(hdr_frame_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+			glBindTexture(GL_TEXTURE_2D, 0);
+			// hdr test end
 			reset_ogl_state();
 
 			ImGui::Begin("Control");
@@ -162,15 +199,15 @@ int main() noexcept
 			float cam_pos_y{ gfx.get_camera().get_position().y };
 			float cam_pos_z{ gfx.get_camera().get_position().z };
 			ImGui::Text(" camera pos: (%.1f,%.1f,%.1f) ", cam_pos_x, cam_pos_y, cam_pos_z);
-			ImGui::Text(enable_bilnn_phong ? "Bilnn-Phong Lighting enabled" : "Bilnn-Phong Lighting disabled");
-			if (ImGui::Button("switch "))
-				enable_bilnn_phong = !enable_bilnn_phong;
+			ImGui::Checkbox("Bilnn-Phong lighting", &enable_bilnn_phong);
 			ImGui::SliderFloat("gamma", &gfx_gamma, 0.0f, 10.0f);
 			ImGui::SliderInt("light ball instance", &light_ball_instance, 0, 500);
 			ImGui::SliderInt("box instance", &box_instance, 0, 500);
 			ImGui::SliderInt("yae instance", &yae_instance, 0, 10);
 			ImGui::ColorPicker3("ambient", glm::value_ptr(sun_light_ambient));
 			ImGui::SliderFloat3("sun_light_direction", glm::value_ptr(sun_light_direction), -10.0f, 10.0f);
+			ImGui::SliderFloat("hdr_exposure", &hdr_exposure, 0.0f, 10.0f);
+			ImGui::Checkbox("enable_exposure", &enable_exposure);
 			ImGui::End();
 
 			ImGui::Render();

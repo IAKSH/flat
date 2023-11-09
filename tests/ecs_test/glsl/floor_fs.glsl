@@ -7,7 +7,6 @@ in vec3 viewPos;
 in vec3 FragPos;  
 in vec3 Normal;
 in vec2 TexCoords;
-in float gamma;
 
 layout (std140) uniform PhoneDirectLighting
 {
@@ -77,7 +76,7 @@ float ShadowCalculation(vec3 fragPos)
     float bias = 0.15;
     int samples = 20;
     float viewDistance = length(viewPos - fragPos);
-    float diskRadius = (1.0 + (viewDistance / far_plane)) / 250.0;
+    float diskRadius = (1.0 + (viewDistance / far_plane)) / 125.0;
     float closestDepth;
     for(int i = 0; i < samples; ++i)
     {
@@ -178,6 +177,5 @@ void main()
         );
     }
 
-    vec4 gammaed_result = vec4(pow(result.rgb, vec3(1.0/gamma)),1.0);
-    FragColor = gammaed_result;
+    FragColor = vec4(result,1.0);
 }

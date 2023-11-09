@@ -9,7 +9,6 @@ out vec3 viewPos;
 out vec3 FragPos;  
 out vec3 Normal;
 out vec2 TexCoords;
-out float gamma;
 
 // 由gfx维护的UBO，绑定点为0
 // 内容可能更新，绑定UBO不变
@@ -31,7 +30,6 @@ layout(std430, binding = 1) buffer InstanceModelMatrix
 
 void main()
 {
-    gamma = global_gamma;
     TexCoords = aTexCoords;
     viewPos = global_camera_position.xyz;
     FragPos = vec3(model[gl_InstanceID] * vec4(aPos, 1.0));

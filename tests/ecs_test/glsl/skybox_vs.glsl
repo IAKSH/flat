@@ -4,7 +4,6 @@ precision lowp float;
 layout (location = 0) in vec3 aPos;
 
 out vec3 texCoord;
-out float gamma;
 
 layout (std140) uniform GFXGlobalUBO
 {
@@ -17,7 +16,6 @@ layout (std140) uniform GFXGlobalUBO
 
 void main()
 {
-    gamma = global_gamma;
     texCoord = aPos;
     gl_Position = global_projection * global_view_without_movement * vec4(aPos,1.0);
 }
