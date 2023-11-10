@@ -1,3 +1,4 @@
+#include <vector>
 #include <iostream>
 #include <quick_gl/frame.hpp>
 
@@ -53,10 +54,29 @@ void quick3d::gl::ColorFramebuffer::setup_rbo(GLint width,GLint height) noexcept
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void quick3d::gl::ColorFramebuffer::set_draw_targets(const std::initializer_list<GLenum>& targets) noexcept
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
+
+    std::vector<GLenum> _targets(targets);
+    glDrawBuffers(_targets.size(), _targets.data());
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void quick3d::gl::ColorFramebuffer::bind_texture_to_fbo(GLuint id) noexcept
 {
     glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, id, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    tex_id = id;
+}
+
+void quick3d::gl::ColorFramebuffer::bind_texture_to_fbo(GLenum target, GLuint id) noexcept
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, target, GL_TEXTURE_2D, id, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     tex_id = id;

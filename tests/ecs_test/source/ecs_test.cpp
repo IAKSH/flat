@@ -26,8 +26,8 @@ static constexpr std::string_view MODEL_SHADOW_GLSL_VS_PATH = "../../../../tests
 static constexpr std::string_view MODEL_SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_gs.glsl";
 static constexpr std::string_view MODEL_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_fs.glsl";
 
-static constexpr std::string_view HDR_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/hdr_vs.glsl";
-static constexpr std::string_view HDR_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/hdr_fs.glsl";
+static constexpr std::string_view POST_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/post_vs.glsl";
+static constexpr std::string_view POST_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/post_fs.glsl";
 
 static constexpr int SCREEN_WIDTH{ 1280 };
 static constexpr int SCREEN_HEIGHT{ 720 };
@@ -94,19 +94,26 @@ int main() noexcept
 			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_FS_PATH)));
 		// shadow test end
 
-		// HDR test begin
-		quick3d::gl::Buffer hdr_frame_vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES));
-		hdr_frame_vbo.write_buffer_data(QUAD_VERTICES);
-		quick3d::gl::VertexArray hdr_frame_vao;
-		hdr_frame_vao.add_attrib(hdr_frame_vbo, 0, 3, 5, 0);
-		hdr_frame_vao.add_attrib(hdr_frame_vbo, 1, 2, 5, 3);
-		quick3d::gl::Program hdr_frame_program(
-			(quick3d::gl::GLSLReader(HDR_GLSL_VS_PATH)),
-			(quick3d::gl::GLSLReader(HDR_GLSL_FS_PATH))
+		// HDR & Bloom test begin
+		quick3d::gl::Buffer post_frame_vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES));
+		post_frame_vbo.write_buffer_data(QUAD_VERTICES);
+		quick3d::gl::VertexArray post_frame_vao;
+		post_frame_vao.add_attrib(post_frame_vbo, 0, 3, 5, 0);
+		post_frame_vao.add_attrib(post_frame_vbo, 1, 2, 5, 3);
+		quick3d::gl::Program post_frame_program(
+			(quick3d::gl::GLSLReader(POST_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(POST_GLSL_FS_PATH))
 		);
  		quick3d::gl::Texture hdr_frame_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
-		quick3d::gl::ColorFramebuffer hdr_framebuffer(hdr_frame_tex);
-		// HDR test end
+		quick3d::gl::Texture bloom_frame_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+		quick3d::gl::ColorFramebuffer post_framebuffer(SCREEN_WIDTH, SCREEN_HEIGHT);
+		post_framebuffer.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, hdr_frame_tex.get_tex_id());
+		post_framebuffer.bind_texture_to_fbo(GL_COLOR_ATTACHMENT1, bloom_frame_tex.get_tex_id());
+		post_framebuffer.set_draw_targets({ GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1 });
+
+		post_frame_program.set_uniform("BlurHorizontal", 1);
+		post_frame_program.set_uniform("enableBloom", 1);
+		// HDR & Bloom test end
 
 		int yae_instance{ 1 };
 		int box_instance{ 1 };
@@ -176,8 +183,8 @@ int main() noexcept
 					entity->on_darw_with_shader(delta, shadow_program);
 			});
 			glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-			// hdr test start
-			glBindFramebuffer(GL_FRAMEBUFFER, hdr_framebuffer.get_fbo_id());
+			// hdr & bloom test start
+			glBindFramebuffer(GL_FRAMEBUFFER, post_framebuffer.get_fbo_id());
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, depth_cubemap.get_cubemap_id());
@@ -186,11 +193,11 @@ int main() noexcept
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, hdr_frame_tex.get_tex_id());
-			hdr_frame_program.set_uniform("exposure", hdr_exposure);
-			hdr_frame_program.set_uniform("enable_exposure", static_cast<int>(enable_exposure));
-			hdr_frame_vao.draw(hdr_frame_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+			post_frame_program.set_uniform("exposure", hdr_exposure);
+			post_frame_program.set_uniform("enable_exposure", static_cast<int>(enable_exposure));
+			post_frame_vao.draw(post_frame_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 			glBindTexture(GL_TEXTURE_2D, 0);
-			// hdr test end
+			// hdr & bloom test end
 			reset_ogl_state();
 
 			ImGui::Begin("Control");

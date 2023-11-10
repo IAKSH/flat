@@ -39,7 +39,9 @@ namespace quick3d::gl
         ColorFramebuffer(ColorFramebuffer&) = delete;
         ~ColorFramebuffer() noexcept;
 
+        void set_draw_targets(const std::initializer_list<GLenum>& targets) noexcept;
         void bind_texture_to_fbo(GLuint id) noexcept;
+        void bind_texture_to_fbo(GLenum target, GLuint id) noexcept;
         GLuint get_binding_tex_id() const noexcept;
 
         template <typename T>

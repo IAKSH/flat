@@ -1,7 +1,8 @@
 #version 320 es
 precision lowp float;
 
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
 
 in vec3 texCoord;
 
@@ -19,4 +20,5 @@ void main()
 {
     vec4 result = ambient * texture(skybox_cubemap,texCoord);
     FragColor = result;
+    BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }

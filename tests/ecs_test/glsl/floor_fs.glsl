@@ -1,7 +1,8 @@
 #version 320 es
 precision highp float;
 
-out vec4 FragColor;
+layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
 
 in vec3 viewPos;
 in vec3 FragPos;  
@@ -181,4 +182,5 @@ void main()
     }
 
     FragColor = vec4(result,1.0);
+    BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
 }
