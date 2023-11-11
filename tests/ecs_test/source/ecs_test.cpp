@@ -92,9 +92,9 @@ int main() noexcept
 		ImGui_ImplOpenGL3_Init("#version 330 core");
 
 		// shadow test begin
-		quick3d::gl::Texture shadow_depth_tex(GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, true);
-		quick3d::gl::DepthFramebuffer shadow_depth_framebuffer(shadow_depth_tex);
-		quick3d::gl::Program shadow_program(
+		quick3d::gl::Texture direct_shadow_depth_tex(GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, true);
+		quick3d::gl::DepthFramebuffer direct_shadow_depth_framebuffer(direct_shadow_depth_tex);
+		quick3d::gl::Program direct_shadow_program(
 			(quick3d::gl::GLSLReader(DIRECT_SHADOW_GLSL_VS_PATH)),
 			(quick3d::gl::GLSLReader(DIRECT_SHADOW_GLSL_FS_PATH))
 		);
@@ -210,22 +210,21 @@ int main() noexcept
 
 			glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 			// 视锥阴影
-			glBindFramebuffer(GL_FRAMEBUFFER, shadow_depth_framebuffer.get_fbo_id());
+			glBindFramebuffer(GL_FRAMEBUFFER, direct_shadow_depth_framebuffer.get_fbo_id());
 			glClear(GL_DEPTH_BUFFER_BIT);
 			glm::mat4 lightProjection, lightView;
 			glm::mat4 lightSpaceMatrix;
-			float shadow_near_plane = 0.01f, shadow_far_plane = 25.0f;
+			float shadow_near_plane = 1.0f, shadow_far_plane = 25.0f;
 			glm::vec3 shadow_light_pos(-sun_light_direction);
 			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, shadow_near_plane, shadow_far_plane);
-			//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, shadow_near_plane, shadow_far_plane);
-			lightView = glm::lookAt(shadow_light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			lightView = glm::lookAt(shadow_light_pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			lightSpaceMatrix = lightProjection * lightView;
 			gfx.set_lightspace_matrix(lightSpaceMatrix);
-			shadow_program.set_uniform("lightSpaceMatrix", lightSpaceMatrix);
+			direct_shadow_program.set_uniform("lightSpaceMatrix", lightSpaceMatrix);
 			entity_manager.foreach([&](std::string name, quick3d::core::Entity* entity)
 			{
 				if (name != "light_ball" && name != "skybox")
-					entity->on_darw_with_shader(delta, shadow_program);
+					entity->on_darw_with_shader(delta, direct_shadow_program);
 			});
 			// 点阴影
 			glBindFramebuffer(GL_FRAMEBUFFER, point_shadow_depth_framebuffer.get_fbo_id());
@@ -241,7 +240,7 @@ int main() noexcept
 			glBindFramebuffer(GL_FRAMEBUFFER, post_framebuffer.get_fbo_id());
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, shadow_depth_tex.get_tex_id());
+			glBindTexture(GL_TEXTURE_2D, direct_shadow_depth_tex.get_tex_id());
 			glActiveTexture(GL_TEXTURE3);
 			glBindTexture(GL_TEXTURE_CUBE_MAP, point_shadow_depth_cubemap.get_cubemap_id());
 			// shadow test end
@@ -305,8 +304,8 @@ int main() noexcept
 			ImGui::SliderFloat("hdr_exposure", &hdr_exposure, 0.0f, 10.0f);
 			ImGui::Checkbox("enable_exposure", &enable_exposure);
 			ImGui::Checkbox("enable_bloom", &enable_bloom);
-			ImGui::Checkbox("enable_point_shadow", &enable_point_shadow);
-			ImGui::Checkbox("enable_direct_shadow(with bug)", &enable_direct_shadow);
+			ImGui::Checkbox("(force) enable_point_shadow", &enable_point_shadow);
+			ImGui::Checkbox("enable_direct_shadow", &enable_direct_shadow);
 			ImGui::End();
 
 			ImGui::Render();
