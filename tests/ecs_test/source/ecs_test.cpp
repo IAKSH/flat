@@ -29,6 +29,9 @@ static constexpr std::string_view MODEL_SHADOW_GLSL_FS_PATH = "../../../../tests
 static constexpr std::string_view POST_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/post_vs.glsl";
 static constexpr std::string_view POST_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/post_fs.glsl";
 
+static constexpr std::string_view BLUR_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/blur_vs.glsl";
+static constexpr std::string_view BLUR_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/blur_fs.glsl";
+
 static constexpr int SCREEN_WIDTH{ 1280 };
 static constexpr int SCREEN_HEIGHT{ 720 };
 static constexpr float SHADOW_WIDTH{ 2048 };
@@ -104,15 +107,31 @@ int main() noexcept
 			(quick3d::gl::GLSLReader(POST_GLSL_VS_PATH)),
 			(quick3d::gl::GLSLReader(POST_GLSL_FS_PATH))
 		);
- 		quick3d::gl::Texture hdr_frame_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
-		quick3d::gl::Texture bloom_frame_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+		quick3d::gl::Program blur_frame_program(
+			(quick3d::gl::GLSLReader(BLUR_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(BLUR_GLSL_FS_PATH))
+		);
+ 		quick3d::gl::Texture scene_frame_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+		quick3d::gl::Texture blur_frame_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true);
+		std::array<quick3d::gl::Texture, 2> blur_pingpong_frame_texs{
+			quick3d::gl::Texture(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
+			quick3d::gl::Texture(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true)
+		};
+		std::array<quick3d::gl::ColorFramebuffer, 2> blur_pingpong_framebuffers{
+			quick3d::gl::ColorFramebuffer(SCREEN_WIDTH, SCREEN_HEIGHT),
+			quick3d::gl::ColorFramebuffer(SCREEN_WIDTH, SCREEN_HEIGHT)
+		};
 		quick3d::gl::ColorFramebuffer post_framebuffer(SCREEN_WIDTH, SCREEN_HEIGHT);
-		post_framebuffer.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, hdr_frame_tex.get_tex_id());
-		post_framebuffer.bind_texture_to_fbo(GL_COLOR_ATTACHMENT1, bloom_frame_tex.get_tex_id());
-		post_framebuffer.set_draw_targets({ GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1 });
+		post_framebuffer.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, scene_frame_tex.get_tex_id());
+		post_framebuffer.bind_texture_to_fbo(GL_COLOR_ATTACHMENT1, blur_frame_tex.get_tex_id());
+	
+		for(int i = 0;i< 2;i++)
+			blur_pingpong_framebuffers[i].bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, blur_pingpong_frame_texs[i].get_tex_id());
 
-		post_frame_program.set_uniform("BlurHorizontal", 1);
-		post_frame_program.set_uniform("enableBloom", 1);
+		post_framebuffer.set_draw_targets({ GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1 });
+		post_frame_program.set_uniform("sceneTex", 0);
+		post_frame_program.set_uniform("bloomTex", 1);
+		blur_frame_program.set_uniform("horizontal", 1);
 		// HDR & Bloom test end
 
 		int yae_instance{ 1 };
@@ -120,6 +139,7 @@ int main() noexcept
 		int light_ball_instance{ 1 };
 		bool enable_bilnn_phong{ true };
 		bool enable_exposure{ true };
+		bool enable_bloom{ true };
 		float gfx_gamma{ 2.2f };
 		float hdr_exposure{ 1.0f };
 		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
@@ -190,12 +210,45 @@ int main() noexcept
 			glBindTexture(GL_TEXTURE_CUBE_MAP, depth_cubemap.get_cubemap_id());
 			// shadow test end
 			entity_manager.foreach_on_draw(delta);
+
+			// 两步高斯模糊（乒乓式）
+			bool horizontal{ true };
+			bool first_iteration{ true };
+			unsigned int amount = 10;
+			for (int i = 0; i < 2; i++)
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, blur_pingpong_framebuffers[i].get_fbo_id());
+				glClear(GL_DEPTH_BUFFER_BIT);
+			}
+
+			for (unsigned int i = 0; i < amount; i++)
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, blur_pingpong_framebuffers[horizontal].get_fbo_id());
+				blur_frame_program.set_uniform("horizontal", static_cast<int>(horizontal));
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(
+					GL_TEXTURE_2D, (first_iteration ? blur_frame_tex : blur_pingpong_frame_texs[!horizontal]).get_tex_id()
+				);
+				post_frame_vao.draw(blur_frame_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+				horizontal = !horizontal;
+				if (first_iteration)
+					first_iteration = false;
+			}
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+			// 混合所有后期处理并输出到屏幕
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, hdr_frame_tex.get_tex_id());
+			glBindTexture(GL_TEXTURE_2D, scene_frame_tex.get_tex_id());
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, blur_pingpong_frame_texs[!horizontal].get_tex_id());
 			post_frame_program.set_uniform("exposure", hdr_exposure);
 			post_frame_program.set_uniform("enable_exposure", static_cast<int>(enable_exposure));
+			post_frame_program.set_uniform("enableBloom", static_cast<int>(enable_bloom));
 			post_frame_vao.draw(post_frame_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			// hdr & bloom test end
 			reset_ogl_state();
@@ -215,6 +268,7 @@ int main() noexcept
 			ImGui::SliderFloat3("sun_light_direction", glm::value_ptr(sun_light_direction), -10.0f, 10.0f);
 			ImGui::SliderFloat("hdr_exposure", &hdr_exposure, 0.0f, 10.0f);
 			ImGui::Checkbox("enable_exposure", &enable_exposure);
+			ImGui::Checkbox("enable_bloom", &enable_bloom);
 			ImGui::End();
 
 			ImGui::Render();
