@@ -216,6 +216,7 @@ int main() noexcept
 			glm::mat4 lightSpaceMatrix;
 			float shadow_near_plane = 1.0f, shadow_far_plane = 25.0f;
 			glm::vec3 shadow_light_pos(-sun_light_direction);
+			// 这个投影有问题
 			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, shadow_near_plane, shadow_far_plane);
 			lightView = glm::lookAt(shadow_light_pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			lightSpaceMatrix = lightProjection * lightView;

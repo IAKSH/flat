@@ -134,18 +134,14 @@ void quick3d::test::FloorRenderer::switch_blinn_phong_lighting(bool b) noexcept
 
 void quick3d::test::FloorRenderer::on_tick(float delta_ms) noexcept(false)
 {
-	glDisable(GL_CULL_FACE);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
 	draw_indexed_vao();
-	glEnable(GL_CULL_FACE);
 }
 
 void quick3d::test::FloorRenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
 {
-	glDisable(GL_CULL_FACE);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
 	draw_indexed_vao(program);
-	glEnable(GL_CULL_FACE);
 }
 
 void quick3d::test::FloorEntity::try_load_renderer() noexcept(false)
