@@ -64,6 +64,8 @@ namespace quick3d::test
 		~LightBallRenderer() noexcept;
 		void set_instance_count(int instance) noexcept;
 		void update_instance_position(float delta_ms) noexcept;
+		virtual void on_tick(float delta_ms) noexcept(false) override;
+		virtual void on_tick(float delta_ms, gl::Program& program) noexcept(false) override;
 	};
 
 	class LightBallEntity : public core::Entity

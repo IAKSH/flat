@@ -34,8 +34,8 @@ void quick3d::test::FloorRenderer::setup_model_ssbo() noexcept
 void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 {
 	program = new gl::Program(
-		gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "floor_vs.glsl")),
-		gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "floor_fs.glsl"))
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "object_vs.glsl")).get_glsl(),
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "object_fs.glsl")).get_glsl()
 	);
 	program->bind_uniform_block("GFXGlobalUBO", 0);
 	program->bind_uniform_block("PhoneDirectLighting", 2);
@@ -44,8 +44,8 @@ void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 	program->set_uniform("material.specular", 1);
 	program->set_uniform("material.depth_map", 2);
 	program->set_uniform("material.shininess", 128.0f);
+	program->set_uniform("material.texcoords_scale", MODEL_SCALE_FACTOR);
 
-	program->set_uniform("texcoords_scale", MODEL_SCALE_FACTOR);
 	program->set_uniform("useBlinnPhong", 1);
 }
 

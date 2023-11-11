@@ -21,8 +21,10 @@ struct Material
 {
     sampler2D diffuse;
     sampler2D specular;
+    samplerCube depth_map;
     float     shininess;
-};
+    float texcoords_scale;
+}; 
 
 uniform Material material;
 uniform bool useBlinnPhong;
@@ -54,16 +56,60 @@ layout(std430, binding = 9) buffer LightBallAttenuation
 	float light_ball_quadratic;
 };
 
+// array of offset direction for sampling
+vec3 gridSamplingDisk[20] = vec3[]
+(
+   vec3(1, 1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1, 1,  1), 
+   vec3(1, 1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+   vec3(1, 1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1, 1,  0),
+   vec3(1, 0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1, 0, -1),
+   vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
+);
+
+float ShadowCalculation(vec3 fragPos)
+{
+    float far_plane = 25.0;
+    vec3 lightPos = -phone_direct_lighting_direction.xyz;
+
+    vec3 fragToLight = fragPos - lightPos;
+    float currentDepth = length(fragToLight);
+    
+    float shadow = 0.0;
+    float bias = 0.15;
+    int samples = 20;
+    float viewDistance = length(viewPos - fragPos);
+    //                                                      ↓ 这个magic num与阴影模糊度负相关
+    float diskRadius = (1.0 + (viewDistance / far_plane)) / 125.0;
+    float closestDepth;
+    for(int i = 0; i < samples; ++i)
+    {
+        closestDepth = texture(material.depth_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
+        closestDepth *= far_plane;   // undo mapping [0;1]
+        if(currentDepth > far_plane)
+            shadow = 0.0;
+        else if(currentDepth - bias > closestDepth)
+            shadow += 1.0;
+    }
+    shadow /= float(samples);
+        
+    // display closestDepth as debug (to visualize depth cubemap)
+    //FragColor = vec4(vec3(closestDepth / far_plane), 1.0);    
+        
+    return shadow;
+}
+
 vec3 processDirectLight()
 {
+    vec2 scaledTexCoords = material.texcoords_scale * TexCoords;
+
     // ambient
-    vec3 ambient = phone_direct_lighting_ambient.rgb * texture(material.diffuse, TexCoords).rgb;
+    vec3 ambient = phone_direct_lighting_ambient.rgb * texture(material.diffuse, scaledTexCoords).rgb;
   
     // diffuse 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(-phone_direct_lighting_direction.xyz);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = phone_direct_lighting_diffuse.rgb * diff * texture(material.diffuse, TexCoords).rgb;
+    vec3 diffuse = phone_direct_lighting_diffuse.rgb * diff * texture(material.diffuse, scaledTexCoords).rgb;
     
     // specular
     vec3 viewDir = normalize(viewPos - FragPos);
@@ -78,21 +124,27 @@ vec3 processDirectLight()
         vec3 reflectDir = reflect(-lightDir, Normal);
         spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     }
-    vec3 specular = phone_direct_lighting_specular.rgb * spec * texture(material.specular, TexCoords).rgb;
-    
-    return ambient + diffuse + specular;
+    vec3 specular = phone_direct_lighting_specular.rgb * spec * texture(material.specular, scaledTexCoords).rgb;
+
+    // calculate shadow
+    float shadow = ShadowCalculation(FragPos);
+    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular));
+
+    return lighting;
 }
 
 vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 light_ball_diffuse,vec3 light_ball_specular)
 {
+    vec2 scaledTexCoords = material.texcoords_scale * TexCoords;
+
     // ambient
-    vec3 ambient = light_ball_ambient * texture(material.diffuse, TexCoords).rgb;
+    vec3 ambient = light_ball_ambient * texture(material.diffuse, scaledTexCoords).rgb;
   	
     // diffuse 
     vec3 norm = normalize(Normal);
     vec3 lightDir = normalize(light_ball_position - FragPos);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = light_ball_diffuse * diff * texture(material.diffuse, TexCoords).rgb;
+    vec3 diffuse = light_ball_diffuse * diff * texture(material.diffuse, scaledTexCoords).rgb;
     
     // specular
     vec3 viewDir = normalize(viewPos - FragPos);
@@ -107,7 +159,7 @@ vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 lig
         vec3 reflectDir = reflect(-lightDir, Normal);
         spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     }
-    vec3 specular = light_ball_specular * spec * texture(material.specular, TexCoords).rgb;
+    vec3 specular = light_ball_specular * spec * texture(material.specular, scaledTexCoords).rgb;
 
     // attenuation
     float distance    = length(light_ball_position - FragPos);
@@ -135,7 +187,7 @@ void main()
     }
 
     FragColor = vec4(result,1.0);
-
+    
     float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0)
         BrightColor = vec4(result, 1.0);

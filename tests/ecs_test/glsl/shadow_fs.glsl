@@ -1,4 +1,4 @@
-#version 320 es
+#version 430 core
 precision highp float;
 
 in vec4 FragPos;

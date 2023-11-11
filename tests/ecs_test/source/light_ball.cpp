@@ -64,17 +64,28 @@ void quick3d::test::LightBallRenderer::update_instance_position(float delta_ms) 
 	});
 }
 
+void quick3d::test::LightBallRenderer::on_tick(float delta_ms) noexcept(false)
+{
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
+	draw_model();
+}
+
+void quick3d::test::LightBallRenderer::on_tick(float delta_ms, gl::Program& program) noexcept(false)
+{
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssbo_model.get_buffer_id());
+	draw_model(program);
+}
+
 void quick3d::test::LightBallRenderer::load_shader_program() noexcept(false)
 {
 	program = new gl::Program(
-		gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_ball_vs.glsl")),
-		gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_ball_fs.glsl"))
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_object_vs.glsl")).get_glsl(),
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "light_object_fs.glsl")).get_glsl()
 	);
 
 	program->bind_uniform_block("GFXGlobalUBO", 0);
 
 	// 也许不应该放在这里
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 5, ssbo_model.get_buffer_id());
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 6, ssbo_color.get_buffer_id());
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 7, ssbo_position.get_buffer_id());
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 8, ssbo_instance_count.get_buffer_id());

@@ -19,8 +19,8 @@ void quick3d::test::YaeRenderer::setup_model_data() noexcept(false)
 void quick3d::test::YaeRenderer::load_shader_program() noexcept(false)
 {
 	program = new quick3d::gl::Program(
-		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "universual_vs.glsl")).get_glsl(),
-		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "model_fs.glsl")).get_glsl()
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "object_vs.glsl")).get_glsl(),
+		quick3d::gl::GLSLReader(std::format("{}/{}", GLSL_FOLDER, "object_fs.glsl")).get_glsl()
 	);
 	program->bind_uniform_block("GFXGlobalUBO", 0);
 	program->bind_uniform_block("PhoneDirectLighting", 2);
@@ -28,6 +28,7 @@ void quick3d::test::YaeRenderer::load_shader_program() noexcept(false)
 	program->set_uniform("material.diffuse", 0);
 	program->set_uniform("material.specular", 1);
 	program->set_uniform("material.shininess", 32.0f);
+	program->set_uniform("material.texcoords_scale", 1.0f);
 
 	program->set_uniform("useBlinnPhong", 1);
 }

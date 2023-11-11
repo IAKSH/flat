@@ -22,9 +22,9 @@
 //       不对，Model最后不也是VAO吗... 如果能统一model矩阵之类的接口，就能实现阴影着色器的复用了。
 //       其实现在的问题也就是model矩阵之类的接口不统一吧... 现在的SSBO model似乎是各自用不同的绑定点，如果是共用统一的绑定点，然后绘制之前把自己的SSBO model绑上去呢？
 //       然后SSBO在GLSL中的接口还是可变长度的，非常的合理。
-static constexpr std::string_view MODEL_SHADOW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_vs.glsl";
-static constexpr std::string_view MODEL_SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_gs.glsl";
-static constexpr std::string_view MODEL_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/model_shadow_fs.glsl";
+static constexpr std::string_view SHADOW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/shadow_vs.glsl";
+static constexpr std::string_view SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/shadow_gs.glsl";
+static constexpr std::string_view SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/shadow_fs.glsl";
 
 static constexpr std::string_view POST_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/post_vs.glsl";
 static constexpr std::string_view POST_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/post_fs.glsl";
@@ -92,9 +92,9 @@ int main() noexcept
 		quick3d::gl::DepthCubeMap depth_cubemap(SHADOW_WIDTH, SHADOW_HEIGHT);
 		quick3d::gl::DepthFramebuffer depth_framebuffer(depth_cubemap);
 		quick3d::gl::Program shadow_program(
-			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_VS_PATH)),
-			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_GS_PATH)),
-			(quick3d::gl::GLSLReader(MODEL_SHADOW_GLSL_FS_PATH)));
+			(quick3d::gl::GLSLReader(SHADOW_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(SHADOW_GLSL_GS_PATH)),
+			(quick3d::gl::GLSLReader(SHADOW_GLSL_FS_PATH)));
 		// shadow test end
 
 		// HDR & Bloom test begin

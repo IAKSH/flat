@@ -16,6 +16,6 @@ void main()
     FragColor = color[instanceID];
 
 	float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-    // 所有光球都应用泛光
+    // 所有光源都应用泛光
     BrightColor = vec4(FragColor.rgb, 1.0);
 }
