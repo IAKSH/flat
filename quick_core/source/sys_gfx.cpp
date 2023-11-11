@@ -85,6 +85,34 @@ void quick3d::core::GFXSystem::set_gamma(float gamma) noexcept
     });
 }
 
+void quick3d::core::GFXSystem::set_lightspace_matrix(const glm::mat4& matrix) noexcept
+{
+    gfx_global_ubo.dma_do([&](void* data)
+    {
+        auto ptr{ reinterpret_cast<GFXGlobalUBO*>(data) };
+        ptr->sun_lightspace_matrix = matrix;
+    });
+}
+
+
+void quick3d::core::GFXSystem::switch_direct_shadow(bool b) noexcept
+{
+    gfx_global_ubo.dma_do([&](void* data)
+    {
+        auto ptr{ reinterpret_cast<GFXGlobalUBO*>(data) };
+        ptr->global_enable_direct_shadow = static_cast<int>(b);
+    });
+}
+
+void quick3d::core::GFXSystem::switch_point_shadow(bool b) noexcept
+{
+    gfx_global_ubo.dma_do([&](void* data)
+    {
+        auto ptr{ reinterpret_cast<GFXGlobalUBO*>(data) };
+        ptr->global_enable_point_shadow = static_cast<int>(b);
+    });
+}
+
 quick3d::gl::FPSCamera& quick3d::core::GFXSystem::get_camera() noexcept
 {
     return camera;

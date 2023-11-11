@@ -9,6 +9,18 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
 
+layout (std140) uniform GFXGlobalUBO
+{
+   mat4 global_projection;
+   mat4 global_view;
+   mat4 global_view_without_movement;
+   mat4 global_sun_lightspace_matrix;
+   vec4 global_camera_position;
+   float global_gamma;
+   int global_enable_point_shadow;
+   int global_enable_direct_shadow;
+};
+
 layout (std140) uniform PhoneDirectLighting
 {
     vec4 phone_direct_lighting_direction;
@@ -21,7 +33,8 @@ struct Material
 {
     sampler2D diffuse;
     sampler2D specular;
-    samplerCube depth_map;
+    sampler2D shadow_depth_map;
+    samplerCube point_shadow_depth_map;
     float     shininess;
     float texcoords_scale;
 }; 
@@ -66,7 +79,7 @@ vec3 gridSamplingDisk[20] = vec3[]
    vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
 );
 
-float ShadowCalculation(vec3 fragPos)
+float PointShadowCalculation(vec3 fragPos)
 {
     float far_plane = 25.0;
     vec3 lightPos = -phone_direct_lighting_direction.xyz;
@@ -83,7 +96,7 @@ float ShadowCalculation(vec3 fragPos)
     float closestDepth;
     for(int i = 0; i < samples; ++i)
     {
-        closestDepth = texture(material.depth_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
+        closestDepth = texture(material.point_shadow_depth_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
         closestDepth *= far_plane;   // undo mapping [0;1]
         if(currentDepth > far_plane)
             shadow = 0.0;
@@ -94,6 +107,44 @@ float ShadowCalculation(vec3 fragPos)
         
     // display closestDepth as debug (to visualize depth cubemap)
     //FragColor = vec4(vec3(closestDepth / far_plane), 1.0);    
+        
+    return shadow;
+}
+
+float DirectShadowCalculation(vec4 fragPosLightSpace)
+{
+    vec3 lightPos = -phone_direct_lighting_direction.xyz;
+
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(material.shadow_depth_map, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // calculate bias (based on depth map resolution and slope)
+    vec3 normal = normalize(Normal);
+    vec3 lightDir = normalize(lightPos - FragPos);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    // check whether current frag pos is in shadow
+    // float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+    // PCF
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / vec2(textureSize(material.shadow_depth_map, 0));
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(material.shadow_depth_map, projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
+        }    
+    }
+    shadow /= 9.0;
+    
+    // keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
         
     return shadow;
 }
@@ -127,10 +178,15 @@ vec3 processDirectLight()
     vec3 specular = phone_direct_lighting_specular.rgb * spec * texture(material.specular, scaledTexCoords).rgb;
 
     // calculate shadow
-    float shadow = ShadowCalculation(FragPos);
-    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular));
+    float shadow;
+    if(global_enable_point_shadow == 1)
+        shadow = PointShadowCalculation(FragPos);
+    else if(global_enable_direct_shadow == 1)
+        shadow = DirectShadowCalculation(global_sun_lightspace_matrix * vec4(FragPos, 1.0));
+    else
+        shadow = 0.0;
 
-    return lighting;
+    return ambient + (1.0 - shadow) * (diffuse + specular);
 }
 
 vec3 processPointLight(vec3 light_ball_position,vec3 light_ball_ambient,vec3 light_ball_diffuse,vec3 light_ball_specular)

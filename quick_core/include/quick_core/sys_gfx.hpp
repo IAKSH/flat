@@ -21,8 +21,11 @@ namespace quick3d::core
 			glm::mat4 projection;
 			glm::mat4 view;
 			glm::mat4 view_without_movement;
+			glm::mat4 sun_lightspace_matrix;
 			glm::vec4 camera_position;
 			float gamma;
+			int global_enable_point_shadow;
+			int global_enable_direct_shadow;
 		};
 		quick3d::gl::Buffer gfx_global_ubo;
 
@@ -44,6 +47,9 @@ namespace quick3d::core
 		gl::Context& get_context() noexcept;
 		void capture_mouse(bool b = true) noexcept;
 		void set_gamma(float gamma) noexcept;
+		void set_lightspace_matrix(const glm::mat4& matrix) noexcept;
+		void switch_point_shadow(bool b) noexcept;
+		void switch_direct_shadow(bool b) noexcept;
 		virtual void on_tick(float delta_ms) noexcept(false) override final;
 	};
 }

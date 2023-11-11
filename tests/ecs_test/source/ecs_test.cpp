@@ -22,9 +22,12 @@
 //       不对，Model最后不也是VAO吗... 如果能统一model矩阵之类的接口，就能实现阴影着色器的复用了。
 //       其实现在的问题也就是model矩阵之类的接口不统一吧... 现在的SSBO model似乎是各自用不同的绑定点，如果是共用统一的绑定点，然后绘制之前把自己的SSBO model绑上去呢？
 //       然后SSBO在GLSL中的接口还是可变长度的，非常的合理。
-static constexpr std::string_view SHADOW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/shadow_vs.glsl";
-static constexpr std::string_view SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/shadow_gs.glsl";
-static constexpr std::string_view SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/shadow_fs.glsl";
+static constexpr std::string_view POINT_SHADOW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/point_shadow_vs.glsl";
+static constexpr std::string_view POINT_SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/point_shadow_gs.glsl";
+static constexpr std::string_view POINT_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/point_shadow_fs.glsl";
+
+static constexpr std::string_view DIRECT_SHADOW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/direct_shadow_vs.glsl";
+static constexpr std::string_view DIRECT_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/direct_shadow_fs.glsl";
 
 static constexpr std::string_view POST_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/post_vs.glsl";
 static constexpr std::string_view POST_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/post_fs.glsl";
@@ -89,12 +92,19 @@ int main() noexcept
 		ImGui_ImplOpenGL3_Init("#version 330 core");
 
 		// shadow test begin
-		quick3d::gl::DepthCubeMap depth_cubemap(SHADOW_WIDTH, SHADOW_HEIGHT);
-		quick3d::gl::DepthFramebuffer depth_framebuffer(depth_cubemap);
+		quick3d::gl::Texture shadow_depth_tex(GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, true);
+		quick3d::gl::DepthFramebuffer shadow_depth_framebuffer(shadow_depth_tex);
 		quick3d::gl::Program shadow_program(
-			(quick3d::gl::GLSLReader(SHADOW_GLSL_VS_PATH)),
-			(quick3d::gl::GLSLReader(SHADOW_GLSL_GS_PATH)),
-			(quick3d::gl::GLSLReader(SHADOW_GLSL_FS_PATH)));
+			(quick3d::gl::GLSLReader(DIRECT_SHADOW_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(DIRECT_SHADOW_GLSL_FS_PATH))
+		);
+
+		quick3d::gl::DepthCubeMap point_shadow_depth_cubemap(SHADOW_WIDTH, SHADOW_HEIGHT);
+		quick3d::gl::DepthFramebuffer point_shadow_depth_framebuffer(point_shadow_depth_cubemap);
+		quick3d::gl::Program point_shadow_program(
+			(quick3d::gl::GLSLReader(POINT_SHADOW_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(POINT_SHADOW_GLSL_GS_PATH)),
+			(quick3d::gl::GLSLReader(POINT_SHADOW_GLSL_FS_PATH)));
 		// shadow test end
 
 		// HDR & Bloom test begin
@@ -140,6 +150,8 @@ int main() noexcept
 		bool enable_bilnn_phong{ true };
 		bool enable_exposure{ true };
 		bool enable_bloom{ true };
+		bool enable_point_shadow{ false };
+		bool enable_direct_shadow{ true };
 		float gfx_gamma{ 2.2f };
 		float hdr_exposure{ 1.0f };
 		glm::vec3 sun_light_ambient(1.0f, 1.0f, 1.0f);
@@ -173,41 +185,65 @@ int main() noexcept
 
 			set_ogl_state();
 			// shadow test begin
-			float near_plane = 0.01f;
-			float far_plane = 25.0f;
-			glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, near_plane, far_plane);
+			gfx.switch_direct_shadow(enable_direct_shadow);
+			gfx.switch_point_shadow(enable_point_shadow);
+
+			float point_shadow_near_plane = 0.01f;
+			float point_shadow_far_plane = 25.0f;
+			glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), (float)SHADOW_WIDTH / (float)SHADOW_HEIGHT, point_shadow_near_plane, point_shadow_far_plane);
 			std::vector<glm::mat4> shadowTransforms;
 
 			sun_light_direction.x = sin(glfwGetTime() / 50.0f) * 10.0f;
 			sun_light_direction.z = cos(glfwGetTime() / 50.0f) * 10.0f;
 
-			glm::vec3 lightPos{ -sun_light_direction };
-			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
-			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
-			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
-			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
-			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
-			shadowTransforms.push_back(shadowProj * glm::lookAt(lightPos, lightPos + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			glm::vec3 point_shadow_lightPos(-sun_light_direction);
+			shadowTransforms.push_back(shadowProj * glm::lookAt(point_shadow_lightPos, point_shadow_lightPos + glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(point_shadow_lightPos, point_shadow_lightPos + glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(point_shadow_lightPos, point_shadow_lightPos + glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(point_shadow_lightPos, point_shadow_lightPos + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(point_shadow_lightPos, point_shadow_lightPos + glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
+			shadowTransforms.push_back(shadowProj * glm::lookAt(point_shadow_lightPos, point_shadow_lightPos + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, -1.0f, 0.0f)));
 			for (unsigned int i = 0; i < 6; ++i)
-				shadow_program.set_uniform(std::format("shadowMatrices[{}]", i), shadowTransforms[i]);
-			shadow_program.set_uniform("far_plane", far_plane);
-			shadow_program.set_uniform("lightPos", lightPos);
+				point_shadow_program.set_uniform(std::format("shadowMatrices[{}]", i), shadowTransforms[i]);
+			point_shadow_program.set_uniform("far_plane", point_shadow_far_plane);
+			point_shadow_program.set_uniform("lightPos", point_shadow_lightPos);
 
 			glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-			glBindFramebuffer(GL_FRAMEBUFFER, depth_framebuffer.get_fbo_id());
+			// 视锥阴影
+			glBindFramebuffer(GL_FRAMEBUFFER, shadow_depth_framebuffer.get_fbo_id());
 			glClear(GL_DEPTH_BUFFER_BIT);
-			//entity_manager.foreach_on_draw(delta, shadow_program);
+			glm::mat4 lightProjection, lightView;
+			glm::mat4 lightSpaceMatrix;
+			float shadow_near_plane = 0.01f, shadow_far_plane = 25.0f;
+			glm::vec3 shadow_light_pos(-sun_light_direction);
+			lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, shadow_near_plane, shadow_far_plane);
+			//lightProjection = glm::perspective(glm::radians(45.0f), (GLfloat)SHADOW_WIDTH / (GLfloat)SHADOW_HEIGHT, shadow_near_plane, shadow_far_plane);
+			lightView = glm::lookAt(shadow_light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			lightSpaceMatrix = lightProjection * lightView;
+			gfx.set_lightspace_matrix(lightSpaceMatrix);
+			shadow_program.set_uniform("lightSpaceMatrix", lightSpaceMatrix);
 			entity_manager.foreach([&](std::string name, quick3d::core::Entity* entity)
 			{
 				if (name != "light_ball" && name != "skybox")
 					entity->on_darw_with_shader(delta, shadow_program);
 			});
+			// 点阴影
+			glBindFramebuffer(GL_FRAMEBUFFER, point_shadow_depth_framebuffer.get_fbo_id());
+			glClear(GL_DEPTH_BUFFER_BIT);
+			entity_manager.foreach([&](std::string name, quick3d::core::Entity* entity)
+			{
+				if (name != "light_ball" && name != "skybox")
+					entity->on_darw_with_shader(delta, point_shadow_program);
+			});
 			glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
 			// hdr & bloom test start
 			glBindFramebuffer(GL_FRAMEBUFFER, post_framebuffer.get_fbo_id());
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_CUBE_MAP, depth_cubemap.get_cubemap_id());
+			glBindTexture(GL_TEXTURE_2D, shadow_depth_tex.get_tex_id());
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, point_shadow_depth_cubemap.get_cubemap_id());
 			// shadow test end
 			entity_manager.foreach_on_draw(delta);
 
@@ -269,6 +305,8 @@ int main() noexcept
 			ImGui::SliderFloat("hdr_exposure", &hdr_exposure, 0.0f, 10.0f);
 			ImGui::Checkbox("enable_exposure", &enable_exposure);
 			ImGui::Checkbox("enable_bloom", &enable_bloom);
+			ImGui::Checkbox("enable_point_shadow", &enable_point_shadow);
+			ImGui::Checkbox("enable_direct_shadow(with bug)", &enable_direct_shadow);
 			ImGui::End();
 
 			ImGui::Render();

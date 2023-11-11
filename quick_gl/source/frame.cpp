@@ -117,7 +117,7 @@ GLuint quick3d::gl::ColorFramebuffer::get_binding_tex_id() const noexcept
     return tex_id;
 }
 
-void quick3d::gl::DepthFramebuffer::bind_depth_attachment(GLuint depth_attachment_id) noexcept
+void quick3d::gl::DepthFramebuffer::bind_cubemap_depth_attachment(GLuint depth_attachment_id) noexcept
 {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -132,7 +132,17 @@ void quick3d::gl::DepthFramebuffer::bind_depth_attachment(GLuint depth_attachmen
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-quick3d::gl::DepthFramebuffer::DepthFramebuffer(GLuint depth_attachment_id) noexcept
+void quick3d::gl::DepthFramebuffer::bind_texture_depth_attachment(GLuint depth_attachment_id) noexcept
 {
-    bind_depth_attachment(depth_attachment_id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo_id);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depth_attachment_id, 0);
+    GLenum flags[]{ GL_NONE };
+    glDrawBuffers(1, flags);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

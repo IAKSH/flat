@@ -42,7 +42,8 @@ void quick3d::test::FloorRenderer::load_shader_program() noexcept(false)
 
 	program->set_uniform("material.diffuse", 0);
 	program->set_uniform("material.specular", 1);
-	program->set_uniform("material.depth_map", 2);
+	program->set_uniform("material.shadow_depth_map", 2);
+	program->set_uniform("material.point_shadow_depth_map", 3);
 	program->set_uniform("material.shininess", 128.0f);
 	program->set_uniform("material.texcoords_scale", MODEL_SCALE_FACTOR);
 

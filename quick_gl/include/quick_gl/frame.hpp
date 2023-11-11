@@ -65,11 +65,10 @@ namespace quick3d::gl
     class DepthFramebuffer : public Framebuffer
     {
     private:
-        void bind_depth_attachment(GLuint depth_attachment_id) noexcept;
+        void bind_cubemap_depth_attachment(GLuint depth_attachment_id) noexcept;
+        void bind_texture_depth_attachment(GLuint depth_attachment_id) noexcept;
 
     public:
-        DepthFramebuffer(GLuint depth_attachment_id) noexcept;
-
         template <typename T>
         requires requires(T t)
         {
@@ -77,7 +76,17 @@ namespace quick3d::gl
         }
         DepthFramebuffer(const T& t) noexcept
         {
-            bind_depth_attachment(t.get_cubemap_id());
+            bind_cubemap_depth_attachment(t.get_cubemap_id());
+        }
+
+        template <typename T>
+        requires requires(T t)
+        {
+            {t.get_tex_id()} -> std::same_as<GLuint>;
+        }
+        DepthFramebuffer(const T& t) noexcept
+        {
+            bind_texture_depth_attachment(t.get_tex_id());
         }
 
         DepthFramebuffer(DepthFramebuffer&) = delete;

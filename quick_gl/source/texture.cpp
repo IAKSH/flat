@@ -4,7 +4,10 @@
 quick3d::gl::Texture::Texture(GLenum tex_format, uint32_t tex_width, uint32_t tex_height, bool enable_rtti) noexcept
     : tex_format(tex_format), enable_rtti(enable_rtti), tex_width(tex_width), tex_height(tex_height)
 {
-    generate_texture(GL_RGBA,nullptr,tex_width,tex_height);
+    GLenum img_format{ GL_RED };
+    if (tex_format == GL_DEPTH_COMPONENT)
+        img_format = GL_DEPTH_COMPONENT;
+    generate_texture(img_format,nullptr,tex_width,tex_height);
 }
 
 quick3d::gl::Texture::Texture(GLenum tex_format, GLuint tex_id, bool enable_rtti) noexcept

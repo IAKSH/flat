@@ -10,8 +10,11 @@ layout (std140) uniform GFXGlobalUBO
    mat4 global_projection;
    mat4 global_view;
    mat4 global_view_without_movement;
+   mat4 global_sun_lightspace_matrix;
    vec4 global_camera_position;
    float global_gamma;
+   int global_enable_point_shadow;
+   int global_enable_direct_shadow;
 };
 
 void main()
