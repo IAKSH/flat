@@ -18,10 +18,6 @@
 
 #define IMGUI_IMPL_OPENGL_ES3
 
-// TODO: 还是不行，需要给Model，VAO之类的东西按着之前Renderer的多态结构再分别写一套阴影着色器。
-//       不对，Model最后不也是VAO吗... 如果能统一model矩阵之类的接口，就能实现阴影着色器的复用了。
-//       其实现在的问题也就是model矩阵之类的接口不统一吧... 现在的SSBO model似乎是各自用不同的绑定点，如果是共用统一的绑定点，然后绘制之前把自己的SSBO model绑上去呢？
-//       然后SSBO在GLSL中的接口还是可变长度的，非常的合理。
 static constexpr std::string_view POINT_SHADOW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/point_shadow_vs.glsl";
 static constexpr std::string_view POINT_SHADOW_GLSL_GS_PATH = "../../../../tests/ecs_test/glsl/point_shadow_gs.glsl";
 static constexpr std::string_view POINT_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/point_shadow_fs.glsl";
@@ -182,46 +178,49 @@ struct PointShadowPass
 
 struct RawScenePass
 {
+	quick3d::gl::Texture blur_tex;
+	quick3d::gl::Texture raw_tex;
+	quick3d::gl::ColorFramebuffer frame;
 
-
-	void draw() noexcept(false)
+	RawScenePass() noexcept(false)
+		: raw_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
+		blur_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
+		frame(SCREEN_WIDTH, SCREEN_HEIGHT)
 	{
-		
+		frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, raw_tex.get_tex_id());
+		frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT1, blur_tex.get_tex_id());
+		frame.set_draw_targets({ GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1 });
+	}
+
+	void draw(quick3d::core::EntityManager& entity_manager,float delta , DirectShadowPass& direct_shadow_pass, PointShadowPass& point_shadow_pass) noexcept(false)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, frame.get_fbo_id());
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, direct_shadow_pass.tex.get_tex_id());
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, point_shadow_pass.cubemap.get_cubemap_id());
+
+		entity_manager.foreach_on_draw(delta);
 	}
 };
 
 struct BloomPass
 {
-	void draw() noexcept(false)
-	{
-		
-	}
-};
-
-struct HDRBlendPass
-{
 	quick3d::gl::Buffer vbo;
 	quick3d::gl::VertexArray vao;
-	quick3d::gl::Program hdr_blend_program;
 	quick3d::gl::Program blur_program;
-	quick3d::gl::Texture scene_tex;
-	quick3d::gl::Texture blur_tex;
 	std::array<quick3d::gl::Texture, 2> blur_pingpong_texs;
 	std::array<quick3d::gl::ColorFramebuffer, 2> blur_pingpong_frames;
-	quick3d::gl::ColorFramebuffer hdr_bloom_frame;
+	bool horizontal;
 
-	HDRBlendPass() noexcept(false)
+	BloomPass() noexcept(false)
 		: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
-		hdr_blend_program(
-			(quick3d::gl::GLSLReader(POST_GLSL_VS_PATH)),
-			(quick3d::gl::GLSLReader(POST_GLSL_FS_PATH))
-		),
 		blur_program(
 			(quick3d::gl::GLSLReader(BLUR_GLSL_VS_PATH)),
 			(quick3d::gl::GLSLReader(BLUR_GLSL_FS_PATH))
 		),
-		scene_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
-		blur_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
 		blur_pingpong_texs{
 			quick3d::gl::Texture(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
 			quick3d::gl::Texture(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true)
@@ -230,37 +229,21 @@ struct HDRBlendPass
 			quick3d::gl::ColorFramebuffer(SCREEN_WIDTH, SCREEN_HEIGHT),
 			quick3d::gl::ColorFramebuffer(SCREEN_WIDTH, SCREEN_HEIGHT)
 		},
-		hdr_bloom_frame(SCREEN_WIDTH, SCREEN_HEIGHT)
+		horizontal(true)
 	{
 		vbo.write_buffer_data(QUAD_VERTICES);
 		vao.add_attrib(vbo, 0, 3, 5, 0);
 		vao.add_attrib(vbo, 1, 2, 5, 3);
 
-		hdr_bloom_frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, scene_tex.get_tex_id());
-		hdr_bloom_frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT1, blur_tex.get_tex_id());
-
 		for (int i = 0; i < 2; i++)
 			blur_pingpong_frames[i].bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, blur_pingpong_texs[i].get_tex_id());
 
-		hdr_bloom_frame.set_draw_targets({ GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1 });
-		hdr_blend_program.set_uniform("sceneTex", 0);
-		hdr_blend_program.set_uniform("bloomTex", 1);
 		blur_program.set_uniform("horizontal", 1);
 	}
 
-	void draw(quick3d::core::EntityManager& entity_manager, float delta, DirectShadowPass& direct_shadow_pass, PointShadowPass& point_shadow_pass) noexcept(false)
+	void draw(RawScenePass& raw_scene_pass) noexcept(false)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, hdr_bloom_frame.get_fbo_id());
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, direct_shadow_pass.tex.get_tex_id());
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, point_shadow_pass.cubemap.get_cubemap_id());
-
-		entity_manager.foreach_on_draw(delta);
-
 		// 两步高斯模糊（乒乓式）
-		bool horizontal{ true };
 		bool first_iteration{ true };
 		unsigned int amount = 10;
 		for (int i = 0; i < 2; i++)
@@ -275,7 +258,7 @@ struct HDRBlendPass
 			blur_program.set_uniform("horizontal", static_cast<int>(horizontal));
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(
-				GL_TEXTURE_2D, (first_iteration ? blur_tex : blur_pingpong_texs[!horizontal]).get_tex_id()
+				GL_TEXTURE_2D, (first_iteration ? raw_scene_pass.blur_tex : blur_pingpong_texs[!horizontal]).get_tex_id()
 			);
 			vao.draw(blur_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 			horizontal = !horizontal;
@@ -283,17 +266,44 @@ struct HDRBlendPass
 				first_iteration = false;
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+};
 
+struct HDRBlendPass
+{
+	quick3d::gl::Buffer vbo;
+	quick3d::gl::VertexArray vao;
+	quick3d::gl::Program program;
+
+	HDRBlendPass() noexcept(false)
+		: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
+		program(
+			(quick3d::gl::GLSLReader(POST_GLSL_VS_PATH)),
+			(quick3d::gl::GLSLReader(POST_GLSL_FS_PATH))
+		)
+	{
+		vbo.write_buffer_data(QUAD_VERTICES);
+		vao.add_attrib(vbo, 0, 3, 5, 0);
+		vao.add_attrib(vbo, 1, 2, 5, 3);
+
+		program.set_uniform("sceneTex", 0);
+		program.set_uniform("bloomTex", 1);
+	}
+
+	void draw(RawScenePass& raw_scene_pass, BloomPass& bloom_pass) noexcept(false)
+	{
 		// 混合所有后期处理并输出到屏幕
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, scene_tex.get_tex_id());
+		glBindTexture(GL_TEXTURE_2D, raw_scene_pass.raw_tex.get_tex_id());
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, blur_pingpong_texs[!horizontal].get_tex_id());
-		hdr_blend_program.set_uniform("exposure", global_gfx_settings.hdr_exposure);
-		hdr_blend_program.set_uniform("enable_exposure", static_cast<int>(global_gfx_settings.enable_exposure));
-		hdr_blend_program.set_uniform("enableBloom", static_cast<int>(global_gfx_settings.enable_bloom));
-		vao.draw(hdr_blend_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+		glBindTexture(GL_TEXTURE_2D, bloom_pass.blur_pingpong_texs[!bloom_pass.horizontal].get_tex_id());
+		program.set_uniform("exposure", global_gfx_settings.hdr_exposure);
+		program.set_uniform("enable_exposure", static_cast<int>(global_gfx_settings.enable_exposure));
+		program.set_uniform("enableBloom", static_cast<int>(global_gfx_settings.enable_bloom));
+		vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(GL_TEXTURE1);
@@ -373,7 +383,8 @@ int main() noexcept
 
 		DirectShadowPass direct_shadow_pass;
 		PointShadowPass point_shadow_pass;
-		//RawScenePass raw_scene_pass;
+		RawScenePass raw_scene_pass;
+		BloomPass bloom_pass;
 		HDRBlendPass hdr_blend_pass;
 		
 		quick3d::ecs::HightResTimer timer;
@@ -395,8 +406,9 @@ int main() noexcept
 			// 逐Pass绘制
 			direct_shadow_pass.draw(gfx, entity_manager, delta);
 			point_shadow_pass.draw(gfx, entity_manager, delta);
-			//raw_scene_pass.draw();
-			hdr_blend_pass.draw(entity_manager, delta, direct_shadow_pass, point_shadow_pass);
+			raw_scene_pass.draw(entity_manager, delta, direct_shadow_pass, point_shadow_pass);
+			bloom_pass.draw(raw_scene_pass);
+			hdr_blend_pass.draw(raw_scene_pass, bloom_pass);
 
 			reset_ogl_state();
 			draw_imgui(gfx, io);
