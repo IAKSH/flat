@@ -206,7 +206,7 @@ quick3d::test::HDRBlendPass::HDRBlendPass(Pipeline& pipeline, DemoSettings& sett
 	settings(settings),
 	Pass(pipeline)
 {
-	raw_scene_pass = dynamic_cast<RawScenePass*>(pipeline.get_pass("raw_scene_pass"));
+	fxaa_pass = dynamic_cast<FXAAPass*>(pipeline.get_pass("fxaa_pass"));
 	bloom_pass = dynamic_cast<BloomPass*>(pipeline.get_pass("bloom_pass"));
 
 	vbo.write_buffer_data(QUAD_VERTICES);
@@ -223,7 +223,7 @@ void quick3d::test::HDRBlendPass::draw(float delta) noexcept(false)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_raw_tex().get_tex_id());
+	glBindTexture(GL_TEXTURE_2D, fxaa_pass->get_tex().get_tex_id());
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, bloom_pass->get_blur_pingpong_texs()[!bloom_pass->get_horizontal()].get_tex_id());
 	program.set_uniform("exposure", settings.hdr_exposure);
@@ -324,4 +324,41 @@ void quick3d::test::DirectShadowDebugPass::draw(float delta) noexcept(false)
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+quick3d::test::FXAAPass::FXAAPass(Pipeline& pipeline) noexcept
+	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
+	program(
+		(quick3d::gl::GLSLReader(FXAA_GLSL_VS_PATH)),
+		(quick3d::gl::GLSLReader(FXAA_GLSL_FS_PATH))
+	),
+	tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
+	frame(SCREEN_WIDTH, SCREEN_HEIGHT),
+	Pass(pipeline)
+{
+	raw_scene_pass = dynamic_cast<RawScenePass*>(pipeline.get_pass("raw_scene_pass"));
+
+	frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, tex.get_tex_id());
+
+	vbo.write_buffer_data(QUAD_VERTICES);
+	vao.add_attrib(vbo, 0, 3, 5, 0);
+	vao.add_attrib(vbo, 1, 2, 5, 3);
+
+	program.set_uniform("resolution", glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT));
+}
+
+void quick3d::test::FXAAPass::draw(float delta) noexcept(false)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, frame.get_fbo_id());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_raw_tex().get_tex_id());
+	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+quick3d::gl::Texture& quick3d::test::FXAAPass::get_tex() noexcept
+{
+	return tex;
 }

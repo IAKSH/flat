@@ -19,10 +19,12 @@ namespace quick3d::test
 	inline static constexpr std::string_view POST_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/post_fs.glsl";
 	inline static constexpr std::string_view BLUR_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/blur_vs.glsl";
 	inline static constexpr std::string_view BLUR_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/blur_fs.glsl";
+	inline static constexpr std::string_view FXAA_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/fxaa_vs.glsl";
+	inline static constexpr std::string_view FXAA_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/fxaa_fs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/debug_view_vs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/debug_view_fs.glsl";
 	inline static constexpr int SCREEN_WIDTH{ 853 };
-	inline static constexpr int SCREEN_HEIGHT{ 600 };
+	inline static constexpr int SCREEN_HEIGHT{ 800 };
 	inline static constexpr float SHADOW_WIDTH{ 1024 };
 	inline static constexpr float SHADOW_HEIGHT{ 1024 };
 
@@ -146,6 +148,26 @@ namespace quick3d::test
 		bool get_horizontal() noexcept;
 	};
 
+	class FXAAPass : public Pass
+	{
+	private:
+		quick3d::gl::Buffer vbo;
+		quick3d::gl::VertexArray vao;
+		quick3d::gl::Program program;
+		quick3d::gl::Texture tex;
+		quick3d::gl::ColorFramebuffer frame;
+
+		RawScenePass* raw_scene_pass;
+
+	public:
+		FXAAPass(Pipeline& pipeline) noexcept;
+		FXAAPass(FXAAPass&) = delete;
+		~FXAAPass() = default;
+
+		virtual void draw(float delta) noexcept(false) override final;
+		quick3d::gl::Texture& get_tex() noexcept;
+	};
+
 	class HDRBlendPass : public Pass
 	{
 	private:
@@ -155,7 +177,7 @@ namespace quick3d::test
 		quick3d::gl::VertexArray vao;
 		quick3d::gl::Program program;
 
-		RawScenePass* raw_scene_pass;
+		FXAAPass* fxaa_pass;
 		BloomPass* bloom_pass;
 
 	public:

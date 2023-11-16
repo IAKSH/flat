@@ -105,6 +105,7 @@ int main() noexcept
 		pipeline.add_pass<quick3d::test::PointShadowPass>("point_shadow_pass", entity_manager, settings);
 		pipeline.add_pass<quick3d::test::RawScenePass>("raw_scene_pass", entity_manager);
 		pipeline.add_pass<quick3d::test::BloomPass>("bloom_pass");
+		pipeline.add_pass<quick3d::test::FXAAPass>("fxaa_pass");
 		pipeline.add_pass<quick3d::test::HDRBlendPass>("hdr_blend_pass", settings);
 		pipeline.add_pass<quick3d::test::BloomDebugPass>("bloom_debug_pass");
 		pipeline.add_pass<quick3d::test::RawDebugPass>("raw_debug_pass");
