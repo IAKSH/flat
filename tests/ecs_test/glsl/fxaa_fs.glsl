@@ -1,149 +1,205 @@
+// thanks for:
+// http://wingerzeng.com/2021/10/14/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%93%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94FXAA/
+
 #version 320 es
 
 precision highp float;
 precision highp int;
 
-in vec2 in_uv;
-out vec4 out_color;
-uniform sampler2D in_color;
+out vec4 FragColor;
+in vec2 texCoord;
+uniform sampler2D ldrTexture;
 uniform vec2 resolution;
 
-#define UP_LEFT      0
-#define UP           1
-#define UP_RIGHT     2
-#define LEFT         3
-#define CENTER       4
-#define RIGHT        5
-#define DOWN_LEFT    6
-#define DOWN         7
-#define DOWN_RIGHT   8
+// Settings for FXAA.
+#define EDGE_THRESHOLD_MIN 0.0312
+#define EDGE_THRESHOLD_MAX 0.125
+#define QUALITY(q) ((q) < 5 ? 1.0 : ((q) > 5 ? ((q) < 10 ? 2.0 : ((q) < 11 ? 4.0 : 8.0)) : 1.5))
+#define ITERATIONS 12
+#define SUBPIXEL_QUALITY 0.75
 
-#define EDGE_THRESHOLD_MIN  0.0312
-#define EDGE_THRESHOLD_MAX  0.125
-#define SUBPIXEL_QUALITY    0.75
-#define GRADIENT_SCALE      0.25
-
-#define STEP_COUNT_MAX   12
-float QUALITY(int i) {
-    if (i < 5) return 1.0;
-    if (i == 5) return 1.5;
-    if (i < 10) return 2.0;
-    if (i == 10) return 4.0;
-    if (i == 11) return 8.0;
-    return 8.0;
+float rgb2luma(vec3 rgb){
+	return dot(rgb, vec3(0.299, 0.587, 0.114));
 }
 
-vec2 STEP_MAT[] = vec2[9](
-    vec2(-1.0, 1.0), vec2( 0.0, 1.0), vec2( 1.0, 1.0),
-    vec2(-1.0, 0.0), vec2( 0.0, 0.0), vec2( 1.0, 0.0),
-    vec2(-1.0,-1.0), vec2( 0.0,-1.0), vec2( 1.0,-1.0)
-);
+vec3 fxaa(){
+	 vec2 inverseScreenSize = vec2(1.0 / resolution.x,1.0 / resolution.y);
 
-float RGB2LUMA(vec3 rgb_color) {
-    return dot(vec3(0.299, 0.578, 0.114), rgb_color);
-}
-
-vec4 fxaa() {
-	// 计算屏幕空间下片元的两个边长
-	vec2 uv_step = vec2(1.0 / resolution.x, 1.0 / resolution.y);
+	vec3 colorCenter = texture(ldrTexture, texCoord).rgb;
+	// Luma at the current fragment
+	float lumaCenter = rgb2luma(colorCenter);
 	
-	// 计算当前片元四周的亮度值
-	float luma_mat[9];
-	for(int i = 0;i < 9;i++) {
-		luma_mat[i] = RGB2LUMA(texture(in_color,in_uv + uv_step * STEP_MAT[i]).rgb);
+	// Luma at the four direct neighbours of the current fragment.
+	float lumaDown 	= rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2( 0,-1)).rgb);
+	float lumaUp 	= rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2( 0, 1)).rgb);
+	float lumaLeft 	= rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2(-1, 0)).rgb);
+	float lumaRight = rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2( 1, 0)).rgb);
+	
+	// Find the maximum and minimum luma around the current fragment.
+	float lumaMin = min(lumaCenter, min(min(lumaDown, lumaUp), min(lumaLeft, lumaRight)));
+	float lumaMax = max(lumaCenter, max(max(lumaDown, lumaUp), max(lumaLeft, lumaRight)));
+	
+	// Compute the delta.
+	float lumaRange = lumaMax - lumaMin;
+	
+	// If the luma variation is lower that a threshold (or if we are in a really dark area), we are not on an edge, don't perform any AA.
+	if(lumaRange < max(EDGE_THRESHOLD_MIN, lumaMax * EDGE_THRESHOLD_MAX)){
+		return colorCenter;
 	}
-
-	float luma_max = max(luma_mat[CENTER], max(max(luma_mat[LEFT], luma_mat[RIGHT]), max(luma_mat[UP], luma_mat[DOWN])));
-	float luma_min = min(luma_mat[CENTER], min(min(luma_mat[LEFT], luma_mat[RIGHT]), min(luma_mat[UP], luma_mat[DOWN])));
-	// 如果3x3色块内的亮度差异并不大，那就跳过
-	if(luma_max - luma_min < max(EDGE_THRESHOLD_MIN, luma_max * EDGE_THRESHOLD_MAX)) {
-		return texture(in_color, in_uv);
+	
+	// Query the 4 remaining corners lumas.
+	float lumaDownLeft 	= rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2(-1,-1)).rgb);
+	float lumaUpRight 	= rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2( 1, 1)).rgb);
+	float lumaUpLeft 	= rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2(-1, 1)).rgb);
+	float lumaDownRight = rgb2luma(textureLodOffset(ldrTexture, texCoord, 0.0,ivec2( 1,-1)).rgb);
+	
+	// Combine the four edges lumas (using intermediary variables for future computations with the same values).
+	float lumaDownUp = lumaDown + lumaUp;
+	float lumaLeftRight = lumaLeft + lumaRight;
+	
+	// Same for corners
+	float lumaLeftCorners = lumaDownLeft + lumaUpLeft;
+	float lumaDownCorners = lumaDownLeft + lumaDownRight;
+	float lumaRightCorners = lumaDownRight + lumaUpRight;
+	float lumaUpCorners = lumaUpRight + lumaUpLeft;
+	
+	// Compute an estimation of the gradient along the horizontal and vertical axis.
+	float edgeHorizontal =	abs(-2.0 * lumaLeft + lumaLeftCorners)	+ abs(-2.0 * lumaCenter + lumaDownUp ) * 2.0	+ abs(-2.0 * lumaRight + lumaRightCorners);
+	float edgeVertical =	abs(-2.0 * lumaUp + lumaUpCorners)		+ abs(-2.0 * lumaCenter + lumaLeftRight) * 2.0	+ abs(-2.0 * lumaDown + lumaDownCorners);
+	
+	// Is the local edge horizontal or vertical ?
+	bool isHorizontal = (edgeHorizontal >= edgeVertical);
+	
+	// Choose the step size (one pixel) accordingly.
+	float stepLength = isHorizontal ? inverseScreenSize.y : inverseScreenSize.x;
+	
+	// Select the two neighboring texels lumas in the opposite direction to the local edge.
+	float luma1 = isHorizontal ? lumaDown : lumaLeft;
+	float luma2 = isHorizontal ? lumaUp : lumaRight;
+	// Compute gradients in this direction.
+	float gradient1 = luma1 - lumaCenter;
+	float gradient2 = luma2 - lumaCenter;
+	
+	// Which direction is the steepest ?
+	bool is1Steepest = abs(gradient1) >= abs(gradient2);
+	
+	// Gradient in the corresponding direction, normalized.
+	float gradientScaled = 0.25*max(abs(gradient1),abs(gradient2));
+	
+	// Average luma in the correct direction.
+	float lumaLocalAverage = 0.0;
+	if(is1Steepest){
+		// Switch the direction
+		stepLength = - stepLength;
+		lumaLocalAverage = 0.5*(luma1 + lumaCenter);
+	} else {
+		lumaLocalAverage = 0.5*(luma2 + lumaCenter);
 	}
+	
+	// Shift UV in the correct direction by half a pixel.
+	vec2 currentUv = texCoord;
+	if(isHorizontal){
+		currentUv.y += stepLength * 0.5;
+	} else {
+		currentUv.x += stepLength * 0.5;
+	}
+	
+	// Compute offset (for each iteration step) in the right direction.
+	vec2 offset = isHorizontal ? vec2(inverseScreenSize.x,0.0) : vec2(0.0,inverseScreenSize.y);
+	// Compute UVs to explore on each side of the edge, orthogonally. The QUALITY allows us to step faster.
+	vec2 uv1 = currentUv - offset * QUALITY(0);
+	vec2 uv2 = currentUv + offset * QUALITY(0);
+	
+	float lumaEnd1;
+	float lumaEnd2;
 
-	// 沿着竖直方向的梯度
-    float luma_horizontal = 
-        abs(luma_mat[UP_LEFT]  + luma_mat[DOWN_LEFT]  - 2.0*luma_mat[LEFT]) +
-        abs(luma_mat[UP_RIGHT] + luma_mat[DOWN_RIGHT] - 2.0*luma_mat[RIGHT]) +
-        abs(luma_mat[UP] + luma_mat[DOWN] - 2.0*luma_mat[CENTER]);
-    // 沿着水平方向的梯度
-    float luma_vertial =
-        abs(luma_mat[UP_LEFT]   + luma_mat[UP_RIGHT]   - 2.0*luma_mat[UP]) +
-        abs(luma_mat[DOWN_LEFT] + luma_mat[DOWN_RIGHT] - 2.0*luma_mat[DOWN]) +
-        abs(luma_mat[LEFT] + luma_mat[RIGHT] - 2.0*luma_mat[CENTER]);
-    // 竖直方向的梯度大的话，那就说明边缘是沿着水平方向的
-    bool is_horizontal = abs(luma_horizontal) > abs(luma_vertial);
-    
-    // 计算沿着边缘的法线方向上下（左右）的梯度
-    float grandient_down_left = (is_horizontal ? luma_mat[DOWN] : luma_mat[LEFT]) - luma_mat[CENTER];
-    float grandient_up_right = (is_horizontal ? luma_mat[UP] : luma_mat[RIGHT]) - luma_mat[CENTER];
-    // 如果下面的梯度大于上面的梯度，则法线是沿着朝下的，竖直方向同理
-    bool is_down_left = abs(grandient_down_left) > abs(grandient_up_right);
-    float gradient_start = is_down_left ? grandient_down_left : grandient_up_right;
-    
-    vec2 step_tangent = (is_horizontal ? vec2(1.0, 0.0) : vec2(0.0, 1.0)) * uv_step;
-    vec2 step_normal = (is_down_left ? -1.0 : 1.0) * (is_horizontal ? vec2(0.0, 1.0) : vec2(1.0, 0.0)) * uv_step;
-    
-    // 沿着法线方向前进0.5格，到达片元的边界
-    vec2 uv_start = in_uv + 0.5 * step_normal;
-    // 边界附近两个片元亮度的均值
-    float luma_average_start = luma_mat[CENTER] + 0.5 * gradient_start;
-    
-    // 从起点出发
-    vec2 uv_forward  = uv_start;
-    vec2 uv_backward = uv_start;
-    
-    float delta_luma_forward = 0.0;
-    float delta_luma_backward = 0.0;
-    
-    bool reached_forward   = false;
-    bool reached_backward = false;
-    bool reached_both      = false;
-    
-    for(int i = 1; i < STEP_COUNT_MAX; i++){
-        if(!reached_forward)  uv_forward += QUALITY(i) * step_tangent;
-        if(!reached_backward) uv_backward += - QUALITY(i) * step_tangent;
-        
-        // 计算出移动后的亮度值
-        delta_luma_forward = RGB2LUMA(texture(in_color, uv_forward).rgb) - luma_average_start;
-        delta_luma_backward = RGB2LUMA(texture(in_color, uv_backward).rgb) - luma_average_start;
-        
-        // 前面半部分是用平均亮度计算的梯度，因此所以算出的梯度会偏小
-        // 这里只是为了找到端点，所以对 gradient_start 乘以缩放因子 1/4
-        reached_forward = abs(delta_luma_forward) > GRADIENT_SCALE * abs(gradient_start);
-        reached_backward = abs(delta_luma_backward) > GRADIENT_SCALE * abs(gradient_start);
-        reached_both = reached_forward && reached_backward;
-        
-        if(reached_both) break;
-    }
-    // 计算混合比例
-    float length_forward = max(abs(uv_forward - uv_start).x, abs(uv_forward - uv_start).y);
-    float length_backward = max(abs(uv_backward - uv_start).x, abs(uv_backward - uv_start).y);
-    bool is_forward_near = length_forward < length_backward;
-    float pixel_offset = -1.0 * ((is_forward_near ? length_forward : length_backward) / (length_forward + length_backward)) + 0.5;
+	// If the luma deltas at the current extremities is larger than the local gradient, we have reached the side of the edge.
+	bool reached1 = false;
+	bool reached2 = false;
+	bool reachedBoth = false;
+	
+	// If both sides have not been reached, continue to explore.
+	for(int i = 1; i < ITERATIONS; i++){
+		// If needed, read luma in 1st direction, compute delta.
+		if(!reached1){
+			lumaEnd1 = rgb2luma(textureLod(ldrTexture, uv1, 0.0).rgb);
+			lumaEnd1 = lumaEnd1 - lumaLocalAverage;
+			// If the luma deltas at the current extremities is larger than the local gradient, we have reached the side of the edge.
+			reached1 = abs(lumaEnd1) >= gradientScaled;
+		}
+		// If needed, read luma in opposite direction, compute delta.
+		if(!reached2){
+			lumaEnd2 = rgb2luma(textureLod(ldrTexture, uv2, 0.0).rgb);
+			lumaEnd2 = lumaEnd2 - lumaLocalAverage;
+			// If the luma deltas at the current extremities is larger than the local gradient, we have reached the side of the edge.
+			reached2 = abs(lumaEnd2) >= gradientScaled;
+		}
+		reachedBoth = reached1 && reached2;
+			
+		// If the side is not reached, we continue to explore in this direction, with a variable quality.
+		if(!reached1){
+			uv1 -= offset * QUALITY(i);
+		}
+		if(!reached2){
+			uv2 += offset * QUALITY(i);
+		}
+			
+		// If both sides have been reached, stop the exploration.
+		if(reachedBoth){ break;}
+	}
+	
+	// Compute the distances to each side edge of the edge (!).
+	float distance1 = isHorizontal ? (texCoord.x - uv1.x) : (texCoord.y - uv1.y);
+	float distance2 = isHorizontal ? (uv2.x - texCoord.x) : (uv2.y - texCoord.y);
+	
+	// In which direction is the side of the edge closer ?
+	bool isDirection1 = distance1 < distance2;
+	float distanceFinal = min(distance1, distance2);
+	
+	// Is the luma at center smaller than the local average ?
+	bool isLumaCenterSmaller = lumaCenter < lumaLocalAverage;
+	
+	// If the luma at center is smaller than at its neighbour, the delta luma at each end should be positive (same variation).
+	bool correctVariation1 = (lumaEnd1 < 0.0) != isLumaCenterSmaller;
+	bool correctVariation2 = (lumaEnd2 < 0.0) != isLumaCenterSmaller;
+	
+	// Only keep the result in the direction of the closer side of the edge.
+	bool correctVariation = isDirection1 ? correctVariation1 : correctVariation2;
+	
+	// Length of the edge.
+	float edgeLength = (distance1 + distance2);
 
-    // 判断更加接近的那个点，和自己的颜色是否接近，如果接近那就不用混合
-    if( ((is_forward_near ? delta_luma_forward : delta_luma_backward) < 0.0) ==
-        (luma_mat[CENTER] < luma_average_start)) pixel_offset = 0.0;
-    
-    float luma_average_center = 0.0;
-    float average_weight_mat[] = float[9](
-        1.0, 2.0, 1.0,
-        2.0, 0.0, 2.0,
-        1.0, 2.0, 1.0
-    );
-    for (int i = 0; i < 9; i++) luma_average_center += average_weight_mat[i] * luma_mat[i];
-    luma_average_center /= 12.0;
-    // 经验公式
-    float subpixel_luma_range = clamp(abs(luma_average_center - luma_mat[CENTER]) / (luma_max - luma_min), 0.0, 1.0);
-    float subpixel_offset = (-2.0 * subpixel_luma_range + 3.0) * subpixel_luma_range * subpixel_luma_range;
-    subpixel_offset = subpixel_offset * subpixel_offset * SUBPIXEL_QUALITY;
-    
-    pixel_offset = max(pixel_offset, subpixel_offset);
-    
-    return texture(in_color, in_uv + pixel_offset * step_normal);
+	// UV offset: read in the direction of the closest side of the edge.
+	float pixelOffset = - distanceFinal / edgeLength + 0.5;
+	
+	// If the luma variation is incorrect, do not offset.
+	float finalOffset = correctVariation ? pixelOffset : 0.0;
+	
+	// Sub-pixel shifting
+	// Full weighted average of the luma over the 3x3 neighborhood.
+	float lumaAverage = (1.0/12.0) * (2.0 * (lumaDownUp + lumaLeftRight) + lumaLeftCorners + lumaRightCorners);
+	// Ratio of the delta between the global average and the center luma, over the luma range in the 3x3 neighborhood.
+	float subPixelOffset1 = clamp(abs(lumaAverage - lumaCenter)/lumaRange,0.0,1.0);
+	float subPixelOffset2 = (-2.0 * subPixelOffset1 + 3.0) * subPixelOffset1 * subPixelOffset1;
+	// Compute a sub-pixel offset based on this delta.
+	float subPixelOffsetFinal = subPixelOffset2 * subPixelOffset2 * SUBPIXEL_QUALITY;
+	
+	// Pick the biggest of the two offsets.
+	finalOffset = max(finalOffset,subPixelOffsetFinal);
+	
+	// Compute the final UV coordinates.
+	vec2 finalUv = texCoord;
+	if(isHorizontal){
+		finalUv.y += finalOffset * stepLength;
+	} else {
+		finalUv.x += finalOffset * stepLength;
+	}
+	
+	// Read the color at the new UV coordinates, and use it.
+	vec3 finalColor = textureLod(ldrTexture, finalUv, 0.0).rgb;
+	return finalColor;
 }
 
-void main()
-{
-    out_color = fxaa();
+void main(){
+	FragColor = vec4(fxaa(),1);
 }
