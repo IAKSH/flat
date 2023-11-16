@@ -183,6 +183,7 @@ void quick3d::test::BloomPass::draw(float delta) noexcept(false)
 		if (first_iteration)
 			first_iteration = false;
 	}
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -232,5 +233,95 @@ void quick3d::test::HDRBlendPass::draw(float delta) noexcept(false)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+quick3d::test::BloomDebugPass::BloomDebugPass(Pipeline& pipeline) noexcept(false)
+	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
+	program(
+		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_VS_PATH)),
+		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_FS_PATH))
+	),
+	Pass(pipeline)
+{
+	raw_scene_pass = dynamic_cast<RawScenePass*>(pipeline.get_pass("raw_scene_pass"));
+	bloom_pass = dynamic_cast<BloomPass*>(pipeline.get_pass("bloom_pass"));
+
+	vbo.write_buffer_data(QUAD_VERTICES);
+	vao.add_attrib(vbo, 0, 3, 5, 0);
+	vao.add_attrib(vbo, 1, 2, 5, 3);
+}
+
+void quick3d::test::BloomDebugPass::draw(float delta) noexcept(false)
+{
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, bloom_pass->get_blur_pingpong_texs()[!bloom_pass->get_horizontal()].get_tex_id());
+	glViewport(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+
+	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_blur_tex().get_tex_id());
+	glViewport(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+quick3d::test::RawDebugPass::RawDebugPass(Pipeline& pipeline) noexcept(false)
+	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
+	program(
+		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_VS_PATH)),
+		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_FS_PATH))
+	),
+	Pass(pipeline)
+{
+	raw_scene_pass = dynamic_cast<RawScenePass*>(pipeline.get_pass("raw_scene_pass"));
+
+	vbo.write_buffer_data(QUAD_VERTICES);
+	vao.add_attrib(vbo, 0, 3, 5, 0);
+	vao.add_attrib(vbo, 1, 2, 5, 3);
+}
+
+void quick3d::test::RawDebugPass::draw(float delta) noexcept(false)
+{
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_raw_tex().get_tex_id());
+	glViewport(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
+	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+quick3d::test::DirectShadowDebugPass::DirectShadowDebugPass(Pipeline& pipeline) noexcept(false)
+	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
+	program(
+		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_VS_PATH)),
+		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_FS_PATH))
+	),
+	Pass(pipeline)
+{
+	direct_shadow_pass = dynamic_cast<DirectShadowPass*>(pipeline.get_pass("direct_shadow_pass"));
+
+	vbo.write_buffer_data(QUAD_VERTICES);
+	vao.add_attrib(vbo, 0, 3, 5, 0);
+	vao.add_attrib(vbo, 1, 2, 5, 3);
+}
+
+void quick3d::test::DirectShadowDebugPass::draw(float delta) noexcept(false)
+{
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, direct_shadow_pass->get_tex().get_tex_id());
+	glViewport(SCREEN_WIDTH * 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -19,10 +19,12 @@ namespace quick3d::test
 	inline static constexpr std::string_view POST_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/post_fs.glsl";
 	inline static constexpr std::string_view BLUR_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/blur_vs.glsl";
 	inline static constexpr std::string_view BLUR_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/blur_fs.glsl";
-	inline static constexpr int SCREEN_WIDTH{ 1280 };
-	inline static constexpr int SCREEN_HEIGHT{ 720 };
-	inline static constexpr float SHADOW_WIDTH{ 2048 };
-	inline static constexpr float SHADOW_HEIGHT{ 2048 };
+	inline static constexpr std::string_view DEBUG_VIEW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/debug_view_vs.glsl";
+	inline static constexpr std::string_view DEBUG_VIEW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/debug_view_fs.glsl";
+	inline static constexpr int SCREEN_WIDTH{ 853 };
+	inline static constexpr int SCREEN_HEIGHT{ 600 };
+	inline static constexpr float SHADOW_WIDTH{ 1028 };
+	inline static constexpr float SHADOW_HEIGHT{ 1024 };
 
 	inline static constexpr std::array<float, 20> QUAD_VERTICES
 	{
@@ -160,6 +162,58 @@ namespace quick3d::test
 		HDRBlendPass(Pipeline& pipeline, DemoSettings& settings) noexcept(false);
 		HDRBlendPass(HDRBlendPass&) = delete;
 		~HDRBlendPass() = default;
+
+		virtual void draw(float delta) noexcept(false) override final;
+	};
+
+	class BloomDebugPass : public Pass
+	{
+	private:
+		quick3d::gl::Buffer vbo;
+		quick3d::gl::VertexArray vao;
+		quick3d::gl::Program program;
+
+		BloomPass* bloom_pass;
+		RawScenePass* raw_scene_pass;
+
+	public:
+		BloomDebugPass(Pipeline& pipeline) noexcept(false);
+		BloomDebugPass(BloomDebugPass&) = delete;
+		~BloomDebugPass() = default;
+
+		virtual void draw(float delta) noexcept(false) override final;
+	};
+
+	class RawDebugPass : public Pass
+	{
+	private:
+		quick3d::gl::Buffer vbo;
+		quick3d::gl::VertexArray vao;
+		quick3d::gl::Program program;
+
+		RawScenePass* raw_scene_pass;
+
+	public:
+		RawDebugPass(Pipeline& pipeline) noexcept(false);
+		RawDebugPass(RawDebugPass&) = delete;
+		~RawDebugPass() = default;
+
+		virtual void draw(float delta) noexcept(false) override final;
+	};
+
+	class DirectShadowDebugPass : public Pass
+	{
+	private:
+		quick3d::gl::Buffer vbo;
+		quick3d::gl::VertexArray vao;
+		quick3d::gl::Program program;
+
+		DirectShadowPass* direct_shadow_pass;
+
+	public:
+		DirectShadowDebugPass(Pipeline& pipeline) noexcept(false);
+		DirectShadowDebugPass(DirectShadowDebugPass&) = delete;
+		~DirectShadowDebugPass() = default;
 
 		virtual void draw(float delta) noexcept(false) override final;
 	};

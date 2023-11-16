@@ -89,15 +89,26 @@ int main() noexcept
 {
 	try
 	{
+		// 也许应该从XXXSystem直接改为XXXBackend
 		quick3d::core::GFXSystem gfx(quick3d::test::SCREEN_WIDTH, quick3d::test::SCREEN_HEIGHT);
 		quick3d::core::SFXSystem sfx;
 		quick3d::core::EntityManager entity_manager;
+		quick3d::test::Pipeline pipeline;
 
 		entity_manager.add_entity<quick3d::test::SkyboxEntity>("skybox");
 		entity_manager.add_entity<quick3d::test::LightBallEntity>("light_ball");
 		entity_manager.add_entity<quick3d::test::YaeEntity>("yae");
 		entity_manager.add_entity<quick3d::test::BoxEntity>("box");
 		entity_manager.add_entity<quick3d::test::FloorEntity>("floor");
+
+		pipeline.add_pass<quick3d::test::DirectShadowPass>("direct_shadow_pass", gfx, entity_manager, settings);
+		pipeline.add_pass<quick3d::test::PointShadowPass>("point_shadow_pass", entity_manager, settings);
+		pipeline.add_pass<quick3d::test::RawScenePass>("raw_scene_pass", entity_manager);
+		pipeline.add_pass<quick3d::test::BloomPass>("bloom_pass");
+		pipeline.add_pass<quick3d::test::HDRBlendPass>("hdr_blend_pass", settings);
+		pipeline.add_pass<quick3d::test::BloomDebugPass>("bloom_debug_pass");
+		pipeline.add_pass<quick3d::test::RawDebugPass>("raw_debug_pass");
+		pipeline.add_pass<quick3d::test::DirectShadowDebugPass>("direct_shadow_pass");
 			
 		ImGui::CreateContext();
 		ImGui::CreateContext();
@@ -108,13 +119,6 @@ int main() noexcept
 		ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
 		ImGui_ImplOpenGL3_Init("#version 330 core");
 
-		quick3d::test::Pipeline pipeline;
-		pipeline.add_pass<quick3d::test::DirectShadowPass>("direct_shadow_pass", gfx, entity_manager, settings);
-		pipeline.add_pass<quick3d::test::PointShadowPass>("point_shadow_pass", entity_manager, settings);
-		pipeline.add_pass<quick3d::test::RawScenePass>("raw_scene_pass", entity_manager);
-		pipeline.add_pass<quick3d::test::BloomPass>("bloom_pass");
-		pipeline.add_pass<quick3d::test::HDRBlendPass>("hdr_blend_pass", settings);
-		
 		quick3d::ecs::HightResTimer timer;
 		while (gfx.is_running() && sfx.is_running())
 		{
