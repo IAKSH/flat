@@ -257,9 +257,6 @@ void quick3d::test::BloomDebugPass::draw(float delta) noexcept(false)
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, bloom_pass->get_blur_pingpong_texs()[!bloom_pass->get_horizontal()].get_tex_id());
-	glViewport(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 
 	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_blur_tex().get_tex_id());
 	glViewport(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -319,7 +316,7 @@ void quick3d::test::DirectShadowDebugPass::draw(float delta) noexcept(false)
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, direct_shadow_pass->get_tex().get_tex_id());
-	glViewport(SCREEN_WIDTH * 2, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	glViewport(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glActiveTexture(GL_TEXTURE0);

@@ -23,8 +23,8 @@ namespace quick3d::test
 	inline static constexpr std::string_view FXAA_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/fxaa_fs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/debug_view_vs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/debug_view_fs.glsl";
-	inline static constexpr int SCREEN_WIDTH{ 853 };
-	inline static constexpr int SCREEN_HEIGHT{ 800 };
+	inline static constexpr int SCREEN_WIDTH{ 1280 };
+	inline static constexpr int SCREEN_HEIGHT{ 700 };
 	inline static constexpr float SHADOW_WIDTH{ 1024 };
 	inline static constexpr float SHADOW_HEIGHT{ 1024 };
 
