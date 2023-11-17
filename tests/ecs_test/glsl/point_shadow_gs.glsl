@@ -1,4 +1,6 @@
-#version 430 core
+#version 320 es
+#extension GL_OES_geometry_shader : enable
+
 precision highp float;
 
 layout (triangles) in;
