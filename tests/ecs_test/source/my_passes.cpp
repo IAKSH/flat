@@ -132,19 +132,12 @@ quick3d::gl::Texture& quick3d::test::RawScenePass::get_raw_tex() noexcept
 
 quick3d::test::BloomPass::BloomPass(Pipeline& pipeline) noexcept(false)
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
-	blur_program(
-		(quick3d::gl::GLSLReader(BLUR_GLSL_VS_PATH)),
-		(quick3d::gl::GLSLReader(BLUR_GLSL_FS_PATH))
+	bloom_program(
+		(quick3d::gl::GLSLReader(BLOOM_GLSL_VS_PATH)),
+		(quick3d::gl::GLSLReader(BLOOM_GLSL_FS_PATH))
 	),
-	blur_pingpong_texs{
-		quick3d::gl::Texture(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
-		quick3d::gl::Texture(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true)
-	},
-	blur_pingpong_frames{
-		quick3d::gl::ColorFramebuffer(SCREEN_WIDTH, SCREEN_HEIGHT),
-		quick3d::gl::ColorFramebuffer(SCREEN_WIDTH, SCREEN_HEIGHT)
-	},
-	horizontal(true),
+	bloom_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
+	bloom_frame(SCREEN_WIDTH, SCREEN_HEIGHT),
 	Pass(pipeline)
 {
 	raw_scene_pass = dynamic_cast<RawScenePass*>(pipeline.get_pass("raw_scene_pass"));
@@ -153,48 +146,22 @@ quick3d::test::BloomPass::BloomPass(Pipeline& pipeline) noexcept(false)
 	vao.add_attrib(vbo, 0, 3, 5, 0);
 	vao.add_attrib(vbo, 1, 2, 5, 3);
 
-	for (int i = 0; i < 2; i++)
-		blur_pingpong_frames[i].bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, blur_pingpong_texs[i].get_tex_id());
-
-	blur_program.set_uniform("horizontal", 1);
+	bloom_frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, bloom_tex.get_tex_id());
 }
 
 void quick3d::test::BloomPass::draw(float delta) noexcept(false)
 {
-	// 两步高斯模糊（乒乓式）
-	bool first_iteration{ true };
-	unsigned int amount = 10;
-	for (int i = 0; i < 2; i++)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, blur_pingpong_frames[i].get_fbo_id());
-		glClear(GL_DEPTH_BUFFER_BIT);
-	}
+	glBindFramebuffer(GL_FRAMEBUFFER, bloom_frame.get_fbo_id());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (unsigned int i = 0; i < amount; i++)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, blur_pingpong_frames[horizontal].get_fbo_id());
-		blur_program.set_uniform("horizontal", static_cast<int>(horizontal));
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(
-			GL_TEXTURE_2D, (first_iteration ? raw_scene_pass->get_blur_tex() : blur_pingpong_texs[!horizontal]).get_tex_id()
-		);
-		vao.draw(blur_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
-		horizontal = !horizontal;
-		if (first_iteration)
-			first_iteration = false;
-	}
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_blur_tex().get_tex_id());
+	vao.draw(bloom_program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 }
 
-std::array<quick3d::gl::Texture, 2>& quick3d::test::BloomPass::get_blur_pingpong_texs() noexcept
+quick3d::gl::Texture& quick3d::test::BloomPass::get_bloom_tex() noexcept
 {
-	return blur_pingpong_texs;
-}
-
-bool quick3d::test::BloomPass::get_horizontal() noexcept
-{
-	return horizontal;
+	return bloom_tex;
 }
 
 quick3d::test::HDRBlendPass::HDRBlendPass(Pipeline& pipeline, DemoSettings& settings) noexcept(false)
@@ -225,7 +192,7 @@ void quick3d::test::HDRBlendPass::draw(float delta) noexcept(false)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, fxaa_pass->get_tex().get_tex_id());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, bloom_pass->get_blur_pingpong_texs()[!bloom_pass->get_horizontal()].get_tex_id());
+	glBindTexture(GL_TEXTURE_2D, bloom_pass->get_bloom_tex().get_tex_id());
 	program.set_uniform("exposure", settings.hdr_exposure);
 	program.set_uniform("enable_exposure", static_cast<int>(settings.enable_exposure));
 	program.set_uniform("enableBloom", static_cast<int>(settings.enable_bloom));
@@ -258,7 +225,7 @@ void quick3d::test::BloomDebugPass::draw(float delta) noexcept(false)
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glActiveTexture(GL_TEXTURE0);
 
-	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_blur_tex().get_tex_id());
+	glBindTexture(GL_TEXTURE_2D, bloom_pass->get_bloom_tex().get_tex_id());
 	glViewport(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT);
 	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 

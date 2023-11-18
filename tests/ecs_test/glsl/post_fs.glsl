@@ -22,18 +22,17 @@ uniform float exposure;
 uniform bool enable_exposure;
 uniform bool enableBloom;
 
+// temp
+const float bloom_factor = 0.2;
+
 // hdr, gamma and bloom
 vec3 postBlend()
 {
     vec3 sceneColor = texture(sceneTex, texCoords).rgb;
     vec3 bloomColor = texture(bloomTex, texCoords).rgb;
-    if(enableBloom)
-    {
-        float sceneColorSum = sceneColor.r + sceneColor.g + sceneColor.b;
-        float bloomColorSum = bloomColor.r + bloomColor.g + bloomColor.b;
 
-        sceneColor = sceneColorSum > bloomColorSum ? sceneColor : bloomColor;
-    }
+    if(enableBloom)
+        sceneColor += bloomColor * bloom_factor;
         
     vec3 result;
     if(enable_exposure)
@@ -46,10 +45,8 @@ vec3 postBlend()
         // reinhard
         result = sceneColor / (sceneColor + vec3(1.0));
     }
-
-    // also gamma correct while we're at it       
+  
     result = pow(result, vec3(1.0 / global_gamma));
-
     return result;
 }
 

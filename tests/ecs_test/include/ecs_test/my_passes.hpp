@@ -17,8 +17,8 @@ namespace quick3d::test
 	inline static constexpr std::string_view DIRECT_SHADOW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/direct_shadow_fs.glsl";
 	inline static constexpr std::string_view POST_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/post_vs.glsl";
 	inline static constexpr std::string_view POST_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/post_fs.glsl";
-	inline static constexpr std::string_view BLUR_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/blur_vs.glsl";
-	inline static constexpr std::string_view BLUR_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/blur_fs.glsl";
+	inline static constexpr std::string_view BLOOM_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/bloom_vs.glsl";
+	inline static constexpr std::string_view BLOOM_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/bloom_fs.glsl";
 	inline static constexpr std::string_view FXAA_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/fxaa_vs.glsl";
 	inline static constexpr std::string_view FXAA_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/fxaa_fs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/debug_view_vs.glsl";
@@ -131,10 +131,9 @@ namespace quick3d::test
 	private:
 		quick3d::gl::Buffer vbo;
 		quick3d::gl::VertexArray vao;
-		quick3d::gl::Program blur_program;
-		std::array<quick3d::gl::Texture, 2> blur_pingpong_texs;
-		std::array<quick3d::gl::ColorFramebuffer, 2> blur_pingpong_frames;
-		bool horizontal;
+		quick3d::gl::Program bloom_program;
+		quick3d::gl::Texture bloom_tex;
+		quick3d::gl::ColorFramebuffer bloom_frame;
 
 		RawScenePass* raw_scene_pass;
 
@@ -144,8 +143,7 @@ namespace quick3d::test
 		~BloomPass() = default;
 
 		virtual void draw(float delta) noexcept(false) override final;
-		std::array<quick3d::gl::Texture, 2>& get_blur_pingpong_texs() noexcept;
-		bool get_horizontal() noexcept;
+		quick3d::gl::Texture& get_bloom_tex() noexcept;
 	};
 
 	class FXAAPass : public Pass
