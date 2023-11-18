@@ -109,8 +109,6 @@ quick3d::test::RawScenePass::RawScenePass(Pipeline& pipeline, quick3d::core::Ent
 	frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, raw_tex.get_tex_id());
 	frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT1, blur_tex.get_tex_id());
 	frame.set_draw_targets({ GL_COLOR_ATTACHMENT0,GL_COLOR_ATTACHMENT1 });
-
-	outline_program.set_uniform("scale", 1.001f);
 }
 
 void quick3d::test::RawScenePass::draw(float delta) noexcept(false)

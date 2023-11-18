@@ -22,9 +22,8 @@ layout(std430, binding = 1) buffer InstanceModelMatrix
 	mat4 model[];
 };
 
-uniform float scale;
-
 void main()
 {
-    gl_Position = global_projection * global_view * model[gl_InstanceID] * vec4(scale * aPos, 1.0);
+    vec3 Normal = mat3(transpose(inverse(model[gl_InstanceID]))) * aNormal;
+    gl_Position = global_projection * global_view * model[gl_InstanceID] * vec4(aPos, 1.0) + vec4(0.005 * Normal, 0);
 }
