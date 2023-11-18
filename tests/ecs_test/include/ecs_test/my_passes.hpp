@@ -21,8 +21,8 @@ namespace quick3d::test
 	inline static constexpr std::string_view BLOOM_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/bloom_fs.glsl";
 	inline static constexpr std::string_view FXAA_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/fxaa_vs.glsl";
 	inline static constexpr std::string_view FXAA_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/fxaa_fs.glsl";
-	inline static constexpr std::string_view OUTLINE_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/object_outline_vs.glsl";
-	inline static constexpr std::string_view OUTLINE_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/object_outline_fs.glsl";
+	inline static constexpr std::string_view OUTLINE_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/sobel_outline_vs.glsl";
+	inline static constexpr std::string_view OUTLINE_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/sobel_outline_fs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/debug_view_vs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/debug_view_fs.glsl";
 	inline static constexpr int SCREEN_WIDTH{ 1280 };
@@ -114,7 +114,6 @@ namespace quick3d::test
 		quick3d::gl::Texture blur_tex;
 		quick3d::gl::Texture raw_tex;
 		quick3d::gl::ColorFramebuffer frame;
-		quick3d::gl::Program outline_program;
 
 		DirectShadowPass* direct_shadow_pass;
 		PointShadowPass* point_shadow_pass;
@@ -149,7 +148,7 @@ namespace quick3d::test
 		quick3d::gl::Texture& get_bloom_tex() noexcept;
 	};
 
-	class FXAAPass : public Pass
+	class OutlinePass : public Pass
 	{
 	private:
 		quick3d::gl::Buffer vbo;
@@ -159,6 +158,26 @@ namespace quick3d::test
 		quick3d::gl::ColorFramebuffer frame;
 
 		RawScenePass* raw_scene_pass;
+
+	public:
+		OutlinePass(Pipeline& pipeline) noexcept;
+		OutlinePass(OutlinePass&) = delete;
+		~OutlinePass() = default;
+
+		virtual void draw(float delta) noexcept(false) override final;
+		quick3d::gl::Texture& get_tex() noexcept;
+	};
+
+	class FXAAPass : public Pass
+	{
+	private:
+		quick3d::gl::Buffer vbo;
+		quick3d::gl::VertexArray vao;
+		quick3d::gl::Program program;
+		quick3d::gl::Texture tex;
+		quick3d::gl::ColorFramebuffer frame;
+
+		OutlinePass* outline_pass;
 
 	public:
 		FXAAPass(Pipeline& pipeline) noexcept;

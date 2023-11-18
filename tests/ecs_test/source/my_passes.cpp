@@ -94,10 +94,6 @@ quick3d::test::RawScenePass::RawScenePass(Pipeline& pipeline, quick3d::core::Ent
 	blur_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
 	frame(SCREEN_WIDTH, SCREEN_HEIGHT),
 	entity_manager(entity_manager),
-	outline_program(
-		(quick3d::gl::GLSLReader(OUTLINE_GLSL_VS_PATH)),
-		(quick3d::gl::GLSLReader(OUTLINE_GLSL_FS_PATH))
-	),
 	Pass(pipeline)
 {
 	// 或许需要修改，不使用dynamic cast
@@ -114,42 +110,13 @@ quick3d::test::RawScenePass::RawScenePass(Pipeline& pipeline, quick3d::core::Ent
 void quick3d::test::RawScenePass::draw(float delta) noexcept(false)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, frame.get_fbo_id());
-	glStencilMask(0xFF);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glEnable(GL_STENCIL_TEST);
-	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
-
-	glDisable(GL_CULL_FACE);
-
-	entity_manager.foreach([&](std::string_view name,quick3d::core::Entity* entity)
-	{
-		// 绘制物体并写入模板缓冲
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		if(name == "skybox")
-			glStencilMask(0x00);
-		else
-			glStencilMask(0xFF);
-		glEnable(GL_DEPTH_TEST);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, direct_shadow_pass->get_tex().get_tex_id());
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, point_shadow_pass->get_cubemap().get_cubemap_id());
-		entity->on_draw(delta);
-
-		// 根据模板缓冲进行描边
-		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDisable(GL_DEPTH_TEST);
-		entity->on_darw_with_shader(delta, outline_program);
-
-		glStencilMask(0xFF);
-		glClear(GL_STENCIL_BUFFER_BIT);
-	});
-
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_STENCIL_TEST);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, direct_shadow_pass->get_tex().get_tex_id());
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, point_shadow_pass->get_cubemap().get_cubemap_id());
+	entity_manager.foreach_on_draw(delta);
 }
 
 quick3d::gl::Texture& quick3d::test::RawScenePass::get_blur_tex() noexcept
@@ -332,7 +299,7 @@ quick3d::test::FXAAPass::FXAAPass(Pipeline& pipeline) noexcept
 	frame(SCREEN_WIDTH, SCREEN_HEIGHT),
 	Pass(pipeline)
 {
-	raw_scene_pass = dynamic_cast<RawScenePass*>(pipeline.get_pass("raw_scene_pass"));
+	outline_pass = dynamic_cast<OutlinePass*>(pipeline.get_pass("outline_pass"));
 
 	frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, tex.get_tex_id());
 
@@ -349,12 +316,47 @@ void quick3d::test::FXAAPass::draw(float delta) noexcept(false)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_raw_tex().get_tex_id());
+	glBindTexture(GL_TEXTURE_2D, outline_pass->get_tex().get_tex_id());
 	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 quick3d::gl::Texture& quick3d::test::FXAAPass::get_tex() noexcept
+{
+	return tex;
+}
+
+quick3d::test::OutlinePass::OutlinePass(Pipeline& pipeline) noexcept
+	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
+	program(
+		(quick3d::gl::GLSLReader(OUTLINE_GLSL_VS_PATH)),
+		(quick3d::gl::GLSLReader(OUTLINE_GLSL_FS_PATH))
+	),
+	tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
+	frame(SCREEN_WIDTH, SCREEN_HEIGHT),
+	Pass(pipeline)
+{
+	raw_scene_pass = dynamic_cast<RawScenePass*>(pipeline.get_pass("raw_scene_pass"));
+
+	frame.bind_texture_to_fbo(GL_COLOR_ATTACHMENT0, tex.get_tex_id());
+
+	vbo.write_buffer_data(QUAD_VERTICES);
+	vao.add_attrib(vbo, 0, 3, 5, 0);
+	vao.add_attrib(vbo, 1, 2, 5, 3);
+}
+
+void quick3d::test::OutlinePass::draw(float delta) noexcept(false)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, frame.get_fbo_id());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, raw_scene_pass->get_raw_tex().get_tex_id());
+	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+quick3d::gl::Texture& quick3d::test::OutlinePass::get_tex() noexcept
 {
 	return tex;
 }
