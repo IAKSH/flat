@@ -261,9 +261,23 @@ void main()
 
     FragColor = vec4(result,1.0);
     
+    /*
+    // 基于NTSC亮度经验公式的亮部提取
+    // 提取出的部分用于高斯模糊，形成泛光
     float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0)
         BrightColor = vec4(result, 1.0);
     else
         BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+    */
+
+    // 提高整体亮度，强化泛光
+    // 也许等泛光做了升降采样就不用这个了
+    result *= 1.5;
+
+    // 类原神的色彩阈值式亮部提取
+    // 相比NTSC亮度经验公式，也许能更好保留色彩饱和度
+    // 提取出的部分用于高斯模糊，形成泛光
+    const vec3 threshold = vec3(0.7,0.7,0.7);
+    BrightColor = vec4(max(result - threshold,vec3(0.0,0.0,0.0)),1.0);
 }

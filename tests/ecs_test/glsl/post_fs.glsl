@@ -45,6 +45,9 @@ vec3 postBlend()
         // reinhard
         result = sceneColor / (sceneColor + vec3(1.0));
     }
+
+    // 类原神色调映射
+    result = ((1.36 * result + 0.047) * result) / ((0.93 * result + 0.56) * result + 0.14); 
   
     result = pow(result, vec3(1.0 / global_gamma));
     return result;
