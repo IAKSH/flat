@@ -27,3 +27,12 @@ void quick3d::gl::Mesh::setup_vao() noexcept
     vao.add_attrib(*vbo, 5, 4, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, bone_ids)   / sizeof(float));
     vao.add_attrib(*vbo, 6, 4, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, weights)    / sizeof(float));
 }
+
+quick3d::gl::MeshTexturePack::MeshTexturePack(std::string_view file_name, std::string_view directory, std::string_view type)
+    : type(type), path(std::format("{}/{}", directory, file_name))
+{
+    if (type == "texture_diffuse")
+        texture = std::make_unique<Texture>(GL_SRGB8_ALPHA8, Image(std::format("{}/{}", directory, file_name), false));
+    else
+        texture = std::make_unique<Texture>(GL_RGBA8, Image(std::format("{}/{}", directory, file_name), false));
+}

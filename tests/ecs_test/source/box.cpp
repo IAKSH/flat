@@ -99,7 +99,7 @@ void quick3d::test::BoxRenderer::load_shader_program() noexcept(false)
 void quick3d::test::BoxRenderer::load_texture() noexcept(false)
 {
     textures.push_back(new gl::Texture(GL_SRGB8_ALPHA8, gl::Image(std::format("{}/{}", IMAGE_FOLDER, "container2.png"))));
-    textures.push_back(new gl::Texture(GL_SRGB8_ALPHA8, gl::Image(std::format("{}/{}", IMAGE_FOLDER, "container2_specular.png"))));
+    textures.push_back(new gl::Texture(GL_RGBA8, gl::Image(std::format("{}/{}", IMAGE_FOLDER, "container2_specular.png"))));
 }
 
 void quick3d::test::BoxRenderer::load_vbo_vao() noexcept
