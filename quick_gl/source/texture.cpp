@@ -7,6 +7,8 @@ quick3d::gl::Texture::Texture(GLenum tex_format, uint32_t tex_width, uint32_t te
     GLenum img_format{ GL_RED };
     if (tex_format == GL_DEPTH_COMPONENT)
         img_format = GL_DEPTH_COMPONENT;
+    else if (tex_format == GL_STENCIL_INDEX)
+        img_format = GL_STENCIL_INDEX;
     generate_texture(img_format,nullptr,tex_width,tex_height);
 }
 

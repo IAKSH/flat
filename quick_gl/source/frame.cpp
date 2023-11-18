@@ -48,8 +48,8 @@ void quick3d::gl::ColorFramebuffer::setup_rbo(GLint width,GLint height) noexcept
 
 	glGenRenderbuffers(1, &rbo_id);
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo_id);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo_id);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo_id);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

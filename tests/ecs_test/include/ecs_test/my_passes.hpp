@@ -21,6 +21,8 @@ namespace quick3d::test
 	inline static constexpr std::string_view BLOOM_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/bloom_fs.glsl";
 	inline static constexpr std::string_view FXAA_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/fxaa_vs.glsl";
 	inline static constexpr std::string_view FXAA_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/fxaa_fs.glsl";
+	inline static constexpr std::string_view OUTLINE_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/object_outline_vs.glsl";
+	inline static constexpr std::string_view OUTLINE_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/object_outline_fs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_VS_PATH = "../../../../tests/ecs_test/glsl/debug_view_vs.glsl";
 	inline static constexpr std::string_view DEBUG_VIEW_GLSL_FS_PATH = "../../../../tests/ecs_test/glsl/debug_view_fs.glsl";
 	inline static constexpr int SCREEN_WIDTH{ 1280 };
@@ -112,6 +114,7 @@ namespace quick3d::test
 		quick3d::gl::Texture blur_tex;
 		quick3d::gl::Texture raw_tex;
 		quick3d::gl::ColorFramebuffer frame;
+		quick3d::gl::Program outline_program;
 
 		DirectShadowPass* direct_shadow_pass;
 		PointShadowPass* point_shadow_pass;
