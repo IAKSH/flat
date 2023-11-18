@@ -120,6 +120,8 @@ void quick3d::test::RawScenePass::draw(float delta) noexcept(false)
 	glEnable(GL_STENCIL_TEST);
 	glStencilOp(GL_KEEP, GL_REPLACE, GL_REPLACE);
 
+	glDisable(GL_CULL_FACE);
+
 	entity_manager.foreach([&](std::string_view name,quick3d::core::Entity* entity)
 	{
 		// 绘制物体并写入模板缓冲
@@ -145,6 +147,7 @@ void quick3d::test::RawScenePass::draw(float delta) noexcept(false)
 		glClear(GL_STENCIL_BUFFER_BIT);
 	});
 
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_STENCIL_TEST);
 }
