@@ -6,13 +6,12 @@
 #include <format>
 #include <stdexcept>
 
-namespace quick3d::test
+namespace quick3d::gl
 {
 	template <typename FakePass>
 	class __Pipeline
 	{
 	private:
-		// 由于Pass只在构造时查找，然后保存查找到的指针，所以这里查找的时间复杂度大一点也不太有所谓
 		std::vector<std::unique_ptr<std::pair<std::string, std::unique_ptr<FakePass>>>> passes;
 
 	public:
@@ -21,7 +20,7 @@ namespace quick3d::test
 		~__Pipeline() = default;
 
 		template <typename T, typename... Args>
-		requires std::derived_from<T, FakePass>
+			requires std::derived_from<T, FakePass>
 		void add_pass(std::string_view name, Args&&... args) noexcept(false)
 		{
 			passes.push_back(

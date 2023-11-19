@@ -1,6 +1,6 @@
 #include <ecs_test/my_passes.hpp>
 
-quick3d::test::DirectShadowPass::DirectShadowPass(Pipeline& pipeline, quick3d::core::GFXSystem& gfx, quick3d::core::EntityManager& entity_manager, DemoSettings& settings) noexcept(false)
+quick3d::test::DirectShadowPass::DirectShadowPass(quick3d::gl::Pipeline& pipeline, quick3d::core::GFXSystem& gfx, quick3d::core::EntityManager& entity_manager, DemoSettings& settings) noexcept(false)
 	: tex(GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, true),
 	frame(tex),
 	program(
@@ -42,7 +42,7 @@ quick3d::gl::Texture& quick3d::test::DirectShadowPass::get_tex() noexcept
 	return tex;
 }
 
-quick3d::test::PointShadowPass::PointShadowPass(Pipeline& pipeline, quick3d::core::EntityManager& entity_manager, DemoSettings& settings) noexcept(false)
+quick3d::test::PointShadowPass::PointShadowPass(quick3d::gl::Pipeline& pipeline, quick3d::core::EntityManager& entity_manager, DemoSettings& settings) noexcept(false)
 	: cubemap(SHADOW_WIDTH, SHADOW_HEIGHT),
 	frame(cubemap),
 	program(
@@ -89,7 +89,7 @@ quick3d::gl::DepthCubeMap& quick3d::test::PointShadowPass::get_cubemap() noexcep
 	return cubemap;
 }
 
-quick3d::test::RawScenePass::RawScenePass(Pipeline& pipeline, quick3d::core::EntityManager& entity_manager) noexcept(false)
+quick3d::test::RawScenePass::RawScenePass(quick3d::gl::Pipeline& pipeline, quick3d::core::EntityManager& entity_manager) noexcept(false)
 	: raw_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
 	blur_tex(GL_RGB16F, SCREEN_WIDTH, SCREEN_HEIGHT, true),
 	frame(SCREEN_WIDTH, SCREEN_HEIGHT),
@@ -129,7 +129,7 @@ quick3d::gl::Texture& quick3d::test::RawScenePass::get_raw_tex() noexcept
 	return raw_tex;
 }
 
-quick3d::test::BloomPass::BloomPass(Pipeline& pipeline) noexcept(false)
+quick3d::test::BloomPass::BloomPass(quick3d::gl::Pipeline& pipeline) noexcept(false)
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
 	bloom_program(
 		(quick3d::gl::GLSLReader(BLOOM_GLSL_VS_PATH)),
@@ -163,7 +163,7 @@ quick3d::gl::Texture& quick3d::test::BloomPass::get_bloom_tex() noexcept
 	return bloom_tex;
 }
 
-quick3d::test::HDRBlendPass::HDRBlendPass(Pipeline& pipeline, DemoSettings& settings) noexcept(false)
+quick3d::test::HDRBlendPass::HDRBlendPass(quick3d::gl::Pipeline& pipeline, DemoSettings& settings) noexcept(false)
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
 	program(
 		(quick3d::gl::GLSLReader(POST_GLSL_VS_PATH)),
@@ -202,7 +202,7 @@ void quick3d::test::HDRBlendPass::draw(float delta) noexcept(false)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-quick3d::test::BloomDebugPass::BloomDebugPass(Pipeline& pipeline) noexcept(false)
+quick3d::test::BloomDebugPass::BloomDebugPass(quick3d::gl::Pipeline& pipeline) noexcept(false)
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
 	program(
 		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_VS_PATH)),
@@ -233,7 +233,7 @@ void quick3d::test::BloomDebugPass::draw(float delta) noexcept(false)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-quick3d::test::RawDebugPass::RawDebugPass(Pipeline& pipeline) noexcept(false)
+quick3d::test::RawDebugPass::RawDebugPass(quick3d::gl::Pipeline& pipeline) noexcept(false)
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
 	program(
 		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_VS_PATH)),
@@ -261,7 +261,7 @@ void quick3d::test::RawDebugPass::draw(float delta) noexcept(false)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-quick3d::test::DirectShadowDebugPass::DirectShadowDebugPass(Pipeline& pipeline) noexcept(false)
+quick3d::test::DirectShadowDebugPass::DirectShadowDebugPass(quick3d::gl::Pipeline& pipeline) noexcept(false)
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
 	program(
 		(quick3d::gl::GLSLReader(DEBUG_VIEW_GLSL_VS_PATH)),
@@ -289,7 +289,7 @@ void quick3d::test::DirectShadowDebugPass::draw(float delta) noexcept(false)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-quick3d::test::FXAAPass::FXAAPass(Pipeline& pipeline) noexcept
+quick3d::test::FXAAPass::FXAAPass(quick3d::gl::Pipeline& pipeline) noexcept
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
 	program(
 		(quick3d::gl::GLSLReader(FXAA_GLSL_VS_PATH)),
@@ -326,7 +326,7 @@ quick3d::gl::Texture& quick3d::test::FXAAPass::get_tex() noexcept
 	return tex;
 }
 
-quick3d::test::OutlinePass::OutlinePass(Pipeline& pipeline) noexcept
+quick3d::test::OutlinePass::OutlinePass(quick3d::gl::Pipeline& pipeline) noexcept
 	: vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES)),
 	program(
 		(quick3d::gl::GLSLReader(OUTLINE_GLSL_VS_PATH)),

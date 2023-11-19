@@ -5,8 +5,8 @@
 #include <quick_gl/frame.hpp>
 #include <quick_gl/cubemap.hpp>
 #include <quick_gl/vao.hpp>
+#include <quick_gl/pipeline.hpp>
 #include <quick_core/sys_gfx.hpp>
-#include <ecs_test/pipeline.hpp>
 
 namespace quick3d::test
 {
@@ -55,7 +55,7 @@ namespace quick3d::test
 		glm::vec3 sun_light_direction{ -10.0f, -10.0f, -10.0f };
 	};
 
-	class DirectShadowPass : public Pass
+	class DirectShadowPass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::core::GFXSystem& gfx;
@@ -73,7 +73,7 @@ namespace quick3d::test
 		float far_plane;
 
 	public:
-		DirectShadowPass(Pipeline& pipeline, quick3d::core::GFXSystem& gfx,
+		DirectShadowPass(quick3d::gl::Pipeline& pipeline, quick3d::core::GFXSystem& gfx,
 			quick3d::core::EntityManager& entity_manager, DemoSettings& settings) noexcept(false);
 		DirectShadowPass(DirectShadowPass&) = delete;
 		~DirectShadowPass() = default;
@@ -82,7 +82,7 @@ namespace quick3d::test
 		quick3d::gl::Texture& get_tex() noexcept;
 	};
 
-	class PointShadowPass : public Pass
+	class PointShadowPass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::core::EntityManager& entity_manager;
@@ -98,7 +98,7 @@ namespace quick3d::test
 		std::array<glm::mat4, 6> shadow_transforms;
 
 	public:
-		PointShadowPass(Pipeline& pipeline, quick3d::core::EntityManager& entity_manager, DemoSettings& settings) noexcept(false);
+		PointShadowPass(quick3d::gl::Pipeline& pipeline, quick3d::core::EntityManager& entity_manager, DemoSettings& settings) noexcept(false);
 		PointShadowPass(PointShadowPass&) = delete;
 		~PointShadowPass() = default;
 
@@ -106,7 +106,7 @@ namespace quick3d::test
 		quick3d::gl::DepthCubeMap& get_cubemap() noexcept;
 	};
 
-	class RawScenePass : public Pass
+	class RawScenePass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::core::EntityManager& entity_manager;
@@ -119,7 +119,7 @@ namespace quick3d::test
 		PointShadowPass* point_shadow_pass;
 
 	public:
-		RawScenePass(Pipeline& pipeline, quick3d::core::EntityManager& entity_manager) noexcept(false);
+		RawScenePass(quick3d::gl::Pipeline& pipeline, quick3d::core::EntityManager& entity_manager) noexcept(false);
 		RawScenePass(RawScenePass&) = delete;
 		~RawScenePass() = default;
 
@@ -128,7 +128,7 @@ namespace quick3d::test
 		quick3d::gl::Texture& get_raw_tex() noexcept;
 	};
 
-	class BloomPass : public Pass
+	class BloomPass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::gl::Buffer vbo;
@@ -140,7 +140,7 @@ namespace quick3d::test
 		RawScenePass* raw_scene_pass;
 
 	public:
-		BloomPass(Pipeline& pipeline) noexcept(false);
+		BloomPass(quick3d::gl::Pipeline& pipeline) noexcept(false);
 		BloomPass(BloomPass&) = delete;
 		~BloomPass() = default;
 
@@ -148,7 +148,7 @@ namespace quick3d::test
 		quick3d::gl::Texture& get_bloom_tex() noexcept;
 	};
 
-	class OutlinePass : public Pass
+	class OutlinePass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::gl::Buffer vbo;
@@ -160,7 +160,7 @@ namespace quick3d::test
 		RawScenePass* raw_scene_pass;
 
 	public:
-		OutlinePass(Pipeline& pipeline) noexcept;
+		OutlinePass(quick3d::gl::Pipeline& pipeline) noexcept;
 		OutlinePass(OutlinePass&) = delete;
 		~OutlinePass() = default;
 
@@ -168,7 +168,7 @@ namespace quick3d::test
 		quick3d::gl::Texture& get_tex() noexcept;
 	};
 
-	class FXAAPass : public Pass
+	class FXAAPass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::gl::Buffer vbo;
@@ -180,7 +180,7 @@ namespace quick3d::test
 		OutlinePass* outline_pass;
 
 	public:
-		FXAAPass(Pipeline& pipeline) noexcept;
+		FXAAPass(quick3d::gl::Pipeline& pipeline) noexcept;
 		FXAAPass(FXAAPass&) = delete;
 		~FXAAPass() = default;
 
@@ -188,7 +188,7 @@ namespace quick3d::test
 		quick3d::gl::Texture& get_tex() noexcept;
 	};
 
-	class HDRBlendPass : public Pass
+	class HDRBlendPass : public quick3d::gl::Pass
 	{
 	private:
 		DemoSettings& settings;
@@ -201,14 +201,14 @@ namespace quick3d::test
 		BloomPass* bloom_pass;
 
 	public:
-		HDRBlendPass(Pipeline& pipeline, DemoSettings& settings) noexcept(false);
+		HDRBlendPass(quick3d::gl::Pipeline& pipeline, DemoSettings& settings) noexcept(false);
 		HDRBlendPass(HDRBlendPass&) = delete;
 		~HDRBlendPass() = default;
 
 		virtual void draw(float delta) noexcept(false) override final;
 	};
 
-	class BloomDebugPass : public Pass
+	class BloomDebugPass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::gl::Buffer vbo;
@@ -219,14 +219,14 @@ namespace quick3d::test
 		RawScenePass* raw_scene_pass;
 
 	public:
-		BloomDebugPass(Pipeline& pipeline) noexcept(false);
+		BloomDebugPass(quick3d::gl::Pipeline& pipeline) noexcept(false);
 		BloomDebugPass(BloomDebugPass&) = delete;
 		~BloomDebugPass() = default;
 
 		virtual void draw(float delta) noexcept(false) override final;
 	};
 
-	class RawDebugPass : public Pass
+	class RawDebugPass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::gl::Buffer vbo;
@@ -236,14 +236,14 @@ namespace quick3d::test
 		RawScenePass* raw_scene_pass;
 
 	public:
-		RawDebugPass(Pipeline& pipeline) noexcept(false);
+		RawDebugPass(quick3d::gl::Pipeline& pipeline) noexcept(false);
 		RawDebugPass(RawDebugPass&) = delete;
 		~RawDebugPass() = default;
 
 		virtual void draw(float delta) noexcept(false) override final;
 	};
 
-	class DirectShadowDebugPass : public Pass
+	class DirectShadowDebugPass : public quick3d::gl::Pass
 	{
 	private:
 		quick3d::gl::Buffer vbo;
@@ -253,7 +253,7 @@ namespace quick3d::test
 		DirectShadowPass* direct_shadow_pass;
 
 	public:
-		DirectShadowDebugPass(Pipeline& pipeline) noexcept(false);
+		DirectShadowDebugPass(quick3d::gl::Pipeline& pipeline) noexcept(false);
 		DirectShadowDebugPass(DirectShadowDebugPass&) = delete;
 		~DirectShadowDebugPass() = default;
 

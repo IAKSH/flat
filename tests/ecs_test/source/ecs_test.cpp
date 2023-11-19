@@ -93,7 +93,7 @@ int main() noexcept
 		quick3d::core::GFXSystem gfx(quick3d::test::SCREEN_WIDTH, quick3d::test::SCREEN_HEIGHT);
 		quick3d::core::SFXSystem sfx;
 		quick3d::core::EntityManager entity_manager;
-		quick3d::test::Pipeline pipeline;
+		quick3d::gl::Pipeline pipeline;
 
 		entity_manager.add_entity<quick3d::test::SkyboxEntity>("skybox");
 		entity_manager.add_entity<quick3d::test::LightBallEntity>("light_ball");
