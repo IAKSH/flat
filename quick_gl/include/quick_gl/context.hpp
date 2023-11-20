@@ -128,5 +128,9 @@ namespace quick3d::gl
         void fill_frame_color(std::array<float,4> color) noexcept;
         void fill_frame_color(float r,float g,float b,float a) noexcept;
         void clean_frame_buffers() noexcept;
+        void set_viewport(int x, int y, uint32_t w, uint32_t h) noexcept;
     };
+
+    void set_current_context(Context& context) noexcept;
+    Context& get_current_context() noexcept(false);
 }

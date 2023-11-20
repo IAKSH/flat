@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <filesystem>
 #include <string_view>
+#include <unordered_map>
 #include <glad/glad.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
@@ -14,14 +15,58 @@
 
 namespace quick3d::gl
 {
-    template <typename T,typename U>
+	class Shader
+	{
+	private:
+		GLuint shader_id;
+		void check_compile_status() noexcept(false);
+		void compile(GLenum shader_type,std::string_view glsl) noexcept(false);
+
+	public:
+		Shader(GLenum shader_type, std::string_view glsl) noexcept(false);
+		Shader(Shader&) = delete;
+		~Shader() noexcept;
+		GLuint get_id() const noexcept;
+	};
+
+	class GLSLManager
+	{
+	private:
+		std::unordered_map<std::string, std::string> glsls;
+		// 实现一个平台无关的，软件实现的GL_CPPOES_include扩展
+		// 这个扩展可选
+		// #extension GL_CPPOES_include : enable
+		// #glsl_name "xxx"
+		// #include "xxx"
+		std::string impl_glsl_include(std::string_view glsl) noexcept(false);
+		// 实现一个平台无关的，软件实现的GL_CPPOES_shader_type
+		// 这个扩展必须开启
+		// #extension GL_CPPOES_shader_type_flag : enable
+		// #glsl_type "vertex"
+		// #glsl_type "geometry"
+		// #glsl_type "fragment"
+		GLenum get_glsl_shader_type(std::string glsl) noexcept(false);
+		bool check_shader_type_extension_enabled(std::string_view glsl) noexcept;
+		void remove_cppoes_extensions(std::string& glsl) noexcept;
+
+	public:
+		GLSLManager() = default;
+		GLSLManager(GLSLManager&) = delete;
+		~GLSLManager() = default;
+		
+		void parse_from_file(std::string_view path) noexcept(false);
+		void parse(std::string_view name, std::string_view glsl) noexcept(false);
+		std::unique_ptr<Shader> compile(std::string_view name) noexcept(false);
+	};
+
+	template <typename T, typename U>
 	constexpr bool is_same()
 	{
 		using Type = std::remove_cvref_t<T>;
 		return std::is_same<Type, U>();
 	}
 
-	template <typename T,typename... Args>
+	template <typename T, typename... Args>
 	constexpr bool any_same()
 	{
 		if constexpr (sizeof...(Args) == 0)
@@ -30,47 +75,21 @@ namespace quick3d::gl
 			return (std::same_as<std::remove_reference_t<T>, Args> || ...) || any_same<Args...>();
 	}
 
-    template <typename T>
-    concept Uniform = any_same<T,int,float,glm::vec2,glm::vec3,glm::vec4,glm::mat3,glm::mat4>();
-
-	class GLSLReader
-	{
-	private:
-		std::stringstream stream;
-		std::string_view path;
-		void read_all_glsl() noexcept(false);
-
-	public:
-		GLSLReader(std::string_view path) noexcept(false);
-		GLSLReader(GLSLReader&) = delete;
-		~GLSLReader() = default;
-
-		std::string get_glsl() const noexcept;
-		std::string_view get_path() const noexcept;
-	};
+	template <typename T>
+	concept Uniform = any_same<T, int, float, glm::vec2, glm::vec3, glm::vec4, glm::mat3, glm::mat4>();
 
     class Program
     {
     private:
         GLuint program_id;
 
-        template <GLenum shader_type>
-        GLuint compile_shader(std::string_view glsl) noexcept;
-
-        template <GLenum shader_type>
-        bool check_shader(GLuint shader_id) const noexcept;
-
-		void create_program(std::string_view vs, std::string_view fs) noexcept(false);
-		void create_program(std::string_view vs, std::string_view gs, std::string_view fs) noexcept(false);
-		void create_program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false);
-		void create_program(const GLSLReader& vs, const GLSLReader& gs, const GLSLReader& fs) noexcept(false);
+		void create_program(const Shader& vs, const Shader& fs) noexcept(false);
+		void create_program(const Shader& vs, const Shader& gs, const Shader& fs) noexcept(false);
 		GLint get_uniform_location(std::string_view uniform) noexcept(false);
 
     public:
-        Program(std::string_view vs, std::string_view fs) noexcept(false);
-		Program(std::string_view vs, std::string_view gs, std::string_view fs) noexcept(false);
-		Program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false);
-		Program(const GLSLReader& vs, const GLSLReader& gs, const GLSLReader& fs) noexcept(false);
+        Program(const Shader& vs, const Shader& fs) noexcept(false);
+		Program(const Shader& vs, const Shader& gs, const Shader& fs) noexcept(false);
         Program(Program&) = delete;
         ~Program() noexcept;
 
@@ -96,7 +115,7 @@ namespace quick3d::gl
 			else if constexpr (is_same<T, glm::mat3>())
 				glUniformMatrix3fv(location, 1, false, glm::value_ptr(t));
 			else if constexpr (is_same<T, glm::mat4>())
-				glUniformMatrix4fv(location, 1, false, glm::value_ptr(t));
+				glUniformMatrix4fv(location, 1, false, glm::value_ptr(t)); 
 			else
 				throw std::runtime_error("compile-time uniform type check failed");
 

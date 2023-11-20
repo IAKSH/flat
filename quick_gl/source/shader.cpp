@@ -1,49 +1,16 @@
-#include <fstream>
-#include <iostream>
+#include <regex>
 #include <format>
+#include <fstream>
+#include <filesystem>
 #include <quick_gl/shader.hpp>
+#include <spdlog/spdlog.h>
 
-quick3d::gl::GLSLReader::GLSLReader(std::string_view path) noexcept(false)
-    : path(path)
-{
-    read_all_glsl();
-}
-
-void quick3d::gl::GLSLReader::read_all_glsl() noexcept(false)
-{
-    std::ifstream file(path.data());
-    if (!file.is_open())
-        throw std::runtime_error(std::format("can't open glsl file from {}", path));
-
-    stream << file.rdbuf();
-}
-
-std::string quick3d::gl::GLSLReader::get_glsl() const noexcept
-{
-    return stream.str();
-}
-
-std::string_view quick3d::gl::GLSLReader::get_path() const noexcept
-{
-    return path;
-}
-
-quick3d::gl::Program::Program(std::string_view vs, std::string_view fs) noexcept(false)
+quick3d::gl::Program::Program(const Shader& vs, const Shader& fs) noexcept(false)
 {
     create_program(vs,fs);
 }
 
-quick3d::gl::Program::Program(std::string_view vs, std::string_view gs, std::string_view fs) noexcept(false)
-{
-    create_program(vs, gs, fs);
-}
-
-quick3d::gl::Program::Program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false)
-{
-    create_program(vs, fs);
-}
-
-quick3d::gl::Program::Program(const GLSLReader& vs, const GLSLReader& gs, const GLSLReader& fs) noexcept(false)
+quick3d::gl::Program::Program(const Shader& vs, const Shader& gs, const Shader& fs) noexcept(false)
 {
     create_program(vs, gs, fs);
 }
@@ -75,124 +42,136 @@ GLint quick3d::gl::Program::get_uniform_location(std::string_view uniform) noexc
 		return location;
 }
 
-void quick3d::gl::Program::create_program(std::string_view vs,std::string_view fs) noexcept(false)
+void quick3d::gl::Program::create_program(const Shader& vs, const Shader& fs) noexcept(false)
 {
-    GLuint vs_id,fs_id;
-    vs_id = compile_shader<GL_VERTEX_SHADER>(vs);
-    fs_id = compile_shader<GL_FRAGMENT_SHADER>(fs);
-
-    if(!check_shader<GL_VERTEX_SHADER>(vs_id))
-        throw std::runtime_error("failed when compiling vertex shader from glsl");
-
-    if(!check_shader<GL_FRAGMENT_SHADER>(fs_id))
-        throw std::runtime_error("failed when compiling fragment shader from glsl");
-    
     program_id = glCreateProgram();
-	glAttachShader(program_id,vs_id);
-	glAttachShader(program_id,fs_id);
-	glLinkProgram(program_id);
-
-    glDeleteShader(vs_id);
-    glDeleteShader(fs_id);
-}
-
-void quick3d::gl::Program::create_program(std::string_view vs,std::string_view gs, std::string_view fs) noexcept(false)
-{
-    GLuint vs_id, gs_id, fs_id;
-    vs_id = compile_shader<GL_VERTEX_SHADER>(vs);
-    gs_id = compile_shader<GL_GEOMETRY_SHADER>(gs);
-    fs_id = compile_shader<GL_FRAGMENT_SHADER>(fs);
-
-    if (!check_shader<GL_VERTEX_SHADER>(vs_id))
-        throw std::runtime_error("failed when compiling vertex shader from glsl");
-
-    if (!check_shader<GL_GEOMETRY_SHADER>(gs_id))
-        throw std::runtime_error("failed when compiling geometry shader from glsl");
-
-    if (!check_shader<GL_FRAGMENT_SHADER>(fs_id))
-        throw std::runtime_error("failed when compiling fragment shader from glsl");
-
-    program_id = glCreateProgram();
-    glAttachShader(program_id, vs_id);
-    glAttachShader(program_id, gs_id);
-    glAttachShader(program_id, fs_id);
+    glAttachShader(program_id, vs.get_id());
+    glAttachShader(program_id, fs.get_id());
     glLinkProgram(program_id);
-
-    glDeleteShader(vs_id);
-    glDeleteShader(gs_id);
-    glDeleteShader(fs_id);
 }
 
-void quick3d::gl::Program::create_program(const GLSLReader& vs, const GLSLReader& fs) noexcept(false)
+void quick3d::gl::Program::create_program(const Shader& vs, const Shader& gs, const Shader& fs) noexcept(false)
 {
-    GLuint vs_id, fs_id;
-    vs_id = compile_shader<GL_VERTEX_SHADER>(vs.get_glsl());
-    fs_id = compile_shader<GL_FRAGMENT_SHADER>(fs.get_glsl());
-
-    if (!check_shader<GL_VERTEX_SHADER>(vs_id))
-        throw std::runtime_error(std::format("failed when compiling vertex shader from \"{}\"", vs.get_path()));
-
-    if (!check_shader<GL_FRAGMENT_SHADER>(fs_id))
-        throw std::runtime_error(std::format("failed when compiling fragment shader from \"{}\"", fs.get_path()));
-
     program_id = glCreateProgram();
-    glAttachShader(program_id, vs_id);
-    glAttachShader(program_id, fs_id);
+    glAttachShader(program_id, vs.get_id());
+    glAttachShader(program_id, gs.get_id());
+    glAttachShader(program_id, fs.get_id());
     glLinkProgram(program_id);
-
-    glDeleteShader(vs_id);
-    glDeleteShader(fs_id);
 }
 
-void quick3d::gl::Program::create_program(const GLSLReader& vs, const GLSLReader& gs, const GLSLReader& fs) noexcept(false)
+quick3d::gl::Shader::Shader(GLenum shader_type, std::string_view glsl) noexcept(false)
 {
-    GLuint vs_id, gs_id, fs_id;
-    vs_id = compile_shader<GL_VERTEX_SHADER>(vs.get_glsl());
-    gs_id = compile_shader<GL_GEOMETRY_SHADER>(gs.get_glsl());
-    fs_id = compile_shader<GL_FRAGMENT_SHADER>(fs.get_glsl());
-
-    if (!check_shader<GL_VERTEX_SHADER>(vs_id))
-        throw std::runtime_error(std::format("failed when compiling vertex shader from \"{}\"", vs.get_path()));
-
-    if (!check_shader<GL_GEOMETRY_SHADER>(gs_id))
-        throw std::runtime_error(std::format("failed when compiling geometry shader from \"{}\"", gs.get_path()));
-
-    if (!check_shader<GL_FRAGMENT_SHADER>(fs_id))
-        throw std::runtime_error(std::format("failed when compiling fragment shader from \"{}\"", fs.get_path()));
-
-    program_id = glCreateProgram();
-    glAttachShader(program_id, vs_id);
-    glAttachShader(program_id, gs_id);
-    glAttachShader(program_id, fs_id);
-    glLinkProgram(program_id);
-
-    glDeleteShader(vs_id);
-    glDeleteShader(gs_id);
-    glDeleteShader(fs_id);
+    compile(shader_type, glsl);
+    check_compile_status();
 }
 
-template <GLenum shader_type>
-GLuint quick3d::gl::Program::compile_shader(std::string_view glsl) noexcept
+quick3d::gl::Shader::~Shader() noexcept
 {
-    const char* source {glsl.data()};
-	GLuint shader_id {glCreateShader(shader_type)};
+    glDeleteShader(shader_id);
+}
 
-	glShaderSource(shader_id, 1, &source, nullptr);
-	glCompileShader(shader_id);
-
+GLuint quick3d::gl::Shader::get_id() const noexcept
+{
     return shader_id;
 }
 
-template <GLenum shader_type>
-bool quick3d::gl::Program::check_shader(GLuint shader_id) const noexcept
+void quick3d::gl::Shader::compile(GLenum shader_type, std::string_view glsl) noexcept(false)
+{
+    const char* source{ glsl.data() };
+    shader_id = glCreateShader(shader_type);
+    glShaderSource(shader_id, 1, &source, nullptr);
+    glCompileShader(shader_id);
+
+    //spdlog::debug("glsl code:\n------\n{}\n------\n", glsl);
+}
+
+void quick3d::gl::Shader::check_compile_status() noexcept(false)
 {
     int success;
-	char info_log[512];
-	if (glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);!success)
-	{
-		glGetShaderInfoLog(shader_id,sizeof(info_log),nullptr,info_log);
-		std::cerr << info_log << '\n';
-	}
+    char info_log[512];
+    if (glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success); !success)
+    {
+        glGetShaderInfoLog(shader_id, sizeof(info_log), nullptr, info_log);
+        throw std::runtime_error(std::format("failed when compile shader, log as below:\n{}", info_log));
+    }
+}
 
-    return static_cast<bool>(success);
+std::string quick3d::gl::GLSLManager::impl_glsl_include(std::string_view glsl) noexcept(false)
+{
+    // TODO:...
+    return std::string(glsl);
+}
+
+GLenum quick3d::gl::GLSLManager::get_glsl_shader_type(std::string glsl) noexcept(false)
+{
+    std::regex pattern("#glsl_type\\s+\"([^\"]*)\"");
+    std::smatch matches;
+    if (std::regex_search(glsl.cbegin(), glsl.cend(), matches, pattern)) {
+        if (matches.size() > 2)
+            spdlog::warn("found multiple \"#glsl_type\"");// TODO: can't work, fix this
+
+        std::string flag{ matches[1].str() };
+        if (flag == "vertex")
+            return GL_VERTEX_SHADER;
+        else if (flag == "geometry")
+            return GL_GEOMETRY_SHADER;
+        else if (flag == "fragment")
+            return GL_FRAGMENT_SHADER;
+        else
+            throw std::runtime_error(std::format("unknown glsl type flag \"{}\"", flag));
+    }
+    else
+        throw std::runtime_error("can't parse glsl type, maybe missing \"#glsl_type \"xxx\"\"");
+}
+
+bool quick3d::gl::GLSLManager::check_shader_type_extension_enabled(std::string_view glsl) noexcept
+{
+    std::regex pattern("#extension\\s+GL_CPPOES_shader_type_flag\\s*:\\s*enable");
+    return std::regex_search(glsl.data(), pattern);
+}
+
+void quick3d::gl::GLSLManager::remove_cppoes_extensions(std::string& glsl) noexcept
+{
+    std::vector<std::regex> patterns
+    {
+        std::regex("#extension\\s+GL_CPPOES_shader_type_flag\\s*:\\s*enable"),
+        std::regex("#glsl_type\\s+\"([^\"]*)\"")
+        // TODO: GL_CPPOES_include
+    };
+
+    for (const auto& pattern : patterns)
+        glsl = std::regex_replace(glsl, pattern, " ");
+}
+
+void quick3d::gl::GLSLManager::parse_from_file(std::string_view path) noexcept(false)
+{
+    std::stringstream ss;
+    std::ifstream file;
+    if (file.open(path.data()); !file.is_open())
+        throw std::runtime_error(std::format("can't open glsl file from \"{}\"", path));
+
+    ss << file.rdbuf();
+    std::string glsl{ ss.str() };
+    if (!check_shader_type_extension_enabled(glsl))
+        throw std::runtime_error("parsing glsl without GL_CPPOES_shader_type_flag enabled, this extension is required");
+    glsls[std::filesystem::path(path).filename().string()] = glsl;
+}
+
+void quick3d::gl::GLSLManager::parse(std::string_view name, std::string_view glsl) noexcept(false)
+{
+    if (!check_shader_type_extension_enabled(glsl))
+        throw std::runtime_error("parsing glsl without GL_CPPOES_shader_type_flag enabled, this extension is required");
+    glsls[std::string(name)] = glsl;
+}
+
+std::unique_ptr<quick3d::gl::Shader> quick3d::gl::GLSLManager::compile(std::string_view name) noexcept(false)
+{
+    std::string_view raw_glsl{ glsls[std::string(name)] };
+    if (raw_glsl.empty())
+        throw std::runtime_error(std::format("can't find shader \"{}\" from GLSLManager", name));
+
+    GLenum glsl_type{ get_glsl_shader_type(std::string(raw_glsl)) };
+    std::string glsl{ impl_glsl_include(raw_glsl) };
+    remove_cppoes_extensions(glsl);
+    return std::make_unique<quick3d::gl::Shader>(glsl_type, glsl);
 }

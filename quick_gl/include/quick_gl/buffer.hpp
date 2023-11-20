@@ -7,9 +7,7 @@
 #include <concepts>
 #include <stdexcept>
 #include <functional>
-#include <glad/glad.h>
-
-#include <iostream>
+#include <glad/gles2.h>
 
 namespace quick3d::gl
 {

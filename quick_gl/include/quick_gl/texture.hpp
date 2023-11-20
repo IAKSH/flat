@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <concepts>
 
-#include <glad/glad.h>
+#include <glad/gles2.h>
 
 // TODO: 实现TBO
 
@@ -24,7 +24,6 @@ namespace quick3d::gl
     public:
         // this will create an empty Texture (with memory allocated)
         Texture(GLenum tex_format,uint32_t tex_width,uint32_t tex_height,bool enable_rtti = true) noexcept;
-        Texture(GLenum tex_format,GLuint tex_id,bool enable_rtti = true) noexcept;
         Texture(GLenum tex_format,GLenum img_format,unsigned char* img_data,uint32_t img_width,uint32_t img_height,bool enable_rtti = true) noexcept;
 
         template <typename T>

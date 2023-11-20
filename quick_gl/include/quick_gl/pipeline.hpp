@@ -3,7 +3,6 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include <format>
 #include <stdexcept>
 
 namespace quick3d::gl
@@ -12,7 +11,7 @@ namespace quick3d::gl
 	class __Pipeline
 	{
 	private:
-		std::vector<std::unique_ptr<std::pair<std::string, std::unique_ptr<FakePass>>>> passes;
+		std::vector<std::unique_ptr<FakePass>> passes;
 
 	public:
 		__Pipeline() = default;
@@ -20,41 +19,29 @@ namespace quick3d::gl
 		~__Pipeline() = default;
 
 		template <typename T, typename... Args>
-			requires std::derived_from<T, FakePass>
-		void add_pass(std::string_view name, Args&&... args) noexcept(false)
+		requires std::derived_from<T, FakePass>
+		T* add_pass(Args&&... args) noexcept(false)
 		{
-			passes.push_back(
-				std::make_unique<std::pair<std::string, std::unique_ptr<FakePass>>>(name, std::make_unique<T>(*this, std::forward<Args>(args)...)));
+			std::unique_ptr<FakePass> pass{ std::make_unique<T>(std::forward<Args>(args)...) };
+			T* pass_ptr{ reinterpret_cast<T*>(pass.get()) };
+			passes.push_back(std::move(pass));
+			return pass_ptr;
 		}
 
-		void exec(float delta) noexcept(false)
+		void exec() noexcept(false)
 		{
 			for (auto& pair : passes)
-				pair->second->draw(delta);
-		}
-
-		FakePass* get_pass(std::string_view name) noexcept(false)
-		{
-			std::pair<int, float> a;
-			for (auto& pair : passes)
-			{
-				if (pair->first == name)
-					return pair->second.get();
-			}
-			throw std::runtime_error(std::format("can't find pass \"{}\" from pipeline", name));
+				pair->exec();
 		}
 	};
 
 	class Pass
 	{
-	private:
-		__Pipeline<Pass>& pipeline;
-
 	public:
-		Pass(__Pipeline<Pass>& pipeline) noexcept;
+		Pass() = default;
 		Pass(Pass&) = delete;
 		~Pass() = default;
-		virtual void draw(float delta) noexcept(false) = 0;
+		virtual void exec() noexcept(false) = 0;
 	};
 
 	using Pipeline = __Pipeline<Pass>;

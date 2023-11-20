@@ -2,7 +2,7 @@
 
 #include <concepts>
 #include <stdexcept>
-#include <glad/glad.h>
+#include <glad/gles2.h>
 
 namespace quick3d::gl
 {
@@ -49,7 +49,6 @@ namespace quick3d::gl
 			{t.get_buffer_id()} -> std::same_as<GLuint>;
 			{t.get_buffer_target()} -> std::same_as<GLenum>;
 		}
-		//void add_attrib(const T& t, uint32_t index, uint32_t len, uint32_t vertex_len, uint32_t offset, bool normalized = false) noexcept(false)
 		void add_attrib(T& t, uint32_t index, uint32_t len, uint32_t vertex_len, uint32_t offset, bool normalized = false) noexcept(false)
 		{
 			add_attrib(t.get_buffer_target(), t.get_buffer_id(), index, len, vertex_len, offset, normalized);

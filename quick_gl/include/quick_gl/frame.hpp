@@ -3,7 +3,7 @@
 #include <format>
 #include <concepts>
 #include <stdexcept>
-#include <glad/glad.h>
+#include <glad/gles2.h>
 
 namespace quick3d::gl
 {
@@ -57,8 +57,6 @@ namespace quick3d::gl
         {
             setup_rbo(t.get_tex_width(), t.get_tex_height());
             bind_texture_to_fbo(tex_id);
-            //if (!(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE))
-            //    throw std::runtime_error(std::format("fbo {} incomplete", fbo_id));
         }
     };
 

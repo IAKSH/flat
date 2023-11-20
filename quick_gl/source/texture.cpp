@@ -12,11 +12,6 @@ quick3d::gl::Texture::Texture(GLenum tex_format, uint32_t tex_width, uint32_t te
     generate_texture(img_format,nullptr,tex_width,tex_height);
 }
 
-quick3d::gl::Texture::Texture(GLenum tex_format, GLuint tex_id, bool enable_rtti) noexcept
-    : tex_format(tex_format), tex_id(tex_id), enable_rtti(enable_rtti), tex_width(0), tex_height(0)
-{
-}
-
 quick3d::gl::Texture::Texture(GLenum tex_format, GLenum img_format, unsigned char* img_data, uint32_t img_width, uint32_t img_height, bool enable_rtti) noexcept
     : tex_format(tex_format), enable_rtti(enable_rtti), tex_width(img_width), tex_height(img_height)
 {

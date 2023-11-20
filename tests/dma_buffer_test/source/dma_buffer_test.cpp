@@ -7,7 +7,7 @@
 #include <quick_gl/shader.hpp>
 #include <quick_gl/buffer.hpp>
 #include <quick_gl/vao.hpp>
-#include <quick_gl/debug.hpp>
+//#include <quick_gl/debug.hpp>
 
 static constexpr std::string_view GLSL_FOLDER = "../../../../tests/dma_buffer_test/glsl";
 

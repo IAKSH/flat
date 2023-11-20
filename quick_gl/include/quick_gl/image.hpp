@@ -13,7 +13,7 @@ namespace quick3d::gl
         int img_channels;
 
     public:
-        Image(std::string_view path,bool flip=true) noexcept(false);
+        Image(std::string_view path,bool flip = true) noexcept(false);
         Image(Image&) = delete;
         ~Image() noexcept;
 

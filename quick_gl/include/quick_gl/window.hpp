@@ -2,7 +2,7 @@
 
 #include <string>
 #include <functional>
-#include <glad/glad.h>
+#include <glad/gles2.h>
 #include <GLFW/glfw3.h>
 
 namespace quick3d::gl

@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
-#include <glad/glad.h>
+#include <glad/gles2.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <quick_gl/texture.hpp>

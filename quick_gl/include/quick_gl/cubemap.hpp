@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include <concepts>
-#include <glad/glad.h>
+#include <glad/gles2.h>
 
 namespace quick3d::gl
 {

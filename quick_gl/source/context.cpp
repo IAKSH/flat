@@ -1,7 +1,20 @@
-#include <format>
-#include <iostream>
 #include <stdexcept>
 #include <quick_gl/context.hpp>
+#include <spdlog/spdlog.h>
+
+static quick3d::gl::Context* current_context;
+
+void quick3d::gl::set_current_context(quick3d::gl::Context& context) noexcept
+{
+    current_context = &context;
+}
+
+quick3d::gl::Context& quick3d::gl::get_current_context() noexcept(false)
+{
+    if (!current_context)
+        throw std::runtime_error("current_context is null");
+    return *current_context;
+}
 
 quick3d::gl::Context::Context(std::string_view title,int w,int h) noexcept(false)
 {
@@ -24,35 +37,32 @@ void quick3d::gl::Context::setup_context(std::string_view title,int w,int h) noe
     else
     {
         glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+        glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 		glfwSetErrorCallback([](int error, const char* description) {
-            std::cerr << std::format("GLFW error: {}\n",description);
-			std::terminate();
-			});
+            spdlog::error("GLFW error: {}", description);
+		});
 
         windows.push_back(std::make_unique<Window>(title,w,h));
         glfwMakeContextCurrent(windows[0]->get_glfw_window());
     
 	    if (!glad_loaded)
 	    {
-	    	//if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-            if (!gladLoadGLES2Loader((GLADloadproc)glfwGetProcAddress))
-	    	{
-	    		std::cerr << "failed to initialize GLAD" << std::endl;
-	    		std::terminate();
-	    	}
+            int version = gladLoadGLES2(glfwGetProcAddress);
+            if (!version)
+                throw std::runtime_error("failed to get GLES2 func address");
 
+            spdlog::info("loaded OpenGL ES {}.{}", GLAD_VERSION_MAJOR(version), GLAD_VERSION_MINOR(version));
 	    	glad_loaded = true;
 	    }
 
         // glfw has a bug, which will always setup a GL_INVALID_ENUM error code
         // this is to fix this
         glGetError();
-    
-        //glfwMakeContextCurrent(nullptr);
         initialized = true;
     }
 }
@@ -127,6 +137,11 @@ void quick3d::gl::Context::fill_frame_color(float r, float g, float b, float a) 
 void quick3d::gl::Context::clean_frame_buffers() noexcept
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+void quick3d::gl::Context::set_viewport(int x, int y, uint32_t w, uint32_t h) noexcept
+{
+    glViewport(x, y, w, h);
 }
 
 GLuint quick3d::gl::Context::get_binding_buffer(GLenum target) noexcept(false)

@@ -5,12 +5,9 @@
 #include <glm/gtc/constants.hpp>
 #include <GLFW/glfw3.h>
 
-// TODO: FPSCamera API太烂了，需要修改
-// TODO：可能需要实现一个单独的全向相机，作为所有相机的基类
-
 namespace quick3d::gl
 {
-    class FPSCamera
+    class Camera
     {
     private:
         glm::vec3 position;
@@ -19,53 +16,50 @@ namespace quick3d::gl
         glm::vec3 up;
         float yaw;
         float pitch;
-        float movement_speed;
-        float mouse_sensitivity;
+        float roll;
         float fov;
         float near_plane;
         float far_plane;
-        int screen_width;
-        int screen_height;
-        bool move_right;
-        bool move_left;
-        bool move_forward;
-        bool move_backward;
+        int viewport_width;
+        int viewport_height;
+
+        void update_camera_vectors() noexcept;
 
     public:
-        FPSCamera(int screen_width, int screen_height, glm::vec3 start_pos = glm::vec3(0.0f, 0.0f, 0.0f), float start_yaw = -90.0f,
-            float start_pitch = 0.0f, float speed = 0.01f, float sensitivity = 0.1f, float start_fov = 45.0f, float start_near = 0.01f,
-            float start_far = 10000.0f) noexcept
-            : screen_width(screen_width), screen_height(screen_height), position(start_pos), front(glm::vec3(0.0f, 0.0f, -1.0f)),
-              right(glm::vec3(1.0f, 0.0f, 0.0f)), up(glm::vec3(0.0f, 1.0f, 0.0f)), yaw(start_yaw), pitch(start_pitch),
-              movement_speed(speed), mouse_sensitivity(sensitivity), fov(start_fov), near_plane(start_near), far_plane(start_far)
-        {
-        }
-
-        ~FPSCamera() = default;
-
-        void process_keyboard_input(GLFWwindow* window, float delta_time) noexcept;
-        void process_mouse_input(GLFWwindow* window, double x_pos, double y_pos) noexcept;
-
-        void on_tick(float delta_time) noexcept;
+        Camera(
+            glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+            int viewport_width = 800,
+            int viewport_height = 600,
+            float yaw = -90.0f,
+            float pitch = 0.0f,
+            float roll = 0.0f,
+            float fov = 45.0f,
+            float near_plane = 0.01f,
+            float far_plane = 100.0f
+        ) noexcept;
+        ~Camera() = default;
 
         void set_viewport_size(int width, int height) noexcept;
         void set_fov(float fov) noexcept;
         void set_near_plane(float near_plane) noexcept;
         void set_far_plane(float far_plane) noexcept;
         void set_position(glm::vec3 position) noexcept;
-
+        void set_yaw(float yaw) noexcept;
+        void set_pitch(float pitch) noexcept;
+        void set_roll(float roll) noexcept;
+        void move(float forward, float parallel, float vertical) noexcept;
+        void rotate(float yaw, float pitch, float roll) noexcept;
         float get_fov() const noexcept;
         float get_near_plane() const noexcept;
         float get_far_plane() const noexcept;
+        float get_yaw() const noexcept;
+        float get_pitch() const noexcept;
+        float get_roll() const noexcept;
         glm::vec3 get_position() const noexcept;
         glm::vec3 get_front_vec() const noexcept;
         glm::vec3 get_up_vec() const noexcept;
         glm::vec3 get_right_vec() const noexcept;
-
         glm::mat4 get_view_matrix() const noexcept;
         glm::mat4 get_projection_matrix() const noexcept;
-
-    private:
-        void update_camera_vectors() noexcept;
     };
 }

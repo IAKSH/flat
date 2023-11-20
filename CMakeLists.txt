@@ -15,7 +15,6 @@ enable_testing()
 add_subdirectory("tests")
 add_subdirectory("quick_gl")
 add_subdirectory("quick_al")
-add_subdirectory("quick_core")
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
