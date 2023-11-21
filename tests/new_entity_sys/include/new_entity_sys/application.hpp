@@ -40,10 +40,27 @@ namespace quick3d::test
 		virtual void exec() noexcept(false) = 0;
 	};
 
+	// 负责创建窗口
+	// 以及键盘鼠标输入（可能，待定
+	//                 gl::Window是有做回调API的，应该可以由此实现游戏的具体逻辑与输入，渲染的分离（三个layer
+	class WindowLayer : public Layer
+	{
+	protected:
+		gl::Window window;
+
+	public:
+		WindowLayer(std::string_view name,int w,int h) noexcept;
+		WindowLayer(WindowLayer&) = delete;
+		~WindowLayer() = default;
+
+		gl::Window& get_window() noexcept;
+		virtual void exec() noexcept override final;
+	};
+
 	class OESLayer : public Layer
 	{
 	private:
-		gl::Window window;
+		gl::Window& window;
 		gl::Pipeline pipeline;
 		gl::GLSLManager glsl_manager;
 		double last_recored_time;
@@ -55,32 +72,48 @@ namespace quick3d::test
 		void record_delta_time() noexcept;
 
 	public:
-		OESLayer(std::string_view title, uint32_t window_w, uint32_t window_h) noexcept(false);
+		OESLayer(gl::Window& window) noexcept(false);
 		OESLayer() noexcept;
 		OESLayer(OESLayer&) = delete;
 		~OESLayer() = default;
 
-		void exec() noexcept;
-		gl::Window& get_window() noexcept;
+		virtual void exec() noexcept override final;
 	};
 
-	class DebugImGuiLayer : public Layer
+	// 也许需要为ImGui搞个和quick3d::gl::Context一样的东西
+	// 把后端初始化给分离出去
+	class ImGuiWindowLayer : public WindowLayer
 	{
 	private:
-		ImGuiIO* io;
-
-		void initialize_imgui() noexcept;
-		void begin_imgui() noexcept;
-		void draw_imgui() noexcept;
-		void flush_imgui() noexcept;
-		void destroy_imgui() noexcept;
+		ImGuiContext* context;
+		void setup_imgui_context();
 
 	public:
-		DebugImGuiLayer() noexcept;
-		DebugImGuiLayer(DebugImGuiLayer&) = delete;
-		~DebugImGuiLayer() noexcept;
+		ImGuiWindowLayer(std::string_view name, int w, int h) noexcept;
+		ImGuiWindowLayer(ImGuiWindowLayer&) = delete;
+		~ImGuiWindowLayer() = default;
 
-		void exec() noexcept;
+		ImGuiContext* get_imgui_context() noexcept;
+	};
+	
+	class ImGuiLayer : public Layer
+	{
+	private:
+		ImGuiContext* imgui_context;
+		gl::Window& window;
+		std::string_view title;
+
+		void destroy_imgui() noexcept;
+		void begin_imgui() noexcept;
+		void draw_imgui() noexcept;
+		void end_imgui() noexcept;
+
+	public:
+		ImGuiLayer(ImGuiWindowLayer& window_layer, std::string_view title) noexcept;
+		ImGuiLayer(ImGuiLayer&) = delete;
+		~ImGuiLayer() noexcept;
+
+		virtual void exec() noexcept override final;
 	};
 
 	class WindowUpdateLayer : public Layer
@@ -93,8 +126,8 @@ namespace quick3d::test
 		WindowUpdateLayer(WindowUpdateLayer&) = delete;
 		~WindowUpdateLayer() = default;
 
-		void add_context(gl::Window& window) noexcept;
-		void exec() noexcept;
+		void add_window(gl::Window& window) noexcept;
+		virtual void exec() noexcept override final;
 	};
 
 	class Application

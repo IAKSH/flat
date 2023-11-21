@@ -1,9 +1,10 @@
 #include <new_entity_sys/application.hpp>
 #include <spdlog/spdlog.h>
 
-quick3d::test::OESLayer::OESLayer(std::string_view title, uint32_t window_w, uint32_t window_h) noexcept(false)
-	: window(title, window_w, window_h)
+quick3d::test::OESLayer::OESLayer(gl::Window& window) noexcept(false)
+	: window(window)
 {
+	window.set_as_current();
 	initialize();
 }
 
@@ -16,7 +17,7 @@ void quick3d::test::OESLayer::initialize() noexcept
 	}
 	catch (std::exception& e)
 	{
-		spdlog::critical("exception when initialize Application:\n{}", e.what());
+		spdlog::critical("exception when initialize OESLayer:\n{}", e.what());
 		std::terminate();
 	}
 }
@@ -51,13 +52,8 @@ void quick3d::test::OESLayer::exec() noexcept
 	}
 	catch (std::exception& e)
 	{
-		spdlog::critical("exception in OESLayer:\n{}", e.what());
+		spdlog::critical("exception when OESLayer running:\n{}", e.what());
 	}
-}
-
-quick3d::gl::Window& quick3d::test::OESLayer::get_window() noexcept
-{
-	return window;
 }
 
 quick3d::test::TestPass::TestPass(quick3d::gl::GLSLManager& glsl_manager) noexcept(false)
@@ -85,60 +81,52 @@ void quick3d::test::Application::exec() noexcept
 	}
 }
 
-void quick3d::test::DebugImGuiLayer::initialize_imgui() noexcept
+void quick3d::test::ImGuiLayer::draw_imgui() noexcept
 {
-	ImGui::CreateContext();
-	ImGui::CreateContext();
-	io = &ImGui::GetIO(); (void)io;
-	io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	io->ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(glfwGetCurrentContext(), true);
-	ImGui_ImplOpenGL3_Init("#version 320 es");
-}
+	ImGuiIO& io = ImGui::GetIO();
 
-void quick3d::test::DebugImGuiLayer::begin_imgui() noexcept
-{
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-}
-
-void quick3d::test::DebugImGuiLayer::draw_imgui() noexcept
-{
-	ImGui::Begin("Debug");
-	ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io->Framerate, io->Framerate);
+	ImGui::Begin(title.data());
+	ImGui::Text(" avg %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 	ImGui::End();
 }
 
-void quick3d::test::DebugImGuiLayer::flush_imgui() noexcept
+void quick3d::test::ImGuiLayer::end_imgui() noexcept
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void quick3d::test::DebugImGuiLayer::destroy_imgui() noexcept
+void quick3d::test::ImGuiLayer::destroy_imgui() noexcept
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
 
-quick3d::test::DebugImGuiLayer::DebugImGuiLayer() noexcept
+void quick3d::test::ImGuiLayer::begin_imgui() noexcept
 {
-	initialize_imgui();
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
 }
 
-quick3d::test::DebugImGuiLayer::~DebugImGuiLayer() noexcept
+quick3d::test::ImGuiLayer::ImGuiLayer(ImGuiWindowLayer& window_layer, std::string_view title) noexcept
+	: window(window_layer.get_window()), imgui_context(window_layer.get_imgui_context()), title(title)
+{
+}
+
+quick3d::test::ImGuiLayer::~ImGuiLayer() noexcept
 {
 	destroy_imgui();
 }
 
-void quick3d::test::DebugImGuiLayer::exec() noexcept
+void quick3d::test::ImGuiLayer::exec() noexcept
 {
+	window.set_as_current();
+	ImGui::SetCurrentContext(imgui_context);
 	begin_imgui();
 	draw_imgui();
-	flush_imgui();
+	end_imgui();
 }
 
 quick3d::test::WindowUpdateLayer::WindowUpdateLayer() noexcept
@@ -146,7 +134,7 @@ quick3d::test::WindowUpdateLayer::WindowUpdateLayer() noexcept
 
 }
 
-void quick3d::test::WindowUpdateLayer::add_context(gl::Window& window) noexcept
+void quick3d::test::WindowUpdateLayer::add_window(gl::Window& window) noexcept
 {
 	this->windows.push_back(&window);
 }
@@ -157,4 +145,43 @@ void quick3d::test::WindowUpdateLayer::exec() noexcept
 		window->swap_buffers();
 
 	glfwPollEvents();
+}
+
+quick3d::test::WindowLayer::WindowLayer(std::string_view name, int w, int h) noexcept
+	: window(name, w, h)
+{
+}
+
+quick3d::gl::Window& quick3d::test::WindowLayer::get_window() noexcept
+{
+	return window;
+}
+
+void quick3d::test::WindowLayer::exec() noexcept
+{
+}
+
+void quick3d::test::ImGuiWindowLayer::setup_imgui_context()
+{
+	window.set_as_current();
+	context = ImGui::CreateContext();
+	ImGui::SetCurrentContext(context);
+	ImGui_ImplGlfw_InitForOpenGL(window.get_glfw_window(), true);
+	ImGui_ImplOpenGL3_Init("#version 320 es");
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	ImGui::StyleColorsDark();
+}
+
+quick3d::test::ImGuiWindowLayer::ImGuiWindowLayer(std::string_view name, int w, int h) noexcept
+	: WindowLayer(name, w, h)
+{
+	setup_imgui_context();
+}
+
+ImGuiContext* quick3d::test::ImGuiWindowLayer::get_imgui_context() noexcept
+{
+	return context;
 }
