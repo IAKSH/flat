@@ -1,10 +1,13 @@
 #pragma once
 
-#include <quick_gl/context.hpp>
+#include <quick_gl/window.hpp>
 #include <quick_gl/pipeline.hpp>
 #include <quick_gl/shader.hpp>
 #include <quick_gl/buffer.hpp>
 #include <quick_gl/vao.hpp>
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 namespace quick3d::test
 {
@@ -31,10 +34,16 @@ namespace quick3d::test
 		virtual void exec() noexcept(false) override final;
 	};
 
-	class Application
+	class Layer
+	{
+	public:
+		virtual void exec() noexcept(false) = 0;
+	};
+
+	class OESLayer : public Layer
 	{
 	private:
-		gl::Context context;
+		gl::Window window;
 		gl::Pipeline pipeline;
 		gl::GLSLManager glsl_manager;
 		double last_recored_time;
@@ -44,13 +53,70 @@ namespace quick3d::test
 		void setup_pipeline() noexcept(false);
 		void load_glsl() noexcept(false);
 		void record_delta_time() noexcept;
-		void do_tick() noexcept(false);
 
 	public:
-		Application(std::string_view title, uint32_t window_w, uint32_t window_h) noexcept;
+		OESLayer(std::string_view title, uint32_t window_w, uint32_t window_h) noexcept(false);
+		OESLayer() noexcept;
+		OESLayer(OESLayer&) = delete;
+		~OESLayer() = default;
+
+		void exec() noexcept;
+		gl::Window& get_window() noexcept;
+	};
+
+	class DebugImGuiLayer : public Layer
+	{
+	private:
+		ImGuiIO* io;
+
+		void initialize_imgui() noexcept;
+		void begin_imgui() noexcept;
+		void draw_imgui() noexcept;
+		void flush_imgui() noexcept;
+		void destroy_imgui() noexcept;
+
+	public:
+		DebugImGuiLayer() noexcept;
+		DebugImGuiLayer(DebugImGuiLayer&) = delete;
+		~DebugImGuiLayer() noexcept;
+
+		void exec() noexcept;
+	};
+
+	class WindowUpdateLayer : public Layer
+	{
+	private:
+		std::vector<gl::Window*> windows;
+
+	public:
+		WindowUpdateLayer() noexcept;
+		WindowUpdateLayer(WindowUpdateLayer&) = delete;
+		~WindowUpdateLayer() = default;
+
+		void add_context(gl::Window& window) noexcept;
+		void exec() noexcept;
+	};
+
+	class Application
+	{
+	private:
+		std::vector<std::unique_ptr<Layer>> layers;
+		
+	public:
+		Application() = default;
 		Application(Application&) = delete;
 		~Application() = default;
 
-		void run() noexcept;
+		template <typename T, typename... Args>
+		requires std::derived_from<T, Layer>
+		T* add_layer(Args&&... args) noexcept(false)
+		{
+			std::unique_ptr<Layer> layer{ std::make_unique<T>(std::forward<Args>(args)...) };
+			T* layer_ptr{ reinterpret_cast<T*>(layer.get()) };
+			layers.push_back(std::move(layer));
+			return layer_ptr;
+		}
+
+		void exec() noexcept;
 	};
 }

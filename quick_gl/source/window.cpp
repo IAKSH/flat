@@ -14,7 +14,7 @@ quick3d::gl::Window::~Window() noexcept
 
 void quick3d::gl::Window::create_glfw_window(int w,int h) noexcept
 {
-    window = glfwCreateWindow(w,h,title.data(),nullptr,nullptr);
+    window = context.create_glfw_context(title, w, h);
     glfwMakeContextCurrent(window);
     glfwSetWindowUserPointer(window,this);
 
@@ -42,6 +42,23 @@ void quick3d::gl::Window::create_glfw_window(int w,int h) noexcept
     {
         ((Window*)glfwGetWindowUserPointer(win))->try_run_keyboard_callback(key,scancode,action,mods);
     });
+}
+
+void quick3d::gl::Window::set_as_current() noexcept
+{
+    if (glfwGetCurrentContext() != window)
+        glfwMakeContextCurrent(window);
+}
+
+void quick3d::gl::Window::swap_buffers() noexcept
+{
+    glfwMakeContextCurrent(window);
+    glfwSwapBuffers(window);
+}
+
+quick3d::gl::Context& quick3d::gl::Window::get_context() noexcept
+{
+    return context;
 }
 
 GLFWwindow* quick3d::gl::Window::get_glfw_window() const noexcept

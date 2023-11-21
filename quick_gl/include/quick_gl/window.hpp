@@ -4,12 +4,14 @@
 #include <functional>
 #include <glad/gles2.h>
 #include <GLFW/glfw3.h>
+#include <quick_gl/context.hpp>
 
 namespace quick3d::gl
 {
     class Window
     {
     private:
+        Context context;
         GLFWwindow* window;
         // GLFW don't have API to get window's title, so we store it by ourselves
         // https://discourse.glfw.org/t/get-the-title-of-an-existing-window/744
@@ -23,11 +25,12 @@ namespace quick3d::gl
 
     public:
         Window(std::string_view title,int w,int h) noexcept;
-
         Window(Window&) = delete;
-
         ~Window() noexcept;
 
+        void set_as_current() noexcept;
+        void swap_buffers() noexcept;
+        Context& get_context() noexcept;
         GLFWwindow* get_glfw_window() const noexcept;
         int get_window_width() const noexcept;
         int get_window_height() const noexcept;

@@ -3,19 +3,19 @@
 #include <array>
 #include <vector>
 #include <memory>
-#include <quick_gl/window.hpp>
+#include <glad/gles2.h>
+#include <GLFW/glfw3.h>
 
 namespace quick3d::gl
 {
-    // Context类需要有一种好的全局可见方案
-    // 最好不要用单例模式
     class Context
     {
     private:
-        std::vector<std::unique_ptr<Window>> windows;
+        inline static uint32_t context_count;
+        inline static bool glfw_loaded;
+        inline static bool glad_loaded;
 
-        void setup_context(std::string_view title,int w,int h) noexcept(false);
-        void destroy_context() noexcept;
+        void try_destroy_glfw_context() noexcept;
 
         GLuint get_binding_buffer(GLenum target) noexcept(false);
         GLuint get_binding_vao() noexcept;
@@ -32,13 +32,11 @@ namespace quick3d::gl
         void unbind_framebuffer() noexcept;
 
     public:
-        Context(std::string_view title,int w,int h) noexcept(false);
+        Context() = default;
         Context(Context&) = delete;
         ~Context() noexcept;
 
-        Window& get_window(uint32_t index) noexcept(false);
-        uint32_t add_new_window(std::string_view title,int w,int h) noexcept;
-        void remove_window(uint32_t index) noexcept(false);
+        GLFWwindow* create_glfw_context(std::string_view title, int w, int h) noexcept(false);
 
         // bind buffer (glBindBuffer)
         template <typename T>
@@ -123,14 +121,10 @@ namespace quick3d::gl
         GLuint get_binding_obj_id(GLenum target) noexcept(false);
         void unbind_from_context(GLenum target) noexcept(false);
 
-        void swap_window_buffers() noexcept;
         void poll_events() noexcept;
         void fill_frame_color(std::array<float,4> color) noexcept;
         void fill_frame_color(float r,float g,float b,float a) noexcept;
         void clean_frame_buffers() noexcept;
         void set_viewport(int x, int y, uint32_t w, uint32_t h) noexcept;
     };
-
-    void set_current_context(Context& context) noexcept;
-    Context& get_current_context() noexcept(false);
 }
