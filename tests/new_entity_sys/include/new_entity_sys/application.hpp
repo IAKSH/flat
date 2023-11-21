@@ -48,6 +48,9 @@ namespace quick3d::test
 	protected:
 		gl::Window window;
 
+		// 不好，需要换一种方式
+		void correct_gl_viewport() noexcept;
+
 	public:
 		WindowLayer(std::string_view name,int w,int h) noexcept;
 		WindowLayer(WindowLayer&) = delete;

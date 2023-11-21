@@ -147,6 +147,13 @@ void quick3d::test::WindowUpdateLayer::exec() noexcept
 	glfwPollEvents();
 }
 
+void quick3d::test::WindowLayer::correct_gl_viewport() noexcept
+{
+	int w, h;
+	glfwGetWindowSize(window.get_glfw_window(), &w, &h);
+	window.get_context().set_viewport(0, 0, w, h);
+}
+
 quick3d::test::WindowLayer::WindowLayer(std::string_view name, int w, int h) noexcept
 	: window(name, w, h)
 {
@@ -159,6 +166,8 @@ quick3d::gl::Window& quick3d::test::WindowLayer::get_window() noexcept
 
 void quick3d::test::WindowLayer::exec() noexcept
 {
+	window.set_as_current();
+	correct_gl_viewport();
 }
 
 void quick3d::test::ImGuiWindowLayer::setup_imgui_context()
