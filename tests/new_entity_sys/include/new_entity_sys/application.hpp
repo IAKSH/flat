@@ -40,7 +40,7 @@ namespace quick3d::test
 		virtual void exec() noexcept(false) = 0;
 	};
 
-	// 负责创建窗口
+	// 负责创建窗口（以及其后端
 	// 以及键盘鼠标输入（可能，待定
 	//                 gl::Window是有做回调API的，应该可以由此实现游戏的具体逻辑与输入，渲染的分离（三个layer
 	class WindowLayer : public Layer
@@ -76,7 +76,6 @@ namespace quick3d::test
 
 	public:
 		OESLayer(gl::Window& window) noexcept(false);
-		OESLayer() noexcept;
 		OESLayer(OESLayer&) = delete;
 		~OESLayer() = default;
 
@@ -125,7 +124,7 @@ namespace quick3d::test
 		std::vector<gl::Window*> windows;
 
 	public:
-		WindowUpdateLayer() noexcept;
+		WindowUpdateLayer() = default;
 		WindowUpdateLayer(WindowUpdateLayer&) = delete;
 		~WindowUpdateLayer() = default;
 

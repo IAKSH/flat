@@ -129,11 +129,6 @@ void quick3d::test::ImGuiLayer::exec() noexcept
 	end_imgui();
 }
 
-quick3d::test::WindowUpdateLayer::WindowUpdateLayer() noexcept
-{
-
-}
-
 void quick3d::test::WindowUpdateLayer::add_window(gl::Window& window) noexcept
 {
 	this->windows.push_back(&window);
@@ -173,6 +168,7 @@ void quick3d::test::WindowLayer::exec() noexcept
 void quick3d::test::ImGuiWindowLayer::setup_imgui_context()
 {
 	window.set_as_current();
+	IMGUI_CHECKVERSION();
 	context = ImGui::CreateContext();
 	ImGui::SetCurrentContext(context);
 	ImGui_ImplGlfw_InitForOpenGL(window.get_glfw_window(), true);
