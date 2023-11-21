@@ -4,28 +4,18 @@
 #include <quick_gl/pipeline.hpp>
 #include <quick_gl/shader.hpp>
 #include <quick_gl/buffer.hpp>
-#include <quick_gl/vao.hpp>
+#include <quick_gl/mesh.hpp>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
 namespace quick3d::test
 {
-	inline static constexpr std::array<float, 20> QUAD_VERTICES
-	{
-		// Positions       // Texture Coords
-		-1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-		1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-	};
-
 	class TestPass : public gl::Pass
 	{
 	private:
-		quick3d::gl::Program program;
-		quick3d::gl::Buffer vbo;
-		quick3d::gl::VertexArray vao;
+		gl::Program program;
+		std::unique_ptr<gl::Mesh> mesh;
 
 	public:
 		TestPass(quick3d::gl::GLSLManager& glsl_manager) noexcept(false);

@@ -67,7 +67,7 @@ void quick3d::gl::Model::process_mesh(aiMesh* mesh,const aiScene* scene) noexcep
             // use models where a vertex can have multiple texture coordinates so we always take the first set (0).
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;
-            vertex.tex_coords = vec;
+            vertex.uv = vec;
             if (mesh->mTangents)
             {
                 // tangent
@@ -86,7 +86,7 @@ void quick3d::gl::Model::process_mesh(aiMesh* mesh,const aiScene* scene) noexcep
             }
         }
         else
-            vertex.tex_coords = glm::vec2(0.0f, 0.0f);
+            vertex.uv = glm::vec2(0.0f, 0.0f);
 
         vertices.push_back(vertex);
     }

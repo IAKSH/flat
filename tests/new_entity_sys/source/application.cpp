@@ -58,18 +58,15 @@ void quick3d::test::OESLayer::exec() noexcept
 
 quick3d::test::TestPass::TestPass(quick3d::gl::GLSLManager& glsl_manager) noexcept(false)
 	: program(*glsl_manager.compile("test_pass.vs"), *glsl_manager.compile("test_pass.fs")),
-	vbo(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(QUAD_VERTICES))
+	mesh(gl::gen_cube_mesh())
 {
-	vbo.write_buffer_data(QUAD_VERTICES);
-	vao.add_attrib(vbo, 0, 3, 5, 0);
-	vao.add_attrib(vbo, 1, 2, 5, 3);
 }
 
 void quick3d::test::TestPass::exec() noexcept(false)
 {
 	auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) };
-	program.set_uniform("model", glm::rotate(scale, static_cast<float>(glfwGetTime()), glm::vec3(0.0f, 1.0f, 0.0f)));
-	vao.draw(program, GL_TRIANGLE_STRIP, 0, QUAD_VERTICES.size());
+	program.set_uniform("model", glm::rotate(scale, static_cast<float>(glfwGetTime()), glm::vec3(0.5f, 1.0f, -0.2f)));
+	mesh->draw_mesh(program);
 }
 
 void quick3d::test::Application::exec() noexcept
