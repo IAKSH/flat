@@ -34,7 +34,7 @@ GLFWwindow* quick3d::gl::Context::create_glfw_context(std::string_view title,int
         if (!version)
             throw std::runtime_error("failed to get GLES2 func address");
 
-        spdlog::info("loaded OpenGL ES {}.{}\n\tGL_VENDOR = {}\n\tGL_RENDERER = {}\n\tGL_VERSION = {}",
+        spdlog::info("loaded OpenGL ES {}.{}\n\tGL_VENDOR\t:\t{}\n\tGL_RENDERER\t:\t{}\n\tGL_VERSION\t:\t{}",
             GLAD_VERSION_MAJOR(version),
             GLAD_VERSION_MINOR(version),
             reinterpret_cast<const char*>(glGetString(GL_VENDOR)),

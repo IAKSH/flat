@@ -41,8 +41,8 @@ namespace quick3d::gl
         }
         void draw_model(const T& t,uint32_t instance = 0) noexcept
         {
-            for(const auto& mesh : meshes)
-                mesh->draw_mesh(t,instance);
+            for (const auto& mesh : meshes)
+                mesh->draw_mesh(t, GL_TRIANGLES, instance);
         }
     };
 }

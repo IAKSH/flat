@@ -113,13 +113,16 @@ namespace quick3d::gl
         std::size_t indices_len;
         VertexArray vao;
 
+        GLenum primitive_type;
+
         void setup_vao(std::vector<MeshVertexPack>& vertices,
             std::vector<unsigned int>& indices) noexcept;
 
     public:
         Mesh(std::vector<MeshTexturePack*>& textures,
             std::vector<MeshVertexPack>& vertices,
-            std::vector<unsigned int>& indices) noexcept;
+            std::vector<unsigned int>& indices,
+            GLenum primivite_type = GL_TRIANGLES) noexcept;
 
         Mesh(Mesh&) = delete;
         ~Mesh() = default;
@@ -137,7 +140,7 @@ namespace quick3d::gl
             {t.set_uniform(std::declval<std::string_view>(),
                 std::declval<int>())} -> std::same_as<void>;
         }
-        void draw_mesh(const T& t,uint32_t instance = 0) noexcept
+        void draw_mesh(const T& t, GLenum primitive = GL_NONE, uint32_t instance = 0) noexcept
         {
             glUseProgram(t.get_program_id());
 
@@ -164,7 +167,10 @@ namespace quick3d::gl
                 glBindTexture(GL_TEXTURE_2D,textures[i]->texture->get_tex_id());
             }
 
-            vao.draw(t, GL_TRIANGLES, 0, static_cast<GLsizei>(indices_len), instance);
+            if (primitive == GL_NONE)
+                vao.draw(t, primitive_type, 0, static_cast<GLsizei>(indices_len), instance);
+            else
+                vao.draw(t, primitive, 0, static_cast<GLsizei>(indices_len), instance);
 
             for (int i = 0; i < textures.size(); i++)
             {
@@ -177,8 +183,7 @@ namespace quick3d::gl
         }
     };
 
-    // 预制Mesh，便于绘制简单图形
-    std::unique_ptr<Mesh> gen_square_mesh() noexcept;
+    std::unique_ptr<Mesh> gen_square_mesh() noexcept;// 有bug，只画得出来一个三角形
     std::unique_ptr<Mesh> gen_round_mesh(int segments = 100) noexcept;
     std::unique_ptr<Mesh> gen_triangle_mesh() noexcept;
     std::unique_ptr<Mesh> gen_line_mesh() noexcept;

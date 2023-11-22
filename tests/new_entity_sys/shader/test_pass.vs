@@ -5,17 +5,14 @@
 precision highp float;
 precision highp int;
 
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoords;
+layout (location = 0) in vec3 in_pos;
+layout (location = 2) in vec2 in_uv;
 out vec2 uv;
-out vec3 color_interp;
 
 uniform mat4 model;
 
 void main()
 {
-	gl_Position = model * vec4(aPos,1.0);
-	for(lowp int i = 0;i < 3;i++)
-		color_interp[i] = model[i][i];
-	uv = aTexCoords;
+	gl_Position = model * vec4(in_pos,1.0);
+	uv = in_uv;
 }

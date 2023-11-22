@@ -7,9 +7,8 @@ precision highp int;
 
 out vec4 frag_color;
 in vec2 uv;
-in vec3 color_interp;
 
 void main()
 {
-    frag_color = vec4(uv.x + color_interp.r,uv.x + color_interp.g,uv.y + color_interp.b,uv.y);
+    frag_color = vec4(uv.x, uv.x, uv.y, 1.0);
 }

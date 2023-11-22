@@ -3,8 +3,9 @@
 
 quick3d::gl::Mesh::Mesh(std::vector<MeshTexturePack*>& textures,
 	std::vector<MeshVertexPack>& vertices,
-	std::vector<unsigned int>& indices) noexcept
-	: textures(textures), indices_len(indices.size())
+	std::vector<unsigned int>& indices,
+	GLenum primitive_type) noexcept
+	: textures(textures), indices_len(indices.size()), primitive_type(primitive_type)
 {
 	setup_vao(vertices, indices);
 }
@@ -152,8 +153,8 @@ std::unique_ptr<quick3d::gl::Mesh> quick3d::gl::gen_square_mesh() noexcept
 	};
 	std::vector<unsigned int> indices
 	{
-		4,1,2,
-		4,2,3
+		3,2,1,
+		1,0,3
 	};
 	return std::make_unique<Mesh>(textures, vertices, indices);
 }
@@ -224,7 +225,7 @@ std::unique_ptr<quick3d::gl::Mesh> quick3d::gl::gen_line_mesh() noexcept
 	{
 		0, 1
 	};
-	return std::make_unique<Mesh>(textures, vertices, indices);
+	return std::make_unique<Mesh>(textures, vertices, indices, GL_LINES);
 }
 
 std::unique_ptr<quick3d::gl::Mesh> quick3d::gl::gen_point_mesh() noexcept
@@ -238,7 +239,7 @@ std::unique_ptr<quick3d::gl::Mesh> quick3d::gl::gen_point_mesh() noexcept
 	{
 		0
 	};
-	return std::make_unique<Mesh>(textures, vertices, indices);
+	return std::make_unique<Mesh>(textures, vertices, indices, GL_POINTS);
 }
 
 std::unique_ptr<quick3d::gl::Mesh> quick3d::gl::gen_ball_mesh(int segments, int stacks) noexcept
@@ -326,11 +327,11 @@ std::unique_ptr<quick3d::gl::Mesh> quick3d::gl::gen_cube_mesh() noexcept
 		0, 1, 2,
 		2, 3, 0,
 		// back
-		4, 5, 6,
-		6, 7, 4,
+		6, 5, 4,
+		4, 7, 6,
 		// left
-		4, 7, 3,
-		3, 0, 4,
+		3, 7, 4,
+		4, 0, 3,
 		// right
 		1, 5, 6,
 		6, 2, 1,
@@ -338,8 +339,8 @@ std::unique_ptr<quick3d::gl::Mesh> quick3d::gl::gen_cube_mesh() noexcept
 		3, 2, 6,
 		6, 7, 3,
 		// ÏÂÃæ
-		4, 0, 1,
-		1, 5, 4
+		1, 0, 4,
+		4, 5, 1
 	};
 	return std::make_unique<Mesh>(textures, vertices, indices);
 }

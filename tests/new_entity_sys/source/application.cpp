@@ -66,6 +66,12 @@ void quick3d::test::TestPass::exec() noexcept(false)
 {
 	auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) };
 	program.set_uniform("model", glm::rotate(scale, static_cast<float>(glfwGetTime()), glm::vec3(0.5f, 1.0f, -0.2f)));
+
+	// temp
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glEnable(GL_DEPTH_TEST);
+
 	mesh->draw_mesh(program);
 }
 
