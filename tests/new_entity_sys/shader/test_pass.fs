@@ -8,7 +8,9 @@ precision highp int;
 out vec4 frag_color;
 in vec2 uv;
 
+uniform sampler2D diffuse;
+
 void main()
 {
-    frag_color = vec4(uv.x, uv.x, uv.y, 1.0);
+    frag_color = texture(diffuse,uv);
 }

@@ -56,7 +56,7 @@ void quick3d::gl::Mesh::set_indices_size(std::size_t indices_len) noexcept
 	this->indices_len = indices_len;
 }
 
-quick3d::gl::MeshTexturePack::MeshTexturePack(std::string_view file_name, std::string_view directory, std::string_view type)
+quick3d::gl::MeshTexturePack::MeshTexturePack(std::string_view file_name, std::string_view directory, std::string_view type) noexcept(false)
     : type(type), path(std::format("{}/{}", directory, file_name))
 {
     if (type == "texture_diffuse")

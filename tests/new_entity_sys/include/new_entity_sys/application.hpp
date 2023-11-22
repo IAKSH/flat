@@ -4,7 +4,8 @@
 #include <quick_gl/pipeline.hpp>
 #include <quick_gl/shader.hpp>
 #include <quick_gl/buffer.hpp>
-#include <quick_gl/mesh.hpp>
+#include <quick_gl/model.hpp>
+#include <quick_gl/camera.hpp>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -14,11 +15,16 @@ namespace quick3d::test
 	class TestPass : public gl::Pass
 	{
 	private:
+		gl::Camera& camera;
 		gl::Program program;
-		std::unique_ptr<gl::Mesh> mesh;
+		std::unique_ptr<gl::Mesh> cube_mesh;
+		std::unique_ptr<gl::Model> character_model;
+
+		void load_character_model() noexcept(false);
+		void load_cube_mesh() noexcept(false);
 
 	public:
-		TestPass(quick3d::gl::GLSLManager& glsl_manager) noexcept(false);
+		TestPass(quick3d::gl::GLSLManager& glsl_manager, gl::Camera& camera) noexcept(false);
 		TestPass(TestPass&) = delete;
 		~TestPass() = default;
 		virtual void exec() noexcept(false) override final;
@@ -56,11 +62,13 @@ namespace quick3d::test
 		gl::Window& window;
 		gl::Pipeline pipeline;
 		gl::GLSLManager glsl_manager;
+		gl::Camera camera;
 		double last_recored_time;
 		double delta_sec;
 
 		void initialize() noexcept;
 		void setup_pipeline() noexcept(false);
+		void setup_camera() noexcept;
 		void load_glsl() noexcept(false);
 		void record_delta_time() noexcept;
 

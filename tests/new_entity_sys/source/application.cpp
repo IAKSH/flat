@@ -14,6 +14,7 @@ void quick3d::test::OESLayer::initialize() noexcept
 	{
 		load_glsl();
 		setup_pipeline();
+		setup_camera();
 	}
 	catch (std::exception& e)
 	{
@@ -24,7 +25,14 @@ void quick3d::test::OESLayer::initialize() noexcept
 
 void quick3d::test::OESLayer::setup_pipeline() noexcept(false)
 {
-	pipeline.add_pass<TestPass>(glsl_manager);
+	pipeline.add_pass<TestPass>(glsl_manager, camera);
+}
+
+void quick3d::test::OESLayer::setup_camera() noexcept
+{
+	camera.set_position(glm::vec3(0.0f, 0.0f, 1.0f));
+	// TODO: 这个不能用，需要修
+	//camera.rotate(-45.0f, 0.0f, 0.0f);
 }
 
 void quick3d::test::OESLayer::load_glsl() noexcept(false)
@@ -56,23 +64,46 @@ void quick3d::test::OESLayer::exec() noexcept
 	}
 }
 
-quick3d::test::TestPass::TestPass(quick3d::gl::GLSLManager& glsl_manager) noexcept(false)
-	: program(*glsl_manager.compile("test_pass.vs"), *glsl_manager.compile("test_pass.fs")),
-	mesh(gl::gen_cube_mesh())
+void quick3d::test::TestPass::load_character_model() noexcept(false)
 {
+	character_model = std::make_unique<gl::Model>("D:/Programming-Playground/quick3d/tests/light_ball/model/yoimiya/yoimiya.obj");
+}
+
+void quick3d::test::TestPass::load_cube_mesh() noexcept(false)
+{
+	cube_mesh = gl::gen_cube_mesh();
+	cube_mesh->get_textures().push_back(new gl::MeshTexturePack("container2.png", "D:/Programming-Playground/quick3d/tests/light_ball/image", "texture_diffuse"));
+}
+
+quick3d::test::TestPass::TestPass(quick3d::gl::GLSLManager& glsl_manager, gl::Camera& camera) noexcept(false)
+	: program(*glsl_manager.compile("test_pass.vs"), *glsl_manager.compile("test_pass.fs")), camera(camera)
+{
+	load_character_model();
+	load_cube_mesh();
 }
 
 void quick3d::test::TestPass::exec() noexcept(false)
 {
-	auto scale{ glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) };
-	program.set_uniform("model", glm::rotate(scale, static_cast<float>(glfwGetTime()), glm::vec3(0.5f, 1.0f, -0.2f)));
+	// temp
+	camera.move(-0.00001f, 0.0f, 0.0f);
 
 	// temp
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
 
-	mesh->draw_mesh(program);
+	{
+		auto scale_matrix{ glm::scale(glm::mat4(1.0f), glm::vec3(0.25f, 0.25f, 0.25f)) };
+		auto model_matrix{ glm::rotate(scale_matrix, static_cast<float>(glfwGetTime()), glm::vec3(0.5f, 1.0f, -0.2f)) };
+		program.set_uniform("pvm", camera.get_projection_matrix() * camera.get_view_matrix() * model_matrix);
+		cube_mesh->draw_mesh(program);
+	}
+	{
+		auto scale_matrix{ glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) };
+		auto model_matrix{ glm::translate(scale_matrix,glm::vec3(0.0f,-1.0f,1.0f)) };
+		program.set_uniform("pvm", camera.get_projection_matrix() * camera.get_view_matrix() * model_matrix);
+		character_model->draw_model(program);
+	}
 }
 
 void quick3d::test::Application::exec() noexcept

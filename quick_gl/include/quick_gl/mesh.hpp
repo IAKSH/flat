@@ -101,9 +101,14 @@ namespace quick3d::gl
         std::unique_ptr<Texture> texture;
         std::string type;
         std::string path;
-        MeshTexturePack(std::string_view file_name, std::string_view directory, std::string_view type);
+        MeshTexturePack(std::string_view file_name, std::string_view directory, std::string_view type) noexcept(false);
     };
 
+    // TODO: 需要把预制Mesh变成预制Model
+    // 目前这个Mesh是给Model用的，Mesh并没有textures的所有权，也不负责释放，textures是随Model释放的
+    // 然而对于预制Mesh，目前是没有所在的Model的
+    // 
+    // 除此之外，还需要把操作textures的API移动到Model中，让Model负责textures的管理
     class Mesh
     {
     private:
@@ -183,6 +188,10 @@ namespace quick3d::gl
         }
     };
 
+    // TODO: 考虑直接换到Model去
+    // 那样的话，就只拿Model绘图了，无论什么，都是Model
+    // 或者允许用户自己拿Mesh组Model
+    // 有了更多的理由，见Mesh类上的TODO
     std::unique_ptr<Mesh> gen_square_mesh() noexcept;// 有bug，只画得出来一个三角形
     std::unique_ptr<Mesh> gen_round_mesh(int segments = 100) noexcept;
     std::unique_ptr<Mesh> gen_triangle_mesh() noexcept;

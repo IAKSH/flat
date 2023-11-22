@@ -7,6 +7,8 @@
 
 namespace quick3d::gl
 {
+    // 初始方向：-y
+    // 注，引擎坐标系是 x,z,y
     class Camera
     {
     private:
