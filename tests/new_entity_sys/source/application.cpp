@@ -39,6 +39,8 @@ void quick3d::test::OESLayer::load_glsl() noexcept(false)
 {
 	glsl_manager.parse_from_file("../../../../tests/new_entity_sys/shader/test_pass.vs");
 	glsl_manager.parse_from_file("../../../../tests/new_entity_sys/shader/test_pass.fs");
+	glsl_manager.parse_from_file("../../../../tests/new_entity_sys/shader/test_ani_pass.vs");
+	glsl_manager.parse_from_file("../../../../tests/new_entity_sys/shader/test_ani_pass.fs");
 }
 
 void quick3d::test::OESLayer::record_delta_time() noexcept
@@ -66,7 +68,14 @@ void quick3d::test::OESLayer::exec() noexcept
 
 void quick3d::test::TestPass::load_character_model() noexcept(false)
 {
-	character_model = std::make_unique<gl::Model>("D:/Programming-Playground/quick3d/tests/light_ball/model/yoimiya/yoimiya.obj");
+	//character_model = std::make_unique<gl::Model>("D:/Programming-Playground/quick3d/tests/light_ball/model/yoimiya/yoimiya.obj");
+	character_model = std::make_unique<gl::Model>("D:/Programming-Playground/quick3d/tests/new_entity_sys/model/dancing_vampire.dae");
+}
+
+void quick3d::test::TestPass::load_character_animation() noexcept(false)
+{
+	dance_animation = std::make_unique<gl::Animation>("D:/Programming-Playground/quick3d/tests/new_entity_sys/model/dancing_vampire.dae", *character_model);
+	character_animator = std::make_unique<gl::Animator>(dance_animation.get());
 }
 
 void quick3d::test::TestPass::load_cube_mesh() noexcept(false)
@@ -76,9 +85,12 @@ void quick3d::test::TestPass::load_cube_mesh() noexcept(false)
 }
 
 quick3d::test::TestPass::TestPass(quick3d::gl::GLSLManager& glsl_manager, gl::Camera& camera) noexcept(false)
-	: program(*glsl_manager.compile("test_pass.vs"), *glsl_manager.compile("test_pass.fs")), camera(camera)
+	: program(*glsl_manager.compile("test_pass.vs"), *glsl_manager.compile("test_pass.fs")),
+	ani_program(*glsl_manager.compile("test_ani_pass.vs"), *glsl_manager.compile("test_ani_pass.fs")),
+	camera(camera)
 {
 	load_character_model();
+	load_character_animation();
 	load_cube_mesh();
 }
 
@@ -93,16 +105,22 @@ void quick3d::test::TestPass::exec() noexcept(false)
 	glEnable(GL_DEPTH_TEST);
 
 	{
-		auto scale_matrix{ glm::scale(glm::mat4(1.0f), glm::vec3(0.25f, 0.25f, 0.25f)) };
-		auto model_matrix{ glm::rotate(scale_matrix, static_cast<float>(glfwGetTime()), glm::vec3(0.5f, 1.0f, -0.2f)) };
+		auto scale_matrix{ glm::scale(glm::mat4(1.0f), glm::vec3(0.125f, 0.125f, 0.125f)) };
+		auto trans_matrix{ glm::translate(scale_matrix,glm::vec3(0.5f,-1.0f,-1.0f)) };
+		auto model_matrix{ glm::rotate(trans_matrix, static_cast<float>(glfwGetTime()), glm::vec3(0.5f, 1.0f, -0.2f)) };
 		program.set_uniform("pvm", camera.get_projection_matrix() * camera.get_view_matrix() * model_matrix);
 		cube_mesh->draw_mesh(program);
 	}
 	{
-		auto scale_matrix{ glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f)) };
-		auto model_matrix{ glm::translate(scale_matrix,glm::vec3(0.0f,-1.0f,1.0f)) };
-		program.set_uniform("pvm", camera.get_projection_matrix() * camera.get_view_matrix() * model_matrix);
-		character_model->draw_model(program);
+		auto transforms = character_animator->get_final_bone_matrices();
+		for (int i = 0; i < transforms.size(); ++i)
+			ani_program.set_uniform(std::format("finalBonesMatrices[{}]", i), transforms[i]);
+
+		auto scale_matrix{ glm::scale(glm::mat4(1.0f), glm::vec3(0.1f, 0.1f, 0.1f)) };
+		auto model_matrix{ glm::translate(scale_matrix,glm::vec3(0.0f,0.0f,5.0f)) };
+		ani_program.set_uniform("pvm", camera.get_projection_matrix() * camera.get_view_matrix() * model_matrix);
+		character_model->draw_model(ani_program);
+		character_animator->update_animation(0.001f);
 	}
 }
 

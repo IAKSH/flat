@@ -17,10 +17,14 @@ namespace quick3d::test
 	private:
 		gl::Camera& camera;
 		gl::Program program;
+		gl::Program ani_program;
 		std::unique_ptr<gl::Mesh> cube_mesh;
 		std::unique_ptr<gl::Model> character_model;
+		std::unique_ptr<gl::Animator> character_animator;
+		std::unique_ptr<gl::Animation> dance_animation;
 
 		void load_character_model() noexcept(false);
+		void load_character_animation() noexcept(false);
 		void load_cube_mesh() noexcept(false);
 
 	public:

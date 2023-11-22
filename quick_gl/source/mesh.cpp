@@ -24,7 +24,7 @@ void quick3d::gl::Mesh::setup_vao(std::vector<MeshVertexPack>& vertices,
     vao.bind_ebo(*ebo);
     vao.add_attrib(*vbo, 0, 3, sizeof(MeshVertexPack) / sizeof(float), 0);
     vao.add_attrib(*vbo, 1, 3, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, normal)     / sizeof(float));
-    vao.add_attrib(*vbo, 2, 2, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, uv) / sizeof(float));
+    vao.add_attrib(*vbo, 2, 2, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, uv)			/ sizeof(float));
     vao.add_attrib(*vbo, 3, 3, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, tangent)    / sizeof(float));
     vao.add_attrib(*vbo, 4, 3, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, bitangent)  / sizeof(float));
     vao.add_attrib(*vbo, 5, 4, sizeof(MeshVertexPack) / sizeof(float), offsetof(MeshVertexPack, bone_ids)   / sizeof(float));

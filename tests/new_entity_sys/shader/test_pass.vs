@@ -5,14 +5,15 @@
 precision highp float;
 precision highp int;
 
-layout (location = 0) in vec3 in_pos;
-layout (location = 2) in vec2 in_uv;
+layout(location = 0) in vec3 in_pos;
+layout(location = 2) in vec2 in_uv;
+
 out vec2 uv;
 
 uniform mat4 pvm;
 
 void main()
 {
-	gl_Position =  pvm * vec4(in_pos,1.0);
+    gl_Position = pvm * vec4(in_pos,1.0);
 	uv = in_uv;
 }

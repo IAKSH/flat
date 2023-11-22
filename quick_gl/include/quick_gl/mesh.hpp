@@ -12,6 +12,8 @@
 #include <quick_gl/image.hpp>
 #include <quick_gl/buffer.hpp>
 
+// TODO: 该文件可能需要并入model.hpp
+
 namespace quick3d::gl
 {
     // 用户不应该直接拿VAO绘图，应该使用Mesh
