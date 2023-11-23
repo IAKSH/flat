@@ -460,9 +460,8 @@ quick3d::gl::Animator::Animator(Animation* animation) noexcept
 {
     current_time = 0.0;
     current_animation = animation;
-    final_bone_matrices.reserve(100);
-
-    for (int i = 0; i < 100; i++)
+    final_bone_matrices.reserve(1000);
+    for (int i = 0; i < 1000; i++)
         final_bone_matrices.push_back(glm::mat4(1.0f));
 }
 

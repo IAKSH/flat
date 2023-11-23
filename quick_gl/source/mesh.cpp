@@ -14,7 +14,7 @@ void quick3d::gl::Mesh::setup_vao(std::vector<MeshVertexPack>& vertices,
 	std::vector<unsigned int>& indices) noexcept
 {
     auto vbo_size{ vertices.size() * sizeof(MeshVertexPack) };
-    vbo = std::make_unique<Buffer>(GL_ARRAY_BUFFER, GL_STATIC_DRAW, vbo_size);
+    vbo = std::make_unique<Buffer>(GL_ARRAY_BUFFER, GL_STREAM_DRAW, vbo_size);
     vbo->write_buffer_data(vertices, vbo_size);
 
     auto ebo_size{ indices.size() * sizeof(unsigned int) };

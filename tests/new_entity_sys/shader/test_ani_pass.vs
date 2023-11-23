@@ -15,9 +15,14 @@ layout(location = 6) in vec4 in_weights;
 
 out vec2 uv;
 
-const int MAX_BONES = 100;
+const int MAX_BONES = 1000;
 const int MAX_BONE_INFLUENCE = 4;
-uniform mat4 finalBonesMatrices[MAX_BONES];
+
+layout (std140) uniform UBO_finalBonesMatrices
+{
+   mat4 finalBonesMatrices[MAX_BONES];
+};
+
 uniform mat4 pvm;
 
 void main()

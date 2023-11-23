@@ -6,7 +6,7 @@ int main() noexcept
 	spdlog::set_level(spdlog::level::debug);
 	quick3d::test::Application app;
 
-	auto window_layer1{ app.add_layer<quick3d::test::ImGuiWindowLayer>("cppoes: new entity architecture test", 800, 600) };
+	auto window_layer1{ app.add_layer<quick3d::test::ImGuiWindowLayer>("cppoes: new entity architecture test", 1280, 700) };
 	//auto window_layer2{ app.add_layer<quick3d::test::ImGuiWindowLayer>("multi-window test", 1280, 700) };
 	app.add_layer<quick3d::test::OESLayer>(window_layer1->get_window());
 	//app.add_layer<quick3d::test::OESLayer>(window_layer2->get_window());

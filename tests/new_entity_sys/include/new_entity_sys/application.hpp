@@ -15,6 +15,12 @@ namespace quick3d::test
 	class TestPass : public gl::Pass
 	{
 	private:
+		struct FinalBonesMatricesUBO
+		{
+			glm::mat4 mats[1000];
+		};
+		gl::Buffer final_bones_matrices_ubo;
+
 		gl::Camera& camera;
 		gl::Program program;
 		gl::Program ani_program;
@@ -23,6 +29,7 @@ namespace quick3d::test
 		std::unique_ptr<gl::Animator> character_animator;
 		std::unique_ptr<gl::Animation> dance_animation;
 
+		void intialize_shader() noexcept;
 		void load_character_model() noexcept(false);
 		void load_character_animation() noexcept(false);
 		void load_cube_mesh() noexcept(false);
