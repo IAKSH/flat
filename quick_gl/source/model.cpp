@@ -34,7 +34,7 @@ const std::vector<std::unique_ptr<quick3d::gl::Mesh>>& quick3d::gl::Model::get_m
     return meshes;
 }
 
-std::map<std::string, quick3d::gl::BoneInfo>& quick3d::gl::Model::get_bones() noexcept
+std::unordered_map<std::string, quick3d::gl::BoneInfo>& quick3d::gl::Model::get_bones() noexcept
 {
     return bones;
 }
@@ -411,7 +411,7 @@ const quick3d::gl::AssimpAnimationNode& quick3d::gl::Animation::get_root_node() 
     return root_node;
 }
 
-const std::map<std::string, quick3d::gl::BoneInfo>& quick3d::gl::Animation::get_bone_id_map() const noexcept
+const std::unordered_map<std::string, quick3d::gl::BoneInfo>& quick3d::gl::Animation::get_bone_id_map() const noexcept
 {
     return bone_info_map;
 }
@@ -419,7 +419,7 @@ const std::map<std::string, quick3d::gl::BoneInfo>& quick3d::gl::Animation::get_
 void quick3d::gl::Animation::read_missing_bones(const aiAnimation* animation, Model& model) noexcept
 {
     auto size{ animation->mNumChannels };
-    std::map<std::string, quick3d::gl::BoneInfo>& bone_info_map{ model.get_bones() };
+    std::unordered_map<std::string, quick3d::gl::BoneInfo>& bone_info_map{ model.get_bones() };
     int& bone_count{ model.get_bone_count() };
     
     for (int i = 0; i < size; i++)
@@ -482,6 +482,10 @@ void quick3d::gl::Animator::play_animation(Animation* animation) noexcept
     current_time = 0.0f;
 }
 
+// 性能太差，重灾区
+// 甚至是递归
+// 重复在map中搜索了太多次
+// 复杂度甚至超过了O(n^3)
 void quick3d::gl::Animator::calculate_bone_transform(const AssimpAnimationNode* node, glm::mat4 parentTransform) noexcept
 {
     std::string node_name = node->name;
@@ -497,6 +501,7 @@ void quick3d::gl::Animator::calculate_bone_transform(const AssimpAnimationNode* 
     glm::mat4 global_transformation = parentTransform * node_transform;
 
     auto boneInfoMap = current_animation->get_bone_id_map();
+    // 这一步性能太差
     if (boneInfoMap.find(node_name) != boneInfoMap.end())
     {
         int index = boneInfoMap[node_name].id;

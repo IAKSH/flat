@@ -71,7 +71,7 @@ namespace quick3d::gl
     private:
         std::vector<std::unique_ptr<MeshTexturePack>> textures_loaded;
         std::vector<std::unique_ptr<Mesh>> meshes;
-        std::map<std::string, BoneInfo> bones;
+        std::unordered_map<std::string, BoneInfo> bones;
         int bone_count;
         const std::string directory;
 
@@ -91,7 +91,7 @@ namespace quick3d::gl
         ~Model() = default;
 
         const std::vector<std::unique_ptr<Mesh>>& get_meshes() const noexcept;
-        std::map<std::string, BoneInfo>& get_bones() noexcept;
+        std::unordered_map<std::string, BoneInfo>& get_bones() noexcept;
         int& get_bone_count() noexcept;
 
         template <typename T>
@@ -123,7 +123,7 @@ namespace quick3d::gl
         int tps;
         std::vector<Bone> bones;
         AssimpAnimationNode root_node;
-        std::map<std::string, BoneInfo> bone_info_map;
+        std::unordered_map<std::string, BoneInfo> bone_info_map;
 
         void read_missing_bones(const aiAnimation* animation, Model& model) noexcept;
         void read_heirarchy_data(AssimpAnimationNode& dest, const aiNode* src) noexcept(false);
@@ -138,7 +138,7 @@ namespace quick3d::gl
         float get_tps() const noexcept;
         float get_duration() const noexcept;
         const AssimpAnimationNode& get_root_node() const noexcept;
-        const std::map<std::string, BoneInfo>& get_bone_id_map() const noexcept;
+        const std::unordered_map<std::string, BoneInfo>& get_bone_id_map() const noexcept;
     };
 
     class Animator
