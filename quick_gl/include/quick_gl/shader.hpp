@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <string_view>
 #include <unordered_map>
-#include <glad/glad.h>
+#include <glad/gles2.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -33,14 +33,14 @@ namespace quick3d::gl
 	{
 	private:
 		std::unordered_map<std::string, std::string> glsls;
-		// ÊµÏÖÒ»¸öÆ½Ì¨ÎÞ¹ØµÄ£¬Èí¼þÊµÏÖµÄGL_CPPOES_includeÀ©Õ¹
-		// Õâ¸öÀ©Õ¹¿ÉÑ¡
+		// Êµï¿½ï¿½Ò»ï¿½ï¿½Æ½Ì¨ï¿½Þ¹ØµÄ£ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Öµï¿½GL_CPPOES_includeï¿½ï¿½Õ¹
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½Ñ¡
 		// #extension GL_CPPOES_include : enable
 		// #glsl_name "xxx"
 		// #include "xxx"
 		std::string impl_glsl_include(std::string_view glsl) noexcept(false);
-		// ÊµÏÖÒ»¸öÆ½Ì¨ÎÞ¹ØµÄ£¬Èí¼þÊµÏÖµÄGL_CPPOES_shader_type
-		// Õâ¸öÀ©Õ¹±ØÐë¿ªÆô
+		// Êµï¿½ï¿½Ò»ï¿½ï¿½Æ½Ì¨ï¿½Þ¹ØµÄ£ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½Öµï¿½GL_CPPOES_shader_type
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ë¿ªï¿½ï¿½
 		// #extension GL_CPPOES_shader_type_flag : enable
 		// #glsl_type "vertex"
 		// #glsl_type "geometry"

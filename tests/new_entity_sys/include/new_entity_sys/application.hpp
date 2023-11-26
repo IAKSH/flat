@@ -47,15 +47,15 @@ namespace quick3d::test
 		virtual void exec() noexcept(false) = 0;
 	};
 
-	// ¸ºÔð´´½¨´°¿Ú£¨ÒÔ¼°Æäºó¶Ë
-	// ÒÔ¼°¼üÅÌÊó±êÊäÈë£¨¿ÉÄÜ£¬´ý¶¨
-	//                 gl::WindowÊÇÓÐ×ö»Øµ÷APIµÄ£¬Ó¦¸Ã¿ÉÒÔÓÉ´ËÊµÏÖÓÎÏ·µÄ¾ßÌåÂß¼­ÓëÊäÈë£¬äÖÈ¾µÄ·ÖÀë£¨Èý¸ölayer
+	// ï¿½ï¿½ï¿½ð´´½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¨ï¿½ï¿½ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½
+	//                 gl::Windowï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½APIï¿½Ä£ï¿½Ó¦ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½É´ï¿½Êµï¿½ï¿½ï¿½ï¿½Ï·ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½ï¿½È¾ï¿½Ä·ï¿½ï¿½ë£¨ï¿½ï¿½ï¿½ï¿½layer
 	class WindowLayer : public Layer
 	{
 	protected:
 		gl::Window window;
 
-		// ²»ºÃ£¬ÐèÒª»»Ò»ÖÖ·½Ê½
+		// ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Òªï¿½ï¿½Ò»ï¿½Ö·ï¿½Ê½
 		void correct_gl_viewport() noexcept;
 
 	public:
@@ -91,8 +91,8 @@ namespace quick3d::test
 		virtual void exec() noexcept override final;
 	};
 
-	// Ò²ÐíÐèÒªÎªImGui¸ã¸öºÍquick3d::gl::ContextÒ»ÑùµÄ¶«Î÷
-	// °Ñºó¶Ë³õÊ¼»¯¸ø·ÖÀë³öÈ¥
+	// Ò²ï¿½ï¿½ï¿½ï¿½ÒªÎªImGuiï¿½ï¿½ï¿½ï¿½ï¿½quick3d::gl::ContextÒ»ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
+	// ï¿½Ñºï¿½Ë³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥
 	class ImGuiWindowLayer : public WindowLayer
 	{
 	private:

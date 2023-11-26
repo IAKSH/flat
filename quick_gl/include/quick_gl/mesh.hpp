@@ -12,14 +12,14 @@
 #include <quick_gl/image.hpp>
 #include <quick_gl/buffer.hpp>
 
-// TODO: ¸ÃÎÄ¼þ¿ÉÄÜÐèÒª²¢Èëmodel.hpp
+// TODO: ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½model.hpp
 
 namespace quick3d::gl
 {
-    // ÓÃ»§²»Ó¦¸ÃÖ±½ÓÄÃVAO»æÍ¼£¬Ó¦¸ÃÊ¹ÓÃMesh
-    // ´ÓÄ£ÐÍÖÐ¼ÓÔØµÄMesh»òÊÇÔ¤ÖÆµÄ»ù´¡Mesh
-    // µ«ÊÇÎªÁËÀ©Õ¹ÐÔ£¬Ëµ²»¶¨ÒÔºó»¹ÊÇÓÐÒªÔÚÆäËûµØ·½ÊÖ´êVAO
-    // ËùÒÔÕâ¸öÀà¾ÍÔÝÊ±²»ºÏ²¢½øMeshÁË
+    // ï¿½Ã»ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½VAOï¿½ï¿½Í¼ï¿½ï¿½Ó¦ï¿½ï¿½Ê¹ï¿½ï¿½Mesh
+    // ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½Øµï¿½Meshï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ÆµÄ»ï¿½ï¿½ï¿½Mesh
+    // ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Õ¹ï¿½Ô£ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø·ï¿½ï¿½Ö´ï¿½VAO
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½Meshï¿½ï¿½
     class VertexArray
     {
     private:
@@ -37,8 +37,8 @@ namespace quick3d::gl
         GLuint get_vao_id() const noexcept;
         void bind_ebo(GLuint ebo_id) noexcept;
         void draw(GLuint program_id, GLenum primitive, GLint first, GLsizei vertex_count, GLsizei instance = 0) noexcept;
-        // TODO: ÐèÒª¿ª·Å¸ü¶àAPI£¬±ÈÈç²ÎÊýµÄ¾ßÌåÀàÐÍ£¬Ö÷ÒªÊÇÈ·¶¨VAOÊôÐÔµÄ´óÐ¡£¬Ïê¼ûglVertexAttribPointerµÄ²ÎÊýÁÐ±í
-        // Ò²Ðí¿ÉÒÔÓÃÄ£°åÊµÏÖ
+        // TODO: ï¿½ï¿½Òªï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½APIï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½Òªï¿½ï¿½È·ï¿½ï¿½VAOï¿½ï¿½ï¿½ÔµÄ´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½glVertexAttribPointerï¿½Ä²ï¿½ï¿½ï¿½ï¿½Ð±ï¿½
+        // Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½Êµï¿½ï¿½
         void add_attrib(GLenum buffer_target, uint32_t buffer_id,
             uint32_t index, uint32_t len, uint32_t vertex_len, uint32_t offset, bool normalized = false) noexcept(false);
 
@@ -79,22 +79,22 @@ namespace quick3d::gl
 
     inline static constexpr uint32_t MAX_BONE_INFLUENCE{ 4 };
     
-    // TODO: ¿ÉÄÜÐèÒª¼ÓÈë¶¥µãÑÕÉ«...
+    // TODO: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ë¶¥ï¿½ï¿½ï¿½ï¿½É«...
     struct MeshVertexPack
     {
-        // ¶¥µã×ø±ê
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         glm::vec3 position;
-        // ·¨ÏòÁ¿£¬Ö÷ÒªÓÃÓÚ¼ÆËã¹âÕÕ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         glm::vec3 normal;
-        // ÎÆÀí×ø±êÓ³Éä
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½ï¿½
         glm::vec2 uv;
-        // ÇÐÏòÁ¿£¬Ö÷ÒªÓÃÓÚ·¨ÏßÌùÍ¼
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½Í¼
         glm::vec3 tangent;
-        // ¸±ÇÐÏòÁ¿£¬ÓÃÓÚºÍÇÐÏòÁ¿¹¹³ÉÒ»¸ö×ø±êÏµ£¬Ö÷ÒªÓÃÓÚ·¨ÏßÌùÍ¼
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½Í¼
         glm::vec3 bitangent;
-        // Ó°Ïì¸Ã½ÚµãµÄ¹Ç÷ÀID£¬ÓÃÓÚ¹Ç÷À¶¯»­
+        // Ó°ï¿½ï¿½Ã½Úµï¿½Ä¹ï¿½ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         int bone_ids[MAX_BONE_INFLUENCE];
-        // ¹Ç÷À¶Ô¸Ã¶¥µãµÄÓ°ÏìÈ¨ÖØ£¬ÓÃÓÚ¹Ç÷À¶¯»­
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸Ã¶ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½È¨ï¿½Ø£ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         float weights[MAX_BONE_INFLUENCE];
     };
 
@@ -106,11 +106,11 @@ namespace quick3d::gl
         MeshTexturePack(std::string_view file_name, std::string_view directory, std::string_view type) noexcept(false);
     };
 
-    // TODO: ÐèÒª°ÑÔ¤ÖÆMesh±ä³ÉÔ¤ÖÆModel
-    // Ä¿Ç°Õâ¸öMeshÊÇ¸øModelÓÃµÄ£¬Mesh²¢Ã»ÓÐtexturesµÄËùÓÐÈ¨£¬Ò²²»¸ºÔðÊÍ·Å£¬texturesÊÇËæModelÊÍ·ÅµÄ
-    // È»¶ø¶ÔÓÚÔ¤ÖÆMesh£¬Ä¿Ç°ÊÇÃ»ÓÐËùÔÚµÄModelµÄ
+    // TODO: ï¿½ï¿½Òªï¿½ï¿½Ô¤ï¿½ï¿½Meshï¿½ï¿½ï¿½Ô¤ï¿½ï¿½Model
+    // Ä¿Ç°ï¿½ï¿½ï¿½Meshï¿½Ç¸ï¿½Modelï¿½ÃµÄ£ï¿½Meshï¿½ï¿½Ã»ï¿½ï¿½texturesï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·Å£ï¿½texturesï¿½ï¿½ï¿½ï¿½Modelï¿½Í·Åµï¿½
+    // È»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½Meshï¿½ï¿½Ä¿Ç°ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½Modelï¿½ï¿½
     // 
-    // ³ý´ËÖ®Íâ£¬»¹ÐèÒª°Ñ²Ù×÷texturesµÄAPIÒÆ¶¯µ½ModelÖÐ£¬ÈÃModel¸ºÔðtexturesµÄ¹ÜÀí
+    // ï¿½ï¿½ï¿½ï¿½Ö®ï¿½â£¬ï¿½ï¿½ï¿½ï¿½Òªï¿½Ñ²ï¿½ï¿½ï¿½texturesï¿½ï¿½APIï¿½Æ¶ï¿½ï¿½ï¿½Modelï¿½Ð£ï¿½ï¿½ï¿½Modelï¿½ï¿½ï¿½ï¿½texturesï¿½Ä¹ï¿½ï¿½ï¿½
     class Mesh
     {
     private:
@@ -190,11 +190,11 @@ namespace quick3d::gl
         }
     };
 
-    // TODO: ¿¼ÂÇÖ±½Ó»»µ½ModelÈ¥
-    // ÄÇÑùµÄ»°£¬¾ÍÖ»ÄÃModel»æÍ¼ÁË£¬ÎÞÂÛÊ²Ã´£¬¶¼ÊÇModel
-    // »òÕßÔÊÐíÓÃ»§×Ô¼ºÄÃMesh×éModel
-    // ÓÐÁË¸ü¶àµÄÀíÓÉ£¬¼ûMeshÀàÉÏµÄTODO
-    std::unique_ptr<Mesh> gen_square_mesh() noexcept;// ÓÐbug£¬Ö»»­µÃ³öÀ´Ò»¸öÈý½ÇÐÎ
+    // TODO: ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó»ï¿½ï¿½ï¿½ModelÈ¥
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Modelï¿½ï¿½Í¼ï¿½Ë£ï¿½ï¿½ï¿½ï¿½ï¿½Ê²Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Model
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Meshï¿½ï¿½Model
+    // ï¿½ï¿½ï¿½Ë¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½Meshï¿½ï¿½ï¿½Ïµï¿½TODO
+    std::unique_ptr<Mesh> gen_square_mesh() noexcept;// ï¿½ï¿½bugï¿½ï¿½Ö»ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     std::unique_ptr<Mesh> gen_round_mesh(int segments = 100) noexcept;
     std::unique_ptr<Mesh> gen_triangle_mesh() noexcept;
     std::unique_ptr<Mesh> gen_line_mesh() noexcept;

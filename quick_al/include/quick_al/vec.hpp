@@ -1,5 +1,5 @@
 #include <array>
-#include <Al/al.h>
+#include <AL/al.h>
 
 namespace quick3d::al
 {

@@ -485,9 +485,11 @@ void quick3d::gl::Animator::play_animation(Animation* animation) noexcept
 // 性能太差，重灾区
 // 甚至是递归
 // 重复在map中搜索了太多次
-// 复杂度甚至超过了O(n^3)
 void quick3d::gl::Animator::calculate_bone_transform(const AssimpAnimationNode* node, glm::mat4 parentTransform) noexcept
 {
+    static uint32_t call{ 0 };
+    ++call;
+
     std::string node_name = node->name;
     glm::mat4 node_transform = node->transformation;
     Bone* Bone = current_animation->find_bone(node_name);

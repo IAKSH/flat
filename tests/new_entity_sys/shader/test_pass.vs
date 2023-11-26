@@ -15,5 +15,5 @@ uniform mat4 pvm;
 void main()
 {
     gl_Position = pvm * vec4(in_pos,1.0);
-	uv = in_uv;
+    uv = in_uv;
 }
